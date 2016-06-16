@@ -1,0 +1,636 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Web matters</title>
+    <description>A blog about web programming that covers the full stack.  JavaScript on the client side, and on the server side,  it could be .NET, Go, Python. 
+</description>
+    <link>http://blog.gisspan.com/</link>
+    <atom:link href="http://blog.gisspan.com/feed.xml" rel="self" type="application/rss+xml"/>
+    <pubDate>Thu, 16 Jun 2016 09:31:14 -0600</pubDate>
+    <lastBuildDate>Thu, 16 Jun 2016 09:31:14 -0600</lastBuildDate>
+    <generator>Jekyll v3.1.6</generator>
+    
+      <item>
+        <title>Using Angular promise to wrap up an OAuth callback</title>
+        <description>I am going to show how to wrap the OAuth callback flow with an Angular promise, and how that will help create a clean and maintainable code.
+&lt;!--more--&gt;
+This is not a tutorial about OAuth, and I am assuming: 
+&lt;br /&gt;
+&lt;ul&gt;
+&lt;li&gt;you already have a good knowledge about OAuth authentication and its concepts.&lt;/li&gt;
+&lt;li&gt;
+you already have some knowledge about promises in JavaScript.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;
+OAuth Authentication workflow&lt;/h3&gt;
+OAuth is an open standard that allow third-party providers like Facebook and Google to provide authentication service for your application.&lt;br /&gt;
+Using &lt;a href=&quot;https://tools.ietf.org/html/rfc6749#section-1.3.1&quot;&gt;Authorization Code Flow&lt;/a&gt;,&amp;nbsp; and using Facebook login as an example. The flow in the application will go like this.&lt;br /&gt;
+&lt;ol&gt;
+&lt;li&gt;Start from our application login page&lt;/li&gt;
+Our login page will have buttons to login with facebook or twitter or...,. 
+
+
+&lt;div class=&quot;separator&quot; style=&quot;clear: both; text-align: center;&quot;&gt;
+&lt;a href=&quot;https://1.bp.blogspot.com/-8SihecLncqM/Vz0rErlirpI/AAAAAAAAEFE/YBrB3RfPXbg0ThpeTvoHt-O-lMqiBiBEACLcB/s1600/Freebie-PSD-Signin-Button.jpg&quot; imageanchor=&quot;1&quot; style=&quot;margin-left: 1em; margin-right: 1em;&quot;&gt;&lt;img border=&quot;0&quot; height=&quot;200&quot; src=&quot;https://1.bp.blogspot.com/-8SihecLncqM/Vz0rErlirpI/AAAAAAAAEFE/YBrB3RfPXbg0ThpeTvoHt-O-lMqiBiBEACLcB/s200/Freebie-PSD-Signin-Button.jpg&quot; width=&quot;270&quot; /&gt;&lt;/a&gt;&lt;/div&gt;
+&lt;li&gt;Clicking on a button will open a popup window that navigate to our application login URL.&lt;/li&gt;
+&lt;li&gt;On server side of our application, the login code communicates with OAuth authentication server (the Facebook server that host the service)&lt;/li&gt;
+&lt;li&gt;The authentication server will send a confirmation&lt;/li&gt;
+The confirmation is something like this.
+&lt;div class=&quot;separator&quot; style=&quot;clear: both; text-align: center;&quot;&gt;
+&lt;a href=&quot;https://3.bp.blogspot.com/-4I3oJD7C3h8/Vzvp02cWp9I/AAAAAAAAEEs/TxeZtKRTTYo9BkAJHaPlq1XySZ6sN-qAgCLcB/s1600/wQyB0.gif&quot; imageanchor=&quot;1&quot; style=&quot;margin-left: 1em; margin-right: 1em;&quot;&gt;&lt;img border=&quot;0&quot; height=&quot;331&quot; src=&quot;https://3.bp.blogspot.com/-4I3oJD7C3h8/Vzvp02cWp9I/AAAAAAAAEEs/TxeZtKRTTYo9BkAJHaPlq1XySZ6sN-qAgCLcB/s400/wQyB0.gif&quot; width=&quot;400&quot; /&gt;&lt;/a&gt;&lt;/div&gt;
+&lt;li&gt;The user could just close the window by clicking on the close button (X button)&lt;/li&gt;
+&lt;li&gt;Or the user will chose to confirm or deny the request&lt;/li&gt;
+In both cases, the authentication server will respond by calling back our server with a POST HTTP call that we should specify its URL when registering the application with Facebook.
+This POST HTTP call is called &lt;b&gt;&lt;i&gt;Callback URL&lt;/i&gt;&lt;/b&gt;
+&lt;/ol&gt;
+&lt;h3&gt;
+The JavaScript client side code:&lt;/h3&gt;
+I am going to cover only the JavaScript side code, and not the server code. Anyway if you used a third party OAuth library then your server side code will be very minimal (only few lines). All programming languages has OAuth library (C#, Ruby, PHP, Python...)&lt;br /&gt;
+There are three functionalities that we want to write in JavaScript.&lt;br /&gt;
+&lt;ol&gt;
+&lt;li&gt;Code to open the popup window&lt;/li&gt;
+&lt;li&gt;Code on the callback URL to receive the response from the user, and the user token&lt;/li&gt;
+And this is the most important code.
+&lt;li&gt;We need as well to watch the popup window:&lt;/li&gt;
+Because the user could just click on the close window button without responding to the confirmation
+&lt;/ol&gt;
+&lt;br /&gt;
+&lt;h3&gt;
+The Final Goal&lt;/h3&gt;
+We want to wrap the authentication process with a promise, and write a handler on when the process is successful or failed.&lt;br /&gt;
+We want to have the promise like this:&lt;br /&gt;
+&lt;pre class=&quot;line-numbers&quot;&gt;&lt;code class=&quot;language-javascript&quot;&gt;oauthService.authenticate(provider.url, provider.name)
+        .then(function(response) {
+          $log.debug(&#39;successful login&#39;);
+          $log.debug(response);
+          // do something with login
+        })
+        .catch(function(error) {
+          $log.debug(&quot;didn&#39;t login&quot;);
+          $log.debug(error);
+        /* error could be one of the following:
+          user denied
+          user closed the window
+          popup is blocked on the browser
+          the authentication server failed for some reason
+        */
+        });
+      
+    };&lt;/code&gt;&lt;/pre&gt;
+&lt;h3&gt;
+Start writing the code&lt;/h3&gt;
+Let us start with open a popup window.&lt;br /&gt;
+Let us make that an Angular service.
+&lt;br /&gt;
+&lt;pre class=&quot;line-numbers&quot;&gt;&lt;code class=&quot;language-javascript&quot;&gt;function popupService ($window) {
+  var service = {
+     window : null,
+     open : function(url, provider) {
+        this.window = $window.open(url, &#39;_blank&#39;, &#39;width=200,height=100&#39;); 
+     }
+  };
+  
+  return service;
+}
+popupService.$inject = [&#39;$window&#39;];&lt;/code&gt;&lt;/pre&gt;
+It is better to take the string that has the window specs to an Angular constants like this.
+
+&lt;br /&gt;
+&lt;pre class=&quot;line-numbers&quot;&gt;&lt;code class=&quot;language-javascript&quot;&gt;function popupConstants () {
+    facebook: &#39;width=580,height=400&#39;,
+    gplus: &#39;width=452, height=633&#39;,
+    twitter: &#39;width=495,height=645&#39;&#39; 
+}
+
+function popupService ($window, popupConstants) {
+  var service = {
+     window : null,
+     open : function(url, provider) {
+        this.window = $window.open(url, &#39;_blank&#39;, popupConstants[provider]); 
+     }
+  };
+  
+  return service;
+}
+
+
+popupService.$inject = [&#39;$window&#39;, &#39;popupConstants&#39;];
+
+
+angular.module(&#39;app&#39;)
+.constants(&#39;popupConstants&#39;, popupConstants)
+.service(&#39;popupService&#39;, popupService);&lt;/code&gt;&lt;/pre&gt;
+Now let us write the code that will check on the popup.&lt;br /&gt;
+We have to write a code that regularly check if the window opened in the first step is still open, and we will use the JavaScript interval, but better we will use the Angular&#39;s $interval which is a promise wrapper around the JavaScript native interval.
+
+&lt;br /&gt;
+&lt;pre class=&quot;line-numbers&quot;&gt;&lt;code class=&quot;language-javascript&quot;&gt;function popupService ($window, popupConstants, $rootScope, $interval) {
+  var service = {
+     window : null,
+     localCheckPopup: null,
+     open : function(url, provider) {
+        this.window = $window.open(url, &#39;_blank&#39;, popupConstants[provider]);
+        this.observePopup();
+        return true; 
+     },
+     checkPopup: function() {
+        if (this.window.closed) {
+            $interval.cancel(this.interval);
+            // Notify the application that the window is closed by the user.
+            $rootScope.$emit(&#39;window-closed&#39;);
+        }
+     },
+     observePopup: function() {
+       this.localCheckPopup = angular.bind(this, this.checkPopup);
+        this.interval = $interval(function() {
+            this.localCheckPopup();
+        }, 500);
+     }
+  };
+  
+  return service;
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;h3&gt;
+Important points to notice from the above code&lt;/h3&gt;
+In the above code we created a function called observePopup that will run in interval 500 ms to check on the window.&lt;br /&gt;
+The tip from the previous code is using angular.bind.&lt;br /&gt;
+When the function checkPopup is called by the interval process, it will lose the &quot;this&quot; scope, because it is no longer called inside the object.&lt;br /&gt;
+Angular&#39;s bind is like calling
+
+&lt;br /&gt;
+&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;checkup.apply(this)&lt;/code&gt;&lt;/pre&gt;
+What is still remaining is what we are going to use to notify the other code that the window was closed? &lt;br /&gt;
+The convenient way is to use Angular&#39;s $emit/$on for notification, and it is always better to use it on the $rootScope&lt;br /&gt;
+&lt;h3&gt;
+Writing the OAuth callback JavaScript code&lt;/h3&gt;
+The OAuth authentication server (The Facebook server in our case), will response back when we answer the confirmation page above, by calling a HTTP POST URL, that we registered when we register the application with Facebook.&lt;br /&gt;
+We should have server code that will handle the POST, but on our client side we can write JavaScript code on the html page that will return from the POST URL, to notify our JavaScript code that the user logged in or rejected.&lt;br /&gt;
+As I mentioned, I am not covering the server side code, but I will show how to pass the user token we got from the Facebook server into JavaScript.&lt;br /&gt;
+Assuming that we are using Asp.NET MVC, and assume that in the POST callback controller handler we receive the user token in a .NET object variable called &quot;user&quot;, we can serialize the object to JSON, and pass it to JavaScript through Razor template like this
+&lt;br /&gt;
+&lt;pre&gt;&lt;code class=&quot;language-aspnet&quot;&gt;var data = somedata;
+var viewModel = new ViewModel();
+var serializer = new JavaScriptSerializer();
+viewModel.JsonData = serializer.Serialize(data);
+
+return View(&quot;viewname&quot;, viewModel);&lt;/code&gt;&lt;/pre&gt;
+And on the view side, we add this JavaScript code
+&lt;br /&gt;
+&lt;pre&gt;&lt;code class=&quot;JavaScript&quot;&gt;var user = &amp;lt;%= Model.JsonData %&amp;gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;h3&gt;
+Hook up the OAuth page with our application&lt;/h3&gt;
+Hooking up the above JavaScript user with our application is not easy.&lt;br /&gt;
+Because the popup window was redirected to the facebook authentication website, it cannot communicate with our JavaScript code directly.&lt;br /&gt;
+The only way to communicate between windows that belong to different domains is to use JavaScript &lt;i&gt;&lt;b&gt;window.postMessage&lt;/b&gt;&lt;/i&gt;.&lt;br /&gt;
+But we even don&#39;t know and don&#39;t have a handle to the calling window (our application window).&lt;br /&gt;
+The only connection we have is when we open the window, we got a handle to the popup window, which we can communicate with the popup window.&lt;br /&gt;
+To fix this problem, we will do the following:
+&lt;br /&gt;
+&lt;ul&gt;
+&lt;li&gt;From Angular code, we will get a handle to the popup window.&lt;/li&gt;
+&lt;li&gt;Use the popup handle to postMessage sending the Angular App window as parameter&lt;/li&gt;
+&lt;li&gt;Because we don&#39;t know when the OAuth callback will be executed, so we have to keep repeating sending the postMessage with a parameter &quot;&lt;i&gt;&lt;b&gt;requestLogin&lt;/b&gt;&lt;/i&gt;&quot;.&lt;/li&gt;
+and the best way to do it is to hook it with the obeservePopup function that we showed before.&lt;br /&gt;
+We add inside the interval function the following line:
+&lt;pre&gt;&lt;code class=&quot;JavaScript&quot;&gt;service.window.postMessage(&#39;requestLogin&#39;, &#39;*&#39;);&lt;/code&gt;&lt;/pre&gt;
+&lt;li&gt;On the POST callback JavaScript side we listen to the postMessage with the addEventListenr&lt;/li&gt;
+&lt;li&gt;When the OAuth facebook server callback the POST URL, and execute the JavaScript, the code will receive the message with the Angular App window, wich&lt;/li&gt;
+&lt;/ul&gt;
+The code on the OAuth callback page will be:
+&lt;br /&gt;
+&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;window.addEventListener(&#39;message&#39;, function(e) {
+            if (e.data === &#39;requestLogin&#39;) {
+                e.source.postMessage({
+                    message : &#39;loginSuccess&#39;,
+                    userLogged: &amp;lt;%= Model.JsonData %&amp;gt;
+                }, &#39;*&#39;);
+                window.setTimeout(window.close, 500);
+            }
+        });&lt;/code&gt;&lt;/pre&gt;
+The function observePopup will be:
+&lt;br /&gt;
+&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;obeservePopup: function() {
+            this.interval = $interval(function() {
+                 if (service.window.closed) {
+                     $interval.cancel(service.interval);
+                     $rootScope.$emit(&#39;window-closed&#39;);
+                 }
+                 service.window.postMessage(&#39;requestLogin&#39;, &#39;*&#39;);
+            }, 500);
+        }&lt;/code&gt;&lt;/pre&gt;
+As you see on the OAuth page callback, we are sending a message loginSuccess when the user confirm the login process.&lt;br /&gt;
+When we receive this message from the Angular side, we should stop the interval that we built before.
+The final code for the popup service will be like this:
+
+
+&lt;br /&gt;
+&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;function($log, auth_popupConstants, $window, $interval, $rootScope) {
+
+    var service = {
+        window: null,
+        interval: null,
+        cancelObserver: function(e) {
+            if (e.data.message &amp;amp;&amp;amp; e.data.message === &#39;loginSuccess&#39;) {
+                $interval.cancel(service.interval);
+            }
+        }, 
+        open: function(url, provider) {
+            $window.addEventListener(&#39;message&#39;, this.cancelObserver);
+            var optionsString = stringifyOptions(prepareOptions(auth_popupConstants[provider], $window));
+            this.window = $window.open(url, &#39;_blank&#39;, optionsString);
+            if (!this.window) {
+                $interval.cancel(this.interval);
+                return false;
+            } 
+            this.obeservePopup();
+            return true;
+        },
+        obeservePopup: function() {
+            this.interval = $interval(function() {
+                 if (service.window.closed) {
+                     $interval.cancel(service.interval);
+                     $rootScope.$emit(&#39;window-closed&#39;);
+                 }
+                 service.window.postMessage(&#39;requestLogin&#39;, &#39;*&#39;);
+            }, 500);
+        }
+    };
+
+    return service;
+};&lt;/code&gt;&lt;/pre&gt;
+
+
+
+
+&lt;h3&gt;Using Angular Promises API&lt;/h3&gt;
+After we wrote all required code, let&#39;s now go the fun part. Let us build the promise that will wrap the whole process&lt;br/&gt;
+When we dealing with promises, there are two distinctive types of APIs.
+&lt;br /&gt;
+&lt;ol&gt;
+&lt;li&gt;Creating promises&lt;/li&gt;
+&lt;li&gt;Using promises.&lt;/li&gt;
+&lt;/ol&gt;
+
+And corresponding to the previous types, Angular organizes its $q API into two distinctive groups:
+
+&lt;br /&gt;
+&lt;ol&gt;
+&lt;li&gt;The deferred API to create promises&lt;/li&gt;
+&lt;li&gt;The promise API to consume promises.&lt;/li&gt;
+&lt;/ol&gt;
+
+We already did mentioned that we want to wrap the whole process with a promise that we can consume it like this:
+&lt;pre class=&quot;line-numbers&quot;&gt;&lt;code class=&quot;language-javascript&quot;&gt;oauthService.authenticate(provider.url, provider.name)
+        .then(function(response) {
+          $log.debug(&#39;successful login&#39;);
+          $log.debug(response);
+          // do something with login
+        })
+        .catch(function(error) {
+          $log.debug(&quot;didn&#39;t login&quot;);
+          $log.debug(error);
+        /* error could be one of the following:
+          user denied
+          user closed the window
+          popup is blocked on the browser
+          the authentication server failed for some reason
+        */
+        });
+      
+    };&lt;/code&gt;&lt;/pre&gt;
+The above code is the &lt;b&gt;&lt;i&gt;Promise API&lt;/i&gt;&lt;/b&gt; in the $q library.&lt;br/&gt;
+Let us talk about the fun part and how to create a promise.&lt;br/&gt;
+The &lt;b&gt;&lt;i&gt;deferred API&lt;/i&gt; &lt;/b&gt;is for creating a new promise.&lt;br/&gt;
+
+It is not that common that we create a new promise, because Angular already provide a promise façade for most common JavaScript APIs that are using callbacks, like Ajax, timeout, interval...&lt;br /&gt;
+But our OAuth callback flow is a great example to introduce a new promise.&lt;br/&gt;
+I will just add the code to create that promise:
+
+&lt;pre class=&quot;line-numbers&quot;&gt;&lt;code class=&quot;language-javascript&quot;&gt;function oauthService($q, popupService, $window, $log, $rootScope) {
+    var service = {
+        deferred:null,
+        loginSuccess: null,
+        popupClosed: null,
+        listen: function() {
+            this.loginSuccess = angular.bind(this, this.handleLoginSuccess);
+            this.popupClosed = angular.bind(this, this.handlePopupClosed);
+            $window.addEventListener(&#39;message&#39;, this.loginSuccess, false);
+            $rootScope.$on(&#39;window-closed&#39;, this.popupClosed);
+        },
+        handleLoginSuccess: function(e) {
+            if (e.data.message &amp;amp;&amp;amp; e.data.message === &#39;loginSuccess&#39;) {
+                this.deferred.resolve(e.data.userLogged);
+            }
+        },
+        handlePopupClosed: function() {
+            this.deferred.reject(&#39;the popup was closed&#39;);
+        },
+        authenticate: function(url, provider) {
+            this.deferred = $q.defer();
+            this.listen();
+            
+            var opened = popupService.open(url, provider);
+            if (!opened) {
+                   this.deferred.reject(&#39;popup blocked by browser&#39;);
+            }
+            
+            
+            return this.deferred.promise;
+        }
+    };
+
+    return service;
+};   &lt;/code&gt;&lt;/pre&gt;
+
+
+&lt;h3&gt;Notes from the previous code&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;We create a promise with &lt;/li&gt;
+&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;this.deferred = $q.defer();&lt;/code&gt;&lt;/pre&gt;
+&lt;li&gt;Then we define how we resolve the promise with&lt;/li&gt;
+ &lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;this.deferred.resolve(e.data.userLogged);&lt;/code&gt;&lt;/pre&gt;
+Which is executed when we receive the message from the OAuth callback page.
+&lt;li&gt;we reject the promise&lt;/li&gt;
+When we receive a notification from Angular $rootScope when the user close the OAuth window without confirming
+&lt;li&gt;Another reason to reject the promise&lt;/li&gt;
+When the browser block the popup, then we cannot open a new window, and &lt;b&gt;&lt;i&gt;popupservice.open&lt;/i&gt;&lt;/b&gt; will return false;
+&lt;/ul&gt;
+
+
+And now we can use the oauthService promise as we mentioned above
+</description>
+        <pubDate>Thu, 26 May 2016 19:45:00 -0600</pubDate>
+        <link>http://blog.gisspan.com/2016/05/26/using-angular-promise-to-wrap-up-oauth.html</link>
+        <guid isPermaLink="true">http://blog.gisspan.com/2016/05/26/using-angular-promise-to-wrap-up-oauth.html</guid>
+        
+        <category>angular</category>
+        
+        
+      </item>
+    
+      <item>
+        <title>Token Based Authentication and JWT</title>
+        <description>HTTP protocol specified only two standard&amp;nbsp; authentication mechanisms, which are implemented in every browser, the &lt;a href=&quot;http://blog.gisspan.com/2016/03/web-security-basic-authentication.html&quot; target=&quot;_blank&quot;&gt;HTTP basic authentication&lt;/a&gt;&amp;nbsp; , and Digest authentication.&lt;br /&gt;Because they only reference the user name that they pass with the calls, the development communities in every web development platform came up with their better customized solutions.&lt;!--more--&gt;&lt;h3&gt;The main common idea of enhanced authentication:&lt;/h3&gt;There is one main basic idea behind all security technologies used in all programming platforms, which is authenticate the user only once and issuing a &quot;&lt;b&gt;&lt;i&gt;ticket&lt;/i&gt;&lt;/b&gt;&quot; or &quot;&lt;b&gt;&lt;i&gt;token&lt;/i&gt;&lt;/b&gt;&quot;, and the client will use that ticket for every subsequent call.&lt;br /&gt;The token/ticket will have an expiry date and time, which will be invalid after that time. &lt;br /&gt;&lt;h3&gt;How the web browser send the token:&lt;/h3&gt;One of the early idea developed was using the cookies to save the token, but a better solution emerged, which is sending the token in the header of every request, which proved to be a better solution in many different ways. The phrase &quot;Token Based Authentication&quot; is mostly used in the industry to describe the later solution, even the term include the first solution as well. We will cover the cookie solution briefly and then jump to cover in more details the  &lt;br /&gt;
+
+&lt;ol&gt;&lt;h3&gt;&lt;li&gt;Cookies Based Authentication:&lt;/li&gt;&lt;/h3&gt;
+This solution was used for a long time, and the most famous implementation for it was ASP.NET Forms Authentication, and Wordpress as well.&lt;br /&gt; The server after authenticate the user, will respond with a response that has a &lt;b&gt;&lt;i&gt;Set-Cookie&lt;/i&gt;&lt;/b&gt; header attribute in the response header, which looks like this  &lt;pre&gt;&lt;code class=&quot;language-http&quot;&gt;HTTP/1.0 200 OK
+Content-type: text/html
+Set-Cookie: theme=light
+Set-Cookie: sessionToken=abc123; Expires=Wed, 09 Jun 2021 10:18:14 GMT&lt;/code&gt;&lt;/pre&gt;
+The browser (assuming they allow cookies), will keep the cookie until it is expired, and will submit it on every request to that web site as follows:   
+&lt;pre&gt;&lt;code class=&quot;language-http&quot;&gt;GET /spec.html HTTP/1.1
+Host: www.example.org
+Cookie: theme=light; sessionToken=abc123&lt;/code&gt;&lt;/pre&gt;Earlier implementation for this approach were using sessions and saving the sessions and sending the session ID as the &quot;ticket&quot;, but because sessions are not easy to scale, the session stopped being used long time ago.&lt;br /&gt;Cookies had many issues (that we are going to cover in next section), which pushed the industry to find better solutions, which brought the idea of token based authentication. &lt;h3&gt;&lt;li&gt;Token Based Authentication:&lt;/li&gt;&lt;/h3&gt;Using the same approach of generating an access token when authenticating, but instead of sending the token in a cookie, it use an HTTP header attribute (usually Authorization HTTP header) to send the token.&lt;br /&gt;This solution was developed mainly by OAuth authentication, but it doesn&#39;t have to be used only in OAuth, and it can be used by local security based solution.&lt;br /&gt;The solution became mature with development of more robust standard like &lt;a href=&quot;https://jwt.io/&quot;&gt;Jason Web Token (JWT)&lt;/a&gt;, which became the de facto standard for modern web security.&lt;br /&gt;There are two common approach to send this access token:&lt;br /&gt;&lt;ol&gt;&lt;li&gt;Bearer token&lt;/li&gt;Bearer token is an non encrypted token. If you want to use it, you should use it over HTTPS. &lt;br /&gt;This is how a call with the bearer token will look like 
+&lt;pre&gt;&lt;code class=&quot;language-http&quot;&gt;GET /resource/1 HTTP/1.1
+Host: example.com
+Authorization: Bearer mF_9.B5f-4.1JqM&lt;/code&gt;&lt;/pre&gt;&lt;li&gt;MAC token&lt;/li&gt;MAC token is an encrypted token, and it is more complex than the bearer. &lt;pre&gt;&lt;code class=&quot;language-http&quot;&gt;GET /resource/1 HTTP/1.1
+Host: example.com
+Authorization: MAC id=&quot;h480djs93hd8&quot;,
+    nonce=&quot;274312:dj83hs9s&quot;,
+    mac=&quot;kDZvddkndxvhGRXZhvuDjEWhGeE=&quot;&lt;/code&gt;&lt;/pre&gt;&lt;/ol&gt;&lt;/ol&gt; &lt;h3&gt;Advantages of token based authentication over cookies&lt;/h3&gt;The are many advantages: &lt;ol&gt;&lt;li&gt;Cookies could be disabled by the user&lt;/li&gt;In that case you have to force your users to use cookies in order for them to use your application. &lt;li&gt;They won&#39;t work across-domains&lt;/li&gt;So you cannot use the same credentials with many different domains, where in token based, you can authenticate in one place, and use the same token across many different domains. &lt;li&gt;Cookies and mobiles are not friends together&lt;/li&gt;&lt;li&gt;Cookies are volunerables for &lt;a href=&quot;https://en.wikipedia.org/wiki/Cross-site_request_forgery&quot;&gt;CSRF attacks&lt;/a&gt;&lt;/li&gt; &lt;/ol&gt; &lt;h3&gt;JSON Web Tokens (JWT)&lt;/h3&gt;JWT became lately the most common used authentication solution for APIs and mobile solutions. &lt;br/&gt; JWT is a claim based authentication. When a user authenticate itself only at the beginning, the application checks what this user have access to, and what the user will claim, and issues a token that will have all these claims, and then signed with a hash algorithm, and send it back to the client.&lt;br/&gt;The client will store the token either with a cookie, or with an HTML5 local data store, and upon each request the client will submit this data in the header of the request as a bearer token or a MAC token. JWT as the token based authentication is not supported by the browsers, and requires some kind of JavaScript libraries to support it. </description>
+        <pubDate>Fri, 29 Apr 2016 19:45:00 -0600</pubDate>
+        <link>http://blog.gisspan.com/2016/04/29/token-based-authentication-and-jwt.html</link>
+        <guid isPermaLink="true">http://blog.gisspan.com/2016/04/29/token-based-authentication-and-jwt.html</guid>
+        
+        <category>security</category>
+        
+        
+      </item>
+    
+      <item>
+        <title>Making sense of SSL, RSA, X509 and CSR</title>
+        <description>This is the second part of learning about SSL/TLS.&lt;br /&gt;&lt;a href=&quot;http://blog.gisspan.com/2016/03/secure-your-web-site-with-ssl.html&quot;&gt;The first part was how to protect the site with SSL.&lt;/a&gt;&lt;br /&gt;This part is about explaining more the terms, technologies, protocols, standards used in SSL. &lt;!--more--&gt;&lt;h3&gt;What is SSL/TLS:&lt;/h3&gt;SSL is the standard protocol to secure the communication between a web server and a browser, by creating an encrypted link between the two.&lt;br /&gt;SSL last version was 3.0, and TLS&amp;nbsp; succeeds SSL, and become the new standard. But still some components of the protocols have the name SSL, like SSL certificate for example, so when you see the name SSL it most probably means the new TLS, because SSL is rarely used any more.&lt;br /&gt;&lt;br /&gt;&lt;h3&gt;SSL/TLS workflow and TLS Handshake:&lt;/h3&gt;When a browser hits the web server using the &lt;b&gt;&lt;i&gt;HTTPS&lt;/i&gt;&lt;/b&gt; protocol, it start a process of creating an encrypted session between the two.&lt;br /&gt;At the beginning, the encryption used is public-key encryption, which is an asymmetric type encryption.&lt;br /&gt;The web server has a couple of keys public and private. It sends the public key to the browsers, and the browsers use the public key to encrypt the communications later.&lt;br /&gt;Only the web server can know how to decrypt the communication.&lt;br /&gt;Because the public key decryption is slow and expensive, so the web server and the browser will switch to symmetric encryption where only one key is required.&lt;br /&gt;They negotiate between each other on what the best encryption algorithm they should use. The algorithm used would depend on the server and the browser.&lt;br /&gt;This negotiation phase is called TLS handshake.&lt;br /&gt;&lt;h3&gt;Protocols, standards and concepts used in SSL&lt;/h3&gt;
+
+&lt;ol&gt;&lt;h3&gt;&lt;li&gt;Public key encryption: RSA&lt;/li&gt;&lt;/h3&gt;As we mentioned the server that implement SSL has pair of keys, public and private, which are used during the TLS handshake. &lt;br /&gt;The most common public key encryption used in SSL is the RSA. &lt;br /&gt;In OpenSSL tools, the RSA is the default option when generating a public/private key.&lt;br /&gt;To generate key pairs with OpenSSL, we generate first a private key, then generate a public key depending on the private key.&lt;br /&gt;Example of generate a private key: &lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;openssl genrsa -out {private-key-filename} 2048&lt;/code&gt;&lt;/pre&gt;The 2048 is the size of the private key, which is now a days considered the appropriate secure size. Less than 2048 is not secure, and bigger than 2048 will be slow to process.&lt;br /&gt;to extract a public key from the private key : &lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;openssl rsa -pubout -in {private-key-filename} -out {public-key-filename}&lt;/code&gt;&lt;/pre&gt;&lt;h3&gt;
+    &lt;li&gt;PEM Protocol&lt;/li&gt;&lt;/h3&gt;When we generate the keys in the previous example, the generate files will contains data like this:&amp;nbsp; 
+    &lt;br /&gt;&lt;br /&gt;
+    &lt;blockquote&gt;-----BEGIN PRIVATE KEY-----&lt;br /&gt;MIIEczCCA1ugAwIBAgIBADANBgkqhkiG9w0BAQQFAD..AkGA1UEBhMCR0Ix&lt;br /&gt;EzARBgNVBAgTClNvbWUtU3RhdGUxFDASBgNVBAoTC0..0EgTHRkMTcwNQYD&lt;br /&gt;......&lt;br /&gt;......&lt;br /&gt;It8una2gY4l2O//on88r5IWJlm1L0oA8e4fR2yrBHX..adsGeFKkyNrwGi/&lt;br /&gt;7vQMfXdGsRrXNGRGnX+vWDZ3/zWI0joDtCkNnqEpVn..HoX&lt;br /&gt;-----END CERTIFICATE-----&lt;/blockquote&gt;
+    &lt;br/&gt;
+    This format called PEM format, stands for Privacy Enhanced Mail.&lt;br /&gt;PEM is a text representation of the real binary key in DER format(X.509 ASN.1 key), it is base64 encoding of the DER binary format.&lt;br /&gt;We could store the binary version of the file only with &lt;b&gt;&lt;i&gt;DER&lt;/i&gt;&lt;/b&gt; encoding, but the most common way is the PEM version.&lt;br /&gt;&lt;h3&gt;&lt;li&gt;Digital Identity&lt;/li&gt;&lt;/h3&gt;As a user, in order to trust a web site for your precious information, you need to trust the web site owner.&lt;br /&gt;Similarly, if you receive an email, you want to trust that the email you received was sent by the email owner, and not hacked by anyone else.&lt;br /&gt;In real life, we have our identity card, which is a trusted document issued by a trusted authority (the government) which is a prove of our identity.&lt;br /&gt; The industry came up with similar policies and standards to handle the digital identity. &lt;h3&gt;&lt;li&gt;Public Key Infrastructure: PKI and Certificate Authority&lt;/li&gt;&lt;/h3&gt;The PKI is the infrastructure that the industry created to manage the digital identities.&lt;br /&gt;The PKI created a hierarchical body of many organizations which their role is to issue digital identies.&lt;br /&gt;These organizations called Certificate Authority (CA), and when you want to protect your site with SSL/TLS, you have to communicate with them, and they have to follow up with you to make sure that you are a legitimate company, and you are who you want to claim you are.&lt;br /&gt;The digital identity has many four types ranked depending on their security level and how much investigation the CA will do before they submit a certificate.&lt;br /&gt;Please find out these types in my previous post. &lt;h3&gt;&lt;li&gt;Digital Certificate : X.509&lt;/li&gt;&lt;/h3&gt;As we discussed before, SSL required the web server to have public key, and a digital identity, to give to the browsers.&lt;br /&gt;The industry decided to combine these two in one file, which is called : digital certificate, or SSL certificate.&lt;br /&gt;PKI policies defined the format for this certificate in a standard called X.509.&lt;br /&gt;Certificate format X.509 v3&lt;br /&gt;&lt;ol&gt;&lt;li&gt;Version Number&amp;nbsp;&lt;/li&gt;&lt;li&gt;Serial Number&amp;nbsp;&lt;/li&gt;&lt;li&gt;Signature Algorithm ID&amp;nbsp;&lt;/li&gt;&lt;li&gt;Issuer Name&lt;/li&gt;&lt;li&gt;Validity period&lt;/li&gt;&lt;ul&gt;&lt;li&gt;Not Before&lt;/li&gt;&lt;li&gt;Not After&lt;/li&gt;&lt;/ul&gt;&lt;li&gt;Subject name&lt;/li&gt;&lt;li&gt;Subject Public Key Info&lt;/li&gt;&lt;ul&gt;&lt;li&gt;Public Key Algorithm&lt;/li&gt;&lt;li&gt;Subject Public Key&lt;/li&gt;&lt;/ul&gt;&lt;li&gt;Issuer Unique Identifier (optional)&lt;/li&gt;&lt;li&gt;Subject Unique Identifier (optional)&lt;/li&gt;&lt;li&gt;Extensions (optional)&lt;/li&gt;... &lt;li&gt;Certificate Signature Algorithm&lt;/li&gt;&lt;li&gt;Certificate Signature&lt;/li&gt;&lt;/ol&gt;&lt;h3&gt;&lt;li&gt;CSR: Certificate Signing Request&lt;/li&gt;&lt;/h3&gt;The certificate is issued by one of CA(s), and in order to get a certificate you have to contact one of the CA(s) and send them a request in the format: CSR (Certificate Signing Request).&lt;br/&gt;The CSR is a PEM formatted file with the following information: &lt;ul&gt;&lt;li&gt;Common Name&lt;/li&gt;&lt;li&gt;Organization&lt;/li&gt;&lt;li&gt;Organizational Unit&lt;/li&gt;&lt;li&gt;City&lt;/li&gt;&lt;li&gt;State/County/Region&lt;/li&gt;&lt;li&gt;Country&lt;/li&gt;&lt;li&gt;Email Address&lt;/li&gt;&lt;li&gt;Public Key&lt;/li&gt;&lt;/ul&gt;You can generate a CSR by either doing it from a web server, or using openssl tools like the following: &lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;openssl req -new -sha256 -key privatekey.key -out request.csr&lt;/code&gt;&lt;/pre&gt;When you run the previous command, it will prompt you to enter all the CSR details &lt;/ol&gt;</description>
+        <pubDate>Mon, 18 Apr 2016 23:42:00 -0600</pubDate>
+        <link>http://blog.gisspan.com/2016/04/18/making-sense-of-ssl-rsa-x509-and-csr.html</link>
+        <guid isPermaLink="true">http://blog.gisspan.com/2016/04/18/making-sense-of-ssl-rsa-x509-and-csr.html</guid>
+        
+        <category>security</category>
+        
+        
+      </item>
+    
+      <item>
+        <title>ng-annotate and Angular Dependecy Injection In depth</title>
+        <description>A typical Angular application contains many modules, each module is a collection of many components (controllers, directives, services, factories, ...).&lt;br /&gt;These modules depend on each other, and their components as well depends on other compoenents.&lt;br /&gt;Angular solves this dependencies with its Dependency Injection Subsystem. &lt;!--more--&gt;&lt;h3&gt;Responsibilities of DI subsystem&lt;/h3&gt;Angular DI subsystem is pervasive throughout Angular and it works with the &lt;a href=&quot;https://docs.angularjs.org/api/ng/function/angular.module&quot;&gt;Module registration process&lt;/a&gt;. Whenever we register a new module with its components, the DI will be the registration mechanism to do the following: &lt;br /&gt;&lt;ol&gt;&lt;li&gt;Creating components&amp;nbsp;&lt;/li&gt;&lt;li&gt;Resolving their dependencies&amp;nbsp;&lt;/li&gt;&lt;li&gt;Connecting them with other components as requested &lt;/li&gt;&lt;/ol&gt;&lt;h3&gt;Angular DI style is Construction Injection&lt;/h3&gt;Assuming you (the reader) know already about DI as a design pattern and the DI frameworks, in other languages like Java or C# the DI frameworks has three flavors:&lt;br /&gt;&lt;ol&gt;&lt;li&gt;Construction Injection&amp;nbsp;&lt;/li&gt;&lt;li&gt;Property Injection&amp;nbsp;&lt;/li&gt;&lt;li&gt;Setter Injection&amp;nbsp;&lt;/li&gt;&lt;/ol&gt;Angular DI is a construction injection style, where we pass dependencies as function arguments.&lt;br /&gt;As an example, with this controller code , the controller is depending on  : $scope, authService , and as you see we are passing them as arguments.&lt;br /&gt;
+&lt;pre data-line=&quot;6&quot;&gt;&lt;code class=&quot;language-javascript&quot;&gt;var myApp = angular.module(&#39;myApp&#39;,[]);
+myApp.service(&#39;Auth&#39;, function() {
+        this.userName = /* some function to return user name */;
+    });
+myApp.controller(&#39;GreetingController&#39;, [&#39;$scope&#39;, &#39;Auth&#39;,  
+    function($scope, Auth) {
+        $scope.greeting = &#39;Hola &#39; + Auth.userName + &#39;!&#39;;&lt;br /&gt;
+    }]);&lt;/code&gt;&lt;/pre&gt;&lt;br /&gt;&lt;h3&gt;How does it work?:&lt;/h3&gt;When an Angular application bootstrap, it will create one, and only one &quot;&lt;a href=&quot;https://docs.angularjs.org/api/auto/service/$injector&quot;&gt;Injector&lt;/a&gt;&quot;&lt;br /&gt;The Injector is a &lt;a href=&quot;https://en.wikipedia.org/wiki/Service_locator_pattern&quot;&gt;service locator design pattern&lt;/a&gt; that will register, find, and couple components together. &lt;br /&gt;Angular uses angular.injector function to create the $injector passing all listed modules.&lt;br /&gt;This is what Angular run (behind the scene)  to generate the injector:  &lt;br /&gt;
+&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;// create an injector
+var $injector = angular.injector([&#39;ng&#39;]);
+
+// use the injector to kick off your application
+// use the type inference to auto inject arguments, or use implicit injection.
+$injector.invoke(function($rootScope, $compile, $document) {
+  $compile($document)($rootScope);
+  $rootScope.$digest();
+ });&lt;/code&gt;&lt;/pre&gt;If, for any reason you want to access the injector programmatically , you can get it from angular.element.  For example , if we are adding dynamic html using jQuery, and want to hook it with the rest of the angular app:  &lt;br /&gt;
+&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;var $div = $(&#39;
+     &amp;lt;div ng-controller=&amp;quot;MyCtrl&amp;quot;&amp;gt;
+     {{content.label}}&amp;lt;/div&amp;gt;&#39;
+  );
+  $(document.body).append($div);
+  angular.element(document).injector().invoke(function($compile) {
+    var scope = angular.element($div).scope();
+    $compile($div)(scope);
+ });&lt;/code&gt;&lt;/pre&gt;&lt;br /&gt;&lt;h3&gt;How Injector resolve the dependencies?&lt;/h3&gt;Angular style of resolving dependencies uses IDs which are string values to identify components and modules.&lt;br /&gt;These IDs are called &quot;Dependency Annotation&quot;.&lt;br /&gt;There are three types of annotations:&lt;br /&gt;&lt;ol&gt;&lt;li&gt;Using the inline array annotation (preferred)&amp;nbsp;&lt;/li&gt;&lt;li&gt;Using the $inject property annotation&amp;nbsp;&lt;/li&gt;&lt;li&gt;Implicitly from the function parameter names &lt;/li&gt;&lt;/ol&gt;&lt;br /&gt;&lt;ol&gt;&lt;h3&gt;&lt;li&gt;Inline Array Annotation&lt;/li&gt;&lt;/h3&gt;Every component as an ID, and when we register it we pass its dependency IDs as an array.&lt;br /&gt;Code worth 1000 words, and we here list the code to register a module and its controller.&lt;br /&gt;
+ &lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;var someModule = angular.module(&#39;someModule&#39;, []);
+ someModule.controller(&#39;MyController&#39;, [&#39;$scope&#39;, &#39;greeter&#39;, function($scope, greeter) {
+ // .....}]);&lt;/code&gt;&lt;/pre&gt;The Annotations are the string values:  &#39;$scope&#39;, &#39;greeter&#39;.&lt;br /&gt;And the IDs are &#39;someModule&#39;, &#39;MyController&#39;.&lt;br /&gt;The Injector will register a module with the ID : &#39;someModule&#39;, and its controller with ID: &#39;MyController&#39;.&lt;br /&gt;And it will look for other components with IDs: &#39;$scope&#39; and &#39;greeter&#39; and inject them in the controller.&lt;br /&gt;This is the safest way to do annotation, the problem with it, is that you have to make sure that the annotation array is in sync with the function parameters, and they are in the exact order.&lt;br /&gt;Any out of sync will make your application go nuts. &lt;h3&gt;&lt;li&gt;Using the $inject property annotation&lt;/li&gt;&lt;/h3&gt;$inject property is a property added to an Angular service (or component) which is an array of the annotations.&lt;br /&gt;This is an example of it &lt;br /&gt;
+ &lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;var MyController = function($scope, greeter) {
+    //....
+ };
+ MyController.$inject = [&#39;$scope&#39;, &#39;greeter&#39;];
+ someModule.controller(&#39;MyController&#39;, MyController);&lt;/code&gt;&lt;/pre&gt;As you can see the syntax is cleaner with this approach, but we still have to make sure that the annotation array is in sync with the function parameters. &lt;h3&gt;&lt;li&gt;Implicit Annotation&lt;/li&gt;&lt;/h3&gt;Implicit annotation means the Injector will get the dependency that has in ID the same as the parameter name.&lt;br /&gt;So the code will be as simple as : 
+ &lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt; var MyController = function($scope, greeter) {
+     //....
+ };
+ someModule.controller(&#39;MyController&#39;, MyController);&lt;/code&gt;&lt;/pre&gt;We don&#39;t have to keep track of the parameters to keep them sync with the annotation.&lt;br /&gt;This method is the easiest, except that if we are going to minify our code then it won&#39;t work, because minification will minify as well the parameter names.&lt;br /&gt;&lt;h3&gt;&lt;li&gt;Using ng-annotate&lt;/li&gt;&lt;/h3&gt;In order to get advantage of the simplicity of implicit annotation, the community came up with a solution for the minification problem.&lt;br /&gt;&lt;a href=&quot;https://github.com/olov/ng-annotate&quot;&gt;ng-annotate&lt;/a&gt; is a third party tool that will add annotations to your code.&lt;br /&gt;You just write your code like you write using the implicit annotation, which means you don&#39;t write any annotations.&lt;br /&gt;And you just mark-up your function which require injection with the &quot;ngInject&quot; directive prologue.&lt;br /&gt;Directive prologue (a well known example of it is &quot;use strict&quot;) , are string values which should be written at the beginning of a file, or a function.&lt;br /&gt;We can re-write our previous example as this: 
+ &lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt; var MyController = function($scope, greeter) {
+     &quot;ngInject&quot;;
+     //....
+};
+someModule.controller(&#39;MyController&#39;, MyController);&lt;/code&gt;&lt;/pre&gt;ng-annotate tool will parse your code and when it encounters the &quot;ngInject&quot; directive prologue, it will add the $inject property annotation. &lt;br /&gt;Another way to do that is to add /*@ngInject*/ before the function, like this 
+&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt; var MyController = /*@ngInject*/ 
+function($scope, greeter) {
+   //....
+};
+someModule.controller(&#39;MyController&#39;, MyController);&lt;/code&gt;&lt;/pre&gt;In order to do that we need first to install the tool: &lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt; npm install -g ng-annotate&lt;/code&gt;&lt;/pre&gt;and then run the tool on our code 
+&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt; ng-annotate -a source.js&lt;/code&gt;&lt;/pre&gt;&lt;/ol&gt;&lt;h3&gt;Using strict mode&lt;/h3&gt;If you are defining a new service, but you forgot to add the dependency annotations, then angular will assume that you are planning to use implicit annotation, and that might introduce bugs.&lt;br /&gt;For that reason, Angular introduced the &quot;strict mode&quot; in using dependency injection.&lt;br /&gt;To use the strict mode, add the directive &lt;i&gt;&lt;b&gt;ng-strict-di&lt;/b&gt;&lt;/i&gt; into the same HTML element that has the &lt;i&gt;&lt;b&gt;ng-app&lt;/b&gt;&lt;/i&gt; directive.&lt;br /&gt;This is an example: &lt;br /&gt;&lt;pre&gt;&lt;code class=&quot;language-html&quot;&gt;&amp;lt;html ng-app=&amp;quot;myApp&amp;quot; ng-strict-di&amp;gt;
+&amp;lt;body&amp;gt;
+........
+&amp;lt;/body&amp;gt;
+&amp;lt;/html&amp;gt;&lt;/code&gt;&lt;/pre&gt;When you have in your code somewhere that try to use implicit annotations, then it will throw an error. </description>
+        <pubDate>Thu, 07 Apr 2016 21:52:00 -0600</pubDate>
+        <link>http://blog.gisspan.com/2016/04/07/angular-dependecy-injection.html</link>
+        <guid isPermaLink="true">http://blog.gisspan.com/2016/04/07/angular-dependecy-injection.html</guid>
+        
+        <category>angular</category>
+        
+        
+      </item>
+    
+      <item>
+        <title>Angular best practices using NodeJS Style Modules</title>
+        <description>As JavaScript applications tend to grow in size, the need to organize and structure our code become essentials.&lt;br /&gt;JavaScript modules was the answer to structure our code in a clean, maintainable, testable way.&lt;br /&gt;The purpose of this post is to show how to write clean Angular code, and how to structure it to be re-usable, testable using NodeJs style modules.&lt;!--more--&gt;&lt;br /&gt;We will see how our structure will follow &lt;a href=&quot;https://github.com/johnpapa/angular-styleguide/tree/master/a1&quot;&gt;the Angular community best practices and guidelines&lt;/a&gt;. &lt;br /&gt;&lt;ol&gt;&lt;h3&gt;&lt;li&gt;NodeJS modules, and JavaScript Modules&lt;/li&gt;&lt;/h3&gt;Until EchmaScript 2015 (formerly ES6), JavaScript didn&#39;t have built in API for modules, and developers had to count on third party frameworks.&lt;br /&gt;There are two main flavours of modules: AMD, and CommonJS which is what NodeJs used to build their modules.&lt;br /&gt;This post is not going to describe the differences between the two, and I will just say that I decided to use NodeJS Style.&lt;br /&gt;Even though NodeJs modules cannot be used directly in a web browser, but with the help of tools like browserify, or webpack we can use any NodeJs module. &lt;h3&gt;&lt;li&gt;Angular modules and best practices&lt;/li&gt;&lt;/h3&gt;Angular was built with the modular design in mind.&lt;br /&gt;Angular has the &lt;a href=&quot;https://docs.angularjs.org/api/ng/function/angular.module&quot;&gt;Module API&lt;/a&gt;, which allows to build modular applications.&lt;br /&gt;And the Angular team recommend dividing our application into modules according to their functionality, each functionality has its own module, and the module will contain everything related to the functionality (services, factories, directives, controllers, etc...) .&lt;br /&gt;From &lt;a href=&quot;https://docs.angularjs.org/api/ng/function/angular.module&quot;&gt;Angular Documentation&lt;/a&gt;, a module is a collection of services, directives, controllers, filters, and configuration information.&lt;br /&gt;&lt;h3&gt;&lt;li&gt;Write Angular module as NodeJS Module &lt;/li&gt;&lt;/h3&gt;Angular modules are conceptual and logical partitioning of the code. A module represent a separate functionality that can be tested separately.&lt;br /&gt;Angular modules don&#39;t employ any physical or file structure, and we can write multi modules in one file, or one modules in different files.&lt;br /&gt;But writing every Angular module as NodeJS module will help achieve many good practices.&lt;br /&gt;Let us start on how to structure the root and entry point of our application.&lt;br /&gt;The following picture shows the best practice of how to structure the files in an Angular application. &lt;div class=&quot;separator&quot; style=&quot;clear: both; text-align: center;&quot;&gt;&lt;a href=&quot;https://2.bp.blogspot.com/-XgWOZOs1NPA/VwMapw4qsCI/AAAAAAAADtc/iLVQxPol0zM9Y-Dive6VkRWIA-O0AMcRg/s1600/Screenshot%2Bfrom%2B2016-04-04%2B19%253A52%253A07.png&quot; imageanchor=&quot;1&quot; style=&quot;margin-left: 1em; margin-right: 1em;&quot;&gt;&lt;img border=&quot;0&quot; height=&quot;400&quot; src=&quot;https://2.bp.blogspot.com/-XgWOZOs1NPA/VwMapw4qsCI/AAAAAAAADtc/iLVQxPol0zM9Y-Dive6VkRWIA-O0AMcRg/s400/Screenshot%2Bfrom%2B2016-04-04%2B19%253A52%253A07.png&quot; width=&quot;355&quot; /&gt;&lt;/a&gt;&lt;/div&gt;&lt;h3&gt;&lt;li&gt;Explain the file structure&lt;/li&gt;&lt;/h3&gt;We can specify the following guidelines in structuring the application.  &lt;ul&gt;&lt;li&gt;App.js&lt;/li&gt;&lt;b&gt;&lt;i&gt;App.js&lt;/i&gt;&lt;/b&gt; is the entry point for our application. It has the code for the main module (the application module). The file should exist in the root folder. &lt;li&gt;&lt;b&gt;&lt;i&gt;config.js&lt;/i&gt;&lt;/b&gt; and &lt;b&gt;&lt;i&gt;run.js&lt;/i&gt;&lt;/b&gt;&lt;/li&gt;Each Angular module can have a running block, and a configuration block.&lt;br /&gt;We have one file for each.&lt;br /&gt;&lt;li&gt;Single responsibility guideline&lt;/li&gt;One of the guideline in the Angular community guideline was &lt;a href=&quot;https://github.com/johnpapa/angular-styleguide/blob/master/a1/README.md#single-responsibility&quot; target=&quot;_blank&quot;&gt;Single Responsibility guideline&lt;/a&gt;. And as you saw before, by creating a file for the running block and another file for the configuration block, we are following this guideline. &lt;li&gt;A folder for each Angular module&lt;/li&gt;Building an Angular applications on module-based design &lt;a href=&quot;https://github.com/johnpapa/angular-styleguide/blob/master/a1/README.md#modules&quot; target=&quot;_blank&quot;&gt;is a good practice that is recommended by the community&lt;/a&gt;. And we store each module in a separate folder.&lt;br /&gt;In the above example, we have four modules: &lt;b&gt;&lt;i&gt;payment&lt;/i&gt;&lt;/b&gt;, &lt;b&gt;&lt;i&gt;home&lt;/i&gt;&lt;/b&gt;, &lt;b&gt;&lt;i&gt;common&lt;/i&gt;&lt;/b&gt; and &lt;b&gt;&lt;i&gt;auth&lt;/i&gt;&lt;/b&gt;.&lt;br /&gt;And in case a module has many sub-modules then we create sub-folders for this sub-modules, as in the sub-modules: &lt;b&gt;&lt;i&gt;emailLogin&lt;/i&gt;&lt;/b&gt;, &lt;b&gt;&lt;i&gt;oauth&lt;/i&gt;&lt;/b&gt; in our module &lt;b&gt;&lt;i&gt;auth&lt;/i&gt;&lt;/b&gt;. &lt;li&gt;A separate file for each module component&lt;/li&gt;An Angular module can contains: controllers, services, directives.&lt;br /&gt;As we said, we follow single responsibility guideline, so we create a file for each component.&lt;br /&gt;In the above example we have a file called &lt;b&gt;&lt;i&gt;navbar-controller.js&lt;/i&gt;&lt;/b&gt;, which is a directive for the main module. &lt;/ul&gt;&lt;h3&gt;&lt;li&gt;Writing the entry point for main application&lt;/li&gt;&lt;/h3&gt;Let us see now the code inside the app.js file. &lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;// contents of the file app.js
+// -----------------------------------------
+&#39;use strict&#39;;
+
+require(&#39;angular&#39;);
+require(&#39;angular-touch&#39;);
+require(&#39;angular-ui-router&#39;);
+require(&#39;angular-bootstrap&#39;);
+angular.module(&#39;app&#39;, [
+        &#39;ui.router&#39;,
+        &#39;ngTouch&#39;,
+        &#39;ui.bootstrap&#39;,
+        require(&#39;./auth&#39;),
+        require(&#39;./home&#39;),
+        require(&#39;./common&#39;),
+        require(&#39;./payment&#39;)
+    ])
+    .config(require(&#39;./config&#39;))
+    .run(require(&#39;./run&#39;))
+    .controller(&#39;NavbarCtrl&#39;, [&#39;$scope&#39;, require(&#39;./navbar-controller&#39;)]);&lt;/code&gt;&lt;/pre&gt;Analysing the above code: &lt;ul&gt;&lt;li&gt;First add external required libraries&lt;/li&gt;As you see, we start by adding required libraries (&lt;b&gt;&lt;i&gt;angular&lt;/i&gt;&lt;/b&gt;, &lt;b&gt;&lt;i&gt;angular-touch&lt;/i&gt;&lt;/b&gt;,...etc) at the beginning of the file.&lt;br /&gt;&lt;li&gt;Next we define and register the main application module &quot;&lt;b&gt;&lt;i&gt;&lt;span style=&quot;color: #cc0000;&quot;&gt;app&lt;/span&gt;&lt;/i&gt;&lt;/b&gt;&quot;&lt;/li&gt;&lt;li&gt;Add dependencies using the require statement&lt;/li&gt;&lt;li&gt;As you see, we define the &lt;b&gt;&lt;i&gt;run&lt;/i&gt;&lt;/b&gt; block, and &lt;b&gt;&lt;i&gt;config&lt;/i&gt;&lt;/b&gt; block using the require statement.&lt;br /&gt;This will load the equivalent file with the same name in the require statement (with .js suffix).  To bootstrap the previous code, all what we have to do is to hook the &quot;app&quot; main module in the html page like this: 
+&lt;pre data-line=&quot;4&quot;&gt;&lt;code class=&quot;language-html&quot;&gt;// contents of the file index.html page
+// ----------------------------------------
+&amp;lt;html class=&quot;no-js&quot; lang=&quot;en&quot;
+ng-app=&quot;app&quot;&amp;gt; 
+&amp;lt;head&amp;gt;&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;&lt;/ul&gt;&lt;h3&gt;&lt;li&gt;But how a module component will be written?&lt;/li&gt;&lt;/h3&gt;Now let us see how we write a module component, and let us take as an example the file &quot;&lt;b&gt;&lt;i&gt;navbar-controller.js&lt;/i&gt;&lt;/b&gt;&quot;: 
+&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;// contents of the file navbar-controller.js
+// -----------------------------------------
+&#39;use strict&#39;;
+module.exports = 
+    function ($scope) {
+        // .......
+        // .......
+    };&lt;/code&gt;&lt;/pre&gt;We just write the controller function, and assign it to &lt;b&gt;&lt;i&gt;module.exports&lt;/i&gt;&lt;/b&gt;, where &lt;b&gt;&lt;i&gt;module.exports&lt;/i&gt;&lt;/b&gt; is the code that will be visible from outside the file.&lt;br /&gt;This is a NodeJS (or CommonJS syntax), and I am not going to cover it in this post, and I assume that you know it.&lt;br /&gt;&lt;h3&gt;&lt;li&gt;Digging into the module file structure&lt;/li&gt;&lt;/h3&gt;Now, let us see how to structure and build a module using NodeJS standard.&lt;br /&gt;The following files are what a typical Angular module consists of:&lt;br /&gt; &lt;div class=&quot;separator&quot; style=&quot;clear: both; text-align: center;&quot;&gt;&lt;a href=&quot;https://4.bp.blogspot.com/-iCbCU72CSQk/VwMu7xtbGsI/AAAAAAAADts/Rbj2n4tuAh0jCo1DMdLCknAc6eEIwJOiA/s1600/Screenshot%2Bfrom%2B2016-04-04%2B21%253A19%253A48.png&quot; imageanchor=&quot;1&quot; style=&quot;margin-left: 1em; margin-right: 1em;&quot;&gt;&lt;img border=&quot;0&quot; height=&quot;320&quot; src=&quot;https://4.bp.blogspot.com/-iCbCU72CSQk/VwMu7xtbGsI/AAAAAAAADts/Rbj2n4tuAh0jCo1DMdLCknAc6eEIwJOiA/s320/Screenshot%2Bfrom%2B2016-04-04%2B21%253A19%253A48.png&quot; width=&quot;317&quot; /&gt;&lt;/a&gt;&lt;/div&gt;Let us examine the above file structure: &lt;br /&gt; &lt;ul&gt;&lt;li&gt;index.js&lt;/li&gt;We notice the file index.js.&lt;br /&gt;When we use the require statement like this : &lt;br /&gt;require(&#39;emailLogin&#39;)&lt;br /&gt;The loader will try to load the file emailLogin.js&lt;br /&gt;In case it didn&#39;t find it the it will look for the directory &quot;emailLogin&quot; with a file : index.js. &lt;br /&gt;We will use the file index.js to register and configure the module. &lt;br /&gt;&lt;li&gt;config.js, run.js&lt;/li&gt;&lt;li&gt;Again, as we discussed it with the main app, each module can has its config block and running block, and we create a corresponding file for each. &lt;/li&gt;&lt;li&gt;a separate js file for each module compoenent&lt;/li&gt;&lt;li&gt; &lt;/li&gt;&lt;/ul&gt;&lt;h3&gt;&lt;li&gt;Examine registration code for a module: &lt;/li&gt;&lt;/h3&gt;Let us see how we register a module using the nodejs api: &lt;br /&gt; 
+&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;// contents of the file emailLogin/index.js
+// -----------------------------------------
+&#39;use strict&#39;;
+
+require(&#39;angular&#39;);
+require(&#39;angular-resource&#39;);
+require(&#39;angular-ui-router&#39;);
+
+module.exports =
+   angular.module(&#39;app.auth.email&#39;,  [&#39;ui.router&#39;, &#39;ngResource&#39;])
+      .config(require(&#39;./config&#39;))
+      .controller(&#39;signupCtrl&#39;, require(&#39;./signup-controller&#39;))
+      .controller(&#39;loginCtrl&#39;, require(&#39;./login-controller&#39;))
+      .controller(&#39;singedupCtrl&#39;, require(&#39;./signedup-controller&#39;))
+      .factory(&#39;User&#39;, require(&#39;./user-factory&#39;))
+      .directive(&#39;compareTo&#39;, require(&#39;./compareTo-directive&#39;)).name;&lt;/code&gt;&lt;/pre&gt;As you can see from the previous code, we configure the module in index.js, and we define all its components using the require statement, which will import the corresponding file. &lt;h3&gt;&lt;li&gt;How to make NodeJS modules work in the browser? &lt;/li&gt;&lt;/h3&gt;These NodeJS modules and the require statement work on a file system, which is not going to work in a browser environment.&lt;br /&gt;But with the use of tools like Browserify, or Webpack, we can process these nodeJs files into a file that is consumable by the browser.&lt;br /&gt;I am not going to explain how these tools work (in this post at least), and I will just show how to do it. I will use the browserify tool as an example: &lt;ol&gt;&lt;li&gt;Install browserify using npm&lt;/li&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;npm install browserify&lt;/code&gt;&lt;/pre&gt;&lt;li&gt;Run browserify&lt;/li&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;browserify app.js -o bundle.js&lt;/code&gt;&lt;/pre&gt;As you can see, we only had to specify the app.js file as input.&lt;br /&gt;Browserify will figure out the required libraries from the usage of the require statements. &lt;/ol&gt;&lt;/ol&gt;</description>
+        <pubDate>Mon, 04 Apr 2016 21:03:00 -0600</pubDate>
+        <link>http://blog.gisspan.com/2016/04/04/angular-best-practices-using-nodejs.html</link>
+        <guid isPermaLink="true">http://blog.gisspan.com/2016/04/04/angular-best-practices-using-nodejs.html</guid>
+        
+        <category>angular</category>
+        
+        
+      </item>
+    
+      <item>
+        <title>Web security - Basic Authentication</title>
+        <description>Although basic authentication is not widely used anymore, but understanding it is a good idea, because some parts of it are used in other security mechanisms like JWT for example.&lt;!--more--&gt;&lt;br /&gt;&lt;h3&gt;Introduction to Basic Authentication&lt;/h3&gt;Basic Access Authentication is the simplest way provided by HTTP protocol to allow an HTTP agent to provide user name and password when making an HTTP request.&lt;br /&gt;It is a simple &lt;a href=&quot;https://en.wikipedia.org/wiki/Challenge%E2%80%93response_authentication&quot; target=&quot;_blank&quot;&gt;challenge-response authentication mechanism&lt;/a&gt; and uses standard HTTP Headers in the request / response to transfer the required data.&lt;br /&gt; &lt;br /&gt;&lt;h3&gt;Advantages&lt;/h3&gt;Because its simplicity, it has the following advantages: &lt;ol&gt;&lt;li&gt;We don&#39;t need to use cookies.&lt;/li&gt;&lt;li&gt;No need to use sessions.&lt;/li&gt;&lt;li&gt;No need to use customized login pages, because all web browsers provide a way to provide the user name and password.&lt;/li&gt;&lt;/ol&gt;There are many disadvantages, which they have workarounds, and we are going to cover them while we cover its workflow between server and browser.&lt;br /&gt; &lt;h3&gt;Standard Basic Authentication Scenario&lt;/h3&gt;This is a standard scenario of the communication between the browser and the server. &lt;br /&gt;&lt;ol&gt;&lt;li&gt;The browser send an anonymous HTTP GET request for a web server&lt;/li&gt;&lt;li&gt;The server to protect a resource, it will challenge the browser by returning the following example response:&lt;/li&gt;&lt;pre&gt;&lt;code class=&quot;language-http&quot;&gt;HTTP/1.1 401 Access Denied&lt;br /&gt;WWW-Authenticate: Basic realm=&quot;My Server&quot;&lt;br /&gt;Content-Length: 0&lt;/code&gt;&lt;/pre&gt;The response has the following details: &lt;ol&gt;&lt;ul&gt;&lt;li&gt;HTTP Status code 401 (unauthorized)&lt;/li&gt;&lt;li&gt;The &quot;&lt;b&gt;WWW-Authenticate&lt;/b&gt;&quot; response header&lt;/li&gt;&lt;li&gt;The previous header value should start with the word &quot;Basic&quot; , to indicate that it is basic authentication.&lt;/li&gt;&lt;li&gt;as well the header value should have the attribute &quot;&lt;b&gt;realm&lt;/b&gt;&quot; followed by an equal sign with its value. The realm will define the &quot;partitioning&quot; of the protection.&lt;/li&gt;&lt;/ul&gt;&lt;/ol&gt;&lt;li&gt;When the browser received the previous response, most web browser prompt a login dialog that allow the user to enter user name and password.&lt;/li&gt;&lt;li&gt;the browser will concatinate user name and password seperated by colon like this &lt;b&gt; username:password &lt;/b&gt;, and then encode the result string with base64 encoding&amp;nbsp;&lt;/li&gt;&lt;li&gt;the browser will re-send the HTTP GET, adding a HTTP header &quot;Authorization&quot; with the base64 string&lt;/li&gt;this is an example of such request: &lt;br /&gt;    &lt;pre&gt;&lt;code class=&quot;language-http&quot;&gt;GET /securefiles/ HTTP/1.1&lt;br /&gt;Host: www.my-server.com &lt;br /&gt;Authorization: Basic aHR0cHdhdGNoOmY=&lt;/code&gt;&lt;/pre&gt;As you can see the browser send the previous request with no encryption at all (P.S: base64 is an encoding and not encryption), which means anybody can catch the request can decode the user name and password. and this is one of the disadvantage of basic authentication, but we can mitigate this by using SSL and HTTPS. &lt;li&gt;The web browser, and in order not to show the login dialog on every new request on that&amp;nbsp;protected web site, it caches the credentials, and resubmit the Authorization header in every subsequent request.&lt;/li&gt;The browser keeps the cached credentials until closing the browser, or keeping the browser idle for a long time. &lt;/ol&gt;&lt;h3&gt;Log Out of Basic Authentication&lt;/h3&gt;The caching will introduce other side effect, because The server has no way to force the client to &quot;log out&quot;, which is a disadvantage of the basic authentication.&lt;br /&gt;Unfortunately the work around for this issue is browser specific.&lt;br /&gt;For IE only, we can send this Javascript code to clear that cache:&lt;br /&gt;&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;document.execCommand(&#39;ClearAuthenticationCache&#39;,&#39;false&#39;);&lt;/code&gt;&lt;/pre&gt;For other browsers, developers usually do some tricks by login with wrong credentials&lt;br /&gt;See the following solutions: &lt;br /&gt;&lt;a href=&quot;http://stackoverflow.com/questions/6277919/logging-a-user-out-when-using-http-basic-authentication&quot;&gt;http://stackoverflow.com/questions/6277919/logging-a-user-out-when-using-http-basic-authentication&lt;/a&gt; &lt;br /&gt;&lt;a href=&quot;http://stackoverflow.com/questions/233507/how-to-log-out-user-from-web-site-using-basic-authentication&quot;&gt;http://stackoverflow.com/questions/233507/how-to-log-out-user-from-web-site-using-basic-authentication&lt;/a&gt;&lt;br /&gt;These solutions are based on an HTTP protocol feature which allow a client avoid a login prompt when accessing a basic access authentication by prepending a username / password to the host name of the url.&lt;br /&gt;An example of providing username / password is as follows: &lt;br /&gt;&lt;pre&gt;&lt;code class=&quot;language-http&quot;&gt;http://username:password@hostname.com&lt;/code&gt;&lt;/pre&gt;</description>
+        <pubDate>Thu, 31 Mar 2016 14:47:00 -0600</pubDate>
+        <link>http://blog.gisspan.com/2016/03/31/web-security-basic-authentication.html</link>
+        <guid isPermaLink="true">http://blog.gisspan.com/2016/03/31/web-security-basic-authentication.html</guid>
+        
+        <category>security</category>
+        
+        
+      </item>
+    
+      <item>
+        <title>Secure your web site with SSL</title>
+        <description>In order to secure the web site with SSL, you first need to buy a certificate.&lt;br /&gt;A certificate is a document that your website will send back to the browsers as an &quot;Official identification&quot; for your web site, and your business.&lt;!--more--&gt;&lt;br /&gt;The certificate is issued by certified companies who are called &quot;Certificate Authorities&quot;.&lt;br /&gt;&lt;/p&gt;&lt;h3&gt;Types of SSL Certificates &lt;/h3&gt; First of all you have to decide which certificate type you should chose for your web site.&lt;br /&gt;There are three types: &lt;ol&gt;&lt;li&gt;Domain Validation (DV) SSL Certificate&lt;/li&gt; This is the simplest type of certificate, where the CA checks only that the applicant owns or has the right to use the domain name.&lt;br /&gt;&lt;li&gt;Organization Validation (OV) SSL Certificates&lt;/li&gt;The CA checks more about the company owns the domain name, and display more information about the company owns the domain.&lt;br /&gt;&lt;li&gt;Extended Validation (EV) SSL Certificate&lt;/li&gt; The CA conducts a thorough check on the organization with some standard guidelines defined by the industry.&lt;br /&gt;This is usually required for organizations that require to have payments managed by on their own website and their own software. &lt;/ol&gt; &lt;h3&gt;Your home work &lt;/h3&gt; After you decided what type of certificate you want to buy, you search for a suitable CA authority to buy your certification from.&lt;br /&gt;The CA authority requires from your side a request called &quot;Certificate Signing Request&quot; (CSR) &lt;br /&gt;There are many ways to generate the CSR. I will describe the process using &lt;a href=&quot;https://www.openssl.org/&quot; target=&quot;_blank&quot;&gt;OpenSSL tools.&lt;/a&gt; &lt;br /&gt; First you need to generate a private key.&lt;br /&gt; &lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;openssl genrsa -out domain.com.key 2048&lt;/code&gt;&lt;/pre&gt; And then create the CSR:&lt;br /&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;openssl req -new -sha256 -key domain.com.key -out domain.com.csr&lt;/code&gt;&lt;/pre&gt;This will generate the CSR file, which you will send to the CA authority, which in return will send you the certificates.&lt;br /&gt;&lt;br /&gt;</description>
+        <pubDate>Fri, 11 Mar 2016 08:59:00 -0700</pubDate>
+        <link>http://blog.gisspan.com/2016/03/11/secure-your-web-site-with-ssl.html</link>
+        <guid isPermaLink="true">http://blog.gisspan.com/2016/03/11/secure-your-web-site-with-ssl.html</guid>
+        
+        <category>security</category>
+        
+        
+      </item>
+    
+      <item>
+        <title>Sublime vs. Atom</title>
+        <description>I was doing coding with different programming languages lately with Python, Go, JavaScript, HTML.&lt;br /&gt;And I was looking for one IDE that can handle all of these.&lt;!--more--&gt;&lt;br /&gt;I was attracted to editors like Sublime and Atom because they are simple, comparing to Eclipse.&lt;br /&gt;I started with Atom because it is fully free, and I used it for few months doing HTML, JavaScript, and Go. &lt;/p&gt;&lt;p&gt;&lt;h3&gt;Atom Experience&lt;/h3&gt;My experience was not pleasant at all.&lt;br /&gt;I had to switch between many JavaScript/HTML plugins to find a plugin that provide a proper highlighting and code navigation on the mouse click.&lt;br /&gt;I was not happy with many plugins I found, and maybe if I spent more time I could find the proper plugins I want.&lt;br /&gt;And with Go, it was really a horrible experience.&lt;br /&gt;The Go plugins in Atom are buggy, and you cannot trust them at all, and you might end up with broken code.&lt;br /&gt;One particular Go-plugin that handles dependencies for you, and write down your import section depending on your dependencies.&lt;br&gt;but it was horrible.&lt;br /&gt;Any small missing element in the configuration, and it will change your dependencies that you wrote and will change your code.&lt;br /&gt;The code navigation never worked, even the documentation claimed it should work, and maybe if I spent more time trying to figure out the proper configuration for that plugin, I could make it work. &lt;/p&gt; &lt;h3&gt;Sublime Experience&lt;/h3&gt;When I switched to Sublime, I felt immediate relieve.&lt;br /&gt;All built-in plugins work perfectly, as expected.&lt;br /&gt;The built-in plugins provide less features than Atom ones, but they are stable, and you can count on them working.&lt;br /&gt;&lt;p&gt;As I said, maybe if I spent more time with Atom to make it work, I could solve the issues, but why you have to spend time when all what you need in Sublime is just install it.&lt;br /&gt;&lt;/p&gt;</description>
+        <pubDate>Tue, 23 Feb 2016 11:27:00 -0700</pubDate>
+        <link>http://blog.gisspan.com/2016/02/23/sublime-vs-atom.html</link>
+        <guid isPermaLink="true">http://blog.gisspan.com/2016/02/23/sublime-vs-atom.html</guid>
+        
+        <category>tools</category>
+        
+        
+      </item>
+    
+      <item>
+        <title>ECMAScript 6 block-level scope and Javascript variable hoisting</title>
+        <description>Block-level Scope, is one of the new feature that was added to ECMAScript 2015 (formerly known as ECMAScript 6).&lt;br/&gt;In ECMAScript 5 the only scope available to a variable is the function scope. So, the variable are seen in the whole function.&lt;!--more--&gt; &lt;br/&gt;&lt;h3&gt;Variable Hoisting&lt;/h3&gt;Another feature that JavaScript has is : &lt;b&gt;&quot;Variable Hoisting&quot;&lt;/b&gt;, which means a variable can be used before it is defined.&lt;br/&gt;So, code like this will work fine:  
+&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;x = 5;
+alert (x);
+var x;&lt;/code&gt;&lt;/pre&gt;&lt;h3&gt;What does Hoisting do?&lt;/h3&gt;Hoisting is a JavaScript process where the Javascript interpreter will look for any variable declaration inside a function and move it to the beginning of the function. &lt;/br&gt;How that effect our code? &lt;br/&gt; &lt;h3&gt;Some Hoisting magic&lt;/h3&gt;Let us write a tricky code to show the effect of scope combined with hoisting: &lt;br/&gt;  
+&lt;pre class=&quot;line-numbers&quot;&gt;&lt;code class=&quot;language-javascript&quot;&gt;var back_color = &quot;red&quot;;
+(function() {
+    if (typeof back_color === &quot;undefined&quot;) {
+        var back_color = &quot;yellow&quot;;
+        alert (back_color);
+    } else {
+        alert (back_color);
+    }&lt;/code&gt;&lt;/pre&gt; What will the code above show in the alert box?&lt;br/&gt;To the surprise, the above code will show &quot;yellow&quot;. &lt;br/&gt; &lt;h3&gt;But Why? &lt;/h3&gt;The reason for that weird behaviour is that JavaScript (until ECMAScript 5) will move the variable declaration of back_color inside the function to the beginning of the function, keeping the assignment where it is. So the JavaScript interpreter will run this code  
+&lt;pre class=&quot;line-numbers&quot;&gt;&lt;code class=&quot;language-javascript&quot;&gt;var back_color = &quot;red&quot;;
+(function() {
+   var back_color;
+   if (typeof back_color === &quot;undefined&quot;) {
+        back_color = &quot;yellow&quot;;
+        alert (back_color);
+   } else {
+        alert (back_color);
+   }&lt;/code&gt;&lt;/pre&gt; &lt;h3&gt;So what changed in JavaScript 6?&lt;/h3&gt;Coming back to ECMAScript 2015, and as we mentioned in the beginning that the new ECMAScript is going to add block level scoping but with a new statement called &quot;&lt;b&gt;&lt;i&gt;let&lt;/i&gt;&lt;/b&gt;&quot; which means that if you run the first code replacing &lt;b&gt;&lt;i&gt;var&lt;/i&gt;&lt;/b&gt; with &lt;b&gt;&lt;i&gt;let&lt;/i&gt;&lt;/b&gt; inside a browser that support new JavaScript, then the browser will show &quot;red&quot; as a result, because the second variable declaration will be limited inside the scope of if statement.</description>
+        <pubDate>Wed, 20 Jan 2016 10:01:00 -0700</pubDate>
+        <link>http://blog.gisspan.com/2016/01/20/ecmascript-6-block-level-scope-and.html</link>
+        <guid isPermaLink="true">http://blog.gisspan.com/2016/01/20/ecmascript-6-block-level-scope-and.html</guid>
+        
+        <category>javascript</category>
+        
+        
+      </item>
+    
+      <item>
+        <title>ECMAScript 2015 (ES6) Classes</title>
+        <description>The new &lt;a href=&quot;https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Classes&quot; target=&quot;_blank&quot;&gt;Class keyword&lt;/a&gt; in EcmaScript 2015 (former name ES6) is nothing but more confusion for programmers.&lt;br /&gt;It is just a syntactical sugar over the existing &lt;a href=&quot;http://javascript.info/tutorial/all-one-constructor-pattern&quot;&gt; Javascript&#39;s constructor pattern&lt;/a&gt; for creating objects, which is already a great confusion for Javascript developers.&lt;!--more--&gt;&lt;br /&gt; JavaScript is not a classical Class/Object language, and its OOP doesn&#39;t share the same paradigm.&lt;br /&gt; &lt;h3&gt;How JavaScript OOP is different? &lt;/h3&gt;OOP in JavaScript is prototypal based, which means there is only objects in JavaScript, and inheritance means objects inherits from existing objects. &lt;br /&gt;But when JavaScript was designed, most of developers know OOP as class/object, and JavaScript creator wanted to sell the language to the wide development team, so he introduced the constructor pattern with the &lt;a href=&quot;https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/new&quot; target=&quot;_blank&quot;&gt;&quot;new&quot; operator&lt;/a&gt;.&lt;br /&gt;&lt;h3&gt;What the prototypal-way to create an object?&lt;/h3&gt;The prototypal-way of creating new objects is by just using object literal, and to inherit from existing object is to use the &lt;a href=&quot;https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Object/create&quot;&gt;Object.create&lt;/a&gt; which was introduced in EcmaScript 5. &lt;br/&gt; as an example:  
+&lt;pre class=&quot;line-numbers&quot;&gt;&lt;code class=&quot;language-javascript&quot;&gt;var animal = {
+    name: &#39;animal&#39;,
+    sound: function() {
+        console.log(&#39;animal sound&#39;);
+    }
+);
+
+var cat = Object.create(animal);
+cat.sound = function() {
+    console.log(&#39;cat sound&#39;);
+};&lt;/code&gt;&lt;/pre&gt; </description>
+        <pubDate>Tue, 19 Jan 2016 16:11:00 -0700</pubDate>
+        <link>http://blog.gisspan.com/2016/01/19/ecmascript-2015-es6-classes.html</link>
+        <guid isPermaLink="true">http://blog.gisspan.com/2016/01/19/ecmascript-2015-es6-classes.html</guid>
+        
+        <category>javascript</category>
+        
+        
+      </item>
+    
+  </channel>
+</rss>
