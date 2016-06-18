@@ -266,7 +266,7 @@ We should have server code that will handle the POST, but on our client side we 
 As I mentioned, I am not covering the server side code, but I will show how to pass the user token we got from the Facebook server into JavaScript.<br />
 Assuming that we are using Asp.NET MVC, and assume that in the POST callback controller handler we receive the user token in a .NET object variable called "user", we can serialize the object to JSON, and pass it to JavaScript through Razor template like this
 <br />
-<pre><code class="language-aspnet">var data = somedata;
+<pre><code class="language-csharp">var data = somedata;
 var viewModel = new ViewModel();
 var serializer = new JavaScriptSerializer();
 viewModel.JsonData = serializer.Serialize(data);
