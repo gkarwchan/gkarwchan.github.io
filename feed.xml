@@ -6,12 +6,12 @@
 </description>
     <link>http://blog.gisspan.com/</link>
     <atom:link href="http://blog.gisspan.com/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Fri, 24 Jun 2016 14:56:28 -0600</pubDate>
-    <lastBuildDate>Fri, 24 Jun 2016 14:56:28 -0600</lastBuildDate>
+    <pubDate>Fri, 24 Jun 2016 15:01:37 -0600</pubDate>
+    <lastBuildDate>Fri, 24 Jun 2016 15:01:37 -0600</lastBuildDate>
     <generator>Jekyll v3.1.6</generator>
     
       <item>
-        <title>Using Angular UI Router Nested Views With Application Security</title>
+        <title>Example on using Angular UI Router nested views to build a clean solution</title>
         <description>&lt;p&gt;&lt;a href=&quot;https://github.com/angular-ui/ui-router&quot;&gt;Angular UI Router&lt;/a&gt; is the de-facto solution for single page applications and
  flexible routing in angular. It has many useful features such as nested views and states that can help us write clean code.&lt;br /&gt;
 A careful consideration on how we structure our application in nested states/views, and a thoughtful process of designing and structuring the state tree, can
