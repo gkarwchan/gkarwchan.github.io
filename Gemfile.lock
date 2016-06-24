@@ -58,6 +58,7 @@ DEPENDENCIES
   jekyll-watch
   kramdown
   octopress-debugger
+  rouge
 
 BUNDLED WITH
    1.11.2

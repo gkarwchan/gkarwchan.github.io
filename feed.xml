@@ -6,9 +6,117 @@
 </description>
     <link>http://blog.gisspan.com/</link>
     <atom:link href="http://blog.gisspan.com/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Tue, 21 Jun 2016 14:24:55 -0600</pubDate>
-    <lastBuildDate>Tue, 21 Jun 2016 14:24:55 -0600</lastBuildDate>
+    <pubDate>Fri, 24 Jun 2016 14:56:28 -0600</pubDate>
+    <lastBuildDate>Fri, 24 Jun 2016 14:56:28 -0600</lastBuildDate>
     <generator>Jekyll v3.1.6</generator>
+    
+      <item>
+        <title>Using Angular UI Router Nested Views With Application Security</title>
+        <description>&lt;p&gt;&lt;a href=&quot;https://github.com/angular-ui/ui-router&quot;&gt;Angular UI Router&lt;/a&gt; is the de-facto solution for single page applications and
+ flexible routing in angular. It has many useful features such as nested views and states that can help us write clean code.&lt;br /&gt;
+A careful consideration on how we structure our application in nested states/views, and a thoughtful process of designing and structuring the state tree, can
+ help us achieve a solid design and a clean architecture for our application.&lt;br /&gt;
+We are going to see a brief example on how to use the nested states feature to implement an elegant solution for the security of an application.
+ &lt;!--more--&gt;&lt;br /&gt;
+&lt;/p&gt;
+
+&lt;h2 id=&quot;our-application-security-requirements&quot;&gt;Our Application Security Requirements&lt;/h2&gt;
+&lt;p&gt;In a nutshell, we need to build an application that has the following requirements:&lt;/p&gt;
+&lt;ol&gt;
+ &lt;li&gt;The application has three security roles:    
+        &lt;ul&gt;  
+            &lt;li&gt;Read only role.&lt;/li&gt;  
+            &lt;li&gt;Editor role.&lt;/li&gt;  
+            &lt;li&gt;Admin role.&lt;/li&gt;  
+        &lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;Each role has access to his own pages and urls and cannot access pages of other roles.&lt;/li&gt;
+&lt;li&gt;When a read only user try to access a URL for an admin, by typing the URL in the address bar, the application will refuse&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;This is a diagram to shows the hierarchical states and pages.&lt;/strong&gt;&lt;br /&gt;
+&lt;img src=&quot;/img/states.png&quot; alt=&quot;states&quot; width=&quot;600px&quot; height=&quot;auto&quot; align=&quot;center&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;what-angular-ui-router-can-provide&quot;&gt;What Angular UI router can provide?&lt;/h2&gt;
+&lt;p&gt;The main power in Angular UI Router is in its ability to nest states and views and share data between them.  &lt;br /&gt;
+From the library web site I quote:&lt;/p&gt;
+&lt;blockquote&gt;
+Nested states and views have a hierarchical model, where state/views in the higher level share data with their child states/views
+, and sharing data will help with re-usability of the code by taking the commonality in the model and code into a higher states.  
+&lt;/blockquote&gt;
+&lt;p&gt;Parent states share with its children two main properties:&lt;/p&gt;
+&lt;ul&gt; 
+&lt;li&gt;Resolved dependencies defined via resolve. &lt;/li&gt;
+&lt;li&gt;Custom data properties.&lt;/li&gt;  
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;implement-user-state&quot;&gt;Implement user state&lt;/h2&gt;
+&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;$stateProvider.state(&#39;user&#39;, {
+    abstract: true,
+    url: &#39;/&#39;,
+    template: &#39;&lt;ui-view /&gt;&#39;,
+    data: {
+        userToken : userToken;
+    }
+});&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;In the previous example, we added the user token to the &lt;em&gt;data&lt;/em&gt; property of the top level state, which means in any child state
+ we can access that user token with this syntax:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;function controller($state){
+    var userId = $state.current.data.userId;
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;By putting this important piece of the information in the top level state, then we can assure that anywhere in our application, either in the config code, or the controller code, we have access to this piece of the information.&lt;/p&gt;
+&lt;blockquote&gt;
+And that was one method of using nested states to have a clean solution by sharing important data in the top-level states.   
+ &lt;/blockquote&gt;
+
+&lt;h2 id=&quot;implement-the-admin-role-state&quot;&gt;Implement the admin role state&lt;/h2&gt;
+&lt;p&gt;Assuming we have a REST service called &lt;em&gt;authService&lt;/em&gt; that has an action &lt;em&gt;checkRole&lt;/em&gt;. And the REST service accepts two parameters:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;userId&lt;/li&gt;
+&lt;li&gt;role name&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;The service will return a JavaScript promise which resolve successfully in case the user belong to that role, or reject if the user doesn’t belong to that role.&lt;br /&gt;
+We can use this service as a &lt;em&gt;resolve&lt;/em&gt; property of the admin state, like this.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;$stateProvider.state(&#39;user.admin&#39;, {
+    abstract: true,
+    url: &#39;/admin&#39;,
+    resolve:{
+        roleCheck:  function(authService, $state){
+            // query the auth service to make sure that the user has admin access
+            return authService.checkRole($state.current.data.userId, &#39;admin&#39;);
+        }
+}}&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;In the previous code, if the user didn’t belong to the role, then the promise will fail, which will prevent the Angular from moving to the state.&lt;br /&gt;
+We used the resolve property of the state, to prevent moving to the state if the user doesn’t belong to the role.&lt;br /&gt;
+The service when resolved can return back useful information for all the admin states, and pages.&lt;/p&gt;
+
+&lt;blockquote&gt;
+This is another usage of nested states features that help build a clean solution, by using resolve to control the flow, and share data at the same time. 
+&lt;/blockquote&gt;
+
+&lt;p&gt;So, when the user will change the URL in the browser to point to an admin page, this resolve will check if the user has the permission ot move there or not and will move to that page if the user has the right to do that.&lt;/p&gt;
+
+&lt;blockquote&gt;
+P.S: Please note that this client side code is not a real robust security solution, because a malicious user can easily hack it, and still we need a good security on the server side of the code.
+&lt;/blockquote&gt;
+
+&lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h2&gt;
+&lt;p&gt;We introduced how to use the Angular routing UI nested states, and views to show how to write a clean code implementing the security of the system.&lt;br /&gt;
+Nested states and views can be used an a similar fashion to re-use and share the code between parts of the applications.&lt;br /&gt;
+A good exercise is to think carefully on what the best way to represent the hierarchical states / urls that our applications is going to have, because a good decisions on structuring the state tree will help build a clean code.&lt;/p&gt;
+
+</description>
+        <pubDate>Fri, 24 Jun 2016 09:45:00 -0600</pubDate>
+        <link>http://blog.gisspan.com/2016/06/angular-ui-router-nested-views-with-security.html</link>
+        <guid isPermaLink="true">http://blog.gisspan.com/2016/06/angular-ui-router-nested-views-with-security.html</guid>
+        
+        <category>angular</category>
+        
+        
+      </item>
     
       <item>
         <title>Using Angular promise to wrap up an OAuth callback</title>
@@ -610,29 +718,6 @@ var x;&lt;/code&gt;&lt;/pre&gt;&lt;h3&gt;What does Hoisting do?&lt;/h3&gt;Hoisti
         <pubDate>Wed, 20 Jan 2016 10:01:00 -0700</pubDate>
         <link>http://blog.gisspan.com/2016/01/ecmascript-6-block-level-scope-and.html</link>
         <guid isPermaLink="true">http://blog.gisspan.com/2016/01/ecmascript-6-block-level-scope-and.html</guid>
-        
-        <category>javascript</category>
-        
-        
-      </item>
-    
-      <item>
-        <title>ECMAScript 2015 (ES6) Classes</title>
-        <description>The new &lt;a href=&quot;https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Classes&quot; target=&quot;_blank&quot;&gt;Class keyword&lt;/a&gt; in EcmaScript 2015 (former name ES6) is nothing but more confusion for programmers.&lt;br /&gt;It is just a syntactical sugar over the existing &lt;a href=&quot;http://javascript.info/tutorial/all-one-constructor-pattern&quot;&gt; Javascript&#39;s constructor pattern&lt;/a&gt; for creating objects, which is already a great confusion for Javascript developers.&lt;!--more--&gt;&lt;br /&gt; JavaScript is not a classical Class/Object language, and its OOP doesn&#39;t share the same paradigm.&lt;br /&gt; &lt;h3&gt;How JavaScript OOP is different? &lt;/h3&gt;OOP in JavaScript is prototypal based, which means there is only objects in JavaScript, and inheritance means objects inherits from existing objects. &lt;br /&gt;But when JavaScript was designed, most of developers know OOP as class/object, and JavaScript creator wanted to sell the language to the wide development team, so he introduced the constructor pattern with the &lt;a href=&quot;https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/new&quot; target=&quot;_blank&quot;&gt;&quot;new&quot; operator&lt;/a&gt;.&lt;br /&gt;&lt;h3&gt;What the prototypal-way to create an object?&lt;/h3&gt;The prototypal-way of creating new objects is by just using object literal, and to inherit from existing object is to use the &lt;a href=&quot;https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Object/create&quot;&gt;Object.create&lt;/a&gt; which was introduced in EcmaScript 5. &lt;br/&gt; as an example:  
-&lt;pre class=&quot;line-numbers&quot;&gt;&lt;code class=&quot;language-javascript&quot;&gt;var animal = {
-    name: &#39;animal&#39;,
-    sound: function() {
-        console.log(&#39;animal sound&#39;);
-    }
-);
-
-var cat = Object.create(animal);
-cat.sound = function() {
-    console.log(&#39;cat sound&#39;);
-};&lt;/code&gt;&lt;/pre&gt; </description>
-        <pubDate>Tue, 19 Jan 2016 16:11:00 -0700</pubDate>
-        <link>http://blog.gisspan.com/2016/01/ecmascript-2015-es6-classes.html</link>
-        <guid isPermaLink="true">http://blog.gisspan.com/2016/01/ecmascript-2015-es6-classes.html</guid>
         
         <category>javascript</category>
         
