@@ -124,27 +124,31 @@
 All modern browsers have a built-in security policy called <a href="http://www.w3.org/Security/wiki/Same_Origin_Policy"><b>Same-origin policy</b></a>, which help mitigate many vulnerabilities and security flaws. This policy means the browser can only pull data from the same site.<br />Same site means pages that share the scheme (http, ftp, https...), and the host name and the port.<!--more--><br />
 </p>
 <p>
-<h2>The Clash between Same-Origin Policy and Ajax</h2>This policy was useful for a while to protect against XSS, but with the advance of ajax, and requesting data and resources from different domains and sites, then this policy become an obstacle.<br />
+<h2>The clash between Same-Origin Policy and Ajax</h2>This policy was useful for a while to protect against XSS, but with the advance of ajax, and requesting data and resources from different domains and sites, then this policy become an obstacle.<br />
 </p>
+<br/>
 <p>
 <h2>What is the solution?</h2>The industry came up with many ideas:<br />
 
 <ol><li>Using a proxy page:</li>Just create a simple proxy page on the same web site that will forward all calls to the remote site, and return back the results.<br />
 <li>For Silverlight and Flash only Crossdomain.xml:</li>Flash and Silverlight bypassed this problem by using a XML file that exists on the remote site host, which allow the technologies to get resources from it.<br />We are not covering these, as these technologies are dying.<br />
-
+<br/>
 <li>For IE8 only Cross-Domain Request</li>Microsoft tried to fix the problem on its own by introducing a new programming class called Cross-Domain Request (XDR) <a href="https://msdn.microsoft.com/en-us/library/cc288060(v=vs.85).aspx">XDomainRequest</a>.<br/>But it didn't live long because JSONP emerged as a new de-facto standard, and after a short period W3C decided to create a new specification to solve this problem, which what we are going to cover next item. XDR stopped being supported on IE11 and after.
-
+<br/>
 <li> Using JSONP</li>
 JSONP became the standard for a while to fix the problem, before CORS was introduced. We are going to cover it in more details later in this post.
-
+<br/>
 <li>Using Cross-Origin Resource Sharing (CORS):</li><a href="http://www.w3.org/TR/cors/">CORS</a> is a new W3C Specs that allow browsers to query cross-domain sites.<br />It is a new standard, which means it is the new preferable way to do cross site requests. <br/>
 After CORS was introduced, JSONP became less and less used.
 </ol>
-
 </p>
+<br/>
+
 <p>
 <h2>How does CORS work?</h2>CORS requires coordination from the browsers and from the servers, and work has to be done on both side<br /><h4>What should be done on the client side?</h4>You don't have to do anything except using a browser that support CORS, and almost all browsers now support CORS.<br /><a href="http://caniuse.com/#search=cors">This is a list of browsers supporting CORS.</a><br />The browser that support CORS changed its implementation to XMLHttpRequest to use <a href="http://www.html5rocks.com/en/tutorials/file/xhr2/">XMLHttpRequest2</a>&nbsp;(or some people call it XMLHttpRequest Level 2).<br />That means that your Javascript code you still create XMLHttpRequest, but the browser itself is implementing the specifications of XMLHttpRequest2.<br />Because XMLHttpRequest is implementing the new specs in the new browsers, so developers don't have to do anything on the client side.<br/> <h4>What Should be done on the server side?</h4>On the server side, and specifically on the remote server that you are requesting resources/data from using the ajax call, you have to do more things.<br />You have to add a new setting to the header and set it to true<br />the Header attribute is called Access-Control-Allow-Credentials, and it is used like this<br /><pre><code class="language-http">Access-Control-Allow-Credentials: true</code></pre><a href="http://enable-cors.org/server.html">This is a web site</a> that shows you how to do it in different server side languages<br /> <h4>One more thing</h4>One issue that is related to the client side.<br/>If you are using jQuery's ajax before 1.5, then you might have to do some changes.<br />The reason you have to do some changes on jQuery side, because jQuery was adding its own security check to prevent XSS&nbsp;vulnerability. But with jQuery version 1.5 , jQuery introduced a new setting when calling ajax that is called crossDomain in version 1.5, which was introduced to handle JSONP settings.<br />
 </p>
+<br/>
+<br/>
 
 <h2>How does JSONP work?</h2>
 Let's see who JSONP works, and let's start with a remote service http://remote-server.com/Users/1234 that return this: <br/>
@@ -196,6 +200,8 @@ As you noticed, JSON requires code on the server side, and on the client side.<b
 On the client side most of Ajax libraries support JSONP out of box.<br/>
 And on the server side, you need to wrap your returned data with a function.<br/>
 Most web sites that provides API like flikr, facebook, ....etc. support JSONP.
+<br/>
+<br/>
 
 <h2>Final conclusion</h2>
 With the introducing of CORS, there is no need to use JSONP, but not every API provider is supporting CORS yet. That is changing with time, but in most cases you are going to find that if CORS is not supported then JSONP is supported.<br/>
