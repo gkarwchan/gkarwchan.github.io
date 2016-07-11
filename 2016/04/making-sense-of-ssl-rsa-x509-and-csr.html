@@ -8,13 +8,21 @@
 
   <title>Making sense of SSL, RSA, X509 and CSR</title>
   <meta name="description" content="This is the second part of learning about SSL/TLS.The first part was how to protect the site with SSL.This part is about explaining more the terms, technolog...">
-  <link href='//fonts.googleapis.com/css?family=Roboto+Condensed' rel='stylesheet' type='text/css'>
-  <link href='//fonts.googleapis.com/css?family=Roboto+Slab' rel='stylesheet' type='text/css'>
+  <!-- Google Fonts -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300italic,700,700italic">
   <link href='//fonts.googleapis.com/css?family=Gloria+Hallelujah' rel='stylesheet' type='text/css'>
   <link href='https://fonts.googleapis.com/css?family=PT+Sans' rel='stylesheet' type='text/css'>
-  <link rel="stylesheet" href="/css/main.css">
-  <link rel="stylesheet" href="/css/simplegrid.min.css">
+  <link href='//fonts.googleapis.com/css?family=Roboto+Condensed' rel='stylesheet' type='text/css'>
+  <link href='//fonts.googleapis.com/css?family=Roboto+Slab' rel='stylesheet' type='text/css'>
+
+  <!-- CSS Reset -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/3.0.3/normalize.css">
+
+  <!-- utilities -->
+  <link rel="stylesheet" href="/css/milligram.min.css" >
   <link rel="stylesheet" href="/css/prism.css">
+
+  <link rel="stylesheet" href="/css/main.css">
   <script src="/js/prism.js"></script>
   <link rel="canonical" href="http://blog.gisspan.com/2016/04/making-sense-of-ssl-rsa-x509-and-csr.html">
   <link rel="alternate" type="application/rss+xml" title="Web matters" href="http://blog.gisspan.com/feed.xml">
@@ -32,95 +40,90 @@
 
 
   <body>
-
-    <header class="site-header">
-
-  <div class="grid">
-    <div class="col-3-12">
-      <a class="site-title" href="/">Web matters</a>
-    </div>
-    <div class="col-9-12">
-      <nav class="site-nav">
-          
-            
-            <a class="page-link" href="/about/">About Me</a>
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-          <a class="page-link" href="/feed.xml"><img src="/img/feed.png" ></img></a>
-      </nav>
-    </div>
+    <div class="container">
+      <header class="site-header row">
+  <div class="column column-25">
+    <a class="site-title" href="/">Web matters</a>
   </div>
-
+  <div class="column">
+    <nav class="site-nav">
+        
+          
+          <a class="page-link" href="/about/">About Me</a>
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        <a class="page-link" href="/feed.xml"><img src="/img/feed.png" ></img></a>
+    </nav>
+  </div>
 </header>
 
 
-        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
-<div class="grid content">
-  <div>
-    <header class="post-header">
-      <h1 class="post-title" itemprop="name headline">Making sense of SSL, RSA, X509 and CSR</h1>
-      <p class="post-meta"><time datetime="2016-04-18T23:42:00-06:00" itemprop="datePublished">Apr 18, 2016</time> • <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name">Ghassan Karwchan</span></span></p>
-    </header>
-    <div class="post-content post-font" itemprop="articleBody">
-      This is the second part of learning about SSL/TLS.<br /><a href="http://blog.gisspan.com/2016/03/secure-your-web-site-with-ssl.html">The first part was how to protect the site with SSL.</a><br />This part is about explaining more the terms, technologies, protocols, standards used in SSL. <!--more--><h3>What is SSL/TLS:</h3>SSL is the standard protocol to secure the communication between a web server and a browser, by creating an encrypted link between the two.<br />SSL last version was 3.0, and TLS&nbsp; succeeds SSL, and become the new standard. But still some components of the protocols have the name SSL, like SSL certificate for example, so when you see the name SSL it most probably means the new TLS, because SSL is rarely used any more.<br /><br /><h3>SSL/TLS workflow and TLS Handshake:</h3>When a browser hits the web server using the <b><i>HTTPS</i></b> protocol, it start a process of creating an encrypted session between the two.<br />At the beginning, the encryption used is public-key encryption, which is an asymmetric type encryption.<br />The web server has a couple of keys public and private. It sends the public key to the browsers, and the browsers use the public key to encrypt the communications later.<br />Only the web server can know how to decrypt the communication.<br />Because the public key decryption is slow and expensive, so the web server and the browser will switch to symmetric encryption where only one key is required.<br />They negotiate between each other on what the best encryption algorithm they should use. The algorithm used would depend on the server and the browser.<br />This negotiation phase is called TLS handshake.<br /><h3>Protocols, standards and concepts used in SSL</h3>
+            <article class="post row" itemscope itemtype="http://schema.org/BlogPosting">
+    <div class="content">
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">Making sense of SSL, RSA, X509 and CSR</h1>
+        <p class="post-meta"><time datetime="2016-04-18T23:42:00-06:00" itemprop="datePublished">Apr 18, 2016</time> • <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name">Ghassan Karwchan</span></span></p>
+      </header>
+      <div class="post-content post-font" itemprop="articleBody">
+        This is the second part of learning about SSL/TLS.<br /><a href="http://blog.gisspan.com/2016/03/secure-your-web-site-with-ssl.html">The first part was how to protect the site with SSL.</a><br />This part is about explaining more the terms, technologies, protocols, standards used in SSL. <!--more--><h3>What is SSL/TLS:</h3>SSL is the standard protocol to secure the communication between a web server and a browser, by creating an encrypted link between the two.<br />SSL last version was 3.0, and TLS&nbsp; succeeds SSL, and become the new standard. But still some components of the protocols have the name SSL, like SSL certificate for example, so when you see the name SSL it most probably means the new TLS, because SSL is rarely used any more.<br /><br /><h3>SSL/TLS workflow and TLS Handshake:</h3>When a browser hits the web server using the <b><i>HTTPS</i></b> protocol, it start a process of creating an encrypted session between the two.<br />At the beginning, the encryption used is public-key encryption, which is an asymmetric type encryption.<br />The web server has a couple of keys public and private. It sends the public key to the browsers, and the browsers use the public key to encrypt the communications later.<br />Only the web server can know how to decrypt the communication.<br />Because the public key decryption is slow and expensive, so the web server and the browser will switch to symmetric encryption where only one key is required.<br />They negotiate between each other on what the best encryption algorithm they should use. The algorithm used would depend on the server and the browser.<br />This negotiation phase is called TLS handshake.<br /><h3>Protocols, standards and concepts used in SSL</h3>
 
 <ol><h3><li>Public key encryption: RSA</li></h3>As we mentioned the server that implement SSL has pair of keys, public and private, which are used during the TLS handshake. <br />The most common public key encryption used in SSL is the RSA. <br />In OpenSSL tools, the RSA is the default option when generating a public/private key.<br />To generate key pairs with OpenSSL, we generate first a private key, then generate a public key depending on the private key.<br />Example of generate a private key: <pre><code class="language-bash">openssl genrsa -out {private-key-filename} 2048</code></pre>The 2048 is the size of the private key, which is now a days considered the appropriate secure size. Less than 2048 is not secure, and bigger than 2048 will be slow to process.<br />to extract a public key from the private key : <pre><code class="language-bash">openssl rsa -pubout -in {private-key-filename} -out {public-key-filename}</code></pre><h3>
     <li>PEM Protocol</li></h3>When we generate the keys in the previous example, the generate files will contains data like this:&nbsp; 
@@ -128,25 +131,19 @@
     <blockquote>-----BEGIN PRIVATE KEY-----<br />MIIEczCCA1ugAwIBAgIBADANBgkqhkiG9w0BAQQFAD..AkGA1UEBhMCR0Ix<br />EzARBgNVBAgTClNvbWUtU3RhdGUxFDASBgNVBAoTC0..0EgTHRkMTcwNQYD<br />......<br />......<br />It8una2gY4l2O//on88r5IWJlm1L0oA8e4fR2yrBHX..adsGeFKkyNrwGi/<br />7vQMfXdGsRrXNGRGnX+vWDZ3/zWI0joDtCkNnqEpVn..HoX<br />-----END CERTIFICATE-----</blockquote>
     <br/>
     This format called PEM format, stands for Privacy Enhanced Mail.<br />PEM is a text representation of the real binary key in DER format(X.509 ASN.1 key), it is base64 encoding of the DER binary format.<br />We could store the binary version of the file only with <b><i>DER</i></b> encoding, but the most common way is the PEM version.<br /><h3><li>Digital Identity</li></h3>As a user, in order to trust a web site for your precious information, you need to trust the web site owner.<br />Similarly, if you receive an email, you want to trust that the email you received was sent by the email owner, and not hacked by anyone else.<br />In real life, we have our identity card, which is a trusted document issued by a trusted authority (the government) which is a prove of our identity.<br /> The industry came up with similar policies and standards to handle the digital identity. <h3><li>Public Key Infrastructure: PKI and Certificate Authority</li></h3>The PKI is the infrastructure that the industry created to manage the digital identities.<br />The PKI created a hierarchical body of many organizations which their role is to issue digital identies.<br />These organizations called Certificate Authority (CA), and when you want to protect your site with SSL/TLS, you have to communicate with them, and they have to follow up with you to make sure that you are a legitimate company, and you are who you want to claim you are.<br />The digital identity has many four types ranked depending on their security level and how much investigation the CA will do before they submit a certificate.<br />Please find out these types in my previous post. <h3><li>Digital Certificate : X.509</li></h3>As we discussed before, SSL required the web server to have public key, and a digital identity, to give to the browsers.<br />The industry decided to combine these two in one file, which is called : digital certificate, or SSL certificate.<br />PKI policies defined the format for this certificate in a standard called X.509.<br />Certificate format X.509 v3<br /><ol><li>Version Number&nbsp;</li><li>Serial Number&nbsp;</li><li>Signature Algorithm ID&nbsp;</li><li>Issuer Name</li><li>Validity period</li><ul><li>Not Before</li><li>Not After</li></ul><li>Subject name</li><li>Subject Public Key Info</li><ul><li>Public Key Algorithm</li><li>Subject Public Key</li></ul><li>Issuer Unique Identifier (optional)</li><li>Subject Unique Identifier (optional)</li><li>Extensions (optional)</li>... <li>Certificate Signature Algorithm</li><li>Certificate Signature</li></ol><h3><li>CSR: Certificate Signing Request</li></h3>The certificate is issued by one of CA(s), and in order to get a certificate you have to contact one of the CA(s) and send them a request in the format: CSR (Certificate Signing Request).<br/>The CSR is a PEM formatted file with the following information: <ul><li>Common Name</li><li>Organization</li><li>Organizational Unit</li><li>City</li><li>State/County/Region</li><li>Country</li><li>Email Address</li><li>Public Key</li></ul>You can generate a CSR by either doing it from a web server, or using openssl tools like the following: <pre><code class="language-bash">openssl req -new -sha256 -key privatekey.key -out request.csr</code></pre>When you run the previous command, it will prompt you to enter all the CSR details </ol>
+      </div>
     </div>
-  </div>
-</div>
-  
-
-  
-
-</article>
+  </article>
 
 
-    <footer class="site-footer">
-<div class="grid">
-<div class="col-3-12">
+      <footer class="site-footer row">
+<div class="column column-25">
   <ul class="contact-list">
           <li>Web matters</li>
           <li><a href="mailto:ghassan.karwchan@gmail.com">ghassan.karwchan@gmail.com</a></li>
   </ul>
 </div>
-<div class="col-3-12">
+<div class="column column-25">
   <ul class="social-media-list">
           
           <li>
@@ -165,14 +162,14 @@
           
         </ul>
 </div>
-<div class="col-6-12">
+<div class="column">
   This web site was built using <a href="https://jekyllrb.com/">Jekyll</a>.<br />
   If you are interest in the code <a href="https://github.com/gkarwchan/BlogWebsite">you can find it here</a>.
 </div>
 
 </footer>
 
-
+    </div>
   </body>
 
 </html>

@@ -6,9 +6,241 @@
 </description>
     <link>http://blog.gisspan.com/</link>
     <atom:link href="http://blog.gisspan.com/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Wed, 29 Jun 2016 14:20:16 -0600</pubDate>
-    <lastBuildDate>Wed, 29 Jun 2016 14:20:16 -0600</lastBuildDate>
+    <pubDate>Mon, 11 Jul 2016 17:28:05 -0600</pubDate>
+    <lastBuildDate>Mon, 11 Jul 2016 17:28:05 -0600</lastBuildDate>
     <generator>Jekyll v3.1.6</generator>
+    
+      <item>
+        <title>ES6 Classes &amp;#58; The good parts in depth</title>
+        <description>
+&lt;p&gt;ES6 provided many new features for OOP, and although most of them just syntactical sugar over the existing construction pattern, but they are a step ahead of creating objects from the existing features.&lt;br /&gt;
+I am going to show in this post why they are good pattern to use, and how they can fix many problems in the construction function pattern, and we will explain the OOP fundamentals in depth.&lt;!--more--&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;javascript-oop-and-prototypal-inheritance-in-es5&quot;&gt;JavaScript OOP and prototypal inheritance in ES5&lt;/h2&gt;
+&lt;p&gt;OOP in JavaScript is extremely simple, and we can explain it in these points:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;An object in JavaScript is as simple as a collection of key-value pairs which we call them &lt;strong&gt;properties&lt;/strong&gt;. Some of these values could be functions, in which case we call them &lt;strong&gt;methods&lt;/strong&gt;.&lt;/li&gt;
+  &lt;li&gt;Objects in JavaScript are dynamic which means we can add , remove, override its properties.&lt;/li&gt;
+  &lt;li&gt;Inheritance in JavaScript is very simple as well, and it is accomplished through a special internal property called prototype.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Let us start discover how OOP works and we start with the simplest form:&lt;br /&gt;
+&lt;br /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;creating-objects-with-object-literal&quot;&gt;Creating objects with object literal&lt;/h4&gt;
+&lt;div class=&quot;row content&quot;&gt;
+  &lt;div class=&quot;column&quot;&gt;
+    &lt;p&gt;Create an object using object literal:&lt;/p&gt;
+    &lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;var bob = {
+     firstName: &quot;Bob&quot;,
+     lastName: &quot;Smith&quot;,
+     age: 30
+ }&lt;/code&gt;&lt;/pre&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;column bottom&quot;&gt;
+    &lt;p&gt;And the properties of that object will be:&lt;/p&gt;
+
+    &lt;p&gt;&lt;img src=&quot;/img/bob.png&quot; alt=&quot;states&quot; width=&quot;300px&quot; height=&quot;auto&quot; class=&quot;bottom&quot; /&gt;&lt;/p&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;p&gt;The prototype is represented above with the property name &lt;code class=&quot;language-wiki&quot;&gt;&amp;nbsp;__proto__&amp;nbsp;&lt;/code&gt;. __proto__ was a property supported by some browsers, but now it is a new standard in ES6, which represents the internal property that points to the prototype object. Some books refer to __proto__ as &lt;code class=&quot;language-wiki&quot;&gt;&amp;nbsp;[[prototype]]&amp;nbsp;&lt;/code&gt;.&lt;br /&gt;
+&lt;br /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;inheritance-with-constructor-function&quot;&gt;Inheritance with constructor function&lt;/h4&gt;
+&lt;p&gt;In order to inherit from an object in JavaScript ES3 we had to use the constructor pattern, which is described below:&lt;/p&gt;
+&lt;div class=&quot;row content&quot;&gt;
+  &lt;div class=&quot;column&quot;&gt;
+    &lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;var Animal = function(type, breed) {
+  this.type = type;
+  this.breed = breed;
+  this.run = function() {
+    console.log(&#39;run&#39;);
+  };
+};
+
+Animal.prototype.sound = function() {
+  console.log(&#39;sound&#39;);
+};
+
+var dog = new Animal(&#39;dog&#39;, &#39;german shepherd&#39;);&lt;/code&gt;&lt;/pre&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;column&quot;&gt;
+    &lt;p&gt;&lt;img src=&quot;/img/dog.png&quot; alt=&quot;states&quot; width=&quot;300px&quot; height=&quot;auto&quot; align=&quot;center&quot; /&gt;&lt;/p&gt;
+
+    &lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+    &lt;p&gt;&lt;img src=&quot;/img/Animal.png&quot; alt=&quot;states&quot; width=&quot;300px&quot; height=&quot;auto&quot; align=&quot;center&quot; /&gt;&lt;/p&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;p&gt;The constructor function with the new keyword works like this:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;It creates a new empty object (dog)&lt;/li&gt;
+  &lt;li&gt;It sets a property called &lt;em&gt;&lt;strong&gt;constructor&lt;/strong&gt;&lt;/em&gt; that points to the constructor function&lt;/li&gt;
+  &lt;li&gt;It sets dog prototype to the Animal.prototype&lt;/li&gt;
+  &lt;li&gt;It calls the Animal as a function, with the context of the new object&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;p&gt;There are some remarks about this pattern:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;If you look at the representation of the constructor function Animal, you will see that the function is an object by itself, and that because functions in Javascript are objects.&lt;/li&gt;
+  &lt;li&gt;The Object has two properties: &lt;code class=&quot;language-wiki&quot;&gt;prototype&lt;/code&gt; and  &lt;code class=&quot;language-wiki&quot;&gt;__proto__&lt;/code&gt;. The __proto__ is the internal property that points
+ to the inherited prototype which is in this case the prototype of Function, and the other property &lt;em&gt;&lt;strong&gt;prototype&lt;/strong&gt;&lt;/em&gt; which is a normal property in the object that hold an object that 
+ will be the new inherited prototype for the new created object.&lt;/li&gt;
+  &lt;li&gt;If we call the constructor function as a function forgetting the keyword &lt;em&gt;&lt;strong&gt;new&lt;/strong&gt;&lt;/em&gt; before it, then JS will consider that we are calling a function, and the keyword &lt;em&gt;&lt;strong&gt;this&lt;/strong&gt;&lt;/em&gt; in the constructor will be referencing the global object which is the &lt;em&gt;&lt;strong&gt;window&lt;/strong&gt;&lt;/em&gt; object in the browser, which will contaminate the global object, and might introduce bugs.&lt;/li&gt;
+  &lt;li&gt;We see here two functions: run, sound. The run function is not defined in the prototype as the sound. When JavaScript engine create a new Animal object, it will allocate memory to create the function for each new object created, which is different from the prototype, where all objects share the same object in memory.&lt;br /&gt;
+&lt;br /&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h4 id=&quot;using-objectcreate&quot;&gt;Using Object.create&lt;/h4&gt;
+&lt;p&gt;As you saw from the previous pattern, there was so much work to just assign an object to the _&lt;em&gt;proto__ property, and that
+unnecessary complexity was the motivation for &lt;a href=&quot;http://javascript.crockford.com/prototypal.html&quot;&gt;Douglas Crockford to create the Object.create pattern&lt;/a&gt;.&lt;br /&gt;
+Douglas introduced a pattern that will hide that complexity in a simpler static method on the global Object to create and add inheritance.&lt;br /&gt;
+This pattern was introduced officially in ES5 and Object.create became part of ES5. Many developers prefer avoid using
+ the constructor pattern with the _&lt;strong&gt;new&lt;/strong&gt;&lt;/em&gt; keyword, and instead using the Object.create pattern.&lt;/p&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;new-oop-tools-in-javascript-es6&quot;&gt;New OOP tools in JavaScript ES6&lt;/h2&gt;
+
+&lt;p&gt;What ES6 provided for the OOP in JavaScript:&lt;br /&gt;
+&lt;br /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;proto-and-objectsetprototypeof&quot;&gt;__proto__ and Object.setPrototypeOf&lt;/h4&gt;
+&lt;p&gt;ES6 standardized the __proto__ property that was supported in some browsers. __proto__ is an accessor property (a property with getter / setter functions). But the usage of it is discouraged in favor of getPropertyOf/setPrototypeOf.&lt;br /&gt;
+Object.setPrototypeOf is a method in the Object.prototype, which allow to change the prototype of an object. &lt;a href=&quot;https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Object/setPrototypeOf&quot;&gt;But the usage of setPrototypeOf is discouraged if you care about the performance&lt;/a&gt;. &lt;br /&gt;
+Before this method, there was no way to set the prototype directly on an object. I am hoping that for future releases the performance hit will be fixed, otherwise what the use of this new method.&lt;/p&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;classes&quot;&gt;Classes&lt;/h4&gt;
+&lt;p&gt;Classes are just syntactical sugar over constructor functions. They fixed many problems that the constructor functions had. Let us see how we can recreate Animal and dog with Class.&lt;/p&gt;
+&lt;div class=&quot;row content&quot;&gt;
+  &lt;div class=&quot;column&quot;&gt;
+    &lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;var Animal = class {
+   constructor(type, breed) {
+     this.type = type;
+     this.breed = breed;
+   }
+   run() {
+     console.log(&#39;run&#39;);
+   }
+   sound() {
+     console.log(&#39;sound&#39;);
+   }
+  };
+var dog = new Animal(&#39;dog&#39;, &#39;german shepherd&#39;);&lt;/code&gt;&lt;/pre&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;column&quot;&gt;
+    &lt;p&gt;&lt;img src=&quot;/img/Animal.png&quot; alt=&quot;states&quot; width=&quot;300px&quot; height=&quot;auto&quot; align=&quot;center&quot; /&gt;&lt;/p&gt;
+
+    &lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+    &lt;p&gt;&lt;img src=&quot;/img/dog.png&quot; alt=&quot;states&quot; width=&quot;300px&quot; height=&quot;auto&quot; align=&quot;center&quot; /&gt;&lt;/p&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;If we dump what is in the memory, we will see that the class represented as a constructor function.&lt;br /&gt;
+But we can list these advantages for using the keyword classes over construction:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;It fix the first problem mentioned above which is calling the constructor function without the “new” keyword. if we call the class as a function nothing will happen.&lt;/li&gt;
+  &lt;li&gt;There is no confusion of adding a function inside the constructor or in the prototype.&lt;/li&gt;
+  &lt;li&gt;It is readable and more clear.&lt;/li&gt;
+  &lt;li&gt;No need to define the prototype and add methods to it.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;sub-classes-with-extends&quot;&gt;Sub classes with extends&lt;/h4&gt;
+&lt;p&gt;Now, we can easily create the prototype chain with &lt;code class=&quot;language-wiki&quot;&gt;extends&lt;/code&gt; keyword as follow:&lt;/p&gt;
+
+&lt;div class=&quot;row content&quot;&gt;
+  &lt;div class=&quot;column&quot;&gt;
+    &lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;var Dog = class extends Animal {
+   sound() {
+     console.log(&#39;dog sound&#39;);
+   }
+
+   bark() {
+     console.log(&#39;bark&#39;);
+   }
+};
+
+var secondDog = new Dog(&#39;dog&#39;, &#39;Pit Bull&#39;);&lt;/code&gt;&lt;/pre&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;column&quot;&gt;
+    &lt;p&gt;&lt;img src=&quot;/img/secondDog.png&quot; alt=&quot;states&quot; width=&quot;300px&quot; height=&quot;auto&quot; align=&quot;center&quot; /&gt;&lt;/p&gt;
+
+    &lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+    &lt;p&gt;&lt;img src=&quot;/img/Dog.png&quot; alt=&quot;states&quot; width=&quot;300px&quot; height=&quot;auto&quot; align=&quot;center&quot; /&gt;&lt;/p&gt;
+  &lt;/div&gt;
+
+&lt;/div&gt;
+
+&lt;p&gt;What we can learn from the previous example:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;The newly created object &lt;em&gt;&lt;strong&gt;secondDog&lt;/strong&gt;&lt;/em&gt; has a prototype of Dog’s prototype, which has the prototype of Animal. It was easy to create that property chain.&lt;/li&gt;
+  &lt;li&gt;The class with sub-class are internally constructor functions, and the Dog has the __proto__ points to the constructor function object of Animal, and Animal object points to Function.prototype.&lt;/li&gt;
+  &lt;li&gt;The property &lt;em&gt;&lt;strong&gt;prototype&lt;/strong&gt;&lt;/em&gt; of Dog has __proto__ that points to Animal’s prototype. &lt;br /&gt;
+&lt;br /&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h4 id=&quot;the-static-keyword&quot;&gt;the static keyword&lt;/h4&gt;
+&lt;p&gt;ES6 provides the static keyword to define static method. Using static is cleaner and more descriptive than ES5.&lt;/p&gt;
+
+&lt;div class=&quot;content&quot;&gt;
+  &lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;// In ES6:
+// define static method for the Animal 
+var Animal = class {
+  constructor (type, breed) {
+    
+  }
+
+  static speak() {
+
+    console.log(&#39;speak....&#39;);
+  }
+};
+// usage of static 
+Animal.speak();
+
+// -------------------------------------
+// In ES5:
+// the way to do it, just add the method on the function Animal itself, because Animal is an object 
+var Animal = function(breed, type) {
+   .....
+};
+Animal.speak = function() {
+
+};
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;As you see, the ES6 provides unified interface to define instance/and static method.&lt;/p&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h2&gt;
+&lt;p&gt;ES6 classes fixed many problems with the constructor function pattern, and it is a good choise to create / represent your objects.&lt;/p&gt;
+</description>
+        <pubDate>Mon, 04 Jul 2016 09:45:00 -0600</pubDate>
+        <link>http://blog.gisspan.com/2016/07/ES6-classes-the-good-part.html</link>
+        <guid isPermaLink="true">http://blog.gisspan.com/2016/07/ES6-classes-the-good-part.html</guid>
+        
+        <category>javascript</category>
+        
+        
+      </item>
     
       <item>
         <title>Example on using Angular UI Router nested views to build a clean solution</title>
@@ -688,38 +920,6 @@ Authorization: Basic aHR0cHdhdGNoOmY=&lt;/code&gt;&lt;/pre&gt;As you can see the
         <guid isPermaLink="true">http://blog.gisspan.com/2016/02/sublime-vs-atom.html</guid>
         
         <category>tools</category>
-        
-        
-      </item>
-    
-      <item>
-        <title>ECMAScript 6 block-level scope and Javascript variable hoisting</title>
-        <description>Block-level Scope, is one of the new feature that was added to ECMAScript 2015 (formerly known as ECMAScript 6).&lt;br/&gt;In ECMAScript 5 the only scope available to a variable is the function scope. So, the variable are seen in the whole function.&lt;!--more--&gt; &lt;br/&gt;&lt;h3&gt;Variable Hoisting&lt;/h3&gt;Another feature that JavaScript has is : &lt;b&gt;&quot;Variable Hoisting&quot;&lt;/b&gt;, which means a variable can be used before it is defined.&lt;br/&gt;So, code like this will work fine:  
-&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;x = 5;
-alert (x);
-var x;&lt;/code&gt;&lt;/pre&gt;&lt;h3&gt;What does Hoisting do?&lt;/h3&gt;Hoisting is a JavaScript process where the Javascript interpreter will look for any variable declaration inside a function and move it to the beginning of the function. &lt;/br&gt;How that effect our code? &lt;br/&gt; &lt;h3&gt;Some Hoisting magic&lt;/h3&gt;Let us write a tricky code to show the effect of scope combined with hoisting: &lt;br/&gt;  
-&lt;pre class=&quot;line-numbers&quot;&gt;&lt;code class=&quot;language-javascript&quot;&gt;var back_color = &quot;red&quot;;
-(function() {
-    if (typeof back_color === &quot;undefined&quot;) {
-        var back_color = &quot;yellow&quot;;
-        alert (back_color);
-    } else {
-        alert (back_color);
-    }&lt;/code&gt;&lt;/pre&gt; What will the code above show in the alert box?&lt;br/&gt;To the surprise, the above code will show &quot;yellow&quot;. &lt;br/&gt; &lt;h3&gt;But Why? &lt;/h3&gt;The reason for that weird behaviour is that JavaScript (until ECMAScript 5) will move the variable declaration of back_color inside the function to the beginning of the function, keeping the assignment where it is. So the JavaScript interpreter will run this code  
-&lt;pre class=&quot;line-numbers&quot;&gt;&lt;code class=&quot;language-javascript&quot;&gt;var back_color = &quot;red&quot;;
-(function() {
-   var back_color;
-   if (typeof back_color === &quot;undefined&quot;) {
-        back_color = &quot;yellow&quot;;
-        alert (back_color);
-   } else {
-        alert (back_color);
-   }&lt;/code&gt;&lt;/pre&gt; &lt;h3&gt;So what changed in JavaScript 6?&lt;/h3&gt;Coming back to ECMAScript 2015, and as we mentioned in the beginning that the new ECMAScript is going to add block level scoping but with a new statement called &quot;&lt;b&gt;&lt;i&gt;let&lt;/i&gt;&lt;/b&gt;&quot; which means that if you run the first code replacing &lt;b&gt;&lt;i&gt;var&lt;/i&gt;&lt;/b&gt; with &lt;b&gt;&lt;i&gt;let&lt;/i&gt;&lt;/b&gt; inside a browser that support new JavaScript, then the browser will show &quot;red&quot; as a result, because the second variable declaration will be limited inside the scope of if statement.</description>
-        <pubDate>Wed, 20 Jan 2016 10:01:00 -0700</pubDate>
-        <link>http://blog.gisspan.com/2016/01/ecmascript-6-block-level-scope-and.html</link>
-        <guid isPermaLink="true">http://blog.gisspan.com/2016/01/ecmascript-6-block-level-scope-and.html</guid>
-        
-        <category>javascript</category>
         
         
       </item>

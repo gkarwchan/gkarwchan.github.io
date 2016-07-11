@@ -8,13 +8,21 @@
 
   <title>Simple solution for running Psexec on the build server</title>
   <meta name="description" content="P.S: This post is old, and the method described here is not required any more. Please, don't take this approach to fix the problem of running psexec remotly....">
-  <link href='//fonts.googleapis.com/css?family=Roboto+Condensed' rel='stylesheet' type='text/css'>
-  <link href='//fonts.googleapis.com/css?family=Roboto+Slab' rel='stylesheet' type='text/css'>
+  <!-- Google Fonts -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300italic,700,700italic">
   <link href='//fonts.googleapis.com/css?family=Gloria+Hallelujah' rel='stylesheet' type='text/css'>
   <link href='https://fonts.googleapis.com/css?family=PT+Sans' rel='stylesheet' type='text/css'>
-  <link rel="stylesheet" href="/css/main.css">
-  <link rel="stylesheet" href="/css/simplegrid.min.css">
+  <link href='//fonts.googleapis.com/css?family=Roboto+Condensed' rel='stylesheet' type='text/css'>
+  <link href='//fonts.googleapis.com/css?family=Roboto+Slab' rel='stylesheet' type='text/css'>
+
+  <!-- CSS Reset -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/3.0.3/normalize.css">
+
+  <!-- utilities -->
+  <link rel="stylesheet" href="/css/milligram.min.css" >
   <link rel="stylesheet" href="/css/prism.css">
+
+  <link rel="stylesheet" href="/css/main.css">
   <script src="/js/prism.js"></script>
   <link rel="canonical" href="http://blog.gisspan.com/2011/11/simple-solution-for-running-psexec-on.html">
   <link rel="alternate" type="application/rss+xml" title="Web matters" href="http://blog.gisspan.com/feed.xml">
@@ -32,95 +40,90 @@
 
 
   <body>
-
-    <header class="site-header">
-
-  <div class="grid">
-    <div class="col-3-12">
-      <a class="site-title" href="/">Web matters</a>
-    </div>
-    <div class="col-9-12">
-      <nav class="site-nav">
-          
-            
-            <a class="page-link" href="/about/">About Me</a>
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-          <a class="page-link" href="/feed.xml"><img src="/img/feed.png" ></img></a>
-      </nav>
-    </div>
+    <div class="container">
+      <header class="site-header row">
+  <div class="column column-25">
+    <a class="site-title" href="/">Web matters</a>
   </div>
-
+  <div class="column">
+    <nav class="site-nav">
+        
+          
+          <a class="page-link" href="/about/">About Me</a>
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        <a class="page-link" href="/feed.xml"><img src="/img/feed.png" ></img></a>
+    </nav>
+  </div>
 </header>
 
 
-        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
-<div class="grid content">
-  <div>
-    <header class="post-header">
-      <h1 class="post-title" itemprop="name headline">Simple solution for running Psexec on the build server</h1>
-      <p class="post-meta"><time datetime="2011-11-21T10:35:00-07:00" itemprop="datePublished">Nov 21, 2011</time> • <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name">Ghassan Karwchan</span></span></p>
-    </header>
-    <div class="post-content post-font" itemprop="articleBody">
-      <blockquote>P.S: This post is old, and the method described here is not required any more. <br/>
+            <article class="post row" itemscope itemtype="http://schema.org/BlogPosting">
+    <div class="content">
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">Simple solution for running Psexec on the build server</h1>
+        <p class="post-meta"><time datetime="2011-11-21T10:35:00-07:00" itemprop="datePublished">Nov 21, 2011</time> • <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name">Ghassan Karwchan</span></span></p>
+      </header>
+      <div class="post-content post-font" itemprop="articleBody">
+        <blockquote>P.S: This post is old, and the method described here is not required any more. <br/>
 Please, don't take this approach to fix the problem of running psexec remotly.<br/>
 </blockquote><br/>
 I was trying to run a deployment batch file from Hudson build server, which is using the tool psexec.exe.<br />The deploy process was hanging, when it is calling psexec command, and after a little bit research I found that psexec has known problems with the build servers: <!--more--><br /><br /><br /><ul><li><a href="http://hotgazpacho.org/2009/10/continuous-integration-executing-remote-tasks-with-teamcity-msbuild-remcom-and-execparse/">On team city</a></li><li><a href="http://stackoverflow.com/questions/2358153/running-batch-file-on-remote-machine-from-hudson-server-using-psexec">On Hudson</a></li><li><a href="http://stackoverflow.com/questions/7824881/cruisecontrol-net-stalls-with-psexec">and on CrsuiseControl.NET</a></li></ul>There are alternative solutions to use alternative tools, but if you need just a simple solution that will run psexec without hanging , then keep reading.<br />The problem with running psexec, is the process that psexec uses to redirect the output from the remote machine to the local machine where you run the command. That redirection works when you run it from command line, but doesn't work from the build server.<br />So, the simple solution I used is to run an exe program that runs the batch file.<br />The following c# program will run the batch file that has psexec without hanging.<br /><br /><br />
@@ -147,25 +150,19 @@ I was trying to run a deployment batch file from Hudson build server, which is u
      }
   }
 }</code></pre><br />After you compile the application , and let us assume you call it "runbatch.exe"<br /><br />Then from the hudson, you just call the command line:<br /><br /><p>runbatch.exe mybatchfile.bat<br /></p>The disadvantages of this simple solution, is: it is suppressing the output.<br /><br />So, in case you can live without the output, because in my case , it is kind of simple batch file, then you can use this method.
+      </div>
     </div>
-  </div>
-</div>
-  
-
-  
-
-</article>
+  </article>
 
 
-    <footer class="site-footer">
-<div class="grid">
-<div class="col-3-12">
+      <footer class="site-footer row">
+<div class="column column-25">
   <ul class="contact-list">
           <li>Web matters</li>
           <li><a href="mailto:ghassan.karwchan@gmail.com">ghassan.karwchan@gmail.com</a></li>
   </ul>
 </div>
-<div class="col-3-12">
+<div class="column column-25">
   <ul class="social-media-list">
           
           <li>
@@ -184,14 +181,14 @@ I was trying to run a deployment batch file from Hudson build server, which is u
           
         </ul>
 </div>
-<div class="col-6-12">
+<div class="column">
   This web site was built using <a href="https://jekyllrb.com/">Jekyll</a>.<br />
   If you are interest in the code <a href="https://github.com/gkarwchan/BlogWebsite">you can find it here</a>.
 </div>
 
 </footer>
 
-
+    </div>
   </body>
 
 </html>

@@ -8,13 +8,21 @@
 
   <title>NHibernate auditing</title>
   <meta name="description" content="How to use NHibernate features to audit transactions to database?I am going to list some steps, which you can follow to enable NHibernate auditing:">
-  <link href='//fonts.googleapis.com/css?family=Roboto+Condensed' rel='stylesheet' type='text/css'>
-  <link href='//fonts.googleapis.com/css?family=Roboto+Slab' rel='stylesheet' type='text/css'>
+  <!-- Google Fonts -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300italic,700,700italic">
   <link href='//fonts.googleapis.com/css?family=Gloria+Hallelujah' rel='stylesheet' type='text/css'>
   <link href='https://fonts.googleapis.com/css?family=PT+Sans' rel='stylesheet' type='text/css'>
-  <link rel="stylesheet" href="/css/main.css">
-  <link rel="stylesheet" href="/css/simplegrid.min.css">
+  <link href='//fonts.googleapis.com/css?family=Roboto+Condensed' rel='stylesheet' type='text/css'>
+  <link href='//fonts.googleapis.com/css?family=Roboto+Slab' rel='stylesheet' type='text/css'>
+
+  <!-- CSS Reset -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/3.0.3/normalize.css">
+
+  <!-- utilities -->
+  <link rel="stylesheet" href="/css/milligram.min.css" >
   <link rel="stylesheet" href="/css/prism.css">
+
+  <link rel="stylesheet" href="/css/main.css">
   <script src="/js/prism.js"></script>
   <link rel="canonical" href="http://blog.gisspan.com/2011/10/nhibernate-auditing.html">
   <link rel="alternate" type="application/rss+xml" title="Web matters" href="http://blog.gisspan.com/feed.xml">
@@ -32,95 +40,90 @@
 
 
   <body>
-
-    <header class="site-header">
-
-  <div class="grid">
-    <div class="col-3-12">
-      <a class="site-title" href="/">Web matters</a>
-    </div>
-    <div class="col-9-12">
-      <nav class="site-nav">
-          
-            
-            <a class="page-link" href="/about/">About Me</a>
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-          <a class="page-link" href="/feed.xml"><img src="/img/feed.png" ></img></a>
-      </nav>
-    </div>
+    <div class="container">
+      <header class="site-header row">
+  <div class="column column-25">
+    <a class="site-title" href="/">Web matters</a>
   </div>
-
+  <div class="column">
+    <nav class="site-nav">
+        
+          
+          <a class="page-link" href="/about/">About Me</a>
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        <a class="page-link" href="/feed.xml"><img src="/img/feed.png" ></img></a>
+    </nav>
+  </div>
 </header>
 
 
-        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
-<div class="grid content">
-  <div>
-    <header class="post-header">
-      <h1 class="post-title" itemprop="name headline">NHibernate auditing</h1>
-      <p class="post-meta"><time datetime="2011-10-09T12:05:00-06:00" itemprop="datePublished">Oct 9, 2011</time> • <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name">Ghassan Karwchan</span></span></p>
-    </header>
-    <div class="post-content post-font" itemprop="articleBody">
-      How to use NHibernate features to audit transactions to database?<br />I am going to list some steps, which you can follow to enable NHibernate auditing:<!--more--><br /><br /><ol style="text-align: left;"><li>Not all entities require auditing, and to distinguish entities that require auditing, we will create an abstract class which all auditable entites are going to inherit from. Let's call the class "AuditableEntity"</li>
+            <article class="post row" itemscope itemtype="http://schema.org/BlogPosting">
+    <div class="content">
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">NHibernate auditing</h1>
+        <p class="post-meta"><time datetime="2011-10-09T12:05:00-06:00" itemprop="datePublished">Oct 9, 2011</time> • <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name">Ghassan Karwchan</span></span></p>
+      </header>
+      <div class="post-content post-font" itemprop="articleBody">
+        How to use NHibernate features to audit transactions to database?<br />I am going to list some steps, which you can follow to enable NHibernate auditing:<!--more--><br /><br /><ol style="text-align: left;"><li>Not all entities require auditing, and to distinguish entities that require auditing, we will create an abstract class which all auditable entites are going to inherit from. Let's call the class "AuditableEntity"</li>
 <p><pre><code class="language-csharp">public abstract class AuditableEntity
 {
     public DateTime CreateDateTime {get; set;}
@@ -203,25 +206,19 @@ nhConfig.Mappings(m => m.FluentMappings.AddFromAssemblyOf())
     .BuildConfiguration();
 SessionFactory = nhConfig.BuildSessionFactory();
 </code></pre></ol>
+      </div>
     </div>
-  </div>
-</div>
-  
-
-  
-
-</article>
+  </article>
 
 
-    <footer class="site-footer">
-<div class="grid">
-<div class="col-3-12">
+      <footer class="site-footer row">
+<div class="column column-25">
   <ul class="contact-list">
           <li>Web matters</li>
           <li><a href="mailto:ghassan.karwchan@gmail.com">ghassan.karwchan@gmail.com</a></li>
   </ul>
 </div>
-<div class="col-3-12">
+<div class="column column-25">
   <ul class="social-media-list">
           
           <li>
@@ -240,14 +237,14 @@ SessionFactory = nhConfig.BuildSessionFactory();
           
         </ul>
 </div>
-<div class="col-6-12">
+<div class="column">
   This web site was built using <a href="https://jekyllrb.com/">Jekyll</a>.<br />
   If you are interest in the code <a href="https://github.com/gkarwchan/BlogWebsite">you can find it here</a>.
 </div>
 
 </footer>
 
-
+    </div>
   </body>
 
 </html>

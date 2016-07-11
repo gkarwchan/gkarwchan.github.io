@@ -8,13 +8,21 @@
 
   <title>MsBuild: How to parse a file for a string</title>
   <meta name="description" content="This simple target will parse a file to find if it contains a string, and then return error.">
-  <link href='//fonts.googleapis.com/css?family=Roboto+Condensed' rel='stylesheet' type='text/css'>
-  <link href='//fonts.googleapis.com/css?family=Roboto+Slab' rel='stylesheet' type='text/css'>
+  <!-- Google Fonts -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300italic,700,700italic">
   <link href='//fonts.googleapis.com/css?family=Gloria+Hallelujah' rel='stylesheet' type='text/css'>
   <link href='https://fonts.googleapis.com/css?family=PT+Sans' rel='stylesheet' type='text/css'>
-  <link rel="stylesheet" href="/css/main.css">
-  <link rel="stylesheet" href="/css/simplegrid.min.css">
+  <link href='//fonts.googleapis.com/css?family=Roboto+Condensed' rel='stylesheet' type='text/css'>
+  <link href='//fonts.googleapis.com/css?family=Roboto+Slab' rel='stylesheet' type='text/css'>
+
+  <!-- CSS Reset -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/3.0.3/normalize.css">
+
+  <!-- utilities -->
+  <link rel="stylesheet" href="/css/milligram.min.css" >
   <link rel="stylesheet" href="/css/prism.css">
+
+  <link rel="stylesheet" href="/css/main.css">
   <script src="/js/prism.js"></script>
   <link rel="canonical" href="http://blog.gisspan.com/2011/12/msbuild-how-to-parse-file-for-string.html">
   <link rel="alternate" type="application/rss+xml" title="Web matters" href="http://blog.gisspan.com/feed.xml">
@@ -32,120 +40,109 @@
 
 
   <body>
-
-    <header class="site-header">
-
-  <div class="grid">
-    <div class="col-3-12">
-      <a class="site-title" href="/">Web matters</a>
-    </div>
-    <div class="col-9-12">
-      <nav class="site-nav">
-          
-            
-            <a class="page-link" href="/about/">About Me</a>
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-          <a class="page-link" href="/feed.xml"><img src="/img/feed.png" ></img></a>
-      </nav>
-    </div>
+    <div class="container">
+      <header class="site-header row">
+  <div class="column column-25">
+    <a class="site-title" href="/">Web matters</a>
   </div>
-
+  <div class="column">
+    <nav class="site-nav">
+        
+          
+          <a class="page-link" href="/about/">About Me</a>
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        <a class="page-link" href="/feed.xml"><img src="/img/feed.png" ></img></a>
+    </nav>
+  </div>
 </header>
 
 
-        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
-<div class="grid content">
-  <div>
-    <header class="post-header">
-      <h1 class="post-title" itemprop="name headline">MsBuild: How to parse a file for a string</h1>
-      <p class="post-meta"><time datetime="2011-12-02T09:44:00-07:00" itemprop="datePublished">Dec 2, 2011</time> • <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name">Ghassan Karwchan</span></span></p>
-    </header>
-    <div class="post-content post-font" itemprop="articleBody">
-      This simple target will parse a file to find if it contains a string, and then return error.<br /><!--more-->
+            <article class="post row" itemscope itemtype="http://schema.org/BlogPosting">
+    <div class="content">
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">MsBuild: How to parse a file for a string</h1>
+        <p class="post-meta"><time datetime="2011-12-02T09:44:00-07:00" itemprop="datePublished">Dec 2, 2011</time> • <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name">Ghassan Karwchan</span></span></p>
+      </header>
+      <div class="post-content post-font" itemprop="articleBody">
+        This simple target will parse a file to find if it contains a string, and then return error.<br /><!--more-->
 <pre><code class="language-xml">&lt;target Name="ParseForFailure"&gt;  
     &lt;readlinesfromfile File="$(FileToBeFound)"&gt;
        &lt;output TaskParameter="Lines" PropertyName="SummaryReportOutput" /&gt;  
     &lt;/readlinesfromfile&gt;
     &lt;error Condition="$(SummaryReportOutput.Contains('Failure'))" Text="There is a failure in the log file" /&gt; 
 &lt;/target&gt;</code></pre><br />The script is using ReadLinesFromFile, which reads a file, and then the "Output" task will assign the "TaskParameter" from the wrapping task (in this case ReadLinesFromFile) into the PropertyName that we define it here, SummaryReportOutput.<br /><br />The task ReadLinesFromFile will have one parameter which is "Lines" which we are using here.<br /><br />And then I am using conditional Error task, which generate an error.<br />The condition is when the property "SummaryReportOutput" contains the word "Failure".<br />Contains is one of the functions that you can run on properties, to manipulate properties.<br />It is not very well documented and we found it by chance.
+      </div>
     </div>
-  </div>
-</div>
-  
-
-  
-
-</article>
+  </article>
 
 
-    <footer class="site-footer">
-<div class="grid">
-<div class="col-3-12">
+      <footer class="site-footer row">
+<div class="column column-25">
   <ul class="contact-list">
           <li>Web matters</li>
           <li><a href="mailto:ghassan.karwchan@gmail.com">ghassan.karwchan@gmail.com</a></li>
   </ul>
 </div>
-<div class="col-3-12">
+<div class="column column-25">
   <ul class="social-media-list">
           
           <li>
@@ -164,14 +161,14 @@
           
         </ul>
 </div>
-<div class="col-6-12">
+<div class="column">
   This web site was built using <a href="https://jekyllrb.com/">Jekyll</a>.<br />
   If you are interest in the code <a href="https://github.com/gkarwchan/BlogWebsite">you can find it here</a>.
 </div>
 
 </footer>
 
-
+    </div>
   </body>
 
 </html>

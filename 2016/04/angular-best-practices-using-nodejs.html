@@ -8,13 +8,21 @@
 
   <title>Angular best practices using NodeJS Style Modules</title>
   <meta name="description" content="As JavaScript applications tend to grow in size, the need to organize and structure our code become essentials.JavaScript modules was the answer to structure...">
-  <link href='//fonts.googleapis.com/css?family=Roboto+Condensed' rel='stylesheet' type='text/css'>
-  <link href='//fonts.googleapis.com/css?family=Roboto+Slab' rel='stylesheet' type='text/css'>
+  <!-- Google Fonts -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300italic,700,700italic">
   <link href='//fonts.googleapis.com/css?family=Gloria+Hallelujah' rel='stylesheet' type='text/css'>
   <link href='https://fonts.googleapis.com/css?family=PT+Sans' rel='stylesheet' type='text/css'>
-  <link rel="stylesheet" href="/css/main.css">
-  <link rel="stylesheet" href="/css/simplegrid.min.css">
+  <link href='//fonts.googleapis.com/css?family=Roboto+Condensed' rel='stylesheet' type='text/css'>
+  <link href='//fonts.googleapis.com/css?family=Roboto+Slab' rel='stylesheet' type='text/css'>
+
+  <!-- CSS Reset -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/3.0.3/normalize.css">
+
+  <!-- utilities -->
+  <link rel="stylesheet" href="/css/milligram.min.css" >
   <link rel="stylesheet" href="/css/prism.css">
+
+  <link rel="stylesheet" href="/css/main.css">
   <script src="/js/prism.js"></script>
   <link rel="canonical" href="http://blog.gisspan.com/2016/04/angular-best-practices-using-nodejs.html">
   <link rel="alternate" type="application/rss+xml" title="Web matters" href="http://blog.gisspan.com/feed.xml">
@@ -32,95 +40,90 @@
 
 
   <body>
-
-    <header class="site-header">
-
-  <div class="grid">
-    <div class="col-3-12">
-      <a class="site-title" href="/">Web matters</a>
-    </div>
-    <div class="col-9-12">
-      <nav class="site-nav">
-          
-            
-            <a class="page-link" href="/about/">About Me</a>
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-          <a class="page-link" href="/feed.xml"><img src="/img/feed.png" ></img></a>
-      </nav>
-    </div>
+    <div class="container">
+      <header class="site-header row">
+  <div class="column column-25">
+    <a class="site-title" href="/">Web matters</a>
   </div>
-
+  <div class="column">
+    <nav class="site-nav">
+        
+          
+          <a class="page-link" href="/about/">About Me</a>
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        <a class="page-link" href="/feed.xml"><img src="/img/feed.png" ></img></a>
+    </nav>
+  </div>
 </header>
 
 
-        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
-<div class="grid content">
-  <div>
-    <header class="post-header">
-      <h1 class="post-title" itemprop="name headline">Angular best practices using NodeJS Style Modules</h1>
-      <p class="post-meta"><time datetime="2016-04-04T21:03:00-06:00" itemprop="datePublished">Apr 4, 2016</time> • <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name">Ghassan Karwchan</span></span></p>
-    </header>
-    <div class="post-content post-font" itemprop="articleBody">
-      As JavaScript applications tend to grow in size, the need to organize and structure our code become essentials.<br />JavaScript modules was the answer to structure our code in a clean, maintainable, testable way.<br />The purpose of this post is to show how to write clean Angular code, and how to structure it to be re-usable, testable using NodeJs style modules.<!--more--><br />We will see how our structure will follow <a href="https://github.com/johnpapa/angular-styleguide/tree/master/a1">the Angular community best practices and guidelines</a>. <br /><ol><h3><li>NodeJS modules, and JavaScript Modules</li></h3>Until EchmaScript 2015 (formerly ES6), JavaScript didn't have built in API for modules, and developers had to count on third party frameworks.<br />There are two main flavours of modules: AMD, and CommonJS which is what NodeJs used to build their modules.<br />This post is not going to describe the differences between the two, and I will just say that I decided to use NodeJS Style.<br />Even though NodeJs modules cannot be used directly in a web browser, but with the help of tools like browserify, or webpack we can use any NodeJs module. <h3><li>Angular modules and best practices</li></h3>Angular was built with the modular design in mind.<br />Angular has the <a href="https://docs.angularjs.org/api/ng/function/angular.module">Module API</a>, which allows to build modular applications.<br />And the Angular team recommend dividing our application into modules according to their functionality, each functionality has its own module, and the module will contain everything related to the functionality (services, factories, directives, controllers, etc...) .<br />From <a href="https://docs.angularjs.org/api/ng/function/angular.module">Angular Documentation</a>, a module is a collection of services, directives, controllers, filters, and configuration information.<br /><h3><li>Write Angular module as NodeJS Module </li></h3>Angular modules are conceptual and logical partitioning of the code. A module represent a separate functionality that can be tested separately.<br />Angular modules don't employ any physical or file structure, and we can write multi modules in one file, or one modules in different files.<br />But writing every Angular module as NodeJS module will help achieve many good practices.<br />Let us start on how to structure the root and entry point of our application.<br />The following picture shows the best practice of how to structure the files in an Angular application. <div class="separator" style="clear: both; text-align: center;"><a href="https://2.bp.blogspot.com/-XgWOZOs1NPA/VwMapw4qsCI/AAAAAAAADtc/iLVQxPol0zM9Y-Dive6VkRWIA-O0AMcRg/s1600/Screenshot%2Bfrom%2B2016-04-04%2B19%253A52%253A07.png" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"><img border="0" height="400" src="https://2.bp.blogspot.com/-XgWOZOs1NPA/VwMapw4qsCI/AAAAAAAADtc/iLVQxPol0zM9Y-Dive6VkRWIA-O0AMcRg/s400/Screenshot%2Bfrom%2B2016-04-04%2B19%253A52%253A07.png" width="355" /></a></div><h3><li>Explain the file structure</li></h3>We can specify the following guidelines in structuring the application.  <ul><li>App.js</li><b><i>App.js</i></b> is the entry point for our application. It has the code for the main module (the application module). The file should exist in the root folder. <li><b><i>config.js</i></b> and <b><i>run.js</i></b></li>Each Angular module can have a running block, and a configuration block.<br />We have one file for each.<br /><li>Single responsibility guideline</li>One of the guideline in the Angular community guideline was <a href="https://github.com/johnpapa/angular-styleguide/blob/master/a1/README.md#single-responsibility" target="_blank">Single Responsibility guideline</a>. And as you saw before, by creating a file for the running block and another file for the configuration block, we are following this guideline. <li>A folder for each Angular module</li>Building an Angular applications on module-based design <a href="https://github.com/johnpapa/angular-styleguide/blob/master/a1/README.md#modules" target="_blank">is a good practice that is recommended by the community</a>. And we store each module in a separate folder.<br />In the above example, we have four modules: <b><i>payment</i></b>, <b><i>home</i></b>, <b><i>common</i></b> and <b><i>auth</i></b>.<br />And in case a module has many sub-modules then we create sub-folders for this sub-modules, as in the sub-modules: <b><i>emailLogin</i></b>, <b><i>oauth</i></b> in our module <b><i>auth</i></b>. <li>A separate file for each module component</li>An Angular module can contains: controllers, services, directives.<br />As we said, we follow single responsibility guideline, so we create a file for each component.<br />In the above example we have a file called <b><i>navbar-controller.js</i></b>, which is a directive for the main module. </ul><h3><li>Writing the entry point for main application</li></h3>Let us see now the code inside the app.js file. <pre><code class="language-javascript">// contents of the file app.js
+            <article class="post row" itemscope itemtype="http://schema.org/BlogPosting">
+    <div class="content">
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">Angular best practices using NodeJS Style Modules</h1>
+        <p class="post-meta"><time datetime="2016-04-04T21:03:00-06:00" itemprop="datePublished">Apr 4, 2016</time> • <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name">Ghassan Karwchan</span></span></p>
+      </header>
+      <div class="post-content post-font" itemprop="articleBody">
+        As JavaScript applications tend to grow in size, the need to organize and structure our code become essentials.<br />JavaScript modules was the answer to structure our code in a clean, maintainable, testable way.<br />The purpose of this post is to show how to write clean Angular code, and how to structure it to be re-usable, testable using NodeJs style modules.<!--more--><br />We will see how our structure will follow <a href="https://github.com/johnpapa/angular-styleguide/tree/master/a1">the Angular community best practices and guidelines</a>. <br /><ol><h3><li>NodeJS modules, and JavaScript Modules</li></h3>Until EchmaScript 2015 (formerly ES6), JavaScript didn't have built in API for modules, and developers had to count on third party frameworks.<br />There are two main flavours of modules: AMD, and CommonJS which is what NodeJs used to build their modules.<br />This post is not going to describe the differences between the two, and I will just say that I decided to use NodeJS Style.<br />Even though NodeJs modules cannot be used directly in a web browser, but with the help of tools like browserify, or webpack we can use any NodeJs module. <h3><li>Angular modules and best practices</li></h3>Angular was built with the modular design in mind.<br />Angular has the <a href="https://docs.angularjs.org/api/ng/function/angular.module">Module API</a>, which allows to build modular applications.<br />And the Angular team recommend dividing our application into modules according to their functionality, each functionality has its own module, and the module will contain everything related to the functionality (services, factories, directives, controllers, etc...) .<br />From <a href="https://docs.angularjs.org/api/ng/function/angular.module">Angular Documentation</a>, a module is a collection of services, directives, controllers, filters, and configuration information.<br /><h3><li>Write Angular module as NodeJS Module </li></h3>Angular modules are conceptual and logical partitioning of the code. A module represent a separate functionality that can be tested separately.<br />Angular modules don't employ any physical or file structure, and we can write multi modules in one file, or one modules in different files.<br />But writing every Angular module as NodeJS module will help achieve many good practices.<br />Let us start on how to structure the root and entry point of our application.<br />The following picture shows the best practice of how to structure the files in an Angular application. <div class="separator" style="clear: both; text-align: center;"><a href="https://2.bp.blogspot.com/-XgWOZOs1NPA/VwMapw4qsCI/AAAAAAAADtc/iLVQxPol0zM9Y-Dive6VkRWIA-O0AMcRg/s1600/Screenshot%2Bfrom%2B2016-04-04%2B19%253A52%253A07.png" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"><img border="0" height="400" src="https://2.bp.blogspot.com/-XgWOZOs1NPA/VwMapw4qsCI/AAAAAAAADtc/iLVQxPol0zM9Y-Dive6VkRWIA-O0AMcRg/s400/Screenshot%2Bfrom%2B2016-04-04%2B19%253A52%253A07.png" width="355" /></a></div><h3><li>Explain the file structure</li></h3>We can specify the following guidelines in structuring the application.  <ul><li>App.js</li><b><i>App.js</i></b> is the entry point for our application. It has the code for the main module (the application module). The file should exist in the root folder. <li><b><i>config.js</i></b> and <b><i>run.js</i></b></li>Each Angular module can have a running block, and a configuration block.<br />We have one file for each.<br /><li>Single responsibility guideline</li>One of the guideline in the Angular community guideline was <a href="https://github.com/johnpapa/angular-styleguide/blob/master/a1/README.md#single-responsibility" target="_blank">Single Responsibility guideline</a>. And as you saw before, by creating a file for the running block and another file for the configuration block, we are following this guideline. <li>A folder for each Angular module</li>Building an Angular applications on module-based design <a href="https://github.com/johnpapa/angular-styleguide/blob/master/a1/README.md#modules" target="_blank">is a good practice that is recommended by the community</a>. And we store each module in a separate folder.<br />In the above example, we have four modules: <b><i>payment</i></b>, <b><i>home</i></b>, <b><i>common</i></b> and <b><i>auth</i></b>.<br />And in case a module has many sub-modules then we create sub-folders for this sub-modules, as in the sub-modules: <b><i>emailLogin</i></b>, <b><i>oauth</i></b> in our module <b><i>auth</i></b>. <li>A separate file for each module component</li>An Angular module can contains: controllers, services, directives.<br />As we said, we follow single responsibility guideline, so we create a file for each component.<br />In the above example we have a file called <b><i>navbar-controller.js</i></b>, which is a directive for the main module. </ul><h3><li>Writing the entry point for main application</li></h3>Let us see now the code inside the app.js file. <pre><code class="language-javascript">// contents of the file app.js
 // -----------------------------------------
 'use strict';
 
@@ -169,25 +172,19 @@ module.exports =
       .controller('singedupCtrl', require('./signedup-controller'))
       .factory('User', require('./user-factory'))
       .directive('compareTo', require('./compareTo-directive')).name;</code></pre>As you can see from the previous code, we configure the module in index.js, and we define all its components using the require statement, which will import the corresponding file. <h3><li>How to make NodeJS modules work in the browser? </li></h3>These NodeJS modules and the require statement work on a file system, which is not going to work in a browser environment.<br />But with the use of tools like Browserify, or Webpack, we can process these nodeJs files into a file that is consumable by the browser.<br />I am not going to explain how these tools work (in this post at least), and I will just show how to do it. I will use the browserify tool as an example: <ol><li>Install browserify using npm</li><pre><code class="language-bash">npm install browserify</code></pre><li>Run browserify</li><pre><code class="language-bash">browserify app.js -o bundle.js</code></pre>As you can see, we only had to specify the app.js file as input.<br />Browserify will figure out the required libraries from the usage of the require statements. </ol></ol>
+      </div>
     </div>
-  </div>
-</div>
-  
-
-  
-
-</article>
+  </article>
 
 
-    <footer class="site-footer">
-<div class="grid">
-<div class="col-3-12">
+      <footer class="site-footer row">
+<div class="column column-25">
   <ul class="contact-list">
           <li>Web matters</li>
           <li><a href="mailto:ghassan.karwchan@gmail.com">ghassan.karwchan@gmail.com</a></li>
   </ul>
 </div>
-<div class="col-3-12">
+<div class="column column-25">
   <ul class="social-media-list">
           
           <li>
@@ -206,14 +203,14 @@ module.exports =
           
         </ul>
 </div>
-<div class="col-6-12">
+<div class="column">
   This web site was built using <a href="https://jekyllrb.com/">Jekyll</a>.<br />
   If you are interest in the code <a href="https://github.com/gkarwchan/BlogWebsite">you can find it here</a>.
 </div>
 
 </footer>
 
-
+    </div>
   </body>
 
 </html>

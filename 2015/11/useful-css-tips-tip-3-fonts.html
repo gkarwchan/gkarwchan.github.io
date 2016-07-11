@@ -8,13 +8,21 @@
 
   <title>CSS Fonts</title>
   <meta name="description" content="The simplist way to use different fonts in your web site is using fonts from the "Web-Safe" fonts[1][2]. But, no impressive design will depend only on these ...">
-  <link href='//fonts.googleapis.com/css?family=Roboto+Condensed' rel='stylesheet' type='text/css'>
-  <link href='//fonts.googleapis.com/css?family=Roboto+Slab' rel='stylesheet' type='text/css'>
+  <!-- Google Fonts -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300italic,700,700italic">
   <link href='//fonts.googleapis.com/css?family=Gloria+Hallelujah' rel='stylesheet' type='text/css'>
   <link href='https://fonts.googleapis.com/css?family=PT+Sans' rel='stylesheet' type='text/css'>
-  <link rel="stylesheet" href="/css/main.css">
-  <link rel="stylesheet" href="/css/simplegrid.min.css">
+  <link href='//fonts.googleapis.com/css?family=Roboto+Condensed' rel='stylesheet' type='text/css'>
+  <link href='//fonts.googleapis.com/css?family=Roboto+Slab' rel='stylesheet' type='text/css'>
+
+  <!-- CSS Reset -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/3.0.3/normalize.css">
+
+  <!-- utilities -->
+  <link rel="stylesheet" href="/css/milligram.min.css" >
   <link rel="stylesheet" href="/css/prism.css">
+
+  <link rel="stylesheet" href="/css/main.css">
   <script src="/js/prism.js"></script>
   <link rel="canonical" href="http://blog.gisspan.com/2015/11/useful-css-tips-tip-3-fonts.html">
   <link rel="alternate" type="application/rss+xml" title="Web matters" href="http://blog.gisspan.com/feed.xml">
@@ -32,95 +40,90 @@
 
 
   <body>
-
-    <header class="site-header">
-
-  <div class="grid">
-    <div class="col-3-12">
-      <a class="site-title" href="/">Web matters</a>
-    </div>
-    <div class="col-9-12">
-      <nav class="site-nav">
-          
-            
-            <a class="page-link" href="/about/">About Me</a>
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-          <a class="page-link" href="/feed.xml"><img src="/img/feed.png" ></img></a>
-      </nav>
-    </div>
+    <div class="container">
+      <header class="site-header row">
+  <div class="column column-25">
+    <a class="site-title" href="/">Web matters</a>
   </div>
-
+  <div class="column">
+    <nav class="site-nav">
+        
+          
+          <a class="page-link" href="/about/">About Me</a>
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        <a class="page-link" href="/feed.xml"><img src="/img/feed.png" ></img></a>
+    </nav>
+  </div>
 </header>
 
 
-        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
-<div class="grid content">
-  <div>
-    <header class="post-header">
-      <h1 class="post-title" itemprop="name headline">CSS Fonts</h1>
-      <p class="post-meta"><time datetime="2015-11-26T16:44:00-07:00" itemprop="datePublished">Nov 26, 2015</time> • <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name">Ghassan Karwchan</span></span></p>
-    </header>
-    <div class="post-content post-font" itemprop="articleBody">
-      The simplist way to use different fonts in your web site is using fonts from the "Web-Safe" fonts[<a href="http://www.w3schools.com/cssref/css_websafe_fonts.asp">1</a>][<a href="https://en.wikipedia.org/wiki/Core_fonts_for_the_Web">2</a>]. <br />But, no impressive design will depend only on these web-safe fonts, and designers add their own preferable fonts to the web site they are building.<!--more-->  <br /><h3>How to add your preferable fonts?</h3>Fonts comes as files that you have to upload to the site, and then reference them in the CSS file.<br />Usually font vendors provide fonts with different formats in order to be consumable by many different browsers.<br /><br />For example, this is the files come with the font "Font Awesome":<br /><div class="separator" style="clear: both; text-align: center;"><a href="http://1.bp.blogspot.com/-4cxiIuvnAdU/VleYGZbXpXI/AAAAAAAADFs/rYg-3A3Id-Q/s1600/fonts.png" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"><img border="0" height="200" src="https://1.bp.blogspot.com/-4cxiIuvnAdU/VleYGZbXpXI/AAAAAAAADFs/rYg-3A3Id-Q/s640/fonts.png" width="640" /></a></div><h3>Using the font files in our web page</h3>After we upload the font files into the web site, we add them into the css files as @font-face rule.<br />The @font-face rule will create the definition for the rule, and later we can use that definition. <br />The syntax to do that is as follows: <br />
+            <article class="post row" itemscope itemtype="http://schema.org/BlogPosting">
+    <div class="content">
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">CSS Fonts</h1>
+        <p class="post-meta"><time datetime="2015-11-26T16:44:00-07:00" itemprop="datePublished">Nov 26, 2015</time> • <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name">Ghassan Karwchan</span></span></p>
+      </header>
+      <div class="post-content post-font" itemprop="articleBody">
+        The simplist way to use different fonts in your web site is using fonts from the "Web-Safe" fonts[<a href="http://www.w3schools.com/cssref/css_websafe_fonts.asp">1</a>][<a href="https://en.wikipedia.org/wiki/Core_fonts_for_the_Web">2</a>]. <br />But, no impressive design will depend only on these web-safe fonts, and designers add their own preferable fonts to the web site they are building.<!--more-->  <br /><h3>How to add your preferable fonts?</h3>Fonts comes as files that you have to upload to the site, and then reference them in the CSS file.<br />Usually font vendors provide fonts with different formats in order to be consumable by many different browsers.<br /><br />For example, this is the files come with the font "Font Awesome":<br /><div class="separator" style="clear: both; text-align: center;"><a href="http://1.bp.blogspot.com/-4cxiIuvnAdU/VleYGZbXpXI/AAAAAAAADFs/rYg-3A3Id-Q/s1600/fonts.png" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"><img border="0" height="200" src="https://1.bp.blogspot.com/-4cxiIuvnAdU/VleYGZbXpXI/AAAAAAAADFs/rYg-3A3Id-Q/s640/fonts.png" width="640" /></a></div><h3>Using the font files in our web page</h3>After we upload the font files into the web site, we add them into the css files as @font-face rule.<br />The @font-face rule will create the definition for the rule, and later we can use that definition. <br />The syntax to do that is as follows: <br />
 <pre><code class="language-css">@font-face {
     font-family: (family-name);
     src: (the url for the font file);
@@ -144,25 +147,19 @@
      url('webfont.ttf')  format('truetype'), /* Safari, Android, iOS */
      url('webfont.svg#svgFontName') format('svg'); /* Legacy iOS */
  }</code></pre>  The order is important, because the browser will pick the first compatible format it incounter. <br />So, it is important to have woff2 format as almost the first one after the IE compatible ones.   
+      </div>
     </div>
-  </div>
-</div>
-  
-
-  
-
-</article>
+  </article>
 
 
-    <footer class="site-footer">
-<div class="grid">
-<div class="col-3-12">
+      <footer class="site-footer row">
+<div class="column column-25">
   <ul class="contact-list">
           <li>Web matters</li>
           <li><a href="mailto:ghassan.karwchan@gmail.com">ghassan.karwchan@gmail.com</a></li>
   </ul>
 </div>
-<div class="col-3-12">
+<div class="column column-25">
   <ul class="social-media-list">
           
           <li>
@@ -181,14 +178,14 @@
           
         </ul>
 </div>
-<div class="col-6-12">
+<div class="column">
   This web site was built using <a href="https://jekyllrb.com/">Jekyll</a>.<br />
   If you are interest in the code <a href="https://github.com/gkarwchan/BlogWebsite">you can find it here</a>.
 </div>
 
 </footer>
 
-
+    </div>
   </body>
 
 </html>

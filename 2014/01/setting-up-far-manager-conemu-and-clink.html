@@ -8,13 +8,21 @@
 
   <title>Setting up Far Manager, ConEmu and Clink: Part 1</title>
   <meta name="description" content="Far Manager is a very powerful windows tools that help manage files and has a wonderful plugin capabilities to run over file system.">
-  <link href='//fonts.googleapis.com/css?family=Roboto+Condensed' rel='stylesheet' type='text/css'>
-  <link href='//fonts.googleapis.com/css?family=Roboto+Slab' rel='stylesheet' type='text/css'>
+  <!-- Google Fonts -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300italic,700,700italic">
   <link href='//fonts.googleapis.com/css?family=Gloria+Hallelujah' rel='stylesheet' type='text/css'>
   <link href='https://fonts.googleapis.com/css?family=PT+Sans' rel='stylesheet' type='text/css'>
-  <link rel="stylesheet" href="/css/main.css">
-  <link rel="stylesheet" href="/css/simplegrid.min.css">
+  <link href='//fonts.googleapis.com/css?family=Roboto+Condensed' rel='stylesheet' type='text/css'>
+  <link href='//fonts.googleapis.com/css?family=Roboto+Slab' rel='stylesheet' type='text/css'>
+
+  <!-- CSS Reset -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/3.0.3/normalize.css">
+
+  <!-- utilities -->
+  <link rel="stylesheet" href="/css/milligram.min.css" >
   <link rel="stylesheet" href="/css/prism.css">
+
+  <link rel="stylesheet" href="/css/main.css">
   <script src="/js/prism.js"></script>
   <link rel="canonical" href="http://blog.gisspan.com/2014/01/setting-up-far-manager-conemu-and-clink.html">
   <link rel="alternate" type="application/rss+xml" title="Web matters" href="http://blog.gisspan.com/feed.xml">
@@ -32,114 +40,103 @@
 
 
   <body>
-
-    <header class="site-header">
-
-  <div class="grid">
-    <div class="col-3-12">
-      <a class="site-title" href="/">Web matters</a>
-    </div>
-    <div class="col-9-12">
-      <nav class="site-nav">
-          
-            
-            <a class="page-link" href="/about/">About Me</a>
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-          <a class="page-link" href="/feed.xml"><img src="/img/feed.png" ></img></a>
-      </nav>
-    </div>
+    <div class="container">
+      <header class="site-header row">
+  <div class="column column-25">
+    <a class="site-title" href="/">Web matters</a>
   </div>
-
+  <div class="column">
+    <nav class="site-nav">
+        
+          
+          <a class="page-link" href="/about/">About Me</a>
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        <a class="page-link" href="/feed.xml"><img src="/img/feed.png" ></img></a>
+    </nav>
+  </div>
 </header>
 
 
-        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
-<div class="grid content">
-  <div>
-    <header class="post-header">
-      <h1 class="post-title" itemprop="name headline">Setting up Far Manager, ConEmu and Clink: Part 1</h1>
-      <p class="post-meta"><time datetime="2014-01-27T11:20:00-07:00" itemprop="datePublished">Jan 27, 2014</time> • <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name">Ghassan Karwchan</span></span></p>
-    </header>
-    <div class="post-content post-font" itemprop="articleBody">
-      <a href="http://www.farmanager.com/">Far Manager</a> is a very powerful windows tools that help manage files and has a wonderful plugin capabilities to run over file system.<!--more--><br />Far Manager combined with <a href="http://code.google.com/p/conemu-maximus5/">ConEmu </a>console application, and the shell application Clink together deliver a wonderful experience in doing your daily jobs and tasks.<br />Unfortunately there is a steep learning curve using and get used to these tools together.<br />In many posts I am going to show how to use and make use of these features, and I will use common tasks in my daily work and show how these tools together are going to help me reduce my work.<br /><br />In first part, I will show how to setup these tools together.<br /><br /><br />1 - First and install, <a href="http://www.farmanager.com/download.php?l=en">download Far Manager</a>: with the default installation folder will be in:<br /><br />&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;C:\Program Files (x86)\Far Manager<br />2 - <a href="http://www.fosshub.com/ConEmu.html">Download ConEmu</a>&nbsp;and unzip the directory<br />&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;There are an executable &nbsp;conemu.exe (both 86 and 64 version), and a directory called conemu, and &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;another directory called "plugins".<br />3 - Copy both conemu.exe to the far manager installation folder (the same where far.exe is located).<br />4 - Copy the folder plugins\conEmu in the zip file into the plugins folder for far manager.<br />5 - Copy the conemu folder to the installation folder of far manger.<br />6 - <a href="https://code.google.com/p/clink/downloads/list">Download Clink application</a><br />7 - unzip click zip file into the a directory under conemu folder that was created in step 5.<br /><br />And you are done.<br />Now, to start far manager/conemu/clink, just call the conemu.exe from step 3.<br />which means if you keep the default far manger installation folder, then to start all just type:<br />c:\program files (x86)\Far manager\conemu.exe<br /><br />This will auto-detect that far manager is installed and will start it, and will auto-detect click is installed and start click in the command line shell.<br /><br /><br /><br />
+            <article class="post row" itemscope itemtype="http://schema.org/BlogPosting">
+    <div class="content">
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">Setting up Far Manager, ConEmu and Clink: Part 1</h1>
+        <p class="post-meta"><time datetime="2014-01-27T11:20:00-07:00" itemprop="datePublished">Jan 27, 2014</time> • <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name">Ghassan Karwchan</span></span></p>
+      </header>
+      <div class="post-content post-font" itemprop="articleBody">
+        <a href="http://www.farmanager.com/">Far Manager</a> is a very powerful windows tools that help manage files and has a wonderful plugin capabilities to run over file system.<!--more--><br />Far Manager combined with <a href="http://code.google.com/p/conemu-maximus5/">ConEmu </a>console application, and the shell application Clink together deliver a wonderful experience in doing your daily jobs and tasks.<br />Unfortunately there is a steep learning curve using and get used to these tools together.<br />In many posts I am going to show how to use and make use of these features, and I will use common tasks in my daily work and show how these tools together are going to help me reduce my work.<br /><br />In first part, I will show how to setup these tools together.<br /><br /><br />1 - First and install, <a href="http://www.farmanager.com/download.php?l=en">download Far Manager</a>: with the default installation folder will be in:<br /><br />&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;C:\Program Files (x86)\Far Manager<br />2 - <a href="http://www.fosshub.com/ConEmu.html">Download ConEmu</a>&nbsp;and unzip the directory<br />&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;There are an executable &nbsp;conemu.exe (both 86 and 64 version), and a directory called conemu, and &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;another directory called "plugins".<br />3 - Copy both conemu.exe to the far manager installation folder (the same where far.exe is located).<br />4 - Copy the folder plugins\conEmu in the zip file into the plugins folder for far manager.<br />5 - Copy the conemu folder to the installation folder of far manger.<br />6 - <a href="https://code.google.com/p/clink/downloads/list">Download Clink application</a><br />7 - unzip click zip file into the a directory under conemu folder that was created in step 5.<br /><br />And you are done.<br />Now, to start far manager/conemu/clink, just call the conemu.exe from step 3.<br />which means if you keep the default far manger installation folder, then to start all just type:<br />c:\program files (x86)\Far manager\conemu.exe<br /><br />This will auto-detect that far manager is installed and will start it, and will auto-detect click is installed and start click in the command line shell.<br /><br /><br /><br />
+      </div>
     </div>
-  </div>
-</div>
-  
-
-  
-
-</article>
+  </article>
 
 
-    <footer class="site-footer">
-<div class="grid">
-<div class="col-3-12">
+      <footer class="site-footer row">
+<div class="column column-25">
   <ul class="contact-list">
           <li>Web matters</li>
           <li><a href="mailto:ghassan.karwchan@gmail.com">ghassan.karwchan@gmail.com</a></li>
   </ul>
 </div>
-<div class="col-3-12">
+<div class="column column-25">
   <ul class="social-media-list">
           
           <li>
@@ -158,14 +155,14 @@
           
         </ul>
 </div>
-<div class="col-6-12">
+<div class="column">
   This web site was built using <a href="https://jekyllrb.com/">Jekyll</a>.<br />
   If you are interest in the code <a href="https://github.com/gkarwchan/BlogWebsite">you can find it here</a>.
 </div>
 
 </footer>
 
-
+    </div>
   </body>
 
 </html>

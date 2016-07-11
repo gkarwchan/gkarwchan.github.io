@@ -8,13 +8,21 @@
 
   <title>Secure your web site with SSL</title>
   <meta name="description" content="In order to secure the web site with SSL, you first need to buy a certificate.A certificate is a document that your website will send back to the browsers as...">
-  <link href='//fonts.googleapis.com/css?family=Roboto+Condensed' rel='stylesheet' type='text/css'>
-  <link href='//fonts.googleapis.com/css?family=Roboto+Slab' rel='stylesheet' type='text/css'>
+  <!-- Google Fonts -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300italic,700,700italic">
   <link href='//fonts.googleapis.com/css?family=Gloria+Hallelujah' rel='stylesheet' type='text/css'>
   <link href='https://fonts.googleapis.com/css?family=PT+Sans' rel='stylesheet' type='text/css'>
-  <link rel="stylesheet" href="/css/main.css">
-  <link rel="stylesheet" href="/css/simplegrid.min.css">
+  <link href='//fonts.googleapis.com/css?family=Roboto+Condensed' rel='stylesheet' type='text/css'>
+  <link href='//fonts.googleapis.com/css?family=Roboto+Slab' rel='stylesheet' type='text/css'>
+
+  <!-- CSS Reset -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/3.0.3/normalize.css">
+
+  <!-- utilities -->
+  <link rel="stylesheet" href="/css/milligram.min.css" >
   <link rel="stylesheet" href="/css/prism.css">
+
+  <link rel="stylesheet" href="/css/main.css">
   <script src="/js/prism.js"></script>
   <link rel="canonical" href="http://blog.gisspan.com/2016/03/secure-your-web-site-with-ssl.html">
   <link rel="alternate" type="application/rss+xml" title="Web matters" href="http://blog.gisspan.com/feed.xml">
@@ -32,114 +40,103 @@
 
 
   <body>
-
-    <header class="site-header">
-
-  <div class="grid">
-    <div class="col-3-12">
-      <a class="site-title" href="/">Web matters</a>
-    </div>
-    <div class="col-9-12">
-      <nav class="site-nav">
-          
-            
-            <a class="page-link" href="/about/">About Me</a>
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-          <a class="page-link" href="/feed.xml"><img src="/img/feed.png" ></img></a>
-      </nav>
-    </div>
+    <div class="container">
+      <header class="site-header row">
+  <div class="column column-25">
+    <a class="site-title" href="/">Web matters</a>
   </div>
-
+  <div class="column">
+    <nav class="site-nav">
+        
+          
+          <a class="page-link" href="/about/">About Me</a>
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        <a class="page-link" href="/feed.xml"><img src="/img/feed.png" ></img></a>
+    </nav>
+  </div>
 </header>
 
 
-        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
-<div class="grid content">
-  <div>
-    <header class="post-header">
-      <h1 class="post-title" itemprop="name headline">Secure your web site with SSL</h1>
-      <p class="post-meta"><time datetime="2016-03-11T08:59:00-07:00" itemprop="datePublished">Mar 11, 2016</time> • <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name">Ghassan Karwchan</span></span></p>
-    </header>
-    <div class="post-content post-font" itemprop="articleBody">
-      In order to secure the web site with SSL, you first need to buy a certificate.<br />A certificate is a document that your website will send back to the browsers as an "Official identification" for your web site, and your business.<!--more--><br />The certificate is issued by certified companies who are called "Certificate Authorities".<br /></p><h3>Types of SSL Certificates </h3> First of all you have to decide which certificate type you should chose for your web site.<br />There are three types: <ol><li>Domain Validation (DV) SSL Certificate</li> This is the simplest type of certificate, where the CA checks only that the applicant owns or has the right to use the domain name.<br /><li>Organization Validation (OV) SSL Certificates</li>The CA checks more about the company owns the domain name, and display more information about the company owns the domain.<br /><li>Extended Validation (EV) SSL Certificate</li> The CA conducts a thorough check on the organization with some standard guidelines defined by the industry.<br />This is usually required for organizations that require to have payments managed by on their own website and their own software. </ol> <h3>Your home work </h3> After you decided what type of certificate you want to buy, you search for a suitable CA authority to buy your certification from.<br />The CA authority requires from your side a request called "Certificate Signing Request" (CSR) <br />There are many ways to generate the CSR. I will describe the process using <a href="https://www.openssl.org/" target="_blank">OpenSSL tools.</a> <br /> First you need to generate a private key.<br /> <pre><code class="language-bash">openssl genrsa -out domain.com.key 2048</code></pre> And then create the CSR:<br /><pre><code class="language-bash">openssl req -new -sha256 -key domain.com.key -out domain.com.csr</code></pre>This will generate the CSR file, which you will send to the CA authority, which in return will send you the certificates.<br /><br />
+            <article class="post row" itemscope itemtype="http://schema.org/BlogPosting">
+    <div class="content">
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">Secure your web site with SSL</h1>
+        <p class="post-meta"><time datetime="2016-03-11T08:59:00-07:00" itemprop="datePublished">Mar 11, 2016</time> • <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name">Ghassan Karwchan</span></span></p>
+      </header>
+      <div class="post-content post-font" itemprop="articleBody">
+        In order to secure the web site with SSL, you first need to buy a certificate.<br />A certificate is a document that your website will send back to the browsers as an "Official identification" for your web site, and your business.<!--more--><br />The certificate is issued by certified companies who are called "Certificate Authorities".<br /></p><h3>Types of SSL Certificates </h3> First of all you have to decide which certificate type you should chose for your web site.<br />There are three types: <ol><li>Domain Validation (DV) SSL Certificate</li> This is the simplest type of certificate, where the CA checks only that the applicant owns or has the right to use the domain name.<br /><li>Organization Validation (OV) SSL Certificates</li>The CA checks more about the company owns the domain name, and display more information about the company owns the domain.<br /><li>Extended Validation (EV) SSL Certificate</li> The CA conducts a thorough check on the organization with some standard guidelines defined by the industry.<br />This is usually required for organizations that require to have payments managed by on their own website and their own software. </ol> <h3>Your home work </h3> After you decided what type of certificate you want to buy, you search for a suitable CA authority to buy your certification from.<br />The CA authority requires from your side a request called "Certificate Signing Request" (CSR) <br />There are many ways to generate the CSR. I will describe the process using <a href="https://www.openssl.org/" target="_blank">OpenSSL tools.</a> <br /> First you need to generate a private key.<br /> <pre><code class="language-bash">openssl genrsa -out domain.com.key 2048</code></pre> And then create the CSR:<br /><pre><code class="language-bash">openssl req -new -sha256 -key domain.com.key -out domain.com.csr</code></pre>This will generate the CSR file, which you will send to the CA authority, which in return will send you the certificates.<br /><br />
+      </div>
     </div>
-  </div>
-</div>
-  
-
-  
-
-</article>
+  </article>
 
 
-    <footer class="site-footer">
-<div class="grid">
-<div class="col-3-12">
+      <footer class="site-footer row">
+<div class="column column-25">
   <ul class="contact-list">
           <li>Web matters</li>
           <li><a href="mailto:ghassan.karwchan@gmail.com">ghassan.karwchan@gmail.com</a></li>
   </ul>
 </div>
-<div class="col-3-12">
+<div class="column column-25">
   <ul class="social-media-list">
           
           <li>
@@ -158,14 +155,14 @@
           
         </ul>
 </div>
-<div class="col-6-12">
+<div class="column">
   This web site was built using <a href="https://jekyllrb.com/">Jekyll</a>.<br />
   If you are interest in the code <a href="https://github.com/gkarwchan/BlogWebsite">you can find it here</a>.
 </div>
 
 </footer>
 
-
+    </div>
   </body>
 
 </html>

@@ -8,13 +8,21 @@
 
   <title>Sublime vs. Atom</title>
   <meta name="description" content="I was doing coding with different programming languages lately with Python, Go, JavaScript, HTML.And I was looking for one IDE that can handle all of these.">
-  <link href='//fonts.googleapis.com/css?family=Roboto+Condensed' rel='stylesheet' type='text/css'>
-  <link href='//fonts.googleapis.com/css?family=Roboto+Slab' rel='stylesheet' type='text/css'>
+  <!-- Google Fonts -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300italic,700,700italic">
   <link href='//fonts.googleapis.com/css?family=Gloria+Hallelujah' rel='stylesheet' type='text/css'>
   <link href='https://fonts.googleapis.com/css?family=PT+Sans' rel='stylesheet' type='text/css'>
-  <link rel="stylesheet" href="/css/main.css">
-  <link rel="stylesheet" href="/css/simplegrid.min.css">
+  <link href='//fonts.googleapis.com/css?family=Roboto+Condensed' rel='stylesheet' type='text/css'>
+  <link href='//fonts.googleapis.com/css?family=Roboto+Slab' rel='stylesheet' type='text/css'>
+
+  <!-- CSS Reset -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/3.0.3/normalize.css">
+
+  <!-- utilities -->
+  <link rel="stylesheet" href="/css/milligram.min.css" >
   <link rel="stylesheet" href="/css/prism.css">
+
+  <link rel="stylesheet" href="/css/main.css">
   <script src="/js/prism.js"></script>
   <link rel="canonical" href="http://blog.gisspan.com/2016/02/sublime-vs-atom.html">
   <link rel="alternate" type="application/rss+xml" title="Web matters" href="http://blog.gisspan.com/feed.xml">
@@ -32,114 +40,103 @@
 
 
   <body>
-
-    <header class="site-header">
-
-  <div class="grid">
-    <div class="col-3-12">
-      <a class="site-title" href="/">Web matters</a>
-    </div>
-    <div class="col-9-12">
-      <nav class="site-nav">
-          
-            
-            <a class="page-link" href="/about/">About Me</a>
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-          <a class="page-link" href="/feed.xml"><img src="/img/feed.png" ></img></a>
-      </nav>
-    </div>
+    <div class="container">
+      <header class="site-header row">
+  <div class="column column-25">
+    <a class="site-title" href="/">Web matters</a>
   </div>
-
+  <div class="column">
+    <nav class="site-nav">
+        
+          
+          <a class="page-link" href="/about/">About Me</a>
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        <a class="page-link" href="/feed.xml"><img src="/img/feed.png" ></img></a>
+    </nav>
+  </div>
 </header>
 
 
-        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
-<div class="grid content">
-  <div>
-    <header class="post-header">
-      <h1 class="post-title" itemprop="name headline">Sublime vs. Atom</h1>
-      <p class="post-meta"><time datetime="2016-02-23T11:27:00-07:00" itemprop="datePublished">Feb 23, 2016</time> • <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name">Ghassan Karwchan</span></span></p>
-    </header>
-    <div class="post-content post-font" itemprop="articleBody">
-      I was doing coding with different programming languages lately with Python, Go, JavaScript, HTML.<br />And I was looking for one IDE that can handle all of these.<!--more--><br />I was attracted to editors like Sublime and Atom because they are simple, comparing to Eclipse.<br />I started with Atom because it is fully free, and I used it for few months doing HTML, JavaScript, and Go. </p><p><h3>Atom Experience</h3>My experience was not pleasant at all.<br />I had to switch between many JavaScript/HTML plugins to find a plugin that provide a proper highlighting and code navigation on the mouse click.<br />I was not happy with many plugins I found, and maybe if I spent more time I could find the proper plugins I want.<br />And with Go, it was really a horrible experience.<br />The Go plugins in Atom are buggy, and you cannot trust them at all, and you might end up with broken code.<br />One particular Go-plugin that handles dependencies for you, and write down your import section depending on your dependencies.<br>but it was horrible.<br />Any small missing element in the configuration, and it will change your dependencies that you wrote and will change your code.<br />The code navigation never worked, even the documentation claimed it should work, and maybe if I spent more time trying to figure out the proper configuration for that plugin, I could make it work. </p> <h3>Sublime Experience</h3>When I switched to Sublime, I felt immediate relieve.<br />All built-in plugins work perfectly, as expected.<br />The built-in plugins provide less features than Atom ones, but they are stable, and you can count on them working.<br /><p>As I said, maybe if I spent more time with Atom to make it work, I could solve the issues, but why you have to spend time when all what you need in Sublime is just install it.<br /></p>
+            <article class="post row" itemscope itemtype="http://schema.org/BlogPosting">
+    <div class="content">
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">Sublime vs. Atom</h1>
+        <p class="post-meta"><time datetime="2016-02-23T11:27:00-07:00" itemprop="datePublished">Feb 23, 2016</time> • <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name">Ghassan Karwchan</span></span></p>
+      </header>
+      <div class="post-content post-font" itemprop="articleBody">
+        I was doing coding with different programming languages lately with Python, Go, JavaScript, HTML.<br />And I was looking for one IDE that can handle all of these.<!--more--><br />I was attracted to editors like Sublime and Atom because they are simple, comparing to Eclipse.<br />I started with Atom because it is fully free, and I used it for few months doing HTML, JavaScript, and Go. </p><p><h3>Atom Experience</h3>My experience was not pleasant at all.<br />I had to switch between many JavaScript/HTML plugins to find a plugin that provide a proper highlighting and code navigation on the mouse click.<br />I was not happy with many plugins I found, and maybe if I spent more time I could find the proper plugins I want.<br />And with Go, it was really a horrible experience.<br />The Go plugins in Atom are buggy, and you cannot trust them at all, and you might end up with broken code.<br />One particular Go-plugin that handles dependencies for you, and write down your import section depending on your dependencies.<br>but it was horrible.<br />Any small missing element in the configuration, and it will change your dependencies that you wrote and will change your code.<br />The code navigation never worked, even the documentation claimed it should work, and maybe if I spent more time trying to figure out the proper configuration for that plugin, I could make it work. </p> <h3>Sublime Experience</h3>When I switched to Sublime, I felt immediate relieve.<br />All built-in plugins work perfectly, as expected.<br />The built-in plugins provide less features than Atom ones, but they are stable, and you can count on them working.<br /><p>As I said, maybe if I spent more time with Atom to make it work, I could solve the issues, but why you have to spend time when all what you need in Sublime is just install it.<br /></p>
+      </div>
     </div>
-  </div>
-</div>
-  
-
-  
-
-</article>
+  </article>
 
 
-    <footer class="site-footer">
-<div class="grid">
-<div class="col-3-12">
+      <footer class="site-footer row">
+<div class="column column-25">
   <ul class="contact-list">
           <li>Web matters</li>
           <li><a href="mailto:ghassan.karwchan@gmail.com">ghassan.karwchan@gmail.com</a></li>
   </ul>
 </div>
-<div class="col-3-12">
+<div class="column column-25">
   <ul class="social-media-list">
           
           <li>
@@ -158,14 +155,14 @@
           
         </ul>
 </div>
-<div class="col-6-12">
+<div class="column">
   This web site was built using <a href="https://jekyllrb.com/">Jekyll</a>.<br />
   If you are interest in the code <a href="https://github.com/gkarwchan/BlogWebsite">you can find it here</a>.
 </div>
 
 </footer>
 
-
+    </div>
   </body>
 
 </html>

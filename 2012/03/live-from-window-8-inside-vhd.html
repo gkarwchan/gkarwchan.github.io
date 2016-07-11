@@ -8,13 +8,21 @@
 
   <title>Installing Windows 8 on VHD</title>
   <meta name="description" content="Wow!!I had a wonderful experience installing Windows 8 on VHD today on my machine.I followed the perfect guide from Scott Hanselman on how to install Windows...">
-  <link href='//fonts.googleapis.com/css?family=Roboto+Condensed' rel='stylesheet' type='text/css'>
-  <link href='//fonts.googleapis.com/css?family=Roboto+Slab' rel='stylesheet' type='text/css'>
+  <!-- Google Fonts -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300italic,700,700italic">
   <link href='//fonts.googleapis.com/css?family=Gloria+Hallelujah' rel='stylesheet' type='text/css'>
   <link href='https://fonts.googleapis.com/css?family=PT+Sans' rel='stylesheet' type='text/css'>
-  <link rel="stylesheet" href="/css/main.css">
-  <link rel="stylesheet" href="/css/simplegrid.min.css">
+  <link href='//fonts.googleapis.com/css?family=Roboto+Condensed' rel='stylesheet' type='text/css'>
+  <link href='//fonts.googleapis.com/css?family=Roboto+Slab' rel='stylesheet' type='text/css'>
+
+  <!-- CSS Reset -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/3.0.3/normalize.css">
+
+  <!-- utilities -->
+  <link rel="stylesheet" href="/css/milligram.min.css" >
   <link rel="stylesheet" href="/css/prism.css">
+
+  <link rel="stylesheet" href="/css/main.css">
   <script src="/js/prism.js"></script>
   <link rel="canonical" href="http://blog.gisspan.com/2012/03/live-from-window-8-inside-vhd.html">
   <link rel="alternate" type="application/rss+xml" title="Web matters" href="http://blog.gisspan.com/feed.xml">
@@ -32,114 +40,103 @@
 
 
   <body>
-
-    <header class="site-header">
-
-  <div class="grid">
-    <div class="col-3-12">
-      <a class="site-title" href="/">Web matters</a>
-    </div>
-    <div class="col-9-12">
-      <nav class="site-nav">
-          
-            
-            <a class="page-link" href="/about/">About Me</a>
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-          <a class="page-link" href="/feed.xml"><img src="/img/feed.png" ></img></a>
-      </nav>
-    </div>
+    <div class="container">
+      <header class="site-header row">
+  <div class="column column-25">
+    <a class="site-title" href="/">Web matters</a>
   </div>
-
+  <div class="column">
+    <nav class="site-nav">
+        
+          
+          <a class="page-link" href="/about/">About Me</a>
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        <a class="page-link" href="/feed.xml"><img src="/img/feed.png" ></img></a>
+    </nav>
+  </div>
 </header>
 
 
-        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
-<div class="grid content">
-  <div>
-    <header class="post-header">
-      <h1 class="post-title" itemprop="name headline">Installing Windows 8 on VHD</h1>
-      <p class="post-meta"><time datetime="2012-03-07T21:47:00-07:00" itemprop="datePublished">Mar 7, 2012</time> • <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name">Ghassan Karwchan</span></span></p>
-    </header>
-    <div class="post-content post-font" itemprop="articleBody">
-      Wow!!<br />I had a wonderful experience installing Windows 8 on VHD today on my machine.<br />I followed the perfect guide from <a href="http://www.hanselman.com/blog/">Scott Hanselman</a> on <a href="http://www.hanselman.com/blog/HowToGuideToInstallingAndBootingWindows8ConsumerPreviewOffAVHDVirtualHardDisk.aspx">how to install Windows 8 on Virtual Hard Drive.</a><!--more--><br /><br />The feature of Virtual Hard Drive in windows 7, and the notion that you can create a bootable windows OS from it, is something beyond amazing, and it is astonishing.<br /><br />It is so amazing, because you can build a whole machine, that contains the OS, and add many other applications, while keeping all that software stored in just one file in the parent operating system.<br /><br />I know it might look like a virtual machine, but it is better, because the new OS runs without the parent operating system, and actually there is no parent operating system.<br /><br />It runs "naturally" on the machine accessing all its devices.<br /><br />It is like dual booting, but better, and it is like a virtual machine but better.<br /><br />It combines the good part of virtual machine, and the good part of dual booting.<br /><br />excerpting from<a href="http://www.hanselman.com/blog/LessVirtualMoreMachineWindows7AndTheMagicOfBootToVHD.aspx"> Scott Hanselman post </a><br /><br />Virtualization vs. Dual booting:<br /><br /><u>Multiboot:</u><br /><br /><ul><li>Good performance (runs natively on the machine, no extra abstraction layers)</li><li>Good hardware integration (everything that is built into or attached to the machine is visible to the running OS)</li><li>Clunky setup (different boot loaders overwriting each other, partitions cannot easily be resized or moved around)</li></ul><br /><u>Virtualisation</u><br /><br /><ul><li>Very flexible (only takes up as much hard disk space as the solution requires)</li><li>Can run virtually any Operating System</li><li>Non-Optimal performance (running piggyback off another Operating System, consuming resource in both)</li><li>Marginal hardware integration (all major system components are virtual only; depending on the virtualisation solution, SOME components might be surfaced inside the virtual machine)</li></ul><br />So, the<a href="http://blogs.msdn.com/b/knom/archive/2009/04/07/windows-7-vhd-boot-setup-guideline.aspx"> boot from VHD</a> will have to pros of both, avoiding the cons of both<br /><br />And if you don't like the new OS, just delete the file.<br />Isn't that the magic itself?
+            <article class="post row" itemscope itemtype="http://schema.org/BlogPosting">
+    <div class="content">
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">Installing Windows 8 on VHD</h1>
+        <p class="post-meta"><time datetime="2012-03-07T21:47:00-07:00" itemprop="datePublished">Mar 7, 2012</time> • <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name">Ghassan Karwchan</span></span></p>
+      </header>
+      <div class="post-content post-font" itemprop="articleBody">
+        Wow!!<br />I had a wonderful experience installing Windows 8 on VHD today on my machine.<br />I followed the perfect guide from <a href="http://www.hanselman.com/blog/">Scott Hanselman</a> on <a href="http://www.hanselman.com/blog/HowToGuideToInstallingAndBootingWindows8ConsumerPreviewOffAVHDVirtualHardDisk.aspx">how to install Windows 8 on Virtual Hard Drive.</a><!--more--><br /><br />The feature of Virtual Hard Drive in windows 7, and the notion that you can create a bootable windows OS from it, is something beyond amazing, and it is astonishing.<br /><br />It is so amazing, because you can build a whole machine, that contains the OS, and add many other applications, while keeping all that software stored in just one file in the parent operating system.<br /><br />I know it might look like a virtual machine, but it is better, because the new OS runs without the parent operating system, and actually there is no parent operating system.<br /><br />It runs "naturally" on the machine accessing all its devices.<br /><br />It is like dual booting, but better, and it is like a virtual machine but better.<br /><br />It combines the good part of virtual machine, and the good part of dual booting.<br /><br />excerpting from<a href="http://www.hanselman.com/blog/LessVirtualMoreMachineWindows7AndTheMagicOfBootToVHD.aspx"> Scott Hanselman post </a><br /><br />Virtualization vs. Dual booting:<br /><br /><u>Multiboot:</u><br /><br /><ul><li>Good performance (runs natively on the machine, no extra abstraction layers)</li><li>Good hardware integration (everything that is built into or attached to the machine is visible to the running OS)</li><li>Clunky setup (different boot loaders overwriting each other, partitions cannot easily be resized or moved around)</li></ul><br /><u>Virtualisation</u><br /><br /><ul><li>Very flexible (only takes up as much hard disk space as the solution requires)</li><li>Can run virtually any Operating System</li><li>Non-Optimal performance (running piggyback off another Operating System, consuming resource in both)</li><li>Marginal hardware integration (all major system components are virtual only; depending on the virtualisation solution, SOME components might be surfaced inside the virtual machine)</li></ul><br />So, the<a href="http://blogs.msdn.com/b/knom/archive/2009/04/07/windows-7-vhd-boot-setup-guideline.aspx"> boot from VHD</a> will have to pros of both, avoiding the cons of both<br /><br />And if you don't like the new OS, just delete the file.<br />Isn't that the magic itself?
+      </div>
     </div>
-  </div>
-</div>
-  
-
-  
-
-</article>
+  </article>
 
 
-    <footer class="site-footer">
-<div class="grid">
-<div class="col-3-12">
+      <footer class="site-footer row">
+<div class="column column-25">
   <ul class="contact-list">
           <li>Web matters</li>
           <li><a href="mailto:ghassan.karwchan@gmail.com">ghassan.karwchan@gmail.com</a></li>
   </ul>
 </div>
-<div class="col-3-12">
+<div class="column column-25">
   <ul class="social-media-list">
           
           <li>
@@ -158,14 +155,14 @@
           
         </ul>
 </div>
-<div class="col-6-12">
+<div class="column">
   This web site was built using <a href="https://jekyllrb.com/">Jekyll</a>.<br />
   If you are interest in the code <a href="https://github.com/gkarwchan/BlogWebsite">you can find it here</a>.
 </div>
 
 </footer>
 
-
+    </div>
   </body>
 
 </html>

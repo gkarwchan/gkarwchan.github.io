@@ -8,13 +8,21 @@
 
   <title>ECMAScript 2015 (ES6) Classes</title>
   <meta name="description" content="The new Class keyword in EcmaScript 2015 (former name ES6) is nothing but more confusion for programmers.It is just a syntactical sugar over the existing  Ja...">
-  <link href='//fonts.googleapis.com/css?family=Roboto+Condensed' rel='stylesheet' type='text/css'>
-  <link href='//fonts.googleapis.com/css?family=Roboto+Slab' rel='stylesheet' type='text/css'>
+  <!-- Google Fonts -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300italic,700,700italic">
   <link href='//fonts.googleapis.com/css?family=Gloria+Hallelujah' rel='stylesheet' type='text/css'>
   <link href='https://fonts.googleapis.com/css?family=PT+Sans' rel='stylesheet' type='text/css'>
-  <link rel="stylesheet" href="/css/main.css">
-  <link rel="stylesheet" href="/css/simplegrid.min.css">
+  <link href='//fonts.googleapis.com/css?family=Roboto+Condensed' rel='stylesheet' type='text/css'>
+  <link href='//fonts.googleapis.com/css?family=Roboto+Slab' rel='stylesheet' type='text/css'>
+
+  <!-- CSS Reset -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/3.0.3/normalize.css">
+
+  <!-- utilities -->
+  <link rel="stylesheet" href="/css/milligram.min.css" >
   <link rel="stylesheet" href="/css/prism.css">
+
+  <link rel="stylesheet" href="/css/main.css">
   <script src="/js/prism.js"></script>
   <link rel="canonical" href="http://blog.gisspan.com/2016/01/ecmascript-2015-es6-classes.html">
   <link rel="alternate" type="application/rss+xml" title="Web matters" href="http://blog.gisspan.com/feed.xml">
@@ -32,95 +40,90 @@
 
 
   <body>
-
-    <header class="site-header">
-
-  <div class="grid">
-    <div class="col-3-12">
-      <a class="site-title" href="/">Web matters</a>
-    </div>
-    <div class="col-9-12">
-      <nav class="site-nav">
-          
-            
-            <a class="page-link" href="/about/">About Me</a>
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-          <a class="page-link" href="/feed.xml"><img src="/img/feed.png" ></img></a>
-      </nav>
-    </div>
+    <div class="container">
+      <header class="site-header row">
+  <div class="column column-25">
+    <a class="site-title" href="/">Web matters</a>
   </div>
-
+  <div class="column">
+    <nav class="site-nav">
+        
+          
+          <a class="page-link" href="/about/">About Me</a>
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        <a class="page-link" href="/feed.xml"><img src="/img/feed.png" ></img></a>
+    </nav>
+  </div>
 </header>
 
 
-        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
-<div class="grid content">
-  <div>
-    <header class="post-header">
-      <h1 class="post-title" itemprop="name headline">ECMAScript 2015 (ES6) Classes</h1>
-      <p class="post-meta"><time datetime="2016-01-19T16:11:00-07:00" itemprop="datePublished">Jan 19, 2016</time> • <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name">Ghassan Karwchan</span></span></p>
-    </header>
-    <div class="post-content post-font" itemprop="articleBody">
-      The new <a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Classes" target="_blank">Class keyword</a> in EcmaScript 2015 (former name ES6) is nothing but more confusion for programmers.<br />It is just a syntactical sugar over the existing <a href="http://javascript.info/tutorial/all-one-constructor-pattern"> Javascript's constructor pattern</a> for creating objects, which is already a great confusion for Javascript developers.<!--more--><br /> JavaScript is not a classical Class/Object language, and its OOP doesn't share the same paradigm.<br /> <h3>How JavaScript OOP is different? </h3>OOP in JavaScript is prototypal based, which means there is only objects in JavaScript, and inheritance means objects inherits from existing objects. <br />But when JavaScript was designed, most of developers know OOP as class/object, and JavaScript creator wanted to sell the language to the wide development team, so he introduced the constructor pattern with the <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/new" target="_blank">"new" operator</a>.<br /><h3>What the prototypal-way to create an object?</h3>The prototypal-way of creating new objects is by just using object literal, and to inherit from existing object is to use the <a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Object/create">Object.create</a> which was introduced in EcmaScript 5. <br/> as an example:  
+            <article class="post row" itemscope itemtype="http://schema.org/BlogPosting">
+    <div class="content">
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">ECMAScript 2015 (ES6) Classes</h1>
+        <p class="post-meta"><time datetime="2016-01-19T16:11:00-07:00" itemprop="datePublished">Jan 19, 2016</time> • <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name">Ghassan Karwchan</span></span></p>
+      </header>
+      <div class="post-content post-font" itemprop="articleBody">
+        The new <a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Classes" target="_blank">Class keyword</a> in EcmaScript 2015 (former name ES6) is nothing but more confusion for programmers.<br />It is just a syntactical sugar over the existing <a href="http://javascript.info/tutorial/all-one-constructor-pattern"> Javascript's constructor pattern</a> for creating objects, which is already a great confusion for Javascript developers.<!--more--><br /> JavaScript is not a classical Class/Object language, and its OOP doesn't share the same paradigm.<br /> <h3>How JavaScript OOP is different? </h3>OOP in JavaScript is prototypal based, which means there is only objects in JavaScript, and inheritance means objects inherits from existing objects. <br />But when JavaScript was designed, most of developers know OOP as class/object, and JavaScript creator wanted to sell the language to the wide development team, so he introduced the constructor pattern with the <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/new" target="_blank">"new" operator</a>.<br /><h3>What the prototypal-way to create an object?</h3>The prototypal-way of creating new objects is by just using object literal, and to inherit from existing object is to use the <a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Object/create">Object.create</a> which was introduced in EcmaScript 5. <br/> as an example:  
 <pre class="line-numbers"><code class="language-javascript">var animal = {
     name: 'animal',
     sound: function() {
@@ -132,25 +135,19 @@ var cat = Object.create(animal);
 cat.sound = function() {
     console.log('cat sound');
 };</code></pre> 
+      </div>
     </div>
-  </div>
-</div>
-  
-
-  
-
-</article>
+  </article>
 
 
-    <footer class="site-footer">
-<div class="grid">
-<div class="col-3-12">
+      <footer class="site-footer row">
+<div class="column column-25">
   <ul class="contact-list">
           <li>Web matters</li>
           <li><a href="mailto:ghassan.karwchan@gmail.com">ghassan.karwchan@gmail.com</a></li>
   </ul>
 </div>
-<div class="col-3-12">
+<div class="column column-25">
   <ul class="social-media-list">
           
           <li>
@@ -169,14 +166,14 @@ cat.sound = function() {
           
         </ul>
 </div>
-<div class="col-6-12">
+<div class="column">
   This web site was built using <a href="https://jekyllrb.com/">Jekyll</a>.<br />
   If you are interest in the code <a href="https://github.com/gkarwchan/BlogWebsite">you can find it here</a>.
 </div>
 
 </footer>
 
-
+    </div>
   </body>
 
 </html>

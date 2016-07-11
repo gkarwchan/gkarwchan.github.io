@@ -8,13 +8,21 @@
 
   <title>Using Dojo Inheritance to structure your ArcGIS JavaScript web application</title>
   <meta name="description" content="This is my first post related to ESRI JavaScript API to build map-based web applications.So, I am learning to use ArcGIS JavaScript API to build a map based ...">
-  <link href='//fonts.googleapis.com/css?family=Roboto+Condensed' rel='stylesheet' type='text/css'>
-  <link href='//fonts.googleapis.com/css?family=Roboto+Slab' rel='stylesheet' type='text/css'>
+  <!-- Google Fonts -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300italic,700,700italic">
   <link href='//fonts.googleapis.com/css?family=Gloria+Hallelujah' rel='stylesheet' type='text/css'>
   <link href='https://fonts.googleapis.com/css?family=PT+Sans' rel='stylesheet' type='text/css'>
-  <link rel="stylesheet" href="/css/main.css">
-  <link rel="stylesheet" href="/css/simplegrid.min.css">
+  <link href='//fonts.googleapis.com/css?family=Roboto+Condensed' rel='stylesheet' type='text/css'>
+  <link href='//fonts.googleapis.com/css?family=Roboto+Slab' rel='stylesheet' type='text/css'>
+
+  <!-- CSS Reset -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/3.0.3/normalize.css">
+
+  <!-- utilities -->
+  <link rel="stylesheet" href="/css/milligram.min.css" >
   <link rel="stylesheet" href="/css/prism.css">
+
+  <link rel="stylesheet" href="/css/main.css">
   <script src="/js/prism.js"></script>
   <link rel="canonical" href="http://blog.gisspan.com/2012/04/inheritance-in-dojo-and-how-to-use-it.html">
   <link rel="alternate" type="application/rss+xml" title="Web matters" href="http://blog.gisspan.com/feed.xml">
@@ -32,114 +40,103 @@
 
 
   <body>
-
-    <header class="site-header">
-
-  <div class="grid">
-    <div class="col-3-12">
-      <a class="site-title" href="/">Web matters</a>
-    </div>
-    <div class="col-9-12">
-      <nav class="site-nav">
-          
-            
-            <a class="page-link" href="/about/">About Me</a>
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-          <a class="page-link" href="/feed.xml"><img src="/img/feed.png" ></img></a>
-      </nav>
-    </div>
+    <div class="container">
+      <header class="site-header row">
+  <div class="column column-25">
+    <a class="site-title" href="/">Web matters</a>
   </div>
-
+  <div class="column">
+    <nav class="site-nav">
+        
+          
+          <a class="page-link" href="/about/">About Me</a>
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        <a class="page-link" href="/feed.xml"><img src="/img/feed.png" ></img></a>
+    </nav>
+  </div>
 </header>
 
 
-        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
-<div class="grid content">
-  <div>
-    <header class="post-header">
-      <h1 class="post-title" itemprop="name headline">Using Dojo Inheritance to structure your ArcGIS JavaScript web application</h1>
-      <p class="post-meta"><time datetime="2012-04-13T16:06:00-06:00" itemprop="datePublished">Apr 13, 2012</time> • <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name">Ghassan Karwchan</span></span></p>
-    </header>
-    <div class="post-content post-font" itemprop="articleBody">
-      This is my first post related to <a href="http://help.arcgis.com/en/webapi/javascript/arcgis/">ESRI JavaScript API</a> to build map-based web applications.<br />So, I am learning to use <a href="http://help.arcgis.com/en/webapi/javascript/arcgis/">ArcGIS JavaScript API</a> to build a map based application.<!--more--><br />The create a basic map and set its extent, you usually write this code:<br /><pre class="brush: js">var ext = new esri.geometry.Extent({<br />        "xmin": -8869000,<br />        "ymin": 5689000,<br />        "xmax": -7303000,<br />        "ymax": 6639000,<br />        "spatialReference": {<br />            "wkid": 102100<br />        }<br />    });<br /><br />    var map = new esri.Map("map", {<br />        "extent": ext,<br />        "slider": false<br />    });<br />    <br />    var basemap = new esri.layers.ArcGISTiledMapServiceLayer("http://services.arcgisonline.com/<br />ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer");<br />    map.addLayer(basemap);<br /><br /><br /><br /></pre><br />The above code is doing the following: <br /><br /><ol><li>Create the extent of the map.</li><li>Create the map object.</li><li>Set the map extent, and set the spatial map data (in ESRI terms called Layers) that we want to publish in the map.</li></ol><br />Now, with ESRI, any more required functionality that we want to add it to this map, we should add it to the same map object. And&nbsp;with more functionality, you will end up with a huge script in the same class the define the map object.<br /><br />So, I was thinking how to refactor that code.<br />One idea was to take out the code that set the extent and layers to its own map object.<br />This refactor will give me these benefits:<br /><br /><ol><li>I can re-use the code in the future, because the code that will probably change, is the code that set the extent and the desired layers. So by separating that code in its own class, I can reuse the functionality without change.</li><li>By separating the code, I can give meaningful names for the classes, that help&nbsp;dismantle the huge code that has everything in the map class.</li></ol><br />So, I will have a class called "MapExtentSetter", which when I create it , will create esri.map, with extent and layers that match the desired area and data.<br /><br />The final code for that class is going to be:<br /><pre class="brush: js">dojo.declare("MapExtentSetter", esri.Map, {<br />   constructor: function (divId) {<br />       this.extent = new esri.geometry.Extent({<br />            "xmin": -8869000,<br />            "ymin": 5689000,<br />            "xmax": -7303000,<br />            "ymax": 6639000,<br />            "spatialReference": {<br />                "wkid": 102100<br />            }<br />        });<br />        <br />        this.infoWindow = new esri.dijit.Popup(null, dojo.create("div"));<br />        this.slider = false;<br />        var basemap = new esri.layers.ArcGISTiledMapServiceLayer("http://services.arcgisonline.com/<br />ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer");<br />        this.addLayer(basemap);<br />   } <br />});<br /><br /></pre><br />The above code defined a class called "MapExtentSetter" , which will create the esri.map that is configured to show the desired extent and data.<br />Then to use it, I will write the following code:<br /><br /><br /><pre class="brush: js">var mapObject = new MapExtentSetter("mapDiv");<br />/* where mapDiv is the html DIV's id that will contains the map */<br /></pre><br />cool, isn't it?
+            <article class="post row" itemscope itemtype="http://schema.org/BlogPosting">
+    <div class="content">
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">Using Dojo Inheritance to structure your ArcGIS JavaScript web application</h1>
+        <p class="post-meta"><time datetime="2012-04-13T16:06:00-06:00" itemprop="datePublished">Apr 13, 2012</time> • <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name">Ghassan Karwchan</span></span></p>
+      </header>
+      <div class="post-content post-font" itemprop="articleBody">
+        This is my first post related to <a href="http://help.arcgis.com/en/webapi/javascript/arcgis/">ESRI JavaScript API</a> to build map-based web applications.<br />So, I am learning to use <a href="http://help.arcgis.com/en/webapi/javascript/arcgis/">ArcGIS JavaScript API</a> to build a map based application.<!--more--><br />The create a basic map and set its extent, you usually write this code:<br /><pre class="brush: js">var ext = new esri.geometry.Extent({<br />        "xmin": -8869000,<br />        "ymin": 5689000,<br />        "xmax": -7303000,<br />        "ymax": 6639000,<br />        "spatialReference": {<br />            "wkid": 102100<br />        }<br />    });<br /><br />    var map = new esri.Map("map", {<br />        "extent": ext,<br />        "slider": false<br />    });<br />    <br />    var basemap = new esri.layers.ArcGISTiledMapServiceLayer("http://services.arcgisonline.com/<br />ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer");<br />    map.addLayer(basemap);<br /><br /><br /><br /></pre><br />The above code is doing the following: <br /><br /><ol><li>Create the extent of the map.</li><li>Create the map object.</li><li>Set the map extent, and set the spatial map data (in ESRI terms called Layers) that we want to publish in the map.</li></ol><br />Now, with ESRI, any more required functionality that we want to add it to this map, we should add it to the same map object. And&nbsp;with more functionality, you will end up with a huge script in the same class the define the map object.<br /><br />So, I was thinking how to refactor that code.<br />One idea was to take out the code that set the extent and layers to its own map object.<br />This refactor will give me these benefits:<br /><br /><ol><li>I can re-use the code in the future, because the code that will probably change, is the code that set the extent and the desired layers. So by separating that code in its own class, I can reuse the functionality without change.</li><li>By separating the code, I can give meaningful names for the classes, that help&nbsp;dismantle the huge code that has everything in the map class.</li></ol><br />So, I will have a class called "MapExtentSetter", which when I create it , will create esri.map, with extent and layers that match the desired area and data.<br /><br />The final code for that class is going to be:<br /><pre class="brush: js">dojo.declare("MapExtentSetter", esri.Map, {<br />   constructor: function (divId) {<br />       this.extent = new esri.geometry.Extent({<br />            "xmin": -8869000,<br />            "ymin": 5689000,<br />            "xmax": -7303000,<br />            "ymax": 6639000,<br />            "spatialReference": {<br />                "wkid": 102100<br />            }<br />        });<br />        <br />        this.infoWindow = new esri.dijit.Popup(null, dojo.create("div"));<br />        this.slider = false;<br />        var basemap = new esri.layers.ArcGISTiledMapServiceLayer("http://services.arcgisonline.com/<br />ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer");<br />        this.addLayer(basemap);<br />   } <br />});<br /><br /></pre><br />The above code defined a class called "MapExtentSetter" , which will create the esri.map that is configured to show the desired extent and data.<br />Then to use it, I will write the following code:<br /><br /><br /><pre class="brush: js">var mapObject = new MapExtentSetter("mapDiv");<br />/* where mapDiv is the html DIV's id that will contains the map */<br /></pre><br />cool, isn't it?
+      </div>
     </div>
-  </div>
-</div>
-  
-
-  
-
-</article>
+  </article>
 
 
-    <footer class="site-footer">
-<div class="grid">
-<div class="col-3-12">
+      <footer class="site-footer row">
+<div class="column column-25">
   <ul class="contact-list">
           <li>Web matters</li>
           <li><a href="mailto:ghassan.karwchan@gmail.com">ghassan.karwchan@gmail.com</a></li>
   </ul>
 </div>
-<div class="col-3-12">
+<div class="column column-25">
   <ul class="social-media-list">
           
           <li>
@@ -158,14 +155,14 @@
           
         </ul>
 </div>
-<div class="col-6-12">
+<div class="column">
   This web site was built using <a href="https://jekyllrb.com/">Jekyll</a>.<br />
   If you are interest in the code <a href="https://github.com/gkarwchan/BlogWebsite">you can find it here</a>.
 </div>
 
 </footer>
 
-
+    </div>
   </body>
 
 </html>

@@ -8,13 +8,21 @@
 
   <title>NHibernate and  log4net on Windows Azure websites</title>
   <meta name="description" content="If you are trying to use NHibernate/log4net with Azure websites site then you should consider these items.">
-  <link href='//fonts.googleapis.com/css?family=Roboto+Condensed' rel='stylesheet' type='text/css'>
-  <link href='//fonts.googleapis.com/css?family=Roboto+Slab' rel='stylesheet' type='text/css'>
+  <!-- Google Fonts -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300italic,700,700italic">
   <link href='//fonts.googleapis.com/css?family=Gloria+Hallelujah' rel='stylesheet' type='text/css'>
   <link href='https://fonts.googleapis.com/css?family=PT+Sans' rel='stylesheet' type='text/css'>
-  <link rel="stylesheet" href="/css/main.css">
-  <link rel="stylesheet" href="/css/simplegrid.min.css">
+  <link href='//fonts.googleapis.com/css?family=Roboto+Condensed' rel='stylesheet' type='text/css'>
+  <link href='//fonts.googleapis.com/css?family=Roboto+Slab' rel='stylesheet' type='text/css'>
+
+  <!-- CSS Reset -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/3.0.3/normalize.css">
+
+  <!-- utilities -->
+  <link rel="stylesheet" href="/css/milligram.min.css" >
   <link rel="stylesheet" href="/css/prism.css">
+
+  <link rel="stylesheet" href="/css/main.css">
   <script src="/js/prism.js"></script>
   <link rel="canonical" href="http://blog.gisspan.com/2013/09/nhibernate-and-log4net-on-windows-azure.html">
   <link rel="alternate" type="application/rss+xml" title="Web matters" href="http://blog.gisspan.com/feed.xml">
@@ -32,114 +40,103 @@
 
 
   <body>
-
-    <header class="site-header">
-
-  <div class="grid">
-    <div class="col-3-12">
-      <a class="site-title" href="/">Web matters</a>
-    </div>
-    <div class="col-9-12">
-      <nav class="site-nav">
-          
-            
-            <a class="page-link" href="/about/">About Me</a>
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-          <a class="page-link" href="/feed.xml"><img src="/img/feed.png" ></img></a>
-      </nav>
-    </div>
+    <div class="container">
+      <header class="site-header row">
+  <div class="column column-25">
+    <a class="site-title" href="/">Web matters</a>
   </div>
-
+  <div class="column">
+    <nav class="site-nav">
+        
+          
+          <a class="page-link" href="/about/">About Me</a>
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        <a class="page-link" href="/feed.xml"><img src="/img/feed.png" ></img></a>
+    </nav>
+  </div>
 </header>
 
 
-        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
-<div class="grid content">
-  <div>
-    <header class="post-header">
-      <h1 class="post-title" itemprop="name headline">NHibernate and  log4net on Windows Azure websites</h1>
-      <p class="post-meta"><time datetime="2013-09-17T22:13:00-06:00" itemprop="datePublished">Sep 17, 2013</time> • <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name">Ghassan Karwchan</span></span></p>
-    </header>
-    <div class="post-content post-font" itemprop="articleBody">
-      If you are trying to use NHibernate/log4net with Azure websites site then you should consider these items.<!--more--><br /><br /><br /><ol><li>As it is obvious, you cannot store any local files into windows azure web sites, without defining a local storage resource. So the easiest way to define log4net, is to use sql logger, which will work fine with SQL Azure, with no modification except for the connection string.</li><li>Make sure to download the 32 bit version of NHibernate and log4net, because the free windows Azure websites, or the ones that you get from your MSDN account, are 32 bit only.</li><li>To make sure your are downloading the 32 bit version with nuGet, target your build on 32 bit build, and then use the command "Install-Package".</li><li>if you ever encounter a problem regarding loading the assemblies log4net.dll, or nhibernate.dll, and the message was that the assembly is wrong format or wrong image and more specifically this message:</li></ol><br />&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <i>Exception=System.BadImageFormatException: Could not load file or assembly 'log4net' or&nbsp;</i><br /><i>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; one of &nbsp;its dependencies. The module was expected to contain an assembly manifest</i><br /><br />&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Then &nbsp;it is indication that the assemblies are 64 bit.<br /><br />other than those points, it should work like charm.<br /><br />
+            <article class="post row" itemscope itemtype="http://schema.org/BlogPosting">
+    <div class="content">
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">NHibernate and  log4net on Windows Azure websites</h1>
+        <p class="post-meta"><time datetime="2013-09-17T22:13:00-06:00" itemprop="datePublished">Sep 17, 2013</time> • <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name">Ghassan Karwchan</span></span></p>
+      </header>
+      <div class="post-content post-font" itemprop="articleBody">
+        If you are trying to use NHibernate/log4net with Azure websites site then you should consider these items.<!--more--><br /><br /><br /><ol><li>As it is obvious, you cannot store any local files into windows azure web sites, without defining a local storage resource. So the easiest way to define log4net, is to use sql logger, which will work fine with SQL Azure, with no modification except for the connection string.</li><li>Make sure to download the 32 bit version of NHibernate and log4net, because the free windows Azure websites, or the ones that you get from your MSDN account, are 32 bit only.</li><li>To make sure your are downloading the 32 bit version with nuGet, target your build on 32 bit build, and then use the command "Install-Package".</li><li>if you ever encounter a problem regarding loading the assemblies log4net.dll, or nhibernate.dll, and the message was that the assembly is wrong format or wrong image and more specifically this message:</li></ol><br />&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <i>Exception=System.BadImageFormatException: Could not load file or assembly 'log4net' or&nbsp;</i><br /><i>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; one of &nbsp;its dependencies. The module was expected to contain an assembly manifest</i><br /><br />&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Then &nbsp;it is indication that the assemblies are 64 bit.<br /><br />other than those points, it should work like charm.<br /><br />
+      </div>
     </div>
-  </div>
-</div>
-  
-
-  
-
-</article>
+  </article>
 
 
-    <footer class="site-footer">
-<div class="grid">
-<div class="col-3-12">
+      <footer class="site-footer row">
+<div class="column column-25">
   <ul class="contact-list">
           <li>Web matters</li>
           <li><a href="mailto:ghassan.karwchan@gmail.com">ghassan.karwchan@gmail.com</a></li>
   </ul>
 </div>
-<div class="col-3-12">
+<div class="column column-25">
   <ul class="social-media-list">
           
           <li>
@@ -158,14 +155,14 @@
           
         </ul>
 </div>
-<div class="col-6-12">
+<div class="column">
   This web site was built using <a href="https://jekyllrb.com/">Jekyll</a>.<br />
   If you are interest in the code <a href="https://github.com/gkarwchan/BlogWebsite">you can find it here</a>.
 </div>
 
 </footer>
 
-
+    </div>
   </body>
 
 </html>

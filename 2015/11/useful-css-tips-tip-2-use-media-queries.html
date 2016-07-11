@@ -8,13 +8,21 @@
 
   <title>CSS media queries</title>
   <meta name="description" content="Before CSS3, it was common that developers and designers uses different CSS files for different devices.But with the responsive design become first priority ...">
-  <link href='//fonts.googleapis.com/css?family=Roboto+Condensed' rel='stylesheet' type='text/css'>
-  <link href='//fonts.googleapis.com/css?family=Roboto+Slab' rel='stylesheet' type='text/css'>
+  <!-- Google Fonts -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300italic,700,700italic">
   <link href='//fonts.googleapis.com/css?family=Gloria+Hallelujah' rel='stylesheet' type='text/css'>
   <link href='https://fonts.googleapis.com/css?family=PT+Sans' rel='stylesheet' type='text/css'>
-  <link rel="stylesheet" href="/css/main.css">
-  <link rel="stylesheet" href="/css/simplegrid.min.css">
+  <link href='//fonts.googleapis.com/css?family=Roboto+Condensed' rel='stylesheet' type='text/css'>
+  <link href='//fonts.googleapis.com/css?family=Roboto+Slab' rel='stylesheet' type='text/css'>
+
+  <!-- CSS Reset -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/3.0.3/normalize.css">
+
+  <!-- utilities -->
+  <link rel="stylesheet" href="/css/milligram.min.css" >
   <link rel="stylesheet" href="/css/prism.css">
+
+  <link rel="stylesheet" href="/css/main.css">
   <script src="/js/prism.js"></script>
   <link rel="canonical" href="http://blog.gisspan.com/2015/11/useful-css-tips-tip-2-use-media-queries.html">
   <link rel="alternate" type="application/rss+xml" title="Web matters" href="http://blog.gisspan.com/feed.xml">
@@ -32,95 +40,90 @@
 
 
   <body>
-
-    <header class="site-header">
-
-  <div class="grid">
-    <div class="col-3-12">
-      <a class="site-title" href="/">Web matters</a>
-    </div>
-    <div class="col-9-12">
-      <nav class="site-nav">
-          
-            
-            <a class="page-link" href="/about/">About Me</a>
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-          <a class="page-link" href="/feed.xml"><img src="/img/feed.png" ></img></a>
-      </nav>
-    </div>
+    <div class="container">
+      <header class="site-header row">
+  <div class="column column-25">
+    <a class="site-title" href="/">Web matters</a>
   </div>
-
+  <div class="column">
+    <nav class="site-nav">
+        
+          
+          <a class="page-link" href="/about/">About Me</a>
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        <a class="page-link" href="/feed.xml"><img src="/img/feed.png" ></img></a>
+    </nav>
+  </div>
 </header>
 
 
-        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
-<div class="grid content">
-  <div>
-    <header class="post-header">
-      <h1 class="post-title" itemprop="name headline">CSS media queries</h1>
-      <p class="post-meta"><time datetime="2015-11-19T00:28:00-07:00" itemprop="datePublished">Nov 19, 2015</time> • <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name">Ghassan Karwchan</span></span></p>
-    </header>
-    <div class="post-content post-font" itemprop="articleBody">
-      Before CSS3, it was common that developers and designers uses different CSS files for different devices.<br />But with the responsive design become first priority in the design world, and surfing the web sites from different devices become the standard, CSS3 tackled the challenges of detecting the browser capabilities by using the media queries.<!--more--><br /><br />Media queries are css instructions that will help you target specific device or browser or size. They are expressions that result to true or false, and when it is true it will apply the style enclosed depend on the result. <br />We can use it in two different ways either inside css file surrounded by brackets like this:  <br />
+            <article class="post row" itemscope itemtype="http://schema.org/BlogPosting">
+    <div class="content">
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">CSS media queries</h1>
+        <p class="post-meta"><time datetime="2015-11-19T00:28:00-07:00" itemprop="datePublished">Nov 19, 2015</time> • <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name">Ghassan Karwchan</span></span></p>
+      </header>
+      <div class="post-content post-font" itemprop="articleBody">
+        Before CSS3, it was common that developers and designers uses different CSS files for different devices.<br />But with the responsive design become first priority in the design world, and surfing the web sites from different devices become the standard, CSS3 tackled the challenges of detecting the browser capabilities by using the media queries.<!--more--><br /><br />Media queries are css instructions that will help you target specific device or browser or size. They are expressions that result to true or false, and when it is true it will apply the style enclosed depend on the result. <br />We can use it in two different ways either inside css file surrounded by brackets like this:  <br />
 <pre><code class="language-css">@media (max-width: 600px) {
     .facet_sidebar {
         display: none;
@@ -128,25 +131,19 @@
 }</code></pre>Or you can use it as a html attribute condition to apply the whole css stylesheet.  <br />
 <pre><code class="language-html">&lt; !-- CSS media query on a link element -- &gt;
 &lt;link href="example.css" media="(max-width: 800px)" rel="stylesheet"&gt;&lt;/link&gt;</code></pre>What you can query on can cover lots of device features.<br />This is the most common features we can query on.<br /><br /><div class="w3-responsive" style="background-color: white; box-sizing: border-box; font-family: Verdana, sans-serif; font-size: 15px; line-height: 22.5px;"><table class="w3-table-all notranslate" style="border-collapse: collapse; border-spacing: 0px; border: 1px solid rgb(204, 204, 204); box-sizing: border-box; margin: 16px 0px; width: 100%;"><tbody style="box-sizing: border-box;"><tr style="border-bottom-color: rgb(208, 208, 208); border-bottom-style: solid; border-bottom-width: 1px; box-sizing: border-box;"><th style="border: none; box-sizing: border-box; padding: 8px; vertical-align: top; width: 342px;">Value</th><th style="border: none; box-sizing: border-box; padding: 8px; vertical-align: top;">Description</th></tr><tr style="background-color: #f2f2f2; border-bottom-color: rgb(208, 208, 208); border-bottom-style: solid; border-bottom-width: 1px; box-sizing: border-box;"><td style="border: none; box-sizing: border-box; padding: 8px; vertical-align: top;">aspect-ratio</td><td style="border: none; box-sizing: border-box; padding: 8px; vertical-align: top;">The ratio between the width and the height of the viewport</td></tr><tr style="border-bottom-color: rgb(208, 208, 208); border-bottom-style: solid; border-bottom-width: 1px; box-sizing: border-box;"><td style="border: none; box-sizing: border-box; padding: 8px; vertical-align: top;">color</td><td style="border: none; box-sizing: border-box; padding: 8px; vertical-align: top;">The number of bits per color component for the output device</td></tr><tr style="background-color: #f2f2f2; border-bottom-color: rgb(208, 208, 208); border-bottom-style: solid; border-bottom-width: 1px; box-sizing: border-box;"><td style="border: none; box-sizing: border-box; padding: 8px; vertical-align: top;">color-index</td><td style="border: none; box-sizing: border-box; padding: 8px; vertical-align: top;">The number of colors the device can display</td></tr><tr style="border-bottom-color: rgb(208, 208, 208); border-bottom-style: solid; border-bottom-width: 1px; box-sizing: border-box;"><td style="border: none; box-sizing: border-box; padding: 8px; vertical-align: top;">device-aspect-ratio</td><td style="border: none; box-sizing: border-box; padding: 8px; vertical-align: top;">The ratio between the width and the height of the device</td></tr><tr style="background-color: #f2f2f2; border-bottom-color: rgb(208, 208, 208); border-bottom-style: solid; border-bottom-width: 1px; box-sizing: border-box;"><td style="border: none; box-sizing: border-box; padding: 8px; vertical-align: top;">device-height</td><td style="border: none; box-sizing: border-box; padding: 8px; vertical-align: top;">The height of the device, such as a computer screen</td></tr><tr style="border-bottom-color: rgb(208, 208, 208); border-bottom-style: solid; border-bottom-width: 1px; box-sizing: border-box;"><td style="border: none; box-sizing: border-box; padding: 8px; vertical-align: top;">device-width</td><td style="border: none; box-sizing: border-box; padding: 8px; vertical-align: top;">The width of the device, such as a computer screen</td></tr><tr style="background-color: #f2f2f2; border-bottom-color: rgb(208, 208, 208); border-bottom-style: solid; border-bottom-width: 1px; box-sizing: border-box;"><td style="border: none; box-sizing: border-box; padding: 8px; vertical-align: top;">grid</td><td style="border: none; box-sizing: border-box; padding: 8px; vertical-align: top;">Whether the device is a grid or bitmap</td></tr><tr style="border-bottom-color: rgb(208, 208, 208); border-bottom-style: solid; border-bottom-width: 1px; box-sizing: border-box;"><td style="border: none; box-sizing: border-box; padding: 8px; vertical-align: top;">height</td><td style="border: none; box-sizing: border-box; padding: 8px; vertical-align: top;">The viewport height</td></tr><tr style="background-color: #f2f2f2; border-bottom-color: rgb(208, 208, 208); border-bottom-style: solid; border-bottom-width: 1px; box-sizing: border-box;"><td style="border: none; box-sizing: border-box; padding: 8px; vertical-align: top;">max-aspect-ratio</td><td style="border: none; box-sizing: border-box; padding: 8px; vertical-align: top;">The maximum ratio between the width and the height of the display area</td></tr><tr style="border-bottom-color: rgb(208, 208, 208); border-bottom-style: solid; border-bottom-width: 1px; box-sizing: border-box;"><td style="border: none; box-sizing: border-box; padding: 8px; vertical-align: top;">max-color</td><td style="border: none; box-sizing: border-box; padding: 8px; vertical-align: top;">The maximum number of bits per color component for the output device</td></tr><tr style="background-color: #f2f2f2; border-bottom-color: rgb(208, 208, 208); border-bottom-style: solid; border-bottom-width: 1px; box-sizing: border-box;"><td style="border: none; box-sizing: border-box; padding: 8px; vertical-align: top;">max-color-index</td><td style="border: none; box-sizing: border-box; padding: 8px; vertical-align: top;">The maximum number of colors the device can display</td></tr><tr style="border-bottom-color: rgb(208, 208, 208); border-bottom-style: solid; border-bottom-width: 1px; box-sizing: border-box;"><td style="border: none; box-sizing: border-box; padding: 8px; vertical-align: top;">max-device-aspect-ratio</td><td style="border: none; box-sizing: border-box; padding: 8px; vertical-align: top;">The maximum ratio between the width and the height of the device</td></tr><tr style="background-color: #f2f2f2; border-bottom-color: rgb(208, 208, 208); border-bottom-style: solid; border-bottom-width: 1px; box-sizing: border-box;"><td style="border: none; box-sizing: border-box; padding: 8px; vertical-align: top;">max-device-height</td><td style="border: none; box-sizing: border-box; padding: 8px; vertical-align: top;">The maximum height of the device, such as a computer screen</td></tr><tr style="border-bottom-color: rgb(208, 208, 208); border-bottom-style: solid; border-bottom-width: 1px; box-sizing: border-box;"><td style="border: none; box-sizing: border-box; padding: 8px; vertical-align: top;">max-device-width</td><td style="border: none; box-sizing: border-box; padding: 8px; vertical-align: top;">The maximum width of the device, such as a computer screen</td></tr><tr style="background-color: #f2f2f2; border-bottom-color: rgb(208, 208, 208); border-bottom-style: solid; border-bottom-width: 1px; box-sizing: border-box;"><td style="border: none; box-sizing: border-box; padding: 8px; vertical-align: top;">max-height</td><td style="border: none; box-sizing: border-box; padding: 8px; vertical-align: top;">The maximum height of the display area, such as a browser window</td></tr><tr style="border-bottom-color: rgb(208, 208, 208); border-bottom-style: solid; border-bottom-width: 1px; box-sizing: border-box;"><td style="border: none; box-sizing: border-box; padding: 8px; vertical-align: top;">max-monochrome</td><td style="border: none; box-sizing: border-box; padding: 8px; vertical-align: top;">The maximum number of bits per "color" on a monochrome (greyscale) device</td></tr><tr style="background-color: #f2f2f2; border-bottom-color: rgb(208, 208, 208); border-bottom-style: solid; border-bottom-width: 1px; box-sizing: border-box;"><td style="border: none; box-sizing: border-box; padding: 8px; vertical-align: top;">max-resolution</td><td style="border: none; box-sizing: border-box; padding: 8px; vertical-align: top;">The maximum resolution of the device, using dpi or dpcm</td></tr><tr style="border-bottom-color: rgb(208, 208, 208); border-bottom-style: solid; border-bottom-width: 1px; box-sizing: border-box;"><td style="border: none; box-sizing: border-box; padding: 8px; vertical-align: top;">max-width</td><td style="border: none; box-sizing: border-box; padding: 8px; vertical-align: top;">The maximum width of the display area, such as a browser window</td></tr><tr style="background-color: #f2f2f2; border-bottom-color: rgb(208, 208, 208); border-bottom-style: solid; border-bottom-width: 1px; box-sizing: border-box;"><td style="border: none; box-sizing: border-box; padding: 8px; vertical-align: top;">min-aspect-ratio</td><td style="border: none; box-sizing: border-box; padding: 8px; vertical-align: top;">The minimum ratio between the width and the height of the display area</td></tr><tr style="border-bottom-color: rgb(208, 208, 208); border-bottom-style: solid; border-bottom-width: 1px; box-sizing: border-box;"><td style="border: none; box-sizing: border-box; padding: 8px; vertical-align: top;">min-color</td><td style="border: none; box-sizing: border-box; padding: 8px; vertical-align: top;">The minimum number of bits per color component for the output device</td></tr><tr style="background-color: #f2f2f2; border-bottom-color: rgb(208, 208, 208); border-bottom-style: solid; border-bottom-width: 1px; box-sizing: border-box;"><td style="border: none; box-sizing: border-box; padding: 8px; vertical-align: top;">min-color-index</td><td style="border: none; box-sizing: border-box; padding: 8px; vertical-align: top;">The minimum number of colors the device can display</td></tr><tr style="border-bottom-color: rgb(208, 208, 208); border-bottom-style: solid; border-bottom-width: 1px; box-sizing: border-box;"><td style="border: none; box-sizing: border-box; padding: 8px; vertical-align: top;">min-device-aspect-ratio</td><td style="border: none; box-sizing: border-box; padding: 8px; vertical-align: top;">The minimum ratio between the width and the height of the device</td></tr><tr style="background-color: #f2f2f2; border-bottom-color: rgb(208, 208, 208); border-bottom-style: solid; border-bottom-width: 1px; box-sizing: border-box;"><td style="border: none; box-sizing: border-box; padding: 8px; vertical-align: top;">min-device-width</td><td style="border: none; box-sizing: border-box; padding: 8px; vertical-align: top;">The minimum width of the device, such as a computer screen</td></tr><tr style="border-bottom-color: rgb(208, 208, 208); border-bottom-style: solid; border-bottom-width: 1px; box-sizing: border-box;"><td style="border: none; box-sizing: border-box; padding: 8px; vertical-align: top;">min-device-height</td><td style="border: none; box-sizing: border-box; padding: 8px; vertical-align: top;">The minimum height of the device, such as a computer screen</td></tr><tr style="background-color: #f2f2f2; border-bottom-color: rgb(208, 208, 208); border-bottom-style: solid; border-bottom-width: 1px; box-sizing: border-box;"><td style="border: none; box-sizing: border-box; padding: 8px; vertical-align: top;">min-height</td><td style="border: none; box-sizing: border-box; padding: 8px; vertical-align: top;">The minimum height of the display area, such as a browser window</td></tr><tr style="border-bottom-color: rgb(208, 208, 208); border-bottom-style: solid; border-bottom-width: 1px; box-sizing: border-box;"><td style="border: none; box-sizing: border-box; padding: 8px; vertical-align: top;">min-monochrome</td><td style="border: none; box-sizing: border-box; padding: 8px; vertical-align: top;">The minimum number of bits per "color" on a monochrome (greyscale) device</td></tr><tr style="background-color: #f2f2f2; border-bottom-color: rgb(208, 208, 208); border-bottom-style: solid; border-bottom-width: 1px; box-sizing: border-box;"><td style="border: none; box-sizing: border-box; padding: 8px; vertical-align: top;">min-resolution</td><td style="border: none; box-sizing: border-box; padding: 8px; vertical-align: top;">The minimum resolution of the device, using dpi or dpcm</td></tr><tr style="border-bottom-color: rgb(208, 208, 208); border-bottom-style: solid; border-bottom-width: 1px; box-sizing: border-box;"><td style="border: none; box-sizing: border-box; padding: 8px; vertical-align: top;">min-width</td><td style="border: none; box-sizing: border-box; padding: 8px; vertical-align: top;">The minimum width of the display area, such as a browser window</td></tr><tr style="background-color: #f2f2f2; border-bottom-color: rgb(208, 208, 208); border-bottom-style: solid; border-bottom-width: 1px; box-sizing: border-box;"><td style="border: none; box-sizing: border-box; padding: 8px; vertical-align: top;">monochrome</td><td style="border: none; box-sizing: border-box; padding: 8px; vertical-align: top;">The number of bits per "color" on a monochrome (greyscale) device</td></tr><tr style="border-bottom-color: rgb(208, 208, 208); border-bottom-style: solid; border-bottom-width: 1px; box-sizing: border-box;"><td style="border: none; box-sizing: border-box; padding: 8px; vertical-align: top;">orientation</td><td style="border: none; box-sizing: border-box; padding: 8px; vertical-align: top;">The orientation of the viewport (landscape or portrait mode)</td></tr><tr style="background-color: #f2f2f2; border-bottom-color: rgb(208, 208, 208); border-bottom-style: solid; border-bottom-width: 1px; box-sizing: border-box;"><td style="border: none; box-sizing: border-box; padding: 8px; vertical-align: top;">overflow-block</td><td style="border: none; box-sizing: border-box; padding: 8px; vertical-align: top;">How does the output device handle content that overflows the viewport along the block axis (added in Media Queries Level 4)</td></tr><tr style="border-bottom-color: rgb(208, 208, 208); border-bottom-style: solid; border-bottom-width: 1px; box-sizing: border-box;"><td style="border: none; box-sizing: border-box; padding: 8px; vertical-align: top;">overflow-inline</td><td style="border: none; box-sizing: border-box; padding: 8px; vertical-align: top;">Can content that overflows the viewport along the inline axis be scrolled (added in Media Queries Level 4)</td></tr><tr style="background-color: #f2f2f2; border-bottom-color: rgb(208, 208, 208); border-bottom-style: solid; border-bottom-width: 1px; box-sizing: border-box;"><td style="border: none; box-sizing: border-box; padding: 8px; vertical-align: top;">resolution</td><td style="border: none; box-sizing: border-box; padding: 8px; vertical-align: top;">The resolution of the output device, using dpi or dpcm</td></tr><tr style="border-bottom-color: rgb(208, 208, 208); border-bottom-style: solid; border-bottom-width: 1px; box-sizing: border-box;"><td style="border: none; box-sizing: border-box; padding: 8px; vertical-align: top;">scan</td><td style="border: none; box-sizing: border-box; padding: 8px; vertical-align: top;">The scanning process of the output device</td></tr><tr style="background-color: #f2f2f2; border-bottom-color: rgb(208, 208, 208); border-bottom-style: solid; border-bottom-width: 1px; box-sizing: border-box;"><td style="border: none; box-sizing: border-box; padding: 8px; vertical-align: top;">update-frequency</td><td style="border: none; box-sizing: border-box; padding: 8px; vertical-align: top;">How quickly can the output device modify the appearance of the content (added in Media Queries Level 4)</td></tr><tr style="border-bottom-color: rgb(208, 208, 208); border-bottom-style: solid; border-bottom-width: 1px; box-sizing: border-box;"><td style="border: none; box-sizing: border-box; padding: 8px; vertical-align: top;">width</td><td style="border: none; box-sizing: border-box; padding: 8px; vertical-align: top;">The viewport width</td></tr></tbody></table></div>
+      </div>
     </div>
-  </div>
-</div>
-  
-
-  
-
-</article>
+  </article>
 
 
-    <footer class="site-footer">
-<div class="grid">
-<div class="col-3-12">
+      <footer class="site-footer row">
+<div class="column column-25">
   <ul class="contact-list">
           <li>Web matters</li>
           <li><a href="mailto:ghassan.karwchan@gmail.com">ghassan.karwchan@gmail.com</a></li>
   </ul>
 </div>
-<div class="col-3-12">
+<div class="column column-25">
   <ul class="social-media-list">
           
           <li>
@@ -165,14 +162,14 @@
           
         </ul>
 </div>
-<div class="col-6-12">
+<div class="column">
   This web site was built using <a href="https://jekyllrb.com/">Jekyll</a>.<br />
   If you are interest in the code <a href="https://github.com/gkarwchan/BlogWebsite">you can find it here</a>.
 </div>
 
 </footer>
 
-
+    </div>
   </body>
 
 </html>

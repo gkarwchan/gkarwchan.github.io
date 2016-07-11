@@ -8,13 +8,21 @@
 
   <title>A trick about wild card matching in Linux</title>
   <meta name="description" content="So, when we do this command : ">
-  <link href='//fonts.googleapis.com/css?family=Roboto+Condensed' rel='stylesheet' type='text/css'>
-  <link href='//fonts.googleapis.com/css?family=Roboto+Slab' rel='stylesheet' type='text/css'>
+  <!-- Google Fonts -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300italic,700,700italic">
   <link href='//fonts.googleapis.com/css?family=Gloria+Hallelujah' rel='stylesheet' type='text/css'>
   <link href='https://fonts.googleapis.com/css?family=PT+Sans' rel='stylesheet' type='text/css'>
-  <link rel="stylesheet" href="/css/main.css">
-  <link rel="stylesheet" href="/css/simplegrid.min.css">
+  <link href='//fonts.googleapis.com/css?family=Roboto+Condensed' rel='stylesheet' type='text/css'>
+  <link href='//fonts.googleapis.com/css?family=Roboto+Slab' rel='stylesheet' type='text/css'>
+
+  <!-- CSS Reset -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/3.0.3/normalize.css">
+
+  <!-- utilities -->
+  <link rel="stylesheet" href="/css/milligram.min.css" >
   <link rel="stylesheet" href="/css/prism.css">
+
+  <link rel="stylesheet" href="/css/main.css">
   <script src="/js/prism.js"></script>
   <link rel="canonical" href="http://blog.gisspan.com/2014/05/a-trick-about-wild-card-matching-in.html">
   <link rel="alternate" type="application/rss+xml" title="Web matters" href="http://blog.gisspan.com/feed.xml">
@@ -32,114 +40,103 @@
 
 
   <body>
-
-    <header class="site-header">
-
-  <div class="grid">
-    <div class="col-3-12">
-      <a class="site-title" href="/">Web matters</a>
-    </div>
-    <div class="col-9-12">
-      <nav class="site-nav">
-          
-            
-            <a class="page-link" href="/about/">About Me</a>
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-          <a class="page-link" href="/feed.xml"><img src="/img/feed.png" ></img></a>
-      </nav>
-    </div>
+    <div class="container">
+      <header class="site-header row">
+  <div class="column column-25">
+    <a class="site-title" href="/">Web matters</a>
   </div>
-
+  <div class="column">
+    <nav class="site-nav">
+        
+          
+          <a class="page-link" href="/about/">About Me</a>
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        <a class="page-link" href="/feed.xml"><img src="/img/feed.png" ></img></a>
+    </nav>
+  </div>
 </header>
 
 
-        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
-<div class="grid content">
-  <div>
-    <header class="post-header">
-      <h1 class="post-title" itemprop="name headline">A trick about wild card matching in Linux</h1>
-      <p class="post-meta"><time datetime="2014-05-06T04:02:00-06:00" itemprop="datePublished">May 6, 2014</time> • <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name">Ghassan Karwchan</span></span></p>
-    </header>
-    <div class="post-content post-font" itemprop="articleBody">
-      So, when we do this command : <!--more--><br /><pre><code class="language-bash">echo any data</code></pre>the result will be: <br /><b><i>any data</i></b><br />But what about this command?  <br /><pre><code class="language-bash">echo p*</code></pre> the result will be echo the file names which their names start with the letter p.<br />So, if there are two files with names:<br /><ul><li>pilot1.txt</li><li>pilot2.txt</li></ul>Then the result of the previous command will be interpreted as follows:  <br /><pre><code class="language-bash">echo pilot1.txt pilot2.txt</code></pre> The reason is the file substitution is occurring on the shell level , and not the command level.<br />Which means when the shell find the wild-card letters, it will replace them with the matched file names.<br />Another trick: let us suppose that we want to list the files start with "readme" and by mistake we run the following command: <br /><pre><code class="language-bash">ls readme. * </code></pre> We entered a space in the file name.<br />Linux will interpret it as list of two things:<br />First, we are trying to list a file that its name <b>"readme."</b> <br />and then, the shell will substitute the star with all the file names. <br />Another consequence of that is the Unix's <b>Find</b> command.<br />When we run the find command and we want to look for a file that its name start with p for example, we should submit the command as follows:  <br /><pre><code class="language-bash">find . -name "p*" -print</code></pre> Notice how we add the quotations around the name criteria.<br />Without the quotation marks the shell will try to substitute the wildcards with files, and pass them to the find, which in case there is more than one file that start with "p", it will pass all these file names to find which result with a syntax error. 
+            <article class="post row" itemscope itemtype="http://schema.org/BlogPosting">
+    <div class="content">
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">A trick about wild card matching in Linux</h1>
+        <p class="post-meta"><time datetime="2014-05-06T04:02:00-06:00" itemprop="datePublished">May 6, 2014</time> • <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name">Ghassan Karwchan</span></span></p>
+      </header>
+      <div class="post-content post-font" itemprop="articleBody">
+        So, when we do this command : <!--more--><br /><pre><code class="language-bash">echo any data</code></pre>the result will be: <br /><b><i>any data</i></b><br />But what about this command?  <br /><pre><code class="language-bash">echo p*</code></pre> the result will be echo the file names which their names start with the letter p.<br />So, if there are two files with names:<br /><ul><li>pilot1.txt</li><li>pilot2.txt</li></ul>Then the result of the previous command will be interpreted as follows:  <br /><pre><code class="language-bash">echo pilot1.txt pilot2.txt</code></pre> The reason is the file substitution is occurring on the shell level , and not the command level.<br />Which means when the shell find the wild-card letters, it will replace them with the matched file names.<br />Another trick: let us suppose that we want to list the files start with "readme" and by mistake we run the following command: <br /><pre><code class="language-bash">ls readme. * </code></pre> We entered a space in the file name.<br />Linux will interpret it as list of two things:<br />First, we are trying to list a file that its name <b>"readme."</b> <br />and then, the shell will substitute the star with all the file names. <br />Another consequence of that is the Unix's <b>Find</b> command.<br />When we run the find command and we want to look for a file that its name start with p for example, we should submit the command as follows:  <br /><pre><code class="language-bash">find . -name "p*" -print</code></pre> Notice how we add the quotations around the name criteria.<br />Without the quotation marks the shell will try to substitute the wildcards with files, and pass them to the find, which in case there is more than one file that start with "p", it will pass all these file names to find which result with a syntax error. 
+      </div>
     </div>
-  </div>
-</div>
-  
-
-  
-
-</article>
+  </article>
 
 
-    <footer class="site-footer">
-<div class="grid">
-<div class="col-3-12">
+      <footer class="site-footer row">
+<div class="column column-25">
   <ul class="contact-list">
           <li>Web matters</li>
           <li><a href="mailto:ghassan.karwchan@gmail.com">ghassan.karwchan@gmail.com</a></li>
   </ul>
 </div>
-<div class="col-3-12">
+<div class="column column-25">
   <ul class="social-media-list">
           
           <li>
@@ -158,14 +155,14 @@
           
         </ul>
 </div>
-<div class="col-6-12">
+<div class="column">
   This web site was built using <a href="https://jekyllrb.com/">Jekyll</a>.<br />
   If you are interest in the code <a href="https://github.com/gkarwchan/BlogWebsite">you can find it here</a>.
 </div>
 
 </footer>
 
-
+    </div>
   </body>
 
 </html>

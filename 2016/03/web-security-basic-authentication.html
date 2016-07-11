@@ -8,13 +8,21 @@
 
   <title>Web security - Basic Authentication</title>
   <meta name="description" content="Although basic authentication is not widely used anymore, but understanding it is a good idea, because some parts of it are used in other security mechanisms...">
-  <link href='//fonts.googleapis.com/css?family=Roboto+Condensed' rel='stylesheet' type='text/css'>
-  <link href='//fonts.googleapis.com/css?family=Roboto+Slab' rel='stylesheet' type='text/css'>
+  <!-- Google Fonts -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300italic,700,700italic">
   <link href='//fonts.googleapis.com/css?family=Gloria+Hallelujah' rel='stylesheet' type='text/css'>
   <link href='https://fonts.googleapis.com/css?family=PT+Sans' rel='stylesheet' type='text/css'>
-  <link rel="stylesheet" href="/css/main.css">
-  <link rel="stylesheet" href="/css/simplegrid.min.css">
+  <link href='//fonts.googleapis.com/css?family=Roboto+Condensed' rel='stylesheet' type='text/css'>
+  <link href='//fonts.googleapis.com/css?family=Roboto+Slab' rel='stylesheet' type='text/css'>
+
+  <!-- CSS Reset -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/3.0.3/normalize.css">
+
+  <!-- utilities -->
+  <link rel="stylesheet" href="/css/milligram.min.css" >
   <link rel="stylesheet" href="/css/prism.css">
+
+  <link rel="stylesheet" href="/css/main.css">
   <script src="/js/prism.js"></script>
   <link rel="canonical" href="http://blog.gisspan.com/2016/03/web-security-basic-authentication.html">
   <link rel="alternate" type="application/rss+xml" title="Web matters" href="http://blog.gisspan.com/feed.xml">
@@ -32,95 +40,90 @@
 
 
   <body>
-
-    <header class="site-header">
-
-  <div class="grid">
-    <div class="col-3-12">
-      <a class="site-title" href="/">Web matters</a>
-    </div>
-    <div class="col-9-12">
-      <nav class="site-nav">
-          
-            
-            <a class="page-link" href="/about/">About Me</a>
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-          <a class="page-link" href="/feed.xml"><img src="/img/feed.png" ></img></a>
-      </nav>
-    </div>
+    <div class="container">
+      <header class="site-header row">
+  <div class="column column-25">
+    <a class="site-title" href="/">Web matters</a>
   </div>
-
+  <div class="column">
+    <nav class="site-nav">
+        
+          
+          <a class="page-link" href="/about/">About Me</a>
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        <a class="page-link" href="/feed.xml"><img src="/img/feed.png" ></img></a>
+    </nav>
+  </div>
 </header>
 
 
-        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
-<div class="grid content">
-  <div>
-    <header class="post-header">
-      <h1 class="post-title" itemprop="name headline">Web security - Basic Authentication</h1>
-      <p class="post-meta"><time datetime="2016-03-31T14:47:00-06:00" itemprop="datePublished">Mar 31, 2016</time> • <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name">Ghassan Karwchan</span></span></p>
-    </header>
-    <div class="post-content post-font" itemprop="articleBody">
-      Although basic authentication is not widely used anymore, but understanding it is a good idea, because some parts of it are used in other security mechanisms like JWT for example.<!--more--><br /><h3>Introduction to Basic Authentication</h3>Basic Access Authentication is the simplest way provided by HTTP protocol to allow an HTTP agent to provide user name and password when making an HTTP request.<br />It is a simple <a href="https://en.wikipedia.org/wiki/Challenge%E2%80%93response_authentication" target="_blank">challenge-response authentication mechanism</a> and uses standard HTTP Headers in the request / response to transfer the required data.<br /> <br /><h3>Advantages</h3>Because its simplicity, it has the following advantages: <ol><li>We don't need to use cookies.</li><li>No need to use sessions.</li><li>No need to use customized login pages, because all web browsers provide a way to provide the user name and password.</li></ol>There are many disadvantages, which they have workarounds, and we are going to cover them while we cover its workflow between server and browser.<br /> <h3>Standard Basic Authentication Scenario</h3>This is a standard scenario of the communication between the browser and the server. <br /><ol><li>The browser send an anonymous HTTP GET request for a web server</li><li>The server to protect a resource, it will challenge the browser by returning the following example response:</li>
+            <article class="post row" itemscope itemtype="http://schema.org/BlogPosting">
+    <div class="content">
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">Web security - Basic Authentication</h1>
+        <p class="post-meta"><time datetime="2016-03-31T14:47:00-06:00" itemprop="datePublished">Mar 31, 2016</time> • <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name">Ghassan Karwchan</span></span></p>
+      </header>
+      <div class="post-content post-font" itemprop="articleBody">
+        Although basic authentication is not widely used anymore, but understanding it is a good idea, because some parts of it are used in other security mechanisms like JWT for example.<!--more--><br /><h3>Introduction to Basic Authentication</h3>Basic Access Authentication is the simplest way provided by HTTP protocol to allow an HTTP agent to provide user name and password when making an HTTP request.<br />It is a simple <a href="https://en.wikipedia.org/wiki/Challenge%E2%80%93response_authentication" target="_blank">challenge-response authentication mechanism</a> and uses standard HTTP Headers in the request / response to transfer the required data.<br /> <br /><h3>Advantages</h3>Because its simplicity, it has the following advantages: <ol><li>We don't need to use cookies.</li><li>No need to use sessions.</li><li>No need to use customized login pages, because all web browsers provide a way to provide the user name and password.</li></ol>There are many disadvantages, which they have workarounds, and we are going to cover them while we cover its workflow between server and browser.<br /> <h3>Standard Basic Authentication Scenario</h3>This is a standard scenario of the communication between the browser and the server. <br /><ol><li>The browser send an anonymous HTTP GET request for a web server</li><li>The server to protect a resource, it will challenge the browser by returning the following example response:</li>
 <pre><code class="language-http">HTTP/1.1 401 Access Denied
 WWW-Authenticate: Basic realm="My Server"
 Content-Length: 0</code></pre>The response has the following details: <ol><ul><li>HTTP Status code 401 (unauthorized)</li><li>The "<b>WWW-Authenticate</b>" response header</li><li>The previous header value should start with the word "Basic" , to indicate that it is basic authentication.</li><li>as well the header value should have the attribute "<b>realm</b>" followed by an equal sign with its value. The realm will define the "partitioning" of the protection.</li></ul></ol><li>When the browser received the previous response, most web browser prompt a login dialog that allow the user to enter user name and password.</li><li>the browser will concatinate user name and password seperated by colon like this <b> username:password </b>, and then encode the result string with base64 encoding&nbsp;</li><li>the browser will re-send the HTTP GET, adding a HTTP header "Authorization" with the base64 string</li>this is an example of such request: <br />    
@@ -128,25 +131,19 @@ Content-Length: 0</code></pre>The response has the following details: <ol><ul><l
 <pre><code class="language-http">GET /securefiles/ HTTP/1.1
 Host: www.my-server.com 
 Authorization: Basic aHR0cHdhdGNoOmY=</code></pre>As you can see the browser send the previous request with no encryption at all (P.S: base64 is an encoding and not encryption), which means anybody can catch the request can decode the user name and password. and this is one of the disadvantage of basic authentication, but we can mitigate this by using SSL and HTTPS. <li>The web browser, and in order not to show the login dialog on every new request on that&nbsp;protected web site, it caches the credentials, and resubmit the Authorization header in every subsequent request.</li>The browser keeps the cached credentials until closing the browser, or keeping the browser idle for a long time. </ol><h3>Log Out of Basic Authentication</h3>The caching will introduce other side effect, because The server has no way to force the client to "log out", which is a disadvantage of the basic authentication.<br />Unfortunately the work around for this issue is browser specific.<br />For IE only, we can send this Javascript code to clear that cache:<br /><pre><code class="language-javascript">document.execCommand('ClearAuthenticationCache','false');</code></pre>For other browsers, developers usually do some tricks by login with wrong credentials<br />See the following solutions: <br /><a href="http://stackoverflow.com/questions/6277919/logging-a-user-out-when-using-http-basic-authentication">http://stackoverflow.com/questions/6277919/logging-a-user-out-when-using-http-basic-authentication</a> <br /><a href="http://stackoverflow.com/questions/233507/how-to-log-out-user-from-web-site-using-basic-authentication">http://stackoverflow.com/questions/233507/how-to-log-out-user-from-web-site-using-basic-authentication</a><br />These solutions are based on an HTTP protocol feature which allow a client avoid a login prompt when accessing a basic access authentication by prepending a username / password to the host name of the url.<br />An example of providing username / password is as follows: <br /><pre><code class="language-http">http://username:password@hostname.com</code></pre>
+      </div>
     </div>
-  </div>
-</div>
-  
-
-  
-
-</article>
+  </article>
 
 
-    <footer class="site-footer">
-<div class="grid">
-<div class="col-3-12">
+      <footer class="site-footer row">
+<div class="column column-25">
   <ul class="contact-list">
           <li>Web matters</li>
           <li><a href="mailto:ghassan.karwchan@gmail.com">ghassan.karwchan@gmail.com</a></li>
   </ul>
 </div>
-<div class="col-3-12">
+<div class="column column-25">
   <ul class="social-media-list">
           
           <li>
@@ -165,14 +162,14 @@ Authorization: Basic aHR0cHdhdGNoOmY=</code></pre>As you can see the browser sen
           
         </ul>
 </div>
-<div class="col-6-12">
+<div class="column">
   This web site was built using <a href="https://jekyllrb.com/">Jekyll</a>.<br />
   If you are interest in the code <a href="https://github.com/gkarwchan/BlogWebsite">you can find it here</a>.
 </div>
 
 </footer>
 
-
+    </div>
   </body>
 
 </html>

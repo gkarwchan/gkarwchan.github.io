@@ -8,13 +8,21 @@
 
   <title>Deploy ASP.NET web site with Wix Tools</title>
   <meta name="description" content="As usual, I am going to jump immediately to the code. You need first Wix Microsoft Installer tools which you can download it from here.">
-  <link href='//fonts.googleapis.com/css?family=Roboto+Condensed' rel='stylesheet' type='text/css'>
-  <link href='//fonts.googleapis.com/css?family=Roboto+Slab' rel='stylesheet' type='text/css'>
+  <!-- Google Fonts -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300italic,700,700italic">
   <link href='//fonts.googleapis.com/css?family=Gloria+Hallelujah' rel='stylesheet' type='text/css'>
   <link href='https://fonts.googleapis.com/css?family=PT+Sans' rel='stylesheet' type='text/css'>
-  <link rel="stylesheet" href="/css/main.css">
-  <link rel="stylesheet" href="/css/simplegrid.min.css">
+  <link href='//fonts.googleapis.com/css?family=Roboto+Condensed' rel='stylesheet' type='text/css'>
+  <link href='//fonts.googleapis.com/css?family=Roboto+Slab' rel='stylesheet' type='text/css'>
+
+  <!-- CSS Reset -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/3.0.3/normalize.css">
+
+  <!-- utilities -->
+  <link rel="stylesheet" href="/css/milligram.min.css" >
   <link rel="stylesheet" href="/css/prism.css">
+
+  <link rel="stylesheet" href="/css/main.css">
   <script src="/js/prism.js"></script>
   <link rel="canonical" href="http://blog.gisspan.com/2012/07/deploy-aspnet-web-site-with-wix-tools.html">
   <link rel="alternate" type="application/rss+xml" title="Web matters" href="http://blog.gisspan.com/feed.xml">
@@ -32,114 +40,103 @@
 
 
   <body>
-
-    <header class="site-header">
-
-  <div class="grid">
-    <div class="col-3-12">
-      <a class="site-title" href="/">Web matters</a>
-    </div>
-    <div class="col-9-12">
-      <nav class="site-nav">
-          
-            
-            <a class="page-link" href="/about/">About Me</a>
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-          <a class="page-link" href="/feed.xml"><img src="/img/feed.png" ></img></a>
-      </nav>
-    </div>
+    <div class="container">
+      <header class="site-header row">
+  <div class="column column-25">
+    <a class="site-title" href="/">Web matters</a>
   </div>
-
+  <div class="column">
+    <nav class="site-nav">
+        
+          
+          <a class="page-link" href="/about/">About Me</a>
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        <a class="page-link" href="/feed.xml"><img src="/img/feed.png" ></img></a>
+    </nav>
+  </div>
 </header>
 
 
-        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
-<div class="grid content">
-  <div>
-    <header class="post-header">
-      <h1 class="post-title" itemprop="name headline">Deploy ASP.NET web site with Wix Tools</h1>
-      <p class="post-meta"><time datetime="2012-07-23T22:14:00-06:00" itemprop="datePublished">Jul 23, 2012</time> • <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name">Ghassan Karwchan</span></span></p>
-    </header>
-    <div class="post-content post-font" itemprop="articleBody">
-      As usual, I am going to jump immediately to the code. <br />You need first <a href="http://wix.sourceforge.net/">Wix Microsoft Installer tools</a> which you can download it from <a href="http://wix.codeplex.com/releases/view/60102">here</a>.<!--more--><br />We are going to write a batch code that will do the following:  <p><br /><br /><ol><li>Compile the asp.net web application.</li><li>Publish the Asp.net web application to a folder.</li><li>Compile files that contains Wix code (wsx files), which compress all the files in the publish folder resulted from step 2, and add it into msi file.</li><li>The Wix code will create a folder under c:\inetpub\wwwroot\<folder name="">, and create a web application under the default web site, and associate it with an application pool that run .NET framework version 4.0.</folder></li></ol></p> <p>Let's start by writing the batch file:<br/>set publishFolder=publish\<br/>C:\Windows\Microsoft.NET\Framework\v4.0.30319\msbuild /p:Configuration=Release /t:ReBuild ..\thewebsolution.sln<br/>C:\Windows\Microsoft.NET\Framework\v4.0.30319\msbuild /t:ResolveReferences;_CopyWebApplication /p:Configuration=Release;OutDir=..\Setup\%publishFolder%\bin\;WebProjectOutputDir=%publishFolder% myWeb.vbproj<br/></p> <p>The above code will compile the solution and deploy the output of the web application myweb.vbproj into a folder called "Publish". </p>  <p>Next let's write the main wix code that will build the msi file: </p>  <pre class="brush: xml"><wix xmlns:iis="http://schemas.microsoft.com/wix/IIsExtension" xmlns:netfx="http://schemas.microsoft.com/wix/NetFxExtension" xmlns:util="http://schemas.microsoft.com/wix/UtilExtension" xmlns="http://schemas.microsoft.com/wix/2006/wi"><br />  <br /> <product id="{FA1B9338-B6F6-413e-B67F-86CA8BCED6E8}" language="1033" manufacturer="my company name" name="my.website.install" upgradecode="{E5C9F391-5787-4fd1-81E6-D1A4A91D226D}" version="1.0.0.0"><br />  <br />      <package compressed="yes" installerversion="200"><br />    <media cabinet="mywebsite.cab" embedcab="yes" id="1"><br />        <propertyref id="NETFRAMEWORK40FULL"><br />      <Directory Id="TARGETDIR" Name="SourceDir"><br />   <!-- Install stuff into wwwroot folder. --><br />   <Directory Id="WWWROOT"><br />      <Directory Id="INSTALLLOCATION" Name="MyWebDirectory"><br />         <!-- TODO: to add content of published web site --> <br />      </Directory><br />   </Directory><br />  </Directory><br />                <!-- TODO: add iis configuration --><br /><br /><br />  <property id="WWWROOT"><br />   c:\inetpub\wwwroot\<br />  </property><br /><br />  <br /> </propertyref></media></package></product><br /></wix><br /><br /></pre><p>The "Product" tag will define the output msi, and they are the attributes that will be stored in the result msi file. </p><p>Now, the previous xml, will generate only an msi that will create a directory called "MyWebDirectory" inside c:\inetpub\wwwroot </p> <p>Next, we want to add the content of the "Publish" directory into that folder. <br/>To do that, we need to add the content of the publish folder as xml input. <br/>There is a tool that help us "harvest" the folder content and make it into an xml file.<br/>the following command line that we will add it to the batch file, will do that and harvest all folder content into file called WebSiteContent.wxs<br/><p>"C:\Program Files (x86)\Windows Installer XML v3.5\bin\heat" dir %publishFolder% -dr MYWEBWEBSITE -ke -srd -cg MyWebWebComponents -var var.publishDir -gg -out WebSiteContent.wxs </p><p>Now we will add the WebSiteContent.wxs into the Product.wxs.<br/>In the product.wxs, and where there is a comment: <br/>&lt;!-- TODO: to add content of published web site --&gt; <br/>We replace it with the following: <br/><br/>&lt;Directory Id="MYWEBWEBSITE" Name="Website"&gt;<br/><br/></p> <p>Now, we will add the IIS configuration into a second file called IisConfiguration.wxs </p> <pre class="brush: xml"><br /><?xml version="1.0" encoding="UTF-8"?><br /><Wix xmlns="http://schemas.microsoft.com/wix/2006/wi"<br />    xmlns:iis="http://schemas.microsoft.com/wix/IIsExtension"<br />    xmlns:util="http://schemas.microsoft.com/wix/UtilExtension"><br />    <Fragment><br />        <!-- Install to default web site --><br /> <iis:WebSite Id="DefaultWebSite" Description='Default Web Site'><br />     <iis:WebAddress Id="AllUnassigned" Port="80" /><br /> </iis:WebSite><br /><br /> <DirectoryRef Id="MYWEBWEBSITE"><br />     <!-- Configuring app pool --><br />     <Component Id="MyWebAppPoolCmp" Guid="{009052A8-19AE-452e-AE34-6DC8E929DA08}" KeyPath="yes" Permanent="yes"><br />         <iis:WebAppPool Id="MyWebAppPool" Name="ASP.NET v4.0"/><br />     </Component><br />     <!-- Configure virtual dir --><br />     <Component Id="MyWebVirtualDirCmp" Guid="{751DEB01-ECC1-48ff-869A-65BCEE9E0528}" KeyPath="yes" ><br />         <iis:WebVirtualDir Id="MyWebVirtualDir" Directory="MYWEBWEBSITE" WebSite="DefaultWebSite"><br />      <iis:WebDirProperties Id="MyWebVirtDirProperties" AnonymousAccess="no" BasicAuthentication="no" WindowsAuthentication="yes" /><br />      <iis:WebApplication Id="MyWebWebApplication" Name="GatineauWebmap" WebAppPool="MyWebAppPool"/><br />  </iis:WebVirtualDir><br />     </Component><br /> </DirectoryRef><br /> <ComponentGroup Id="MyWebIssConfiguration"><br />  <ComponentRef Id="MyWebVirtualDirCmp" /><br />  <ComponentRef Id="MyWebAppPoolCmp" /><br /> </ComponentGroup><br />  <br />    </Fragment><br /></Wix><br /></pre> <p>So, what remains is to add a reference to the code inside IisConfiguration.wxs, inside the product.wxs </p> <p>Now replace the line: <br/>&lt;!-- TODO: add iis configuration --&gt; </p><pre class="brush: xml"><br /><Feature Id="Complete"<br />             Title="Gatineau - Gatineau Webmap application"<br />             Level="1"<br />             Display="expand"<br />             ConfigurableDirectory="INSTALLLOCATION"><br />    <br />    <!-- Main content of the Complete feature. --><br />   <Feature Id="MainContent"<br />      Title="Gatineau Website"<br />      Description="The website content"<br />      Level="1"><br />    <br />    <!-- Include IIS Configuration. --><br />    <ComponentGroupRef Id="MyWebIssConfiguration" /><br />    <br />    <!-- Include web content. --><br />    <ComponentGroupRef Id="MyWebWebComponents" /><br />    <br />    <!-- Perform changes in the web.config file. --><br />    <!--<ComponentRef Id="WebConfigCmp" />--><br /><br />   </Feature><br />  </Feature><br /></pre> <p>and now we add wix commands in the batch file to compile and produce the msi file </p><p>"C:\Program Files (x86)\Windows Installer XML v3.5\bin\candle" -ext WixIISExtension -ext WixUtilExtension -ext WiXNetFxExtension -dpublishDir=%publishFolder% -dMyWebResourceDir=. IisConfiguration.wxs Product.wxs WebSiteContent.wxs <br/>"C:\Program Files (x86)\Windows Installer XML v3.5\bin\light" -ext WixUIExtension -ext WixIISExtension -ext WixUtilExtension -ext WiXNetFxExtension -out bin\Release\Gatineau.Webmap.Setup.msi Product.wixobj WebSiteContent.wixobj IisConfiguration.wixobj </p>
+            <article class="post row" itemscope itemtype="http://schema.org/BlogPosting">
+    <div class="content">
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">Deploy ASP.NET web site with Wix Tools</h1>
+        <p class="post-meta"><time datetime="2012-07-23T22:14:00-06:00" itemprop="datePublished">Jul 23, 2012</time> • <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name">Ghassan Karwchan</span></span></p>
+      </header>
+      <div class="post-content post-font" itemprop="articleBody">
+        As usual, I am going to jump immediately to the code. <br />You need first <a href="http://wix.sourceforge.net/">Wix Microsoft Installer tools</a> which you can download it from <a href="http://wix.codeplex.com/releases/view/60102">here</a>.<!--more--><br />We are going to write a batch code that will do the following:  <p><br /><br /><ol><li>Compile the asp.net web application.</li><li>Publish the Asp.net web application to a folder.</li><li>Compile files that contains Wix code (wsx files), which compress all the files in the publish folder resulted from step 2, and add it into msi file.</li><li>The Wix code will create a folder under c:\inetpub\wwwroot\<folder name="">, and create a web application under the default web site, and associate it with an application pool that run .NET framework version 4.0.</folder></li></ol></p> <p>Let's start by writing the batch file:<br/>set publishFolder=publish\<br/>C:\Windows\Microsoft.NET\Framework\v4.0.30319\msbuild /p:Configuration=Release /t:ReBuild ..\thewebsolution.sln<br/>C:\Windows\Microsoft.NET\Framework\v4.0.30319\msbuild /t:ResolveReferences;_CopyWebApplication /p:Configuration=Release;OutDir=..\Setup\%publishFolder%\bin\;WebProjectOutputDir=%publishFolder% myWeb.vbproj<br/></p> <p>The above code will compile the solution and deploy the output of the web application myweb.vbproj into a folder called "Publish". </p>  <p>Next let's write the main wix code that will build the msi file: </p>  <pre class="brush: xml"><wix xmlns:iis="http://schemas.microsoft.com/wix/IIsExtension" xmlns:netfx="http://schemas.microsoft.com/wix/NetFxExtension" xmlns:util="http://schemas.microsoft.com/wix/UtilExtension" xmlns="http://schemas.microsoft.com/wix/2006/wi"><br />  <br /> <product id="{FA1B9338-B6F6-413e-B67F-86CA8BCED6E8}" language="1033" manufacturer="my company name" name="my.website.install" upgradecode="{E5C9F391-5787-4fd1-81E6-D1A4A91D226D}" version="1.0.0.0"><br />  <br />      <package compressed="yes" installerversion="200"><br />    <media cabinet="mywebsite.cab" embedcab="yes" id="1"><br />        <propertyref id="NETFRAMEWORK40FULL"><br />      <Directory Id="TARGETDIR" Name="SourceDir"><br />   <!-- Install stuff into wwwroot folder. --><br />   <Directory Id="WWWROOT"><br />      <Directory Id="INSTALLLOCATION" Name="MyWebDirectory"><br />         <!-- TODO: to add content of published web site --> <br />      </Directory><br />   </Directory><br />  </Directory><br />                <!-- TODO: add iis configuration --><br /><br /><br />  <property id="WWWROOT"><br />   c:\inetpub\wwwroot\<br />  </property><br /><br />  <br /> </propertyref></media></package></product><br /></wix><br /><br /></pre><p>The "Product" tag will define the output msi, and they are the attributes that will be stored in the result msi file. </p><p>Now, the previous xml, will generate only an msi that will create a directory called "MyWebDirectory" inside c:\inetpub\wwwroot </p> <p>Next, we want to add the content of the "Publish" directory into that folder. <br/>To do that, we need to add the content of the publish folder as xml input. <br/>There is a tool that help us "harvest" the folder content and make it into an xml file.<br/>the following command line that we will add it to the batch file, will do that and harvest all folder content into file called WebSiteContent.wxs<br/><p>"C:\Program Files (x86)\Windows Installer XML v3.5\bin\heat" dir %publishFolder% -dr MYWEBWEBSITE -ke -srd -cg MyWebWebComponents -var var.publishDir -gg -out WebSiteContent.wxs </p><p>Now we will add the WebSiteContent.wxs into the Product.wxs.<br/>In the product.wxs, and where there is a comment: <br/>&lt;!-- TODO: to add content of published web site --&gt; <br/>We replace it with the following: <br/><br/>&lt;Directory Id="MYWEBWEBSITE" Name="Website"&gt;<br/><br/></p> <p>Now, we will add the IIS configuration into a second file called IisConfiguration.wxs </p> <pre class="brush: xml"><br /><?xml version="1.0" encoding="UTF-8"?><br /><Wix xmlns="http://schemas.microsoft.com/wix/2006/wi"<br />    xmlns:iis="http://schemas.microsoft.com/wix/IIsExtension"<br />    xmlns:util="http://schemas.microsoft.com/wix/UtilExtension"><br />    <Fragment><br />        <!-- Install to default web site --><br /> <iis:WebSite Id="DefaultWebSite" Description='Default Web Site'><br />     <iis:WebAddress Id="AllUnassigned" Port="80" /><br /> </iis:WebSite><br /><br /> <DirectoryRef Id="MYWEBWEBSITE"><br />     <!-- Configuring app pool --><br />     <Component Id="MyWebAppPoolCmp" Guid="{009052A8-19AE-452e-AE34-6DC8E929DA08}" KeyPath="yes" Permanent="yes"><br />         <iis:WebAppPool Id="MyWebAppPool" Name="ASP.NET v4.0"/><br />     </Component><br />     <!-- Configure virtual dir --><br />     <Component Id="MyWebVirtualDirCmp" Guid="{751DEB01-ECC1-48ff-869A-65BCEE9E0528}" KeyPath="yes" ><br />         <iis:WebVirtualDir Id="MyWebVirtualDir" Directory="MYWEBWEBSITE" WebSite="DefaultWebSite"><br />      <iis:WebDirProperties Id="MyWebVirtDirProperties" AnonymousAccess="no" BasicAuthentication="no" WindowsAuthentication="yes" /><br />      <iis:WebApplication Id="MyWebWebApplication" Name="GatineauWebmap" WebAppPool="MyWebAppPool"/><br />  </iis:WebVirtualDir><br />     </Component><br /> </DirectoryRef><br /> <ComponentGroup Id="MyWebIssConfiguration"><br />  <ComponentRef Id="MyWebVirtualDirCmp" /><br />  <ComponentRef Id="MyWebAppPoolCmp" /><br /> </ComponentGroup><br />  <br />    </Fragment><br /></Wix><br /></pre> <p>So, what remains is to add a reference to the code inside IisConfiguration.wxs, inside the product.wxs </p> <p>Now replace the line: <br/>&lt;!-- TODO: add iis configuration --&gt; </p><pre class="brush: xml"><br /><Feature Id="Complete"<br />             Title="Gatineau - Gatineau Webmap application"<br />             Level="1"<br />             Display="expand"<br />             ConfigurableDirectory="INSTALLLOCATION"><br />    <br />    <!-- Main content of the Complete feature. --><br />   <Feature Id="MainContent"<br />      Title="Gatineau Website"<br />      Description="The website content"<br />      Level="1"><br />    <br />    <!-- Include IIS Configuration. --><br />    <ComponentGroupRef Id="MyWebIssConfiguration" /><br />    <br />    <!-- Include web content. --><br />    <ComponentGroupRef Id="MyWebWebComponents" /><br />    <br />    <!-- Perform changes in the web.config file. --><br />    <!--<ComponentRef Id="WebConfigCmp" />--><br /><br />   </Feature><br />  </Feature><br /></pre> <p>and now we add wix commands in the batch file to compile and produce the msi file </p><p>"C:\Program Files (x86)\Windows Installer XML v3.5\bin\candle" -ext WixIISExtension -ext WixUtilExtension -ext WiXNetFxExtension -dpublishDir=%publishFolder% -dMyWebResourceDir=. IisConfiguration.wxs Product.wxs WebSiteContent.wxs <br/>"C:\Program Files (x86)\Windows Installer XML v3.5\bin\light" -ext WixUIExtension -ext WixIISExtension -ext WixUtilExtension -ext WiXNetFxExtension -out bin\Release\Gatineau.Webmap.Setup.msi Product.wixobj WebSiteContent.wixobj IisConfiguration.wixobj </p>
+      </div>
     </div>
-  </div>
-</div>
-  
-
-  
-
-</article>
+  </article>
 
 
-    <footer class="site-footer">
-<div class="grid">
-<div class="col-3-12">
+      <footer class="site-footer row">
+<div class="column column-25">
   <ul class="contact-list">
           <li>Web matters</li>
           <li><a href="mailto:ghassan.karwchan@gmail.com">ghassan.karwchan@gmail.com</a></li>
   </ul>
 </div>
-<div class="col-3-12">
+<div class="column column-25">
   <ul class="social-media-list">
           
           <li>
@@ -158,14 +155,14 @@
           
         </ul>
 </div>
-<div class="col-6-12">
+<div class="column">
   This web site was built using <a href="https://jekyllrb.com/">Jekyll</a>.<br />
   If you are interest in the code <a href="https://github.com/gkarwchan/BlogWebsite">you can find it here</a>.
 </div>
 
 </footer>
 
-
+    </div>
   </body>
 
 </html>

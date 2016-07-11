@@ -8,13 +8,21 @@
 
   <title>ECMAScript 6 block-level scope and Javascript variable hoisting</title>
   <meta name="description" content="Block-level Scope, is one of the new feature that was added to ECMAScript 2015 (formerly known as ECMAScript 6).In ECMAScript 5 the only scope available to a...">
-  <link href='//fonts.googleapis.com/css?family=Roboto+Condensed' rel='stylesheet' type='text/css'>
-  <link href='//fonts.googleapis.com/css?family=Roboto+Slab' rel='stylesheet' type='text/css'>
+  <!-- Google Fonts -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300italic,700,700italic">
   <link href='//fonts.googleapis.com/css?family=Gloria+Hallelujah' rel='stylesheet' type='text/css'>
   <link href='https://fonts.googleapis.com/css?family=PT+Sans' rel='stylesheet' type='text/css'>
-  <link rel="stylesheet" href="/css/main.css">
-  <link rel="stylesheet" href="/css/simplegrid.min.css">
+  <link href='//fonts.googleapis.com/css?family=Roboto+Condensed' rel='stylesheet' type='text/css'>
+  <link href='//fonts.googleapis.com/css?family=Roboto+Slab' rel='stylesheet' type='text/css'>
+
+  <!-- CSS Reset -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/3.0.3/normalize.css">
+
+  <!-- utilities -->
+  <link rel="stylesheet" href="/css/milligram.min.css" >
   <link rel="stylesheet" href="/css/prism.css">
+
+  <link rel="stylesheet" href="/css/main.css">
   <script src="/js/prism.js"></script>
   <link rel="canonical" href="http://blog.gisspan.com/2016/01/ecmascript-6-block-level-scope-and.html">
   <link rel="alternate" type="application/rss+xml" title="Web matters" href="http://blog.gisspan.com/feed.xml">
@@ -32,95 +40,90 @@
 
 
   <body>
-
-    <header class="site-header">
-
-  <div class="grid">
-    <div class="col-3-12">
-      <a class="site-title" href="/">Web matters</a>
-    </div>
-    <div class="col-9-12">
-      <nav class="site-nav">
-          
-            
-            <a class="page-link" href="/about/">About Me</a>
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-          <a class="page-link" href="/feed.xml"><img src="/img/feed.png" ></img></a>
-      </nav>
-    </div>
+    <div class="container">
+      <header class="site-header row">
+  <div class="column column-25">
+    <a class="site-title" href="/">Web matters</a>
   </div>
-
+  <div class="column">
+    <nav class="site-nav">
+        
+          
+          <a class="page-link" href="/about/">About Me</a>
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        <a class="page-link" href="/feed.xml"><img src="/img/feed.png" ></img></a>
+    </nav>
+  </div>
 </header>
 
 
-        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
-<div class="grid content">
-  <div>
-    <header class="post-header">
-      <h1 class="post-title" itemprop="name headline">ECMAScript 6 block-level scope and Javascript variable hoisting</h1>
-      <p class="post-meta"><time datetime="2016-01-20T10:01:00-07:00" itemprop="datePublished">Jan 20, 2016</time> • <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name">Ghassan Karwchan</span></span></p>
-    </header>
-    <div class="post-content post-font" itemprop="articleBody">
-      Block-level Scope, is one of the new feature that was added to ECMAScript 2015 (formerly known as ECMAScript 6).<br/>In ECMAScript 5 the only scope available to a variable is the function scope. So, the variable are seen in the whole function.<!--more--> <br/><h3>Variable Hoisting</h3>Another feature that JavaScript has is : <b>"Variable Hoisting"</b>, which means a variable can be used before it is defined.<br/>So, code like this will work fine:  
+            <article class="post row" itemscope itemtype="http://schema.org/BlogPosting">
+    <div class="content">
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">ECMAScript 6 block-level scope and Javascript variable hoisting</h1>
+        <p class="post-meta"><time datetime="2016-01-20T10:01:00-07:00" itemprop="datePublished">Jan 20, 2016</time> • <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name">Ghassan Karwchan</span></span></p>
+      </header>
+      <div class="post-content post-font" itemprop="articleBody">
+        Block-level Scope, is one of the new feature that was added to ECMAScript 2015 (formerly known as ECMAScript 6).<br/>In ECMAScript 5 the only scope available to a variable is the function scope. So, the variable are seen in the whole function.<!--more--> <br/><h3>Variable Hoisting</h3>Another feature that JavaScript has is : <b>"Variable Hoisting"</b>, which means a variable can be used before it is defined.<br/>So, code like this will work fine:  
 <pre><code class="language-javascript">x = 5;
 alert (x);
 var x;</code></pre><h3>What does Hoisting do?</h3>Hoisting is a JavaScript process where the Javascript interpreter will look for any variable declaration inside a function and move it to the beginning of the function. </br>How that effect our code? <br/> <h3>Some Hoisting magic</h3>Let us write a tricky code to show the effect of scope combined with hoisting: <br/>  
@@ -141,25 +144,19 @@ var x;</code></pre><h3>What does Hoisting do?</h3>Hoisting is a JavaScript proce
    } else {
         alert (back_color);
    }</code></pre> <h3>So what changed in JavaScript 6?</h3>Coming back to ECMAScript 2015, and as we mentioned in the beginning that the new ECMAScript is going to add block level scoping but with a new statement called "<b><i>let</i></b>" which means that if you run the first code replacing <b><i>var</i></b> with <b><i>let</i></b> inside a browser that support new JavaScript, then the browser will show "red" as a result, because the second variable declaration will be limited inside the scope of if statement.
+      </div>
     </div>
-  </div>
-</div>
-  
-
-  
-
-</article>
+  </article>
 
 
-    <footer class="site-footer">
-<div class="grid">
-<div class="col-3-12">
+      <footer class="site-footer row">
+<div class="column column-25">
   <ul class="contact-list">
           <li>Web matters</li>
           <li><a href="mailto:ghassan.karwchan@gmail.com">ghassan.karwchan@gmail.com</a></li>
   </ul>
 </div>
-<div class="col-3-12">
+<div class="column column-25">
   <ul class="social-media-list">
           
           <li>
@@ -178,14 +175,14 @@ var x;</code></pre><h3>What does Hoisting do?</h3>Hoisting is a JavaScript proce
           
         </ul>
 </div>
-<div class="col-6-12">
+<div class="column">
   This web site was built using <a href="https://jekyllrb.com/">Jekyll</a>.<br />
   If you are interest in the code <a href="https://github.com/gkarwchan/BlogWebsite">you can find it here</a>.
 </div>
 
 </footer>
 
-
+    </div>
   </body>
 
 </html>

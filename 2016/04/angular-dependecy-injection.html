@@ -8,13 +8,21 @@
 
   <title>ng-annotate and Angular Dependecy Injection In depth</title>
   <meta name="description" content="A typical Angular application contains many modules, each module is a collection of many components (controllers, directives, services, factories, ...).These...">
-  <link href='//fonts.googleapis.com/css?family=Roboto+Condensed' rel='stylesheet' type='text/css'>
-  <link href='//fonts.googleapis.com/css?family=Roboto+Slab' rel='stylesheet' type='text/css'>
+  <!-- Google Fonts -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300italic,700,700italic">
   <link href='//fonts.googleapis.com/css?family=Gloria+Hallelujah' rel='stylesheet' type='text/css'>
   <link href='https://fonts.googleapis.com/css?family=PT+Sans' rel='stylesheet' type='text/css'>
-  <link rel="stylesheet" href="/css/main.css">
-  <link rel="stylesheet" href="/css/simplegrid.min.css">
+  <link href='//fonts.googleapis.com/css?family=Roboto+Condensed' rel='stylesheet' type='text/css'>
+  <link href='//fonts.googleapis.com/css?family=Roboto+Slab' rel='stylesheet' type='text/css'>
+
+  <!-- CSS Reset -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/3.0.3/normalize.css">
+
+  <!-- utilities -->
+  <link rel="stylesheet" href="/css/milligram.min.css" >
   <link rel="stylesheet" href="/css/prism.css">
+
+  <link rel="stylesheet" href="/css/main.css">
   <script src="/js/prism.js"></script>
   <link rel="canonical" href="http://blog.gisspan.com/2016/04/angular-dependecy-injection.html">
   <link rel="alternate" type="application/rss+xml" title="Web matters" href="http://blog.gisspan.com/feed.xml">
@@ -32,95 +40,90 @@
 
 
   <body>
-
-    <header class="site-header">
-
-  <div class="grid">
-    <div class="col-3-12">
-      <a class="site-title" href="/">Web matters</a>
-    </div>
-    <div class="col-9-12">
-      <nav class="site-nav">
-          
-            
-            <a class="page-link" href="/about/">About Me</a>
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-          <a class="page-link" href="/feed.xml"><img src="/img/feed.png" ></img></a>
-      </nav>
-    </div>
+    <div class="container">
+      <header class="site-header row">
+  <div class="column column-25">
+    <a class="site-title" href="/">Web matters</a>
   </div>
-
+  <div class="column">
+    <nav class="site-nav">
+        
+          
+          <a class="page-link" href="/about/">About Me</a>
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        <a class="page-link" href="/feed.xml"><img src="/img/feed.png" ></img></a>
+    </nav>
+  </div>
 </header>
 
 
-        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
-<div class="grid content">
-  <div>
-    <header class="post-header">
-      <h1 class="post-title" itemprop="name headline">ng-annotate and Angular Dependecy Injection In depth</h1>
-      <p class="post-meta"><time datetime="2016-04-07T21:52:00-06:00" itemprop="datePublished">Apr 7, 2016</time> • <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name">Ghassan Karwchan</span></span></p>
-    </header>
-    <div class="post-content post-font" itemprop="articleBody">
-      A typical Angular application contains many modules, each module is a collection of many components (controllers, directives, services, factories, ...).<br />These modules depend on each other, and their components as well depends on other compoenents.<br />Angular solves this dependencies with its Dependency Injection Subsystem. <!--more--><h3>Responsibilities of DI subsystem</h3>Angular DI subsystem is pervasive throughout Angular and it works with the <a href="https://docs.angularjs.org/api/ng/function/angular.module">Module registration process</a>. Whenever we register a new module with its components, the DI will be the registration mechanism to do the following: <br /><ol><li>Creating components&nbsp;</li><li>Resolving their dependencies&nbsp;</li><li>Connecting them with other components as requested </li></ol><h3>Angular DI style is Construction Injection</h3>Assuming you (the reader) know already about DI as a design pattern and the DI frameworks, in other languages like Java or C# the DI frameworks has three flavors:<br /><ol><li>Construction Injection&nbsp;</li><li>Property Injection&nbsp;</li><li>Setter Injection&nbsp;</li></ol>Angular DI is a construction injection style, where we pass dependencies as function arguments.<br />As an example, with this controller code , the controller is depending on  : $scope, authService , and as you see we are passing them as arguments.<br />
+            <article class="post row" itemscope itemtype="http://schema.org/BlogPosting">
+    <div class="content">
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">ng-annotate and Angular Dependecy Injection In depth</h1>
+        <p class="post-meta"><time datetime="2016-04-07T21:52:00-06:00" itemprop="datePublished">Apr 7, 2016</time> • <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name">Ghassan Karwchan</span></span></p>
+      </header>
+      <div class="post-content post-font" itemprop="articleBody">
+        A typical Angular application contains many modules, each module is a collection of many components (controllers, directives, services, factories, ...).<br />These modules depend on each other, and their components as well depends on other compoenents.<br />Angular solves this dependencies with its Dependency Injection Subsystem. <!--more--><h3>Responsibilities of DI subsystem</h3>Angular DI subsystem is pervasive throughout Angular and it works with the <a href="https://docs.angularjs.org/api/ng/function/angular.module">Module registration process</a>. Whenever we register a new module with its components, the DI will be the registration mechanism to do the following: <br /><ol><li>Creating components&nbsp;</li><li>Resolving their dependencies&nbsp;</li><li>Connecting them with other components as requested </li></ol><h3>Angular DI style is Construction Injection</h3>Assuming you (the reader) know already about DI as a design pattern and the DI frameworks, in other languages like Java or C# the DI frameworks has three flavors:<br /><ol><li>Construction Injection&nbsp;</li><li>Property Injection&nbsp;</li><li>Setter Injection&nbsp;</li></ol>Angular DI is a construction injection style, where we pass dependencies as function arguments.<br />As an example, with this controller code , the controller is depending on  : $scope, authService , and as you see we are passing them as arguments.<br />
 <pre data-line="6"><code class="language-javascript">var myApp = angular.module('myApp',[]);
 myApp.service('Auth', function() {
         this.userName = /* some function to return user name */;
@@ -174,25 +177,19 @@ someModule.controller('MyController', MyController);</code></pre>In order to do 
 ........
 &lt;/body&gt;
 &lt;/html&gt;</code></pre>When you have in your code somewhere that try to use implicit annotations, then it will throw an error. 
+      </div>
     </div>
-  </div>
-</div>
-  
-
-  
-
-</article>
+  </article>
 
 
-    <footer class="site-footer">
-<div class="grid">
-<div class="col-3-12">
+      <footer class="site-footer row">
+<div class="column column-25">
   <ul class="contact-list">
           <li>Web matters</li>
           <li><a href="mailto:ghassan.karwchan@gmail.com">ghassan.karwchan@gmail.com</a></li>
   </ul>
 </div>
-<div class="col-3-12">
+<div class="column column-25">
   <ul class="social-media-list">
           
           <li>
@@ -211,14 +208,14 @@ someModule.controller('MyController', MyController);</code></pre>In order to do 
           
         </ul>
 </div>
-<div class="col-6-12">
+<div class="column">
   This web site was built using <a href="https://jekyllrb.com/">Jekyll</a>.<br />
   If you are interest in the code <a href="https://github.com/gkarwchan/BlogWebsite">you can find it here</a>.
 </div>
 
 </footer>
 
-
+    </div>
   </body>
 
 </html>
