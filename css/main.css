@@ -74,15 +74,14 @@ img {
   font-weight: 400; }
 
 .tags {
-  margin: 10px 0 10px 20px; }
+  margin: 5px 0 5px 12px; }
   .tags a {
     text-decoration: none;
     color: white;
-    font-weight: 800;
-    font-size: 15px;
-    background-color: #828282;
-    padding: 5px 15px;
-    border-radius: 15px; }
+    font-weight: 600;
+    font-size: 0.9em;
+    font-family: Calibri, Candara, Segoe, "Segoe UI", Optima, Arial, sans-serif;
+    padding: 3px 6px; }
 
 .post-meta {
   font-size: 0.875em;
@@ -171,3 +170,51 @@ blockquote p {
 
 pre[class*="language-"] {
   padding: 0; }
+
+.javascript {
+  background-color: #efbc00; }
+
+.angular {
+  background-color: #cc0000; }
+
+.security {
+  background-color: #3333cc; }
+
+.css {
+  background-color: #ff9966; }
+
+.tools {
+  background-color: #00cc66; }
+
+.nhibernate {
+  background-color: #ff66d9; }
+
+.asp\.net {
+  background-color: #cc6699; }
+
+.performance {
+  background-color: #6699ff; }
+
+.azure {
+  background-color: #004de6; }
+
+.operation {
+  background-color: #9999ff; }
+
+.linux {
+  background-color: #ac3939; }
+
+.node\.js {
+  background-color: #efbc00; }
+
+.python {
+  background-color: #00b359; }
+
+.devops {
+  background-color: #ac3939; }
+
+.unit.test {
+  background-color: #ac3939; }
+
+.wpf {
+  background-color: #9999ff; }
