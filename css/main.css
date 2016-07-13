@@ -2,6 +2,7 @@
 /**
  * Reset some basic elements
  */
+@import url(https://fonts.googleapis.com/css?family=Roboto|PT+Sans|Roboto+Condensed|Roboto+Slab|Miltonian+Tattoo);
 body, h1, h2, h3, h4, h5, h6,
 p, blockquote, pre, hr,
 dl, dd, ol, ul, figure {
@@ -44,12 +45,14 @@ img {
       .site-header .site-nav .page-link:not(:last-child) {
         margin-right: 20px; }
   .site-header .site-title {
-    font: 300 1.8em/56px 'Gloria Hallelujah', cursive;
+    font: 300 2.5em/1.2 'Miltonian Tattoo', cursive;
     letter-spacing: -1px;
     margin-bottom: 0;
-    float: left; }
+    color: #ffbf00;
+    float: left;
+    text-shadow: -2px -2px 0 #0040ff, -2px -1px 0 #0040ff, -2px 0px 0 #0040ff, -2px 1px 0 #0040ff, -2px 2px 0 #0040ff, -1px -2px 0 #0040ff, -1px -1px 0 #0040ff, -1px 0px 0 #0040ff, -1px 1px 0 #0040ff, -1px 2px 0 #0040ff, 0px -2px 0 #0040ff, 0px -1px 0 #0040ff, 0px 0px 0 #0040ff, 0px 1px 0 #0040ff, 0px 2px 0 #0040ff, 1px -2px 0 #0040ff, 1px -1px 0 #0040ff, 1px 0px 0 #0040ff, 1px 1px 0 #0040ff, 1px 2px 0 #0040ff, 2px -2px 0 #0040ff, 2px -1px 0 #0040ff, 2px 0px 0 #0040ff, 2px 1px 0 #0040ff, 2px 2px 0 #0040ff; }
     .site-header .site-title, .site-header .site-title:visited {
-      color: #424242; }
+      color: #ffbf00; }
 
 .content {
   background-color: white;
