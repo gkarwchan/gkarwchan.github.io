@@ -48,11 +48,11 @@ img {
     font: 300 2.5em/1.2 'Miltonian Tattoo', cursive;
     letter-spacing: -1px;
     margin-bottom: 0;
-    color: #ffbf00;
+    color: #e8e8e8;
     float: left;
     text-shadow: -2px -2px 0 #0040ff, -2px -1px 0 #0040ff, -2px 0px 0 #0040ff, -2px 1px 0 #0040ff, -2px 2px 0 #0040ff, -1px -2px 0 #0040ff, -1px -1px 0 #0040ff, -1px 0px 0 #0040ff, -1px 1px 0 #0040ff, -1px 2px 0 #0040ff, 0px -2px 0 #0040ff, 0px -1px 0 #0040ff, 0px 0px 0 #0040ff, 0px 1px 0 #0040ff, 0px 2px 0 #0040ff, 1px -2px 0 #0040ff, 1px -1px 0 #0040ff, 1px 0px 0 #0040ff, 1px 1px 0 #0040ff, 1px 2px 0 #0040ff, 2px -2px 0 #0040ff, 2px -1px 0 #0040ff, 2px 0px 0 #0040ff, 2px 1px 0 #0040ff, 2px 2px 0 #0040ff; }
     .site-header .site-title, .site-header .site-title:visited {
-      color: #ffbf00; }
+      color: #e8e8e8; }
 
 .content {
   background-color: white;
