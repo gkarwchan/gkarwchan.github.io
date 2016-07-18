@@ -127,7 +127,29 @@
     <br/>
     This format called PEM format, stands for Privacy Enhanced Mail.<br />PEM is a text representation of the real binary key in DER format(X.509 ASN.1 key), it is base64 encoding of the DER binary format.<br />We could store the binary version of the file only with <b><i>DER</i></b> encoding, but the most common way is the PEM version.<br /><h3><li>Digital Identity</li></h3>As a user, in order to trust a web site for your precious information, you need to trust the web site owner.<br />Similarly, if you receive an email, you want to trust that the email you received was sent by the email owner, and not hacked by anyone else.<br />In real life, we have our identity card, which is a trusted document issued by a trusted authority (the government) which is a prove of our identity.<br /> The industry came up with similar policies and standards to handle the digital identity. <h3><li>Public Key Infrastructure: PKI and Certificate Authority</li></h3>The PKI is the infrastructure that the industry created to manage the digital identities.<br />The PKI created a hierarchical body of many organizations which their role is to issue digital identies.<br />These organizations called Certificate Authority (CA), and when you want to protect your site with SSL/TLS, you have to communicate with them, and they have to follow up with you to make sure that you are a legitimate company, and you are who you want to claim you are.<br />The digital identity has many four types ranked depending on their security level and how much investigation the CA will do before they submit a certificate.<br />Please find out these types in my previous post. <h3><li>Digital Certificate : X.509</li></h3>As we discussed before, SSL required the web server to have public key, and a digital identity, to give to the browsers.<br />The industry decided to combine these two in one file, which is called : digital certificate, or SSL certificate.<br />PKI policies defined the format for this certificate in a standard called X.509.<br />Certificate format X.509 v3<br /><ol><li>Version Number&nbsp;</li><li>Serial Number&nbsp;</li><li>Signature Algorithm ID&nbsp;</li><li>Issuer Name</li><li>Validity period</li><ul><li>Not Before</li><li>Not After</li></ul><li>Subject name</li><li>Subject Public Key Info</li><ul><li>Public Key Algorithm</li><li>Subject Public Key</li></ul><li>Issuer Unique Identifier (optional)</li><li>Subject Unique Identifier (optional)</li><li>Extensions (optional)</li>... <li>Certificate Signature Algorithm</li><li>Certificate Signature</li></ol><h3><li>CSR: Certificate Signing Request</li></h3>The certificate is issued by one of CA(s), and in order to get a certificate you have to contact one of the CA(s) and send them a request in the format: CSR (Certificate Signing Request).<br/>The CSR is a PEM formatted file with the following information: <ul><li>Common Name</li><li>Organization</li><li>Organizational Unit</li><li>City</li><li>State/County/Region</li><li>Country</li><li>Email Address</li><li>Public Key</li></ul>You can generate a CSR by either doing it from a web server, or using openssl tools like the following: <pre><code class="language-bash">openssl req -new -sha256 -key privatekey.key -out request.csr</code></pre>When you run the previous command, it will prompt you to enter all the CSR details </ol>
       </div>
-    </div>
+      <div id="disqus_thread"></div>
+        <script>
+            /**
+             *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+             *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables
+             */
+            /*
+            var disqus_config = function () {
+                this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+                this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+            };
+            */
+            (function() {  // DON'T EDIT BELOW THIS LINE
+                var d = document, s = d.createElement('script');
+                
+                s.src = '//bloggisspancom.disqus.com/embed.js';
+                
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+        <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+     </div>
   </article>
 
 

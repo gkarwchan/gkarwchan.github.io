@@ -127,7 +127,29 @@ Content-Length: 0</code></pre>The response has the following details: <ol><ul><l
 Host: www.my-server.com 
 Authorization: Basic aHR0cHdhdGNoOmY=</code></pre>As you can see the browser send the previous request with no encryption at all (P.S: base64 is an encoding and not encryption), which means anybody can catch the request can decode the user name and password. and this is one of the disadvantage of basic authentication, but we can mitigate this by using SSL and HTTPS. <li>The web browser, and in order not to show the login dialog on every new request on that&nbsp;protected web site, it caches the credentials, and resubmit the Authorization header in every subsequent request.</li>The browser keeps the cached credentials until closing the browser, or keeping the browser idle for a long time. </ol><h3>Log Out of Basic Authentication</h3>The caching will introduce other side effect, because The server has no way to force the client to "log out", which is a disadvantage of the basic authentication.<br />Unfortunately the work around for this issue is browser specific.<br />For IE only, we can send this Javascript code to clear that cache:<br /><pre><code class="language-javascript">document.execCommand('ClearAuthenticationCache','false');</code></pre>For other browsers, developers usually do some tricks by login with wrong credentials<br />See the following solutions: <br /><a href="http://stackoverflow.com/questions/6277919/logging-a-user-out-when-using-http-basic-authentication">http://stackoverflow.com/questions/6277919/logging-a-user-out-when-using-http-basic-authentication</a> <br /><a href="http://stackoverflow.com/questions/233507/how-to-log-out-user-from-web-site-using-basic-authentication">http://stackoverflow.com/questions/233507/how-to-log-out-user-from-web-site-using-basic-authentication</a><br />These solutions are based on an HTTP protocol feature which allow a client avoid a login prompt when accessing a basic access authentication by prepending a username / password to the host name of the url.<br />An example of providing username / password is as follows: <br /><pre><code class="language-http">http://username:password@hostname.com</code></pre>
       </div>
-    </div>
+      <div id="disqus_thread"></div>
+        <script>
+            /**
+             *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+             *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables
+             */
+            /*
+            var disqus_config = function () {
+                this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+                this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+            };
+            */
+            (function() {  // DON'T EDIT BELOW THIS LINE
+                var d = document, s = d.createElement('script');
+                
+                s.src = '//bloggisspancom.disqus.com/embed.js';
+                
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+        <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+     </div>
   </article>
 
 

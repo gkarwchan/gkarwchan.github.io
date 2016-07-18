@@ -120,7 +120,29 @@
       <div class="post-content post-font" itemprop="articleBody">
         In order to secure the web site with SSL, you first need to buy a certificate.<br />A certificate is a document that your website will send back to the browsers as an "Official identification" for your web site, and your business.<!--more--><br />The certificate is issued by certified companies who are called "Certificate Authorities".<br /></p><h3>Types of SSL Certificates </h3> First of all you have to decide which certificate type you should chose for your web site.<br />There are three types: <ol><li>Domain Validation (DV) SSL Certificate</li> This is the simplest type of certificate, where the CA checks only that the applicant owns or has the right to use the domain name.<br /><li>Organization Validation (OV) SSL Certificates</li>The CA checks more about the company owns the domain name, and display more information about the company owns the domain.<br /><li>Extended Validation (EV) SSL Certificate</li> The CA conducts a thorough check on the organization with some standard guidelines defined by the industry.<br />This is usually required for organizations that require to have payments managed by on their own website and their own software. </ol> <h3>Your home work </h3> After you decided what type of certificate you want to buy, you search for a suitable CA authority to buy your certification from.<br />The CA authority requires from your side a request called "Certificate Signing Request" (CSR) <br />There are many ways to generate the CSR. I will describe the process using <a href="https://www.openssl.org/" target="_blank">OpenSSL tools.</a> <br /> First you need to generate a private key.<br /> <pre><code class="language-bash">openssl genrsa -out domain.com.key 2048</code></pre> And then create the CSR:<br /><pre><code class="language-bash">openssl req -new -sha256 -key domain.com.key -out domain.com.csr</code></pre>This will generate the CSR file, which you will send to the CA authority, which in return will send you the certificates.<br /><br />
       </div>
-    </div>
+      <div id="disqus_thread"></div>
+        <script>
+            /**
+             *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+             *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables
+             */
+            /*
+            var disqus_config = function () {
+                this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+                this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+            };
+            */
+            (function() {  // DON'T EDIT BELOW THIS LINE
+                var d = document, s = d.createElement('script');
+                
+                s.src = '//bloggisspancom.disqus.com/embed.js';
+                
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+        <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+     </div>
   </article>
 
 

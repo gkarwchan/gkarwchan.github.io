@@ -135,7 +135,29 @@ public class ClientData
 
 <pre><code class="language-javascript">{"client" : { "Id" : ${client_id}, "Name" : ${client_name}}}</code></pre>As follows: <br /><div class="separator" style="clear: both; text-align: center;"><a href="http://4.bp.blogspot.com/-dmExeG413Zg/VhqC5Crr1mI/AAAAAAAAC4Y/1VwCE8F8868/s1600/jmeter6.PNG" imageanchor="1" style="clear: left; float: left; margin-bottom: 1em; margin-right: 1em;"><img border="0" height="428" src="http://4.bp.blogspot.com/-dmExeG413Zg/VhqC5Crr1mI/AAAAAAAAC4Y/1VwCE8F8868/s640/jmeter6.PNG" width="640" /></a></div><br /><div class="separator" style="clear: both; text-align: center;"></div>JMeter allows to add CSV file to be the input of parameterized test.<br />So, let us add <b>"CSV Data Set Config"</b><br /><br /><div class="separator" style="clear: both; text-align: center;"><a href="http://3.bp.blogspot.com/-SYZKMim2R6A/VhqD8juwttI/AAAAAAAAC4k/OkQsNBPBHBA/s1600/jmeter7.PNG" imageanchor="1" style="clear: left; float: left; margin-bottom: 1em; margin-right: 1em;"><img border="0" height="248" src="http://3.bp.blogspot.com/-SYZKMim2R6A/VhqD8juwttI/AAAAAAAAC4k/OkQsNBPBHBA/s640/jmeter7.PNG" width="640" /></a></div><br />Add the following parameters:<br />Filename: is the path to the location of the file.<br />Variable Names (comma-delimited): is a comma delimited of variables we want to substitute, which is in our case client_id, and client_name.<br /><br />Now we are ready to run the JMeter, and check the load.<br />But we can measure that from Jmeter itself.<br />For that we want to show the result in a table.<br />So, add <b>"View Results in Table"</b><br />And finally , just run the Jmeter, and you will see results similar to this.<br /><br /><br /><div class="separator" style="clear: both; text-align: center;"><a href="http://3.bp.blogspot.com/-_TP9EXsK1OU/VhqFVnV9a9I/AAAAAAAAC4w/M_pwg5SZz8I/s1600/jmeter9.PNG" imageanchor="1" style="clear: left; float: left; margin-bottom: 1em; margin-right: 1em;"><img border="0" height="160" src="http://3.bp.blogspot.com/-_TP9EXsK1OU/VhqFVnV9a9I/AAAAAAAAC4w/M_pwg5SZz8I/s640/jmeter9.PNG" width="640" /></a></div><br /><br />
       </div>
-    </div>
+      <div id="disqus_thread"></div>
+        <script>
+            /**
+             *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+             *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables
+             */
+            /*
+            var disqus_config = function () {
+                this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+                this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+            };
+            */
+            (function() {  // DON'T EDIT BELOW THIS LINE
+                var d = document, s = d.createElement('script');
+                
+                s.src = '//bloggisspancom.disqus.com/embed.js';
+                
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+        <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+     </div>
   </article>
 
 

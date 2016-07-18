@@ -137,7 +137,29 @@ Authorization: MAC id="h480djs93hd8",
     nonce="274312:dj83hs9s",
     mac="kDZvddkndxvhGRXZhvuDjEWhGeE="</code></pre></ol></ol> <h3>Advantages of token based authentication over cookies</h3>The are many advantages: <ol><li>Cookies could be disabled by the user</li>In that case you have to force your users to use cookies in order for them to use your application. <li>They won't work across-domains</li>So you cannot use the same credentials with many different domains, where in token based, you can authenticate in one place, and use the same token across many different domains. <li>Cookies and mobiles are not friends together</li><li>Cookies are volunerables for <a href="https://en.wikipedia.org/wiki/Cross-site_request_forgery">CSRF attacks</a></li> </ol> <h3>JSON Web Tokens (JWT)</h3>JWT became lately the most common used authentication solution for APIs and mobile solutions. <br/> JWT is a claim based authentication. When a user authenticate itself only at the beginning, the application checks what this user have access to, and what the user will claim, and issues a token that will have all these claims, and then signed with a hash algorithm, and send it back to the client.<br/>The client will store the token either with a cookie, or with an HTML5 local data store, and upon each request the client will submit this data in the header of the request as a bearer token or a MAC token. JWT as the token based authentication is not supported by the browsers, and requires some kind of JavaScript libraries to support it. 
       </div>
-    </div>
+      <div id="disqus_thread"></div>
+        <script>
+            /**
+             *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+             *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables
+             */
+            /*
+            var disqus_config = function () {
+                this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+                this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+            };
+            */
+            (function() {  // DON'T EDIT BELOW THIS LINE
+                var d = document, s = d.createElement('script');
+                
+                s.src = '//bloggisspancom.disqus.com/embed.js';
+                
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+        <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+     </div>
   </article>
 
 

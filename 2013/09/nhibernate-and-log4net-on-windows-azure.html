@@ -120,7 +120,29 @@
       <div class="post-content post-font" itemprop="articleBody">
         If you are trying to use NHibernate/log4net with Azure websites site then you should consider these items.<!--more--><br /><br /><br /><ol><li>As it is obvious, you cannot store any local files into windows azure web sites, without defining a local storage resource. So the easiest way to define log4net, is to use sql logger, which will work fine with SQL Azure, with no modification except for the connection string.</li><li>Make sure to download the 32 bit version of NHibernate and log4net, because the free windows Azure websites, or the ones that you get from your MSDN account, are 32 bit only.</li><li>To make sure your are downloading the 32 bit version with nuGet, target your build on 32 bit build, and then use the command "Install-Package".</li><li>if you ever encounter a problem regarding loading the assemblies log4net.dll, or nhibernate.dll, and the message was that the assembly is wrong format or wrong image and more specifically this message:</li></ol><br />&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <i>Exception=System.BadImageFormatException: Could not load file or assembly 'log4net' or&nbsp;</i><br /><i>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; one of &nbsp;its dependencies. The module was expected to contain an assembly manifest</i><br /><br />&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Then &nbsp;it is indication that the assemblies are 64 bit.<br /><br />other than those points, it should work like charm.<br /><br />
       </div>
-    </div>
+      <div id="disqus_thread"></div>
+        <script>
+            /**
+             *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+             *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables
+             */
+            /*
+            var disqus_config = function () {
+                this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+                this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+            };
+            */
+            (function() {  // DON'T EDIT BELOW THIS LINE
+                var d = document, s = d.createElement('script');
+                
+                s.src = '//bloggisspancom.disqus.com/embed.js';
+                
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+        <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+     </div>
   </article>
 
 

@@ -120,7 +120,29 @@
       <div class="post-content post-font" itemprop="articleBody">
         After installing Visual studio, you will have many different command line tools.<br />Each one will run different start-up script to set the environment variables that are essential for the build.<!--more--><br />I learned something useful about them, after I chose the wrong command line to do the build.<br /><br />I was running MSBuild project today from the command line to build a project, and I kept getting this error:<br /><br /><i><span style="font-family: 'Courier New', Courier, monospace;">error MSB4126: The specified solution configuration "Debug|X64" is invalid. Please specify a valid solution configuration using the Configuration and Platform properties (e.g. MSBuild.exe Solution.sln /p:Configuration=Debug /p:Platform="Any CPU")</span></i><br /><br />I debugged the build process by making the "Verbosity" level to "d[etails]", and I was sure that the "Configuration" property of the build was Debug.<br />Then it must be the platform.<br />In order to know what platform is being used, I switched the "Verbosity" level &nbsp;to "diag[nostic]", and I found that the Platform variable was "X64"<br /><br />Then, I figured out that when I opened the Visual Studio command line, I opened the one which titled "Visual Studio x64 Command Prompt".
       </div>
-    </div>
+      <div id="disqus_thread"></div>
+        <script>
+            /**
+             *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+             *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables
+             */
+            /*
+            var disqus_config = function () {
+                this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+                this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+            };
+            */
+            (function() {  // DON'T EDIT BELOW THIS LINE
+                var d = document, s = d.createElement('script');
+                
+                s.src = '//bloggisspancom.disqus.com/embed.js';
+                
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+        <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+     </div>
   </article>
 
 

@@ -120,7 +120,29 @@
       <div class="post-content post-font" itemprop="articleBody">
         So, when we do this command : <!--more--><br /><pre><code class="language-bash">echo any data</code></pre>the result will be: <br /><b><i>any data</i></b><br />But what about this command?  <br /><pre><code class="language-bash">echo p*</code></pre> the result will be echo the file names which their names start with the letter p.<br />So, if there are two files with names:<br /><ul><li>pilot1.txt</li><li>pilot2.txt</li></ul>Then the result of the previous command will be interpreted as follows:  <br /><pre><code class="language-bash">echo pilot1.txt pilot2.txt</code></pre> The reason is the file substitution is occurring on the shell level , and not the command level.<br />Which means when the shell find the wild-card letters, it will replace them with the matched file names.<br />Another trick: let us suppose that we want to list the files start with "readme" and by mistake we run the following command: <br /><pre><code class="language-bash">ls readme. * </code></pre> We entered a space in the file name.<br />Linux will interpret it as list of two things:<br />First, we are trying to list a file that its name <b>"readme."</b> <br />and then, the shell will substitute the star with all the file names. <br />Another consequence of that is the Unix's <b>Find</b> command.<br />When we run the find command and we want to look for a file that its name start with p for example, we should submit the command as follows:  <br /><pre><code class="language-bash">find . -name "p*" -print</code></pre> Notice how we add the quotations around the name criteria.<br />Without the quotation marks the shell will try to substitute the wildcards with files, and pass them to the find, which in case there is more than one file that start with "p", it will pass all these file names to find which result with a syntax error. 
       </div>
-    </div>
+      <div id="disqus_thread"></div>
+        <script>
+            /**
+             *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+             *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables
+             */
+            /*
+            var disqus_config = function () {
+                this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+                this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+            };
+            */
+            (function() {  // DON'T EDIT BELOW THIS LINE
+                var d = document, s = d.createElement('script');
+                
+                s.src = '//bloggisspancom.disqus.com/embed.js';
+                
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+        <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+     </div>
   </article>
 
 

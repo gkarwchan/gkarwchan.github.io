@@ -120,7 +120,29 @@
       <div class="post-content post-font" itemprop="articleBody">
         Wow!!<br />I had a wonderful experience installing Windows 8 on VHD today on my machine.<br />I followed the perfect guide from <a href="http://www.hanselman.com/blog/">Scott Hanselman</a> on <a href="http://www.hanselman.com/blog/HowToGuideToInstallingAndBootingWindows8ConsumerPreviewOffAVHDVirtualHardDisk.aspx">how to install Windows 8 on Virtual Hard Drive.</a><!--more--><br /><br />The feature of Virtual Hard Drive in windows 7, and the notion that you can create a bootable windows OS from it, is something beyond amazing, and it is astonishing.<br /><br />It is so amazing, because you can build a whole machine, that contains the OS, and add many other applications, while keeping all that software stored in just one file in the parent operating system.<br /><br />I know it might look like a virtual machine, but it is better, because the new OS runs without the parent operating system, and actually there is no parent operating system.<br /><br />It runs "naturally" on the machine accessing all its devices.<br /><br />It is like dual booting, but better, and it is like a virtual machine but better.<br /><br />It combines the good part of virtual machine, and the good part of dual booting.<br /><br />excerpting from<a href="http://www.hanselman.com/blog/LessVirtualMoreMachineWindows7AndTheMagicOfBootToVHD.aspx"> Scott Hanselman post </a><br /><br />Virtualization vs. Dual booting:<br /><br /><u>Multiboot:</u><br /><br /><ul><li>Good performance (runs natively on the machine, no extra abstraction layers)</li><li>Good hardware integration (everything that is built into or attached to the machine is visible to the running OS)</li><li>Clunky setup (different boot loaders overwriting each other, partitions cannot easily be resized or moved around)</li></ul><br /><u>Virtualisation</u><br /><br /><ul><li>Very flexible (only takes up as much hard disk space as the solution requires)</li><li>Can run virtually any Operating System</li><li>Non-Optimal performance (running piggyback off another Operating System, consuming resource in both)</li><li>Marginal hardware integration (all major system components are virtual only; depending on the virtualisation solution, SOME components might be surfaced inside the virtual machine)</li></ul><br />So, the<a href="http://blogs.msdn.com/b/knom/archive/2009/04/07/windows-7-vhd-boot-setup-guideline.aspx"> boot from VHD</a> will have to pros of both, avoiding the cons of both<br /><br />And if you don't like the new OS, just delete the file.<br />Isn't that the magic itself?
       </div>
-    </div>
+      <div id="disqus_thread"></div>
+        <script>
+            /**
+             *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+             *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables
+             */
+            /*
+            var disqus_config = function () {
+                this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+                this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+            };
+            */
+            (function() {  // DON'T EDIT BELOW THIS LINE
+                var d = document, s = d.createElement('script');
+                
+                s.src = '//bloggisspancom.disqus.com/embed.js';
+                
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+        <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+     </div>
   </article>
 
 

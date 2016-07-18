@@ -120,7 +120,29 @@
       <div class="post-content post-font" itemprop="articleBody">
         This is my first post related to <a href="http://help.arcgis.com/en/webapi/javascript/arcgis/">ESRI JavaScript API</a> to build map-based web applications.<br />So, I am learning to use <a href="http://help.arcgis.com/en/webapi/javascript/arcgis/">ArcGIS JavaScript API</a> to build a map based application.<!--more--><br />The create a basic map and set its extent, you usually write this code:<br /><pre class="brush: js">var ext = new esri.geometry.Extent({<br />        "xmin": -8869000,<br />        "ymin": 5689000,<br />        "xmax": -7303000,<br />        "ymax": 6639000,<br />        "spatialReference": {<br />            "wkid": 102100<br />        }<br />    });<br /><br />    var map = new esri.Map("map", {<br />        "extent": ext,<br />        "slider": false<br />    });<br />    <br />    var basemap = new esri.layers.ArcGISTiledMapServiceLayer("http://services.arcgisonline.com/<br />ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer");<br />    map.addLayer(basemap);<br /><br /><br /><br /></pre><br />The above code is doing the following: <br /><br /><ol><li>Create the extent of the map.</li><li>Create the map object.</li><li>Set the map extent, and set the spatial map data (in ESRI terms called Layers) that we want to publish in the map.</li></ol><br />Now, with ESRI, any more required functionality that we want to add it to this map, we should add it to the same map object. And&nbsp;with more functionality, you will end up with a huge script in the same class the define the map object.<br /><br />So, I was thinking how to refactor that code.<br />One idea was to take out the code that set the extent and layers to its own map object.<br />This refactor will give me these benefits:<br /><br /><ol><li>I can re-use the code in the future, because the code that will probably change, is the code that set the extent and the desired layers. So by separating that code in its own class, I can reuse the functionality without change.</li><li>By separating the code, I can give meaningful names for the classes, that help&nbsp;dismantle the huge code that has everything in the map class.</li></ol><br />So, I will have a class called "MapExtentSetter", which when I create it , will create esri.map, with extent and layers that match the desired area and data.<br /><br />The final code for that class is going to be:<br /><pre class="brush: js">dojo.declare("MapExtentSetter", esri.Map, {<br />   constructor: function (divId) {<br />       this.extent = new esri.geometry.Extent({<br />            "xmin": -8869000,<br />            "ymin": 5689000,<br />            "xmax": -7303000,<br />            "ymax": 6639000,<br />            "spatialReference": {<br />                "wkid": 102100<br />            }<br />        });<br />        <br />        this.infoWindow = new esri.dijit.Popup(null, dojo.create("div"));<br />        this.slider = false;<br />        var basemap = new esri.layers.ArcGISTiledMapServiceLayer("http://services.arcgisonline.com/<br />ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer");<br />        this.addLayer(basemap);<br />   } <br />});<br /><br /></pre><br />The above code defined a class called "MapExtentSetter" , which will create the esri.map that is configured to show the desired extent and data.<br />Then to use it, I will write the following code:<br /><br /><br /><pre class="brush: js">var mapObject = new MapExtentSetter("mapDiv");<br />/* where mapDiv is the html DIV's id that will contains the map */<br /></pre><br />cool, isn't it?
       </div>
-    </div>
+      <div id="disqus_thread"></div>
+        <script>
+            /**
+             *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+             *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables
+             */
+            /*
+            var disqus_config = function () {
+                this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+                this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+            };
+            */
+            (function() {  // DON'T EDIT BELOW THIS LINE
+                var d = document, s = d.createElement('script');
+                
+                s.src = '//bloggisspancom.disqus.com/embed.js';
+                
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+        <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+     </div>
   </article>
 
 

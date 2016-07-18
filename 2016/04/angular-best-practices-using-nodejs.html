@@ -168,7 +168,29 @@ module.exports =
       .factory('User', require('./user-factory'))
       .directive('compareTo', require('./compareTo-directive')).name;</code></pre>As you can see from the previous code, we configure the module in index.js, and we define all its components using the require statement, which will import the corresponding file. <h3><li>How to make NodeJS modules work in the browser? </li></h3>These NodeJS modules and the require statement work on a file system, which is not going to work in a browser environment.<br />But with the use of tools like Browserify, or Webpack, we can process these nodeJs files into a file that is consumable by the browser.<br />I am not going to explain how these tools work (in this post at least), and I will just show how to do it. I will use the browserify tool as an example: <ol><li>Install browserify using npm</li><pre><code class="language-bash">npm install browserify</code></pre><li>Run browserify</li><pre><code class="language-bash">browserify app.js -o bundle.js</code></pre>As you can see, we only had to specify the app.js file as input.<br />Browserify will figure out the required libraries from the usage of the require statements. </ol></ol>
       </div>
-    </div>
+      <div id="disqus_thread"></div>
+        <script>
+            /**
+             *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+             *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables
+             */
+            /*
+            var disqus_config = function () {
+                this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+                this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+            };
+            */
+            (function() {  // DON'T EDIT BELOW THIS LINE
+                var d = document, s = d.createElement('script');
+                
+                s.src = '//bloggisspancom.disqus.com/embed.js';
+                
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+        <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+     </div>
   </article>
 
 

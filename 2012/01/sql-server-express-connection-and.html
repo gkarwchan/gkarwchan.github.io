@@ -120,7 +120,29 @@
       <div class="post-content post-font" itemprop="articleBody">
         I was struggling today to connect to an instance of SQL-Server express from a remote machine.<br />I did every steps that Microsoft mentioned, and didn't have luck<br /><!--more-->1 - I enabled TCP protocol, and Named pipe protocol.<br />2 - I checked the checkbox of "Allow remote connection to this server"<br />3 - I started SQL Browser<br />and no luck.<br />Then I thought it is a firewall<br />I added SQL server application "sqlservr.exe" to the exception list of the firewall, and still no luck.<br />Then, I started to read about what the browser service is doing.<br />I added the SQL browser service application to the exception list of the firewall, and voila, it worked.<br /><br />So, what I learned is , the browser service is an application that will listen to any connection request on any port.<br />When you connect to SQL server, you don't specify a port.<br />and the Browser will listen to any request on any port, and route it to the Sql server Service.<br />If you want to connect on a specific port, and you add that port into your connection string, then you don't need the Browser service running.
       </div>
-    </div>
+      <div id="disqus_thread"></div>
+        <script>
+            /**
+             *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+             *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables
+             */
+            /*
+            var disqus_config = function () {
+                this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+                this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+            };
+            */
+            (function() {  // DON'T EDIT BELOW THIS LINE
+                var d = document, s = d.createElement('script');
+                
+                s.src = '//bloggisspancom.disqus.com/embed.js';
+                
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+        <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+     </div>
   </article>
 
 

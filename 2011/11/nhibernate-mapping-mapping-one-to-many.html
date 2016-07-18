@@ -186,7 +186,29 @@ public class PersonMapping : ClassMap&lt;Person&gt;
     HasMany&lt;PhoneContact&gt;(x =&gt;x.Phones).KeyColumn("PersonId").Inverse().Cascade.SaveUpdate();
 }</code></pre><b><u>Then what cascade I should choose?</u></b><br />Above we saw two mapping options: <br /><br /><ul><li>Cascade.SaveUpdate()</li><li>Cascade.AllDeleteOrphans()</li></ul><p>How to choose between these two?<br /><br />If the child item exists only in the scope of the parent item, then use the second one.<br /><br />So, if you delete the item from the parent, and save the parent, it will delete the row from the database.<br /><br />and as well , when you add an item to the list, and save the parent , then it will add a new child row into the database.<br /><br />While the first option (SaveUpdate) will only do the second option, where it adds the item to the database, when we add it to the parent, without delete it from the database when we remove it from the list.<br /></p>
       </div>
-    </div>
+      <div id="disqus_thread"></div>
+        <script>
+            /**
+             *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+             *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables
+             */
+            /*
+            var disqus_config = function () {
+                this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+                this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+            };
+            */
+            (function() {  // DON'T EDIT BELOW THIS LINE
+                var d = document, s = d.createElement('script');
+                
+                s.src = '//bloggisspancom.disqus.com/embed.js';
+                
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+        <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+     </div>
   </article>
 
 
