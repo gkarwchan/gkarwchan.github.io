@@ -6,9 +6,126 @@
 </description>
     <link>https://blog.gisspan.com/</link>
     <atom:link href="https://blog.gisspan.com/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sun, 17 Jul 2016 18:41:13 -0600</pubDate>
-    <lastBuildDate>Sun, 17 Jul 2016 18:41:13 -0600</lastBuildDate>
+    <pubDate>Thu, 21 Jul 2016 16:21:08 -0600</pubDate>
+    <lastBuildDate>Thu, 21 Jul 2016 16:21:08 -0600</lastBuildDate>
     <generator>Jekyll v3.1.6</generator>
+    
+      <item>
+        <title>Arguably the best approach to create objects in JavaScript.</title>
+        <description>
+&lt;p&gt;Douglas Crockford expressed his preference on creating objects and inheritance in JavaScript
+ In his lecture &lt;a href=&quot;https://www.youtube.com/watch?v=bo36MrBfTk4&quot;&gt;The Better Parts&lt;/a&gt;.&lt;br /&gt;
+In this lecture he expressed that although prototypal inheritance is better than classical inheritance, but the better is to avoid prototypal inheritance and avoid using &lt;em&gt;&lt;strong&gt;this&lt;/strong&gt;&lt;/em&gt; keyword, and instead he introduced a new pattern similar to factory function.&lt;br /&gt;
+His approach was backed by &lt;a href=&quot;https://twitter.com/_ericelliott&quot;&gt;Eric Elliott&lt;/a&gt; in his lecture : &lt;a href=&quot;https://vimeo.com/69255635&quot;&gt;Classical Inheritance is Obsolete&lt;/a&gt;.&lt;br /&gt;
+I am going to explain this approach and show some examples on how to use it.&lt;!--more--&gt;
+&lt;br /&gt;
+&lt;br /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;douglas-crockford-new-approach&quot;&gt;Douglas Crockford new approach&lt;/h2&gt;
+&lt;p&gt;In the lecture he summarized the way of creating objects with this pseudo-code:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;function constructor(spec){
+  let {member} = spec,
+
+  {other} = other_constructor(spec),
+
+  method = function() {
+    // access to member, other, method....
+  };
+
+  return Object.freeze({
+    method,
+    other
+  });
+}&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The above code is just a pseudo-code to express the idea, and the destructuring assignments there are not necessarily going to be implemented by &lt;a href=&quot;https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment&quot;&gt;destructuring assignments&lt;/a&gt;.&lt;br /&gt;
+Let us shows an example of using the above code:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;var car = function(carSpec) {
+  let {maker, year} = carSpec,
+  ignite = function() {
+    console.log(&#39;ignite.....&#39;);
+  },
+  
+  getMaker = function() {
+    return maker;
+  },
+  
+  getAge = function() {
+    return (new Date()).getFullYear() - year;
+  };
+  
+  return {
+    ignite,
+    getMaker,
+    getAge
+  };
+};
+
+var sedan = function(carSpec) {
+  let type = &#39;Sedan&#39;,
+      {weels} = carSpec,
+      carInfo = car(carSpec),
+      drive = function() {
+        console.log(`${carInfo.getMaker()} ${type} drive with ${weels} weels`);
+      };
+  
+  return {
+    drive,
+    carInfo
+  }; 
+};
+
+
+var aCar = car({maker: &#39;Toyota&#39;, year: 2004});
+console.log(aCar.getMaker());  // Toyota
+console.log(aCar.getAge());   // 12
+
+var honda = sedan({maker: &#39;Honda&#39;, year: 2008, weels: 4});
+
+honda.drive();    // &quot;Honda Sedan drive with 4 weels&quot;
+honda.carInfo.ignite();  // ignite....
+
+console.log(honda.carInfo.getAge()); // 8&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4 id=&quot;the-benefits-of-the-above-code&quot;&gt;The benefits of the above code:&lt;/h4&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Encapsulation: All variables defined inside the constructor are hidden to the outside, and only accessible by the constructor functions.&lt;/li&gt;
+  &lt;li&gt;No worry about the usage of &lt;code class=&quot;language-wiki&quot;&gt;&amp;nbsp;this&amp;nbsp;&lt;/code&gt; keyword anymore: You don’t have to worry about the context of the function and the usage of &lt;em&gt;&lt;strong&gt;this&lt;/strong&gt;&lt;/em&gt;.&lt;/li&gt;
+  &lt;li&gt;Code reusage is simpler: No inheritance and long prototype chain to worry about.&lt;/li&gt;
+  &lt;li&gt;Match design pattern &lt;strong&gt;Composition Over Inheritance&lt;/strong&gt;: There is a well-known design pattern by the gang of four: &lt;a href=&quot;https://en.wikipedia.org/wiki/Composition_over_inheritance&quot;&gt;Composition Over Inheritance&lt;/a&gt;, and this approach embrace it, because we are composing other objects.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&quot;what-is-wrong-with-prototypal-inheritance&quot;&gt;What is wrong with prototypal inheritance?&lt;/h4&gt;
+&lt;p&gt;We can list the following challenges with the prototypal inheritance:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;confusion of who own the property / attribute: Is the property owned by the object or by its prototype? To know that we have to use other functions to know that.&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;language-wiki&quot;&gt;&amp;nbsp;this&amp;nbsp;&lt;/code&gt; keyword can be interpreted differently depending on the caller.&lt;/li&gt;
+  &lt;li&gt;Retroactive Heredity: This is a term used by Crockford to describe the complexity that the JavaScript engine has to deal with to keep track of the prototype chain. This explains why the ES6 introduced a new way to set directly the prototype with &lt;em&gt;&lt;strong&gt;setPrototypeOf&lt;/strong&gt;&lt;/em&gt; but recommended against using it because of the performance hit that we will encounter.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;For all the above reason, and because we have an alternative for creating objects, so Crockford suggesting avoid using prototypal inheritance.&lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;If a feature is sometimes useful and sometimes dangerous and if there is a better option then always use the better option.&lt;br /&gt;
+Douglas Crockford&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h4 id=&quot;when-prototypal-inheritance-is-appropriate&quot;&gt;When prototypal inheritance is appropriate?&lt;/h4&gt;
+&lt;p&gt;The biggest benefit of prototypal inheritance is &lt;strong&gt;Memory Conservation&lt;/strong&gt;, because prototype objects are created once, and shared among all other objects that reference them as a prototype.&lt;br /&gt;
+Because nowadays computers and devices become more powerful, and has lots of memory, this feature is arguably untenable when you are doing 90% of programs that need tens or few hundreds of objects. But, when your application is creating hundreds or thousands of the same object over and over, then memory conservation become very reasonable, and you should switch to use the &lt;a href=&quot;https://blog.gisspan.com/2016/07/ES6-classes-the-good-part.html&quot;&gt;new Class keyword of ES6&lt;/a&gt;.&lt;/p&gt;
+
+</description>
+        <pubDate>Tue, 19 Jul 2016 09:45:00 -0600</pubDate>
+        <link>https://blog.gisspan.com/2016/07/Constructor-Vs-Factory.html</link>
+        <guid isPermaLink="true">https://blog.gisspan.com/2016/07/Constructor-Vs-Factory.html</guid>
+        
+        <category>javascript</category>
+        
+        
+      </item>
     
       <item>
         <title>ES6 Classes &amp;#58; The good parts in depth</title>
@@ -908,18 +1025,6 @@ Authorization: Basic aHR0cHdhdGNoOmY=&lt;/code&gt;&lt;/pre&gt;As you can see the
         <guid isPermaLink="true">https://blog.gisspan.com/2016/03/secure-your-web-site-with-ssl.html</guid>
         
         <category>security</category>
-        
-        
-      </item>
-    
-      <item>
-        <title>Sublime vs. Atom</title>
-        <description>I was doing coding with different programming languages lately with Python, Go, JavaScript, HTML.&lt;br /&gt;And I was looking for one IDE that can handle all of these.&lt;!--more--&gt;&lt;br /&gt;I was attracted to editors like Sublime and Atom because they are simple, comparing to Eclipse.&lt;br /&gt;I started with Atom because it is fully free, and I used it for few months doing HTML, JavaScript, and Go. &lt;/p&gt;&lt;p&gt;&lt;h3&gt;Atom Experience&lt;/h3&gt;My experience was not pleasant at all.&lt;br /&gt;I had to switch between many JavaScript/HTML plugins to find a plugin that provide a proper highlighting and code navigation on the mouse click.&lt;br /&gt;I was not happy with many plugins I found, and maybe if I spent more time I could find the proper plugins I want.&lt;br /&gt;And with Go, it was really a horrible experience.&lt;br /&gt;The Go plugins in Atom are buggy, and you cannot trust them at all, and you might end up with broken code.&lt;br /&gt;One particular Go-plugin that handles dependencies for you, and write down your import section depending on your dependencies.&lt;br&gt;but it was horrible.&lt;br /&gt;Any small missing element in the configuration, and it will change your dependencies that you wrote and will change your code.&lt;br /&gt;The code navigation never worked, even the documentation claimed it should work, and maybe if I spent more time trying to figure out the proper configuration for that plugin, I could make it work. &lt;/p&gt; &lt;h3&gt;Sublime Experience&lt;/h3&gt;When I switched to Sublime, I felt immediate relieve.&lt;br /&gt;All built-in plugins work perfectly, as expected.&lt;br /&gt;The built-in plugins provide less features than Atom ones, but they are stable, and you can count on them working.&lt;br /&gt;&lt;p&gt;As I said, maybe if I spent more time with Atom to make it work, I could solve the issues, but why you have to spend time when all what you need in Sublime is just install it.&lt;br /&gt;&lt;/p&gt;</description>
-        <pubDate>Tue, 23 Feb 2016 11:27:00 -0700</pubDate>
-        <link>https://blog.gisspan.com/2016/02/sublime-vs-atom.html</link>
-        <guid isPermaLink="true">https://blog.gisspan.com/2016/02/sublime-vs-atom.html</guid>
-        
-        <category>tools</category>
         
         
       </item>
