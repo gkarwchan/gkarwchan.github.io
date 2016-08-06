@@ -6,9 +6,153 @@
 </description>
     <link>https://blog.gisspan.com/</link>
     <atom:link href="https://blog.gisspan.com/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 21 Jul 2016 16:21:08 -0600</pubDate>
-    <lastBuildDate>Thu, 21 Jul 2016 16:21:08 -0600</lastBuildDate>
+    <pubDate>Fri, 05 Aug 2016 23:21:55 -0600</pubDate>
+    <lastBuildDate>Fri, 05 Aug 2016 23:21:55 -0600</lastBuildDate>
     <generator>Jekyll v3.1.6</generator>
+    
+      <item>
+        <title>Setup basic development environment for React and webpack.</title>
+        <description>&lt;p&gt;Webpack became the de-facto standard module bundling and build automation tool for React community. Webpack is robust, and more complex than other bundling packages, and it has a steep learning curve comparing to other build automation tools.&lt;br /&gt;
+This post is going to show how to setup a very basic development environment that will give you a head start for basic web Single page application that is using react and webpack.&lt;!--more--&gt;
+&lt;br /&gt;
+&lt;br /&gt;&lt;/p&gt;
+
+&lt;h1 id=&quot;start-with-npm-packages&quot;&gt;Start with NPM packages&lt;/h1&gt;
+&lt;p&gt;Start with installing the essential React required packages:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;npm init
+npm install --save react
+npm install --save react-dom
+npm install --save react-addons-update
+npm install --save react-router
+npm install --save reflux
+npm install --save reflux-promise
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The above will start the &lt;code class=&quot;language-wiki&quot;&gt;&amp;nbsp;package.json&amp;nbsp;&lt;/code&gt; file, and install the required react libraries.&lt;/p&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;install-webpack-and-its-developer-tool&quot;&gt;Install webpack and its developer tool&lt;/h3&gt;
+&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;npm install --save webpack
+npm install -g webpack-dev-server&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h1 id=&quot;webpack-configuration-file&quot;&gt;webpack configuration file&lt;/h1&gt;
+&lt;p&gt;Start writing the webpack configuration file, which by convention its default name is &lt;code class=&quot;language-wiki&quot;&gt;&amp;nbsp;webpack.config.js&amp;nbsp;&lt;/code&gt;.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;var path = require(&#39;path&#39;);
+var webpack = require(&#39;webpack&#39;);
+
+module.exports = {
+   // ..... configuration fields (e.g.: entry, output, .....etc.)
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;entry--output&quot;&gt;entry / output&lt;/h3&gt;
+&lt;p&gt;These most important fields in the config file are the entry/output. Webpack after all is a bundler tool that read JavaScript file and bundle it with all its depnedencies into one or more files (called bundles).&lt;br /&gt;
+The &lt;em&gt;&lt;strong&gt;entry&lt;/strong&gt;&lt;/em&gt; field should point to the main entry point of our application. Webpack will parse the file, and parse all dependencies expressed with the statment &lt;code class=&quot;language-wiki&quot;&gt;&amp;nbsp;require&amp;nbsp;&lt;/code&gt;. The output field is where webpack will store the result.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;module.exports = {
+    // the most important fields in the configuration
+    entry: &#39;src/app.js&#39;,
+    output: {
+       filename: &#39;output/main.js&#39;
+    }
+}&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;p&gt;Running the webpack from the command line for the above config file will read the entry javascript file: &lt;em&gt;&lt;strong&gt;src/app.js&lt;/strong&gt;&lt;/em&gt; , figure out the dependencies, bundle them all together, and generate the output file &lt;em&gt;&lt;strong&gt;output/main.js&lt;/strong&gt;&lt;/em&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h1 id=&quot;webpack-dev-server&quot;&gt;webpack-dev-server&lt;/h1&gt;
+&lt;p&gt;As other build tools like Gulp provides gulp.watch, and Browserify provides watchify to provide the ability for continous watching changes in source code, and bundle and generate the output on the fly.  &lt;br /&gt;
+Webpack-dev-server is a simple node/express server, that run our application and serve the webpack bundles. The server watch changes in the source, and emits information about the state to the client.&lt;br /&gt;
+There are two different ways that the webpack watches the changes in the source files: iframe mode, and inline mode. We are going to cover the inline mode only.&lt;br /&gt;
+To run the server in inline mode we run the command line as follows:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;webpack-dev-server --inline&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;And the bundle and the static files will be servered at:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;http://localhost:8080/&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Because we might use this command every time we do development, it is good to put it as a script in package.json.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;// in the file package.json
+...
+&quot;scripts&quot;: {
+  &quot;test&quot;: &quot;echo \&quot;Error: no test specified\&quot; &amp;amp;&amp;amp; exit 1&quot;,
+  &quot;start&quot;: &quot;webpack-dev-server --colors --inline&quot;
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;On the browser side we need to open socket to the server to allow the server to communicate when change occurs. To do that we have to call this script, which we should add it to the entry point in webpack.config.js.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;entry: [
+      // WebpackDevServer host and port
+      &#39;webpack-dev-server/client?http://localhost:8080&#39;, 
+      &#39;src/app.js&#39;
+]&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;br /&gt;
+&lt;br /&gt;&lt;/p&gt;
+
+&lt;h1 id=&quot;hot-module-replacement&quot;&gt;Hot Module replacement&lt;/h1&gt;
+&lt;p&gt;&lt;strong&gt;Hot Module Replacement (HMR)&lt;/strong&gt; is a feature to inject updated modules into the active runtime.&lt;br /&gt;
+It help webpack-dev-server loads only the changed bundles, and not the whole code, and the the scripts will be loaded without the need to refresh.&lt;br /&gt;
+To use the HMR we need to do the following:&lt;/p&gt;
+
+&lt;ol&gt;
+
+1. install the hot load package:  
+&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;npm install --save-dev react-hot-loader&lt;/code&gt;&lt;/pre&gt;
+
+2. Send a command line option on the CLI of webpack-dev-server using *__-hot__*, so we can re-write the code to run webpack-dev-server as follows:
+&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;// in the file package.json
+...
+&quot;scripts&quot;: {
+  &quot;test&quot;: &quot;echo \&quot;Error: no test specified\&quot; &amp;amp;&amp;amp; exit 1&quot;,
+  &quot;start&quot;: &quot;webpack-dev-server --colors --inline --hot&quot;
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;br /&gt;
+
+3. Load a module on the browser side to watch for the HMR, and we can load it similar to how we loaded the webpack-dev-server client as follows:
+&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;entry: [
+      // WebpackDevServer host and port
+      &#39;webpack-dev-server/client?http://localhost:8080&#39;, 
+      &#39;webpack/hot/dev-server&#39;,
+      &#39;src/app.js&#39;
+]&lt;/code&gt;&lt;/pre&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;br /&gt;
+&lt;br /&gt;&lt;/p&gt;
+
+&lt;h1 id=&quot;additional-useful-packages&quot;&gt;Additional useful packages&lt;/h1&gt;
+&lt;p&gt;There are addional useful packages that we are going to usethem in many different projects.&lt;/p&gt;
+&lt;ol&gt;
+
+&lt;li&gt;classnames&lt;/li&gt;  
+This package is the official replacement for classSet that was shipped with React.js Addons bundle before.
+It generates dynamic classnames from the model, similar to Angular&#39;s ng-class.  
+
+&lt;li&gt;Babel&#39;s packages:  &lt;/li&gt;
+Babel provides lots of features like ES6, JSX,   
+&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;npm install --save babel
+npm install --save babel-core
+npm install --save babel-polyfill
+npm install --save babel-loader
+npm install --save babel-preset-es2015
+npm install --save babel-preset-react&lt;/code&gt;&lt;/pre&gt;
+
+&lt;/ol&gt;
+</description>
+        <pubDate>Mon, 01 Aug 2016 09:45:00 -0600</pubDate>
+        <link>https://blog.gisspan.com/2016/08/setup-react-webpack-development-project.html</link>
+        <guid isPermaLink="true">https://blog.gisspan.com/2016/08/setup-react-webpack-development-project.html</guid>
+        
+        <category>react</category>
+        
+        <category>webpack</category>
+        
+        
+      </item>
     
       <item>
         <title>Arguably the best approach to create objects in JavaScript.</title>
@@ -1011,18 +1155,6 @@ Authorization: Basic aHR0cHdhdGNoOmY=&lt;/code&gt;&lt;/pre&gt;As you can see the
         <pubDate>Thu, 31 Mar 2016 14:47:00 -0600</pubDate>
         <link>https://blog.gisspan.com/2016/03/web-security-basic-authentication.html</link>
         <guid isPermaLink="true">https://blog.gisspan.com/2016/03/web-security-basic-authentication.html</guid>
-        
-        <category>security</category>
-        
-        
-      </item>
-    
-      <item>
-        <title>Secure your web site with SSL</title>
-        <description>In order to secure the web site with SSL, you first need to buy a certificate.&lt;br /&gt;A certificate is a document that your website will send back to the browsers as an &quot;Official identification&quot; for your web site, and your business.&lt;!--more--&gt;&lt;br /&gt;The certificate is issued by certified companies who are called &quot;Certificate Authorities&quot;.&lt;br /&gt;&lt;/p&gt;&lt;h3&gt;Types of SSL Certificates &lt;/h3&gt; First of all you have to decide which certificate type you should chose for your web site.&lt;br /&gt;There are three types: &lt;ol&gt;&lt;li&gt;Domain Validation (DV) SSL Certificate&lt;/li&gt; This is the simplest type of certificate, where the CA checks only that the applicant owns or has the right to use the domain name.&lt;br /&gt;&lt;li&gt;Organization Validation (OV) SSL Certificates&lt;/li&gt;The CA checks more about the company owns the domain name, and display more information about the company owns the domain.&lt;br /&gt;&lt;li&gt;Extended Validation (EV) SSL Certificate&lt;/li&gt; The CA conducts a thorough check on the organization with some standard guidelines defined by the industry.&lt;br /&gt;This is usually required for organizations that require to have payments managed by on their own website and their own software. &lt;/ol&gt; &lt;h3&gt;Your home work &lt;/h3&gt; After you decided what type of certificate you want to buy, you search for a suitable CA authority to buy your certification from.&lt;br /&gt;The CA authority requires from your side a request called &quot;Certificate Signing Request&quot; (CSR) &lt;br /&gt;There are many ways to generate the CSR. I will describe the process using &lt;a href=&quot;https://www.openssl.org/&quot; target=&quot;_blank&quot;&gt;OpenSSL tools.&lt;/a&gt; &lt;br /&gt; First you need to generate a private key.&lt;br /&gt; &lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;openssl genrsa -out domain.com.key 2048&lt;/code&gt;&lt;/pre&gt; And then create the CSR:&lt;br /&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;openssl req -new -sha256 -key domain.com.key -out domain.com.csr&lt;/code&gt;&lt;/pre&gt;This will generate the CSR file, which you will send to the CA authority, which in return will send you the certificates.&lt;br /&gt;&lt;br /&gt;</description>
-        <pubDate>Fri, 11 Mar 2016 08:59:00 -0700</pubDate>
-        <link>https://blog.gisspan.com/2016/03/secure-your-web-site-with-ssl.html</link>
-        <guid isPermaLink="true">https://blog.gisspan.com/2016/03/secure-your-web-site-with-ssl.html</guid>
         
         <category>security</category>
         
