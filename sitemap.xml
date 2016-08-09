@@ -1,10 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 <url>
-<loc>https://blog.gisspan.com/2016/08/setup-react-webpack-development-project.html</loc>
-<lastmod>2016-08-01T09:45:00-06:00</lastmod>
-</url>
-<url>
 <loc>https://blog.gisspan.com/2016/07/Constructor-Vs-Factory.html</loc>
 <lastmod>2016-07-19T09:45:00-06:00</lastmod>
 </url>
@@ -256,12 +252,6 @@
 </url>
 <url>
 <loc>https://blog.gisspan.com/tag/security</loc>
-</url>
-<url>
-<loc>https://blog.gisspan.com/tag/react</loc>
-</url>
-<url>
-<loc>https://blog.gisspan.com/tag/webpack</loc>
 </url>
 <url>
 <loc>https://blog.gisspan.com/page2/</loc>
