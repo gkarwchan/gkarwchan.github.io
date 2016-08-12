@@ -6,9 +6,196 @@
 </description>
     <link>https://blog.gisspan.com/</link>
     <atom:link href="https://blog.gisspan.com/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Mon, 08 Aug 2016 20:47:50 -0600</pubDate>
-    <lastBuildDate>Mon, 08 Aug 2016 20:47:50 -0600</lastBuildDate>
+    <pubDate>Thu, 11 Aug 2016 23:46:00 -0600</pubDate>
+    <lastBuildDate>Thu, 11 Aug 2016 23:46:00 -0600</lastBuildDate>
     <generator>Jekyll v3.1.6</generator>
+    
+      <item>
+        <title>Setup basic development environment for React and webpack.</title>
+        <description>&lt;p&gt;Webpack became the de-facto standard module bundling and build automation tool for React community. Webpack is robust, and more complex than other bundling packages, and it has a steep learning curve comparing to other build automation tools.&lt;br /&gt;
+This post is going to show how to setup a very basic development environment that will give you a head start for basic web Single page application that is using react and webpack.&lt;!--more--&gt;
+&lt;br /&gt;
+&lt;br /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;start-with-npm-packages&quot;&gt;Start with NPM packages&lt;/h2&gt;
+&lt;p&gt;Start with installing the essential React required packages:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;npm init
+npm install --save react react-dom react-addons-update 
+npm install --save react-router reflux reflux-promise
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The above will start the &lt;code class=&quot;language-wiki&quot;&gt;&amp;nbsp;package.json&amp;nbsp;&lt;/code&gt; file, and install the required react libraries.&lt;/p&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;install-webpack-and-its-developer-tool&quot;&gt;Install webpack and its developer tool&lt;/h4&gt;
+&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;npm install --save webpack
+npm install -g webpack-dev-server&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;webpack-configuration-file&quot;&gt;webpack configuration file&lt;/h2&gt;
+&lt;p&gt;Start writing the webpack configuration file, which by convention its default name is &lt;code class=&quot;language-wiki&quot;&gt;&amp;nbsp;webpack.config.js&amp;nbsp;&lt;/code&gt;.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;var path = require(&#39;path&#39;);
+var webpack = require(&#39;webpack&#39;);
+
+module.exports = {
+   // ..... configuration fields (e.g.: entry, output, .....etc.)
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;entry--output&quot;&gt;entry / output&lt;/h4&gt;
+&lt;p&gt;These most important fields in the config file are the entry/output. Webpack after all is a bundler tool that read JavaScript file and bundle it with all its depnedencies into one or more files (called bundles).&lt;br /&gt;
+The &lt;em&gt;&lt;strong&gt;entry&lt;/strong&gt;&lt;/em&gt; field should point to the main entry point of our application. Webpack will parse the file, and parse all dependencies expressed with the statment &lt;code class=&quot;language-wiki&quot;&gt;&amp;nbsp;require&amp;nbsp;&lt;/code&gt;. The output field is where webpack will store the result.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;module.exports = {
+    // the most important fields in the configuration
+    entry: &#39;src/app.js&#39;,
+    output: {
+       filename: &#39;output/main.js&#39;
+    }
+}&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;p&gt;Running the webpack from the command line for the above config file will read the entry javascript file: &lt;em&gt;&lt;strong&gt;src/app.js&lt;/strong&gt;&lt;/em&gt; , figure out the dependencies, bundle them all together, and generate the output file &lt;em&gt;&lt;strong&gt;output/main.js&lt;/strong&gt;&lt;/em&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;continous-watching-and-bundling&quot;&gt;Continous watching and bundling&lt;/h2&gt;
+&lt;p&gt;As other build tools like Gulp provides &lt;em&gt;&lt;strong&gt;gulp.watch&lt;/strong&gt;&lt;/em&gt;, and Browserify provides &lt;em&gt;&lt;strong&gt;watchify&lt;/strong&gt;&lt;/em&gt; to provide the ability for continous watching changes in source code, and bundle and generate the output on the fly.  &lt;br /&gt;
+Webpack provides the same functionality with running webpack while specifying the &lt;strong&gt;watch&lt;/strong&gt; switch&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;webpack --watch 
+#### or another option
+webpack -w&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;By specifying the watch option , webpack keep watching the changes and recompiles automatically.&lt;/p&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;webpack-dev-server&quot;&gt;Webpack-dev-server&lt;/h4&gt;
+&lt;p&gt;Webpack-dev-server is a solution that was built on top of the watch mode, and goes beyond that. 
+It is a simple node/express server that run our application and serve the webpack bundles. The server watch changes in the source, and emits information about the state to the client.&lt;br /&gt;
+There are two different ways that the webpack watches the changes in the source files: iframe mode, and inline mode. We are going to cover the inline mode only.&lt;br /&gt;
+To run the server in inline mode we run the command line as follows:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;webpack-dev-server --inline&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;And the bundle and the static files will be servered at:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;http://localhost:8080/&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Because we might use this command every time we do development, it is good to put it as a script in package.json.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;// in the file package.json
+...
+&quot;scripts&quot;: {
+  &quot;test&quot;: &quot;echo \&quot;Error: no test specified\&quot; &amp;amp;&amp;amp; exit 1&quot;,
+  &quot;start&quot;: &quot;webpack-dev-server --colors --inline&quot;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;On the browser side we need to open socket to the server to allow the server to communicate when change occurs. To do that we have to call this script, which we should add it to the entry point in webpack.config.js.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;entry: [
+      // WebpackDevServer host and port
+      &#39;webpack-dev-server/client?http://localhost:8080&#39;, 
+      &#39;src/app.js&#39;
+]&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;br /&gt;
+&lt;br /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;hot-module-replacement&quot;&gt;Hot Module replacement&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;Hot Module Replacement (HMR)&lt;/strong&gt; is a feature to inject updated modules into the active runtime.&lt;br /&gt;
+It help webpack-dev-server loads only the changed bundles, and not the whole code, and the the scripts will be loaded without the need to refresh.&lt;br /&gt;
+To use the HMR we need to do the following:&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;Install the hot load package: &lt;/li&gt;
+&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;npm install --save-dev react-hot-loader&lt;/code&gt;&lt;/pre&gt;
+&lt;li&gt;Use hot command line argument&lt;/li&gt;  
+Send a command line option: hot on the CLI of webpack-dev-server, so we can re-write the code to run webpack-dev-server as follows:
+&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;// in the file package.json
+...
+&quot;scripts&quot;: {
+  &quot;test&quot;: &quot;echo \&quot;Error: no test specified\&quot; &amp;amp;&amp;amp; exit 1&quot;,
+  &quot;start&quot;: &quot;webpack-dev-server --colors --inline --hot&quot;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;li&gt; Load a module on the browser side to watch for the HMR &lt;/li&gt;  
+ and we can load it similar to how we loaded the webpack-dev-server client as follows:
+&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;entry: [
+      // WebpackDevServer host and port
+      &#39;webpack-dev-server/client?http://localhost:8080&#39;, 
+      &#39;webpack/hot/dev-server&#39;,
+      &#39;src/app.js&#39;
+]&lt;/code&gt;&lt;/pre&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&quot;additional-useful-packages&quot;&gt;Additional useful packages&lt;/h2&gt;
+&lt;p&gt;There are addional useful packages that we are going to usethem in many different projects.&lt;/p&gt;
+&lt;ol&gt;
+
+&lt;li&gt;classnames&lt;/li&gt;  
+This package is the official replacement for classSet that was shipped with React.js Addons bundle before.
+It generates dynamic classnames from the model, similar to Angular&#39;s ng-class.  
+
+&lt;li&gt;Babel&#39;s packages:  &lt;/li&gt;
+Babel provides lots of features like ES6, JSX,   
+&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;npm install --save babel babel-core babel-polyfill babel-loader babel-preset-es2015
+&lt;/code&gt;&lt;/pre&gt;
+
+
+
+
+&lt;/ol&gt;
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;setup-babel-with-react&quot;&gt;Setup Babel with react&lt;/h4&gt;
+&lt;p&gt;Babel is a modular echo system, and in order Babel provides a module for react, to use it we need to install it and configure it:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;npm install --save  babel-preset-react&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;And to configure it we add a file called &lt;code class=&quot;language-wiki&quot;&gt;&amp;nbsp;.bablerc&amp;nbsp;&lt;/code&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;// .babelrc 
+{
+  &quot;presets&quot;: [&quot;react&quot;]
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;br /&gt;
+&lt;br /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;convert-scss-to-css&quot;&gt;Convert SCSS to CSS&lt;/h2&gt;
+&lt;p&gt;Webpack provides the ability to transfer the content of files through &lt;em&gt;&lt;strong&gt;loaders&lt;/strong&gt;&lt;/em&gt;. To transform SCSS to CSS, we do the following:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Install the required loader&lt;/li&gt;
+&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;npm install sass-loader node-sass webpack --save-dev&lt;/code&gt;&lt;/pre&gt;
+sass-loader is the required loader, and it require node-sass as well to work.  
+&lt;li&gt;Transform the sass files&lt;/li&gt;
+To transform the sass files, we use the module/loaders in webpack as follows:
+&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;module.exports = {
+  ...
+  module: {
+    loaders: [
+      {
+        test: /\.scss$/,
+        loaders: [&quot;style&quot;, &quot;css&quot;, &quot;sass&quot;]
+      }
+    ]
+  }
+};
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;/ol&gt;
+
+&lt;p&gt;By this you have a basic build system using webpack.&lt;/p&gt;
+</description>
+        <pubDate>Mon, 01 Aug 2016 09:45:00 -0600</pubDate>
+        <link>https://blog.gisspan.com/2016/08/setup-react-webpack-development-project.html</link>
+        <guid isPermaLink="true">https://blog.gisspan.com/2016/08/setup-react-webpack-development-project.html</guid>
+        
+        <category>react</category>
+        
+        <category>webpack</category>
+        
+        
+      </item>
     
       <item>
         <title>Arguably the best approach to create objects in JavaScript.</title>
@@ -1011,18 +1198,6 @@ Authorization: Basic aHR0cHdhdGNoOmY=&lt;/code&gt;&lt;/pre&gt;As you can see the
         <pubDate>Thu, 31 Mar 2016 14:47:00 -0600</pubDate>
         <link>https://blog.gisspan.com/2016/03/web-security-basic-authentication.html</link>
         <guid isPermaLink="true">https://blog.gisspan.com/2016/03/web-security-basic-authentication.html</guid>
-        
-        <category>security</category>
-        
-        
-      </item>
-    
-      <item>
-        <title>Secure your web site with SSL</title>
-        <description>In order to secure the web site with SSL, you first need to buy a certificate.&lt;br /&gt;A certificate is a document that your website will send back to the browsers as an &quot;Official identification&quot; for your web site, and your business.&lt;!--more--&gt;&lt;br /&gt;The certificate is issued by certified companies who are called &quot;Certificate Authorities&quot;.&lt;br /&gt;&lt;/p&gt;&lt;h3&gt;Types of SSL Certificates &lt;/h3&gt; First of all you have to decide which certificate type you should chose for your web site.&lt;br /&gt;There are three types: &lt;ol&gt;&lt;li&gt;Domain Validation (DV) SSL Certificate&lt;/li&gt; This is the simplest type of certificate, where the CA checks only that the applicant owns or has the right to use the domain name.&lt;br /&gt;&lt;li&gt;Organization Validation (OV) SSL Certificates&lt;/li&gt;The CA checks more about the company owns the domain name, and display more information about the company owns the domain.&lt;br /&gt;&lt;li&gt;Extended Validation (EV) SSL Certificate&lt;/li&gt; The CA conducts a thorough check on the organization with some standard guidelines defined by the industry.&lt;br /&gt;This is usually required for organizations that require to have payments managed by on their own website and their own software. &lt;/ol&gt; &lt;h3&gt;Your home work &lt;/h3&gt; After you decided what type of certificate you want to buy, you search for a suitable CA authority to buy your certification from.&lt;br /&gt;The CA authority requires from your side a request called &quot;Certificate Signing Request&quot; (CSR) &lt;br /&gt;There are many ways to generate the CSR. I will describe the process using &lt;a href=&quot;https://www.openssl.org/&quot; target=&quot;_blank&quot;&gt;OpenSSL tools.&lt;/a&gt; &lt;br /&gt; First you need to generate a private key.&lt;br /&gt; &lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;openssl genrsa -out domain.com.key 2048&lt;/code&gt;&lt;/pre&gt; And then create the CSR:&lt;br /&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;openssl req -new -sha256 -key domain.com.key -out domain.com.csr&lt;/code&gt;&lt;/pre&gt;This will generate the CSR file, which you will send to the CA authority, which in return will send you the certificates.&lt;br /&gt;&lt;br /&gt;</description>
-        <pubDate>Fri, 11 Mar 2016 08:59:00 -0700</pubDate>
-        <link>https://blog.gisspan.com/2016/03/secure-your-web-site-with-ssl.html</link>
-        <guid isPermaLink="true">https://blog.gisspan.com/2016/03/secure-your-web-site-with-ssl.html</guid>
         
         <category>security</category>
         
