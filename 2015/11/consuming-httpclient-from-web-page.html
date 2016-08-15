@@ -122,14 +122,27 @@
         <p class="post-meta"><time datetime="2015-11-10T10:50:00-07:00" itemprop="datePublished">Nov 10, 2015</time> • <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name">Ghassan Karwchan</span></span></p>
       </header>
       <div class="post-content post-font" itemprop="articleBody">
-        <a href="https://msdn.microsoft.com/en-us/library/system.net.http.httpclient(v=vs.118).aspx">HttpClient</a> was introduced in .NET 4.5 in order to send HTTP requests.<br />It is using the new Asynchronous framework in .NET 4.5.<!--more--><br /><br /><h3>But it has a problem on the web</h3>Async framework, and Async/wait statements will return back immediately to the caller when we use them, and they depend on the caller back to notify the called when they are done.<br />On a web page, which finish running immediately, we cannot use them<br/><br />So the following code will never notify back the ASP.Net controller<br /><pre class="line-numbers"><code class="language-csharp">  <br />    public async Task< string > ReadStringAsAsync(string url)<br />    {<br />        using (var client = new HttpClient())<br />        {<br />            client.BaseAddress = new Uri(_baseAddress);<br />            client.DefaultRequestHeaders.Accept.Clear();<br />            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));<br />            var task = client.GetStringAsync(url);<br />            return task;<br />        }<br />    }</code></pre>   And the reason, GetStringAsync will return to the caller.  So, the solution is just simple. Don't return back immediately, and wait for the result to return.<br />just add the "<b><i>Result</i></b>" property  at the end of the previous statement.<br/> so the code will be  
+        <a href="https://msdn.microsoft.com/en-us/library/system.net.http.httpclient(v=vs.118).aspx">HttpClient</a> was introduced in .NET 4.5 in order to send HTTP requests.<br />It is using the new Asynchronous framework in .NET 4.5.<!--more--><br /><br /><h3>But it has a problem on the web</h3>Async framework, and Async/wait statements will return back immediately to the caller when we use them, and they depend on the caller back to notify the called when they are done.<br />On a web page, which finish running immediately, we cannot use them<br/><br />So the following code will never notify back the ASP.Net controller<br />
+<pre class="line-numbers"><code class="language-csharp">public async Task<string> ReadStringAsAsync(string url) 
+{
+    using (var client = new HttpClient()) {
+        client.BaseAddress = new Uri(_baseAddress);
+        client.DefaultRequestHeaders.Accept.Clear();
+        client.DefaultRequestHeaders.Accept.Add(
+            new MediaTypeWithQualityHeaderValue("application/json"));
+        var task = client.GetStringAsync(url);
+        return task;
+    }
+}</code></pre>   
+And the reason, GetStringAsync will return to the caller.  So, the solution is just simple. Don't return back immediately, and wait for the result to return.<br />just add the "<b><i>Result</i></b>" property  at the end of the previous statement.<br/> so the code will be  
 <pre class="line-numbers"><code class="language-csharp">public async Task< string > ReadStringAsAsync(string url)
 {
     using (var client = new HttpClient())
         {
             client.BaseAddress = new Uri(_baseAddress);
             client.DefaultRequestHeaders.Accept.Clear();
-            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            client.DefaultRequestHeaders.Accept.Add(
+                new MediaTypeWithQualityHeaderValue("application/json"));
             var task = client.GetStringAsync(url).Result;
             return task;
          }
