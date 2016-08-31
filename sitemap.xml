@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 <url>
+<loc>https://blog.gisspan.com/2016/08/Analyse-website-log-with-AWS-data-analysis-services.html</loc>
+<lastmod>2016-08-16T09:45:00-06:00</lastmod>
+</url>
+<url>
 <loc>https://blog.gisspan.com/2016/08/setup-react-webpack-development-project.html</loc>
 <lastmod>2016-08-01T09:45:00-06:00</lastmod>
 </url>
@@ -264,6 +268,12 @@
 <loc>https://blog.gisspan.com/tag/webpack</loc>
 </url>
 <url>
+<loc>https://blog.gisspan.com/tag/cloud</loc>
+</url>
+<url>
+<loc>https://blog.gisspan.com/tag/big-data</loc>
+</url>
+<url>
 <loc>https://blog.gisspan.com/page2/</loc>
 </url>
 <url>
@@ -289,5 +299,8 @@
 </url>
 <url>
 <loc>https://blog.gisspan.com/page10/</loc>
+</url>
+<url>
+<loc>https://blog.gisspan.com/page11/</loc>
 </url>
 </urlset>

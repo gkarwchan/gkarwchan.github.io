@@ -227,3 +227,9 @@ pre[class*="language-"] {
 
 .webpack {
   background-color: rgba(16, 58, 177, 0.5); }
+
+.cloud {
+  background-color: #9999ff; }
+
+.big.data {
+  background-color: #ac3939; }

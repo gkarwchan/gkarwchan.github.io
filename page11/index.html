@@ -6,8 +6,9 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>NHibernate Mapping: Map composite key</title>
-  <meta name="description" content="Let us have the following domain model example: ">
+  <title>Web matters</title>
+  <meta name="description" content="A blog about web programming that covers the full stack. JavaScript on the client side, and on the server side, it could be .NET, Go, Python.
+">
 
 
   <!-- CSS Reset -->
@@ -19,7 +20,7 @@
 
   <link rel="stylesheet" href="/css/main.css">
   <script src="/js/prism.js"></script>
-  <link rel="canonical" href="https://blog.gisspan.com/2011/10/nhibernate-mapping-map-composite-key.html">
+  <link rel="canonical" href="https://blog.gisspan.com/page11/">
   <link rel="alternate" type="application/rss+xml" title="Web matters" href="https://blog.gisspan.com/feed.xml">
   <script>
     (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -121,76 +122,46 @@
 </header>
 
 
-            <article class="post row" itemscope itemtype="http://schema.org/BlogPosting">
-    <div class="content">
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">NHibernate Mapping: Map composite key</h1>
-        <p class="post-meta"><time datetime="2011-10-10T03:15:00-06:00" itemprop="datePublished">Oct 10, 2011</time> • <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name">Ghassan Karwchan</span></span></p>
-      </header>
-      <div class="post-content post-font" itemprop="articleBody">
-        <p>Let us have the following domain model example: <!--more--><br />
-<pre><code class="language-csharp">public class Product {
-    public int Id {get; set; }
-    public string ProductNumber {get; set;}
-}
+          <div class="row content">
+  <!--<div class="">-->
+    <div class="column column-80">
+      <ul class="post-list">
+        <li> <div class="post-excerpt">
+          <a href="/2010/08/problems-with-unit-testing.html"  class="post-title-excerpt" >Problems with unit testing BackgroundWorker</a>
+          <div class="tags">
+            
+              <a href="/tag/wpf.html" class="tag wpf" >wpf</a>
+            
+              <a href="/tag/unit test.html" class="tag unit test" >unit test</a>
+            
+            </div>
+          <div class="excerpt-body post-font">I am using BackgroundWorker in a WPF application, in order to run long process in the background.<br />And I was trying to write unit tests for the class that use the BackgroundWorker.
 
-public class Location
-{
-    public string Id {get; set;}
-    public string LocationName {get; set; }
-}
-
-public class ProductInventory 
-{
-    public Product Product {get; set; }
-    public InventoryLocation Location {get; set;}
-    public decimal Quantity {get; set;}
-}</code></pre></p>and we want to map it to the following tables:<br /><br />
-
-<div class="separator" style="clear: both; text-align: center;"><i><a href="http://2.bp.blogspot.com/-gAKKMRzDQ58/TpK2zBPTmWI/AAAAAAAAADU/n5QYtJ2Yxpw/s1600/inventory.png" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"><img border="0" height="208" src="http://2.bp.blogspot.com/-gAKKMRzDQ58/TpK2zBPTmWI/AAAAAAAAADU/n5QYtJ2Yxpw/s640/inventory.png" width="640" /></a></i></div>
 <br/><br/>
-you map the classes Product, Location as usual, by inheriting from classMap.<br />
-There is no tricks in defining those classes, so I am not going to list them, but the trick is in ProductInventory mapping.<br />
+          <a href="/2010/08/problems-with-unit-testing.html"> read more ...</a></div>
+          
+          </div>
+            
+          </li>
+      </ul>
+      <!-- Pagination links -->
+    <div class="pagination">
+      
+        <a href="/page10" class="previous">&lt;&lt; Previous</a>
+      
+      
+      <span class="page_number ">Page: 11 of 11</span>
+      
+    </div>
+  </div>
 
-The mapping for ProductInventory will be as follows:
-
-<pre><code class="language-csharp">public class ProductInventoryMapping : ClassMap
-{
-    public ProductInventoryMapping() : base()
-    {
-        Table("ProductInventory");
-        CompositeId()
-            .KeyReference(x => x.Product, "ProductID")
-            .KeyReference(x => x.Location, "LocationID");
-            Map(x => x.Quantity);
-    }
-}</code></pre>
-KeyReference will refer to many-to-one relation to the table mapped by the class Product , and Location.
-      </div>
-      <div id="disqus_thread"></div>
-        <script>
-            /**
-             *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
-             *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables
-             */
-            /*
-            var disqus_config = function () {
-                this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
-                this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
-            };
-            */
-            (function() {  // DON'T EDIT BELOW THIS LINE
-                var d = document, s = d.createElement('script');
-                
-                s.src = '//bloggisspancom.disqus.com/embed.js';
-                
-                s.setAttribute('data-timestamp', +new Date());
-                (d.head || d.body).appendChild(s);
-            })();
-        </script>
-        <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
-     </div>
-  </article>
+  <div class="column">
+    <span class="post-title-excerpt" style="margin: 10px 0">Categories</span>
+    <div id="tag-cloud" class="tag-cloud"><a href="/tag/angular.html" class="set-5">angular (5)</a> <a href="/tag/asp.net.html" class="set-3">asp.net (3)</a> <a href="/tag/azure.html" class="set-1">azure (1)</a> <a href="/tag/big-data.html" class="set-1">big data (1)</a> <a href="/tag/cloud.html" class="set-1">cloud (1)</a> <a href="/tag/css.html" class="set-3">css (3)</a> <a href="/tag/devops.html" class="set-3">devops (3)</a> <a href="/tag/gis.html" class="set-1">gis (1)</a> <a href="/tag/javascript.html" class="set-9">javascript (9)</a> <a href="/tag/linux.html" class="set-1">linux (1)</a> <a href="/tag/nhibernate.html" class="set-11">nhibernate (11)</a> <a href="/tag/node.js.html" class="set-1">node.js (1)</a> <a href="/tag/operation.html" class="set-4">operation (4)</a> <a href="/tag/performance.html" class="set-1">performance (1)</a> <a href="/tag/python.html" class="set-1">python (1)</a> <a href="/tag/react.html" class="set-1">react (1)</a> <a href="/tag/security.html" class="set-5">security (5)</a> <a href="/tag/tools.html" class="set-4">tools (4)</a> <a href="/tag/unit-test.html" class="set-4">unit test (4)</a> <a href="/tag/webpack.html" class="set-1">webpack (1)</a> <a href="/tag/wpf.html" class="set-2">wpf (2)</a> </div>
+    
+  </div>
+<!--</div>-->
+</div>
 
 
       <footer class="site-footer row">

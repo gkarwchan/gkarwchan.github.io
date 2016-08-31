@@ -6,9 +6,67 @@
 </description>
     <link>https://blog.gisspan.com/</link>
     <atom:link href="https://blog.gisspan.com/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 11 Aug 2016 23:46:00 -0600</pubDate>
-    <lastBuildDate>Thu, 11 Aug 2016 23:46:00 -0600</lastBuildDate>
+    <pubDate>Wed, 31 Aug 2016 00:53:45 -0600</pubDate>
+    <lastBuildDate>Wed, 31 Aug 2016 00:53:45 -0600</lastBuildDate>
     <generator>Jekyll v3.1.6</generator>
+    
+      <item>
+        <title>Big Data at your fingertips using AWS services - Introduction.</title>
+        <description>
+&lt;p&gt;Big Data Analytics used to be an activity that require powerful computers and very high specialized skills. But with the cloud computing, you can have huge computing power installed, and configured in few button clicks.&lt;br /&gt;
+AWS as an example provide a wide veriety of different kind of data analysis services, each one will do a specific job. We can use these services as building blocks to build any application that deal with big data analysis.&lt;br /&gt;
+AWS services shine on big data, and they can handle Peta-byte size databases, with high performance.&lt;br /&gt;
+In this post and following posts, I am going to describe these services, and how to use them. At the end, I am going to show how to use different kind of services to build a monitoring and diagnostic tool for an IIS web site application. &lt;!--more--&gt;
+&lt;br /&gt;
+&lt;br /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;list-of-posts&quot;&gt;List of posts&lt;/h2&gt;
+&lt;p&gt;We are going to cover these points:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Introduction to big data (this post).&lt;/li&gt;
+  &lt;li&gt;Streaming real time data (coming).&lt;/li&gt;
+  &lt;li&gt;Hadoop &amp;amp; MapReduce (coming).&lt;/li&gt;
+  &lt;li&gt;HBase patterns (coming).&lt;/li&gt;
+  &lt;li&gt;Spark and data analysis with Python (coming).&lt;/li&gt;
+  &lt;li&gt;Hive and data processing (coming).&lt;/li&gt;
+  &lt;li&gt;Parctical example&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&quot;components-of-a-big-data-application&quot;&gt;Components of a big data application&lt;/h2&gt;
+&lt;p&gt;We can devide the functionality of any big data application into the following 4 types:&lt;/p&gt;
+
+&lt;div class=&quot;column&quot; style=&quot;align: center&quot;&gt;
+  &lt;p&gt;&lt;img src=&quot;/img/concept1.png&quot; alt=&quot;states&quot; height=&quot;300px&quot; width=&quot;auto&quot; align=&quot;center&quot; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+
+&lt;p&gt;AWS provides applications for all these stages:
+&lt;br /&gt;
+&lt;br /&gt;&lt;/p&gt;
+&lt;div class=&quot;column&quot; style=&quot;align: center&quot;&gt;
+  &lt;p&gt;&lt;img src=&quot;/img/aws-big-data-platform.jpg&quot; alt=&quot;states&quot; height=&quot;600px&quot; width=&quot;auto&quot; align=&quot;center&quot; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;setup-the-aws-environment&quot;&gt;Setup the AWS environment&lt;/h2&gt;
+&lt;p&gt;We are going to see how AWS services are created and configured, and we are going to do some hands-on exercies. To complete these exercises you need an Amazon account, and we need to use AWS services.&lt;br /&gt;
+To use AWS, there are two ways, either through the web interface &lt;a href=&quot;console.aws.amazon.com&quot;&gt;from this site&lt;/a&gt; or from command line tools, like Python or others.
+For these exercies we are going to use &lt;a href=&quot;https://aws.amazon.com/cli/&quot;&gt;AWS Command line interface&lt;/a&gt;.&lt;br /&gt;
+To install and configure AWS commadn line interface and create an Amazon account, follow this tutrorial:  &lt;a href=&quot;http://docs.aws.amazon.com/cli/latest/userguide/cli-chap-getting-set-up.html&quot;&gt;this document to install AWS CLI and set it up&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;br /&gt;
+&lt;br /&gt;&lt;/p&gt;
+</description>
+        <pubDate>Tue, 16 Aug 2016 09:45:00 -0600</pubDate>
+        <link>https://blog.gisspan.com/2016/08/Analyse-website-log-with-AWS-data-analysis-services.html</link>
+        <guid isPermaLink="true">https://blog.gisspan.com/2016/08/Analyse-website-log-with-AWS-data-analysis-services.html</guid>
+        
+        <category>cloud</category>
+        
+        <category>big data</category>
+        
+        
+      </item>
     
       <item>
         <title>Setup basic development environment for React and webpack.</title>
@@ -1181,25 +1239,6 @@ module.exports =
         <guid isPermaLink="true">https://blog.gisspan.com/2016/04/angular-best-practices-using-nodejs.html</guid>
         
         <category>angular</category>
-        
-        
-      </item>
-    
-      <item>
-        <title>Web security - Basic Authentication</title>
-        <description>Although basic authentication is not widely used anymore, but understanding it is a good idea, because some parts of it are used in other security mechanisms like JWT for example.&lt;!--more--&gt;&lt;br /&gt;&lt;h3&gt;Introduction to Basic Authentication&lt;/h3&gt;Basic Access Authentication is the simplest way provided by HTTP protocol to allow an HTTP agent to provide user name and password when making an HTTP request.&lt;br /&gt;It is a simple &lt;a href=&quot;https://en.wikipedia.org/wiki/Challenge%E2%80%93response_authentication&quot; target=&quot;_blank&quot;&gt;challenge-response authentication mechanism&lt;/a&gt; and uses standard HTTP Headers in the request / response to transfer the required data.&lt;br /&gt; &lt;br /&gt;&lt;h3&gt;Advantages&lt;/h3&gt;Because its simplicity, it has the following advantages: &lt;ol&gt;&lt;li&gt;We don&#39;t need to use cookies.&lt;/li&gt;&lt;li&gt;No need to use sessions.&lt;/li&gt;&lt;li&gt;No need to use customized login pages, because all web browsers provide a way to provide the user name and password.&lt;/li&gt;&lt;/ol&gt;There are many disadvantages, which they have workarounds, and we are going to cover them while we cover its workflow between server and browser.&lt;br /&gt; &lt;h3&gt;Standard Basic Authentication Scenario&lt;/h3&gt;This is a standard scenario of the communication between the browser and the server. &lt;br /&gt;&lt;ol&gt;&lt;li&gt;The browser send an anonymous HTTP GET request for a web server&lt;/li&gt;&lt;li&gt;The server to protect a resource, it will challenge the browser by returning the following example response:&lt;/li&gt;
-&lt;pre&gt;&lt;code class=&quot;language-http&quot;&gt;HTTP/1.1 401 Access Denied
-WWW-Authenticate: Basic realm=&quot;My Server&quot;
-Content-Length: 0&lt;/code&gt;&lt;/pre&gt;The response has the following details: &lt;ol&gt;&lt;ul&gt;&lt;li&gt;HTTP Status code 401 (unauthorized)&lt;/li&gt;&lt;li&gt;The &quot;&lt;b&gt;WWW-Authenticate&lt;/b&gt;&quot; response header&lt;/li&gt;&lt;li&gt;The previous header value should start with the word &quot;Basic&quot; , to indicate that it is basic authentication.&lt;/li&gt;&lt;li&gt;as well the header value should have the attribute &quot;&lt;b&gt;realm&lt;/b&gt;&quot; followed by an equal sign with its value. The realm will define the &quot;partitioning&quot; of the protection.&lt;/li&gt;&lt;/ul&gt;&lt;/ol&gt;&lt;li&gt;When the browser received the previous response, most web browser prompt a login dialog that allow the user to enter user name and password.&lt;/li&gt;&lt;li&gt;the browser will concatinate user name and password seperated by colon like this &lt;b&gt; username:password &lt;/b&gt;, and then encode the result string with base64 encoding&amp;nbsp;&lt;/li&gt;&lt;li&gt;the browser will re-send the HTTP GET, adding a HTTP header &quot;Authorization&quot; with the base64 string&lt;/li&gt;this is an example of such request: &lt;br /&gt;    
-
-&lt;pre&gt;&lt;code class=&quot;language-http&quot;&gt;GET /securefiles/ HTTP/1.1
-Host: www.my-server.com 
-Authorization: Basic aHR0cHdhdGNoOmY=&lt;/code&gt;&lt;/pre&gt;As you can see the browser send the previous request with no encryption at all (P.S: base64 is an encoding and not encryption), which means anybody can catch the request can decode the user name and password. and this is one of the disadvantage of basic authentication, but we can mitigate this by using SSL and HTTPS. &lt;li&gt;The web browser, and in order not to show the login dialog on every new request on that&amp;nbsp;protected web site, it caches the credentials, and resubmit the Authorization header in every subsequent request.&lt;/li&gt;The browser keeps the cached credentials until closing the browser, or keeping the browser idle for a long time. &lt;/ol&gt;&lt;h3&gt;Log Out of Basic Authentication&lt;/h3&gt;The caching will introduce other side effect, because The server has no way to force the client to &quot;log out&quot;, which is a disadvantage of the basic authentication.&lt;br /&gt;Unfortunately the work around for this issue is browser specific.&lt;br /&gt;For IE only, we can send this Javascript code to clear that cache:&lt;br /&gt;&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;document.execCommand(&#39;ClearAuthenticationCache&#39;,&#39;false&#39;);&lt;/code&gt;&lt;/pre&gt;For other browsers, developers usually do some tricks by login with wrong credentials&lt;br /&gt;See the following solutions: &lt;br /&gt;&lt;a href=&quot;http://stackoverflow.com/questions/6277919/logging-a-user-out-when-using-http-basic-authentication&quot;&gt;http://stackoverflow.com/questions/6277919/logging-a-user-out-when-using-http-basic-authentication&lt;/a&gt; &lt;br /&gt;&lt;a href=&quot;http://stackoverflow.com/questions/233507/how-to-log-out-user-from-web-site-using-basic-authentication&quot;&gt;http://stackoverflow.com/questions/233507/how-to-log-out-user-from-web-site-using-basic-authentication&lt;/a&gt;&lt;br /&gt;These solutions are based on an HTTP protocol feature which allow a client avoid a login prompt when accessing a basic access authentication by prepending a username / password to the host name of the url.&lt;br /&gt;An example of providing username / password is as follows: &lt;br /&gt;&lt;pre&gt;&lt;code class=&quot;language-http&quot;&gt;http://username:password@hostname.com&lt;/code&gt;&lt;/pre&gt;</description>
-        <pubDate>Thu, 31 Mar 2016 14:47:00 -0600</pubDate>
-        <link>https://blog.gisspan.com/2016/03/web-security-basic-authentication.html</link>
-        <guid isPermaLink="true">https://blog.gisspan.com/2016/03/web-security-basic-authentication.html</guid>
-        
-        <category>security</category>
         
         
       </item>

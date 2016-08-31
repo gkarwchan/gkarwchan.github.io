@@ -6,8 +6,8 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>NHibernate Mapping: Map composite key</title>
-  <meta name="description" content="Let us have the following domain model example: ">
+  <title>Big Data at your fingertips using AWS services - Introduction.</title>
+  <meta name="description" content="Big Data Analytics used to be an activity that require powerful computers and very high specialized skills. But with the cloud computing, you can have huge c...">
 
 
   <!-- CSS Reset -->
@@ -19,7 +19,7 @@
 
   <link rel="stylesheet" href="/css/main.css">
   <script src="/js/prism.js"></script>
-  <link rel="canonical" href="https://blog.gisspan.com/2011/10/nhibernate-mapping-map-composite-key.html">
+  <link rel="canonical" href="https://blog.gisspan.com/2016/08/Analyse-website-log-with-AWS-data-analysis-services.html">
   <link rel="alternate" type="application/rss+xml" title="Web matters" href="https://blog.gisspan.com/feed.xml">
   <script>
     (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -124,48 +124,55 @@
             <article class="post row" itemscope itemtype="http://schema.org/BlogPosting">
     <div class="content">
       <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">NHibernate Mapping: Map composite key</h1>
-        <p class="post-meta"><time datetime="2011-10-10T03:15:00-06:00" itemprop="datePublished">Oct 10, 2011</time> • <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name">Ghassan Karwchan</span></span></p>
+        <h1 class="post-title" itemprop="name headline">Big Data at your fingertips using AWS services - Introduction.</h1>
+        <p class="post-meta"><time datetime="2016-08-16T09:45:00-06:00" itemprop="datePublished">Aug 16, 2016</time> • <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name">Ghassan Karwchan</span></span></p>
       </header>
       <div class="post-content post-font" itemprop="articleBody">
-        <p>Let us have the following domain model example: <!--more--><br />
-<pre><code class="language-csharp">public class Product {
-    public int Id {get; set; }
-    public string ProductNumber {get; set;}
-}
+        
+<p>Big Data Analytics used to be an activity that require powerful computers and very high specialized skills. But with the cloud computing, you can have huge computing power installed, and configured in few button clicks.<br />
+AWS as an example provide a wide veriety of different kind of data analysis services, each one will do a specific job. We can use these services as building blocks to build any application that deal with big data analysis.<br />
+AWS services shine on big data, and they can handle Peta-byte size databases, with high performance.<br />
+In this post and following posts, I am going to describe these services, and how to use them. At the end, I am going to show how to use different kind of services to build a monitoring and diagnostic tool for an IIS web site application. <!--more-->
+<br />
+<br /></p>
 
-public class Location
-{
-    public string Id {get; set;}
-    public string LocationName {get; set; }
-}
+<h2 id="list-of-posts">List of posts</h2>
+<p>We are going to cover these points:</p>
 
-public class ProductInventory 
-{
-    public Product Product {get; set; }
-    public InventoryLocation Location {get; set;}
-    public decimal Quantity {get; set;}
-}</code></pre></p>and we want to map it to the following tables:<br /><br />
+<ol>
+  <li>Introduction to big data (this post).</li>
+  <li>Streaming real time data (coming).</li>
+  <li>Hadoop &amp; MapReduce (coming).</li>
+  <li>HBase patterns (coming).</li>
+  <li>Spark and data analysis with Python (coming).</li>
+  <li>Hive and data processing (coming).</li>
+  <li>Parctical example</li>
+</ol>
 
-<div class="separator" style="clear: both; text-align: center;"><i><a href="http://2.bp.blogspot.com/-gAKKMRzDQ58/TpK2zBPTmWI/AAAAAAAAADU/n5QYtJ2Yxpw/s1600/inventory.png" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"><img border="0" height="208" src="http://2.bp.blogspot.com/-gAKKMRzDQ58/TpK2zBPTmWI/AAAAAAAAADU/n5QYtJ2Yxpw/s640/inventory.png" width="640" /></a></i></div>
-<br/><br/>
-you map the classes Product, Location as usual, by inheriting from classMap.<br />
-There is no tricks in defining those classes, so I am not going to list them, but the trick is in ProductInventory mapping.<br />
+<h2 id="components-of-a-big-data-application">Components of a big data application</h2>
+<p>We can devide the functionality of any big data application into the following 4 types:</p>
 
-The mapping for ProductInventory will be as follows:
+<div class="column" style="align: center">
+  <p><img src="/img/concept1.png" alt="states" height="300px" width="auto" align="center" /></p>
+</div>
 
-<pre><code class="language-csharp">public class ProductInventoryMapping : ClassMap
-{
-    public ProductInventoryMapping() : base()
-    {
-        Table("ProductInventory");
-        CompositeId()
-            .KeyReference(x => x.Product, "ProductID")
-            .KeyReference(x => x.Location, "LocationID");
-            Map(x => x.Quantity);
-    }
-}</code></pre>
-KeyReference will refer to many-to-one relation to the table mapped by the class Product , and Location.
+<p>AWS provides applications for all these stages:
+<br />
+<br /></p>
+<div class="column" style="align: center">
+  <p><img src="/img/aws-big-data-platform.jpg" alt="states" height="600px" width="auto" align="center" /></p>
+</div>
+<p><br /></p>
+
+<h2 id="setup-the-aws-environment">Setup the AWS environment</h2>
+<p>We are going to see how AWS services are created and configured, and we are going to do some hands-on exercies. To complete these exercises you need an Amazon account, and we need to use AWS services.<br />
+To use AWS, there are two ways, either through the web interface <a href="console.aws.amazon.com">from this site</a> or from command line tools, like Python or others.
+For these exercies we are going to use <a href="https://aws.amazon.com/cli/">AWS Command line interface</a>.<br />
+To install and configure AWS commadn line interface and create an Amazon account, follow this tutrorial:  <a href="http://docs.aws.amazon.com/cli/latest/userguide/cli-chap-getting-set-up.html">this document to install AWS CLI and set it up</a>.</p>
+
+<p><br />
+<br /></p>
+
       </div>
       <div id="disqus_thread"></div>
         <script>
