@@ -6,9 +6,412 @@
 </description>
     <link>https://blog.gisspan.com/</link>
     <atom:link href="https://blog.gisspan.com/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Wed, 31 Aug 2016 00:53:45 -0600</pubDate>
-    <lastBuildDate>Wed, 31 Aug 2016 00:53:45 -0600</lastBuildDate>
+    <pubDate>Wed, 14 Sep 2016 23:26:56 -0600</pubDate>
+    <lastBuildDate>Wed, 14 Sep 2016 23:26:56 -0600</lastBuildDate>
     <generator>Jekyll v3.1.6</generator>
+    
+      <item>
+        <title>The advantages of IHttpActionResult in Web API 2.</title>
+        <description>
+&lt;p&gt;Web API 2 introduced the new interface IHttpActionResult to return back REST responses, where Web API 1 was using the class HttpResponseMessage to represent HTTP response, and HTTPResponseException to represent HTTP response error.&lt;/p&gt;
+
+&lt;p&gt;IHttpActionResult allows developers to enhance their Web API 1 code to be :&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;More testable.&lt;/li&gt;
+  &lt;li&gt;More reusable.&lt;/li&gt;
+  &lt;li&gt;Cleaner, and more elegant.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;We are going to unleash the potential of this interface and see some creative ideas on how to use it.&lt;!--more--&gt;
+&lt;br /&gt;
+&lt;br /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;start-from-http-protocol&quot;&gt;Start from HTTP Protocol&lt;/h4&gt;
+&lt;p&gt;First of all, let’s see what Web API is trying to do, and let us look at the HTTP response. A usual responses coming from a web server look like:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-http&quot;&gt;HTTP/1.1 200 OK
+Cache-Control: max-age=1200
+Content-Length: 10
+Content-Type: text/plain; charset=utf-16
+Server: Microsoft-IIS/8.0
+Date: Mon, 27 Jan 2014 08:53:35 GMT
+
+hello
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;This is a successful response, which we can know from the code &lt;code class=&quot;language-wiki&quot;&gt;200&lt;/code&gt;.&lt;br /&gt;
+Another example of a failed response:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-http&quot;&gt;HTTP/1.1 404 Not Found
+Content-type: text/html
+Content-length: 47
+  
+Sorry, the object you requested was not found.
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;the-traditional-thinking-of-web-api-1&quot;&gt;The traditional thinking of Web API 1&lt;/h2&gt;
+&lt;p&gt;Web API 1 introduced HttpResponseMessage, and by looking at the class properties in the picture down, you can see it is a literal .NET representation of the HTTP response.&lt;/p&gt;
+
+&lt;div class=&quot;column&quot; style=&quot;align: center&quot;&gt;
+  &lt;p&gt;&lt;img src=&quot;/img/HttpResponseMessage.png&quot; alt=&quot;states&quot; height=&quot;300px&quot; width=&quot;auto&quot; align=&quot;center&quot; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+
+&lt;p&gt;By using HttpResponseMessage we can craft any HTTP response we want. For example to create the HTTP response mentioned above:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-csharp&quot;&gt;var response = new HttpResonseMessage(HttpStatusCode.OK);
+response.Content = new StringContent(&quot;hello&quot;);
+response.Content.Headers.ContentType = new MediaTypeHeaderValue(&quot;text/plain&quot;);
+response.Headers.CatcheControl = new CacheControlHeaderValue {MaxAge = TimeSpan.FromMinutes(2)};
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;One problem with the code above is that it is ignoring the request, and the request content type, and this is why most of the time we will create the response like this:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-csharp&quot;&gt;var response = request.CreateResponse(HttpStatusCode.OK, new StringContent(&quot;hello&quot;));
+response.Headers.CatcheControl = new CacheControlHeaderValue {MaxAge = TimeSpan.FromMinutes(2)};
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;By using request.CreateResponse, Web API will create the response with content type requested by the request.&lt;br /&gt;
+&lt;br /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;worth-mentioning-alternatives&quot;&gt;Worth mentioning alternatives&lt;/h4&gt;
+&lt;p&gt;Before we move to Web API 2, it is worth mentioned that Web API 1 provides some built-in translation from any object type to HttpResponseMessage. For example, all these are valid return types of a Controller action:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-csharp&quot;&gt;void Post()
+IEnumeration&amp;lt;string&amp;gt; Get()
+string Get(int id);
+MyCustomClass Get(int id);&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;br /&gt;
+Web API will serialize the object returned and wrap it in a successful HttpResponseMessage with status code 200.&lt;br /&gt;
+And in the case of &lt;em&gt;void&lt;/em&gt;, the Web API return &lt;code class=&quot;language-wiki&quot;&gt;&amp;nbsp;204 No Content&amp;nbsp;&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;web-api-2-and-ihttpactionresult&quot;&gt;Web API 2 and IHttpActionResult&lt;/h2&gt;
+
+&lt;p&gt;To see the advantages of this interface, let us check an example in the version 1, and see its translation into version 2.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-csharp&quot;&gt;public class ProductsController : ApiController
+{
+    IProductRepository _repository;
+    public ProductsController(IProductRepository repository)
+    {
+        _repository = repository;
+    }
+    public HttpResponseMessage Get(int id)
+    {
+      try {
+        Product product = _repository.GetById(id);
+        if (product == null)
+        {
+            return Request.CreateResponse(HttpStatusCode.NotFound);
+        }
+        var response = Request.CreateResponse(product);
+        // add more code for caching and other custom response headers...
+        // for example: 
+        response.Headers.CatcheControl = new CacheControlHeaderValue {MaxAge = TimeSpan.FromMinutes(1)};
+        return response;
+      }
+      catch (Exception ex) {
+        return Request.CreateResponse(HttpStatusCode.InternalServerError);
+      }
+    }
+}&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The problems with previous code are:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;The class is responsible of calling repository and creating the HttpResponseMessage.&lt;/li&gt;
+  &lt;li&gt;There is no easy way to re-use code that set response header, like the caching for example.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Let us rewrite the code using IHttpActionResult:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-csharp&quot;&gt;public class ProductsController : ApiController
+{
+    IProductRepository _repository;
+    public ProductsController(IProductRepository repository)
+    {
+        _repository = repository;
+    }
+    public HttpResponseMessage Get(int id)
+    {
+      try {
+        Product product = _repository.GetById(id);
+        if (product == null)
+        {
+            return NotFound();
+        }
+        return Ok(product);
+      }
+      catch (Exception ex) {
+        return InternalServerError(ex);
+      }
+    }
+}&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Where Ok, NotFound, InternalServerError are ApiController methods that are returning concrete implementation of IHttpActionResult.&lt;br /&gt;
+Web API already comes with a library of classes that implement this interface which represent the most used responses on the web like : Ok, NotFound…, and they are located in the library &lt;a href=&quot;https://msdn.microsoft.com/en-us/library/system.web.http.results.aspx&quot;&gt;system.web.http.results&lt;/a&gt;.&lt;br /&gt;
+&lt;br /&gt;
+The benefits of using the previous code are:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Separation of concerns.&lt;/li&gt;
+  &lt;li&gt;Better testability.&lt;/li&gt;
+  &lt;li&gt;Produce reusable code.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;separation-of-concerns&quot;&gt;1. Separation of concerns&lt;/h4&gt;
+&lt;p&gt;The code that produce the HttpResponseMessage is separate, and we can implement our own generation of the response message, and our controller concern only on retrieving the data from the repository.&lt;/p&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;better-testability&quot;&gt;2. Better testability&lt;/h4&gt;
+&lt;p&gt;Let us write test code for the previous code:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-csharp&quot;&gt;[TestMethod]
+public void GetReturnsProductWithSameId()
+{
+    var mockRepository = new Mock&amp;lt;IProductRepository&amp;gt;();
+    mockRepository.Setup(x =&amp;gt; x.GetById(3))
+        .Returns(new Product { Id = 3 });
+
+    var controller = new ProductsController(mockRepository.Object);
+
+    IHttpActionResult actionResult = controller.Get(3);
+    var contentResult = actionResult as OkNegotiatedContentResult&amp;lt;Product&amp;gt;;
+
+    Assert.IsNotNull(contentResult);
+    Assert.IsNotNull(contentResult.Content);
+    Assert.AreEqual(3, contentResult.Content.Id);
+}&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Obviously, testing is easier because we are testing the business logic which is retrieving data, and not generating the Http Response.&lt;/p&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;produce-reusable-code&quot;&gt;3. Produce reusable code&lt;/h4&gt;
+
+&lt;p&gt;Let us write the code that add the cash repose header to the response.&lt;/p&gt;
+
+&lt;p&gt;In order to do that, I will borrow &lt;a href=&quot;https://gist.github.com/bradwilson/8586562&quot;&gt;this brilliant idea&lt;/a&gt; of using chaining IHttpActionResult together to write reusable Http Response Headers.&lt;br /&gt;
+Let us create a code that implement IHttpActionResult and crate a response header for cashing: &lt;br /&gt;
+(P.S: I am borrowing his code, but just make it simpler)&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-csharp&quot;&gt;public class CachedResult&amp;lt;T&amp;gt; : IHttpActionResult where T : IHttpActionResult
+{
+    public T InnerResult { get; private set; }
+    public CachedResult(T innerResult)
+    {
+      InnerResult = innerResult;
+    }
+
+    public async Task&amp;lt;HttpResonseMessage&amp;gt; ExecuteAsync(CancellationToken cancellationToken)
+    {
+        var response = await InnerResult.ExecuteAsync(cancellationToken);
+        response.Headers.CacheControl = new CacheControlHeaderValue
+        {
+          MaxAge = TimeSpan.FromMinutes(2)
+        };
+        return response;
+    }
+}&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The above code will take an IHttpActionResult in the construction and add a caching header to it. To use it, we can do the following code:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-csharp&quot;&gt;var responseOk =  Ok(product);
+var cachedResult = new CachedResult&amp;lt;System.Web.Http.OkResult&amp;gt;(responseOk);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Or we can do better, by creating an extension method to the IHttpActionResult, like this:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-csharp&quot;&gt;public static class HttpActionResultExtensions
+{
+  public static CachedResult&amp;lt;T&amp;gt; Cached&amp;lt;T&amp;gt;(this T actionResult) where T : IHttpActionResult
+  {
+    return new CachedResult&amp;lt;T&amp;gt;(actionResult);
+  }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;And now we can use it as follows:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-csharp&quot;&gt;var responseOk =  Ok(product).Cached();&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The Chached extension method can be reused whenever we want to add Cache response header to the HttpResponseMessage&lt;/p&gt;
+
+</description>
+        <pubDate>Wed, 14 Sep 2016 09:45:00 -0600</pubDate>
+        <link>https://blog.gisspan.com/2016/09/IHttpActionResult.html</link>
+        <guid isPermaLink="true">https://blog.gisspan.com/2016/09/IHttpActionResult.html</guid>
+        
+        <category>asp.net</category>
+        
+        
+      </item>
+    
+      <item>
+        <title>Streaming real data with AWS - Part 2.</title>
+        <description>
+&lt;p&gt;Technology of big data is booming and moving fast, and one of the major sector of big data booming is the requirements to process and analyze real time data that is helping lots of industries using real time data, from IoT, to the analyzing social networks.&lt;br /&gt;
+But real time data has its challenges, which the industry answered with many different solutions.&lt;br /&gt;
+In this post we are going to cover the technical solutions in AWS for streaming real time data.  &lt;!--more--&gt;
+&lt;br /&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;problems-with-real-time-data-processing&quot;&gt;Problems with real-time data processing&lt;/h2&gt;
+&lt;p&gt;Real time data produces its unique challenges and problems, and here are some of them:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Process massive amounts of streaming data.&lt;br /&gt;
+For example, processing a hashtag in twitter, means we might receive thousands of tweets in a second.&lt;/li&gt;
+  &lt;li&gt;Data Loss:&lt;br /&gt;
+Data producer send record which could be lost for different reasons.&lt;/li&gt;
+  &lt;li&gt;Message Re-ordering:&lt;br /&gt;
+With lots of data coming in, it is challenging to keep track of the order of the data, when the difference could be fraction of a second.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h4 id=&quot;real-time-streaming-solution-requirements&quot;&gt;Real-time streaming solution requirements&lt;/h4&gt;
+
+&lt;p&gt;A stream processing solution has to solve different challenges:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Process millions of events per second in realtime.&lt;/li&gt;
+  &lt;li&gt;correlate data from multiple streams.&lt;/li&gt;
+  &lt;li&gt;Real-time responsiveness to events.&lt;/li&gt;
+  &lt;li&gt;Scale up/out as volumes increase in size and complexity&lt;/li&gt;
+  &lt;li&gt;Rapid integration with existing infrastructure and data sources.&lt;/li&gt;
+  &lt;li&gt;Integration with other systems that will use the data.&lt;/li&gt;
+  &lt;li&gt;End-user ad-hoc continuous query access&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;streaming-solutions-on-aws&quot;&gt;Streaming solutions on AWS&lt;/h2&gt;
+&lt;p&gt;AWS provides many streaming services for realtime data. Each has its own features. We are going to compare between them to give you and idea which one to pick for your next project.
+These services are provided directly from Amazon. There are others that available from AWS market place, which is very active community, and you can check if your preferable streaming software might be available already there.&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Amazon Kinesis&lt;/li&gt;
+  &lt;li&gt;Apache Kafka&lt;/li&gt;
+  &lt;li&gt;Amazon SQS / SNS&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;And let us start with the simplest: SQS / SNS.&lt;br /&gt;
+&lt;br /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;amazon-sqs--sns&quot;&gt;Amazon SQS / SNS&lt;/h4&gt;
+&lt;p&gt;Amazon SQS is a simple (“dump”) message queuing service. It is a simple FIFO data store (first-in first-out), and if you are coming from Windows environment it is similar to MSMQ.&lt;br /&gt;
+But you can achieve push-based messaging service if you combine it with SNS: the Amazon notification service.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;SQS/SNS Pros:&lt;/p&gt;
+
+    &lt;ol&gt;
+      &lt;li&gt;Both SQS/SNS are native AWS services, which means they are elastics and scale to the level you want them.&lt;/li&gt;
+      &lt;li&gt;They are managed by Amazon, and you don’t have to worry about them.&lt;/li&gt;
+      &lt;li&gt;Very easy to configure, and the easiest to configure between all three services.&lt;/li&gt;
+      &lt;li&gt;Duplicate data between many availability zones automatically.&lt;/li&gt;
+    &lt;/ol&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;SQS/SNS Cons:&lt;/p&gt;
+
+    &lt;ol&gt;
+      &lt;li&gt;It is very simple comparing to other solutions, and to achieve what other solutions are providing we need to do lots of customization and coding.&lt;/li&gt;
+      &lt;li&gt;It is more expensive than others in this list when it comes to big data.&lt;/li&gt;
+    &lt;/ol&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;amazon-kinesis&quot;&gt;Amazon Kinesis&lt;/h4&gt;
+&lt;p&gt;Amazon Kinesis is a platform for streaming real-time data on AWS, offering services to store, query, analyze and deliver realtime data:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;Kinesis Pros:&lt;/p&gt;
+
+    &lt;ol&gt;
+      &lt;li&gt;Stream huge data (TBs per hour).&lt;/li&gt;
+      &lt;li&gt;Managed by Amazon and you don’t have to worry about it.&lt;/li&gt;
+      &lt;li&gt;Cheapest between all three when it comes to data size.&lt;/li&gt;
+      &lt;li&gt;Duplicate data between many availability zones automatically.&lt;/li&gt;
+    &lt;/ol&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Kinesis Cons:&lt;/p&gt;
+
+    &lt;ol&gt;
+      &lt;li&gt;More complex to setup than SQS.&lt;/li&gt;
+    &lt;/ol&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;apache-kafka&quot;&gt;Apache Kafka&lt;/h4&gt;
+&lt;p&gt;Apache Kafka is publish-subscribe message broker that can handle hundreds of megabytes per seconds, and has clustering to support scaling out.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;Kafka Pros:&lt;/p&gt;
+
+    &lt;ol&gt;
+      &lt;li&gt;Huge community support.&lt;/li&gt;
+      &lt;li&gt;Relatively easier to install / configure than Kinesis.&lt;/li&gt;
+      &lt;li&gt;More stable than Kinesis.&lt;/li&gt;
+    &lt;/ol&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Kafka Cons:&lt;/p&gt;
+
+    &lt;ol&gt;
+      &lt;li&gt;You need to set it up and configure it yourself on EC2.&lt;/li&gt;
+      &lt;li&gt;If you need redundancy across many availability zones , then you have to do it your self.&lt;/li&gt;
+    &lt;/ol&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;how-to-choose&quot;&gt;How to choose&lt;/h2&gt;
+&lt;p&gt;If you want very simple requirements with small size of data, then you don’t have to use Kinesis or Kafka, because Amazon SQS/SNS is simpler to use.&lt;br /&gt;
+If you require to handle huge data, and more complex functionality then you should choose either Kafka, or Kinesis. They both are can fit many complex situation, and actually Kinesis was developed after Kafka.&lt;br /&gt;
+If you want to do less work and less learning curve, then Kinesis should be your choice. Kinesis is managed by AWS, and can be scaled automatically using AWS auto-scaling services.&lt;br /&gt;
+If you prefer to have the support of a huge community, then Kafka will be the choice, but Kafka scalability is achieved using its clustering features, which you have to configure it yourself.&lt;/p&gt;
+
+&lt;p&gt;This is a sheet that I took it from AWS documentation that shows the differences between these 3 technologies, plus a technology that I didn’t mention which is DynamoDB Stream:&lt;/p&gt;
+
+&lt;div class=&quot;column&quot;&gt;
+  &lt;p&gt;&lt;img src=&quot;/img/streaming.jpg&quot; alt=&quot;states&quot; /&gt;&lt;/p&gt;
+
+  &lt;h2 id=&quot;list-of-posts&quot;&gt;List of posts&lt;/h2&gt;
+  &lt;p&gt;This post is the second part of many posts related to bid data. The other posts are:&lt;/p&gt;
+
+  &lt;ol&gt;
+    &lt;li&gt;&lt;a href=&quot;/2016/08/Analyse-website-log-with-AWS-data-analysis-services.html&quot;&gt;Introduction to big data&lt;/a&gt;.&lt;/li&gt;
+    &lt;li&gt;Streaming real time data (this post).&lt;/li&gt;
+    &lt;li&gt;Hadoop &amp;amp; MapReduce (coming).&lt;/li&gt;
+    &lt;li&gt;HBase patterns (coming).&lt;/li&gt;
+    &lt;li&gt;Spark and data analysis with Python (coming).&lt;/li&gt;
+    &lt;li&gt;Hive and data processing (coming).&lt;/li&gt;
+    &lt;li&gt;Practical example&lt;/li&gt;
+  &lt;/ol&gt;
+
+  &lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;/div&gt;
+</description>
+        <pubDate>Sat, 03 Sep 2016 09:45:00 -0600</pubDate>
+        <link>https://blog.gisspan.com/2016/09/Stream-real-time-data.html</link>
+        <guid isPermaLink="true">https://blog.gisspan.com/2016/09/Stream-real-time-data.html</guid>
+        
+        <category>cloud</category>
+        
+        <category>big data</category>
+        
+        
+      </item>
     
       <item>
         <title>Big Data at your fingertips using AWS services - Introduction.</title>
@@ -1114,131 +1517,6 @@ Authorization: MAC id=&quot;h480djs93hd8&quot;,
         <guid isPermaLink="true">https://blog.gisspan.com/2016/04/making-sense-of-ssl-rsa-x509-and-csr.html</guid>
         
         <category>security</category>
-        
-        
-      </item>
-    
-      <item>
-        <title>ng-annotate and Angular Dependecy Injection In depth</title>
-        <description>A typical Angular application contains many modules, each module is a collection of many components (controllers, directives, services, factories, ...).&lt;br /&gt;These modules depend on each other, and their components as well depends on other compoenents.&lt;br /&gt;Angular solves this dependencies with its Dependency Injection Subsystem. &lt;!--more--&gt;&lt;h3&gt;Responsibilities of DI subsystem&lt;/h3&gt;Angular DI subsystem is pervasive throughout Angular and it works with the &lt;a href=&quot;https://docs.angularjs.org/api/ng/function/angular.module&quot;&gt;Module registration process&lt;/a&gt;. Whenever we register a new module with its components, the DI will be the registration mechanism to do the following: &lt;br /&gt;&lt;ol&gt;&lt;li&gt;Creating components&amp;nbsp;&lt;/li&gt;&lt;li&gt;Resolving their dependencies&amp;nbsp;&lt;/li&gt;&lt;li&gt;Connecting them with other components as requested &lt;/li&gt;&lt;/ol&gt;&lt;h3&gt;Angular DI style is Construction Injection&lt;/h3&gt;Assuming you (the reader) know already about DI as a design pattern and the DI frameworks, in other languages like Java or C# the DI frameworks has three flavors:&lt;br /&gt;&lt;ol&gt;&lt;li&gt;Construction Injection&amp;nbsp;&lt;/li&gt;&lt;li&gt;Property Injection&amp;nbsp;&lt;/li&gt;&lt;li&gt;Setter Injection&amp;nbsp;&lt;/li&gt;&lt;/ol&gt;Angular DI is a construction injection style, where we pass dependencies as function arguments.&lt;br /&gt;As an example, with this controller code , the controller is depending on  : $scope, authService , and as you see we are passing them as arguments.&lt;br /&gt;
-&lt;pre data-line=&quot;6&quot;&gt;&lt;code class=&quot;language-javascript&quot;&gt;var myApp = angular.module(&#39;myApp&#39;,[]);
-myApp.service(&#39;Auth&#39;, function() {
-        this.userName = /* some function to return user name */;
-    });
-myApp.controller(&#39;GreetingController&#39;, [&#39;$scope&#39;, &#39;Auth&#39;,  
-    function($scope, Auth) {
-        $scope.greeting = &#39;Hola &#39; + Auth.userName + &#39;!&#39;;&lt;br /&gt;
-    }]);&lt;/code&gt;&lt;/pre&gt;&lt;br /&gt;&lt;h3&gt;How does it work?:&lt;/h3&gt;When an Angular application bootstrap, it will create one, and only one &quot;&lt;a href=&quot;https://docs.angularjs.org/api/auto/service/$injector&quot;&gt;Injector&lt;/a&gt;&quot;&lt;br /&gt;The Injector is a &lt;a href=&quot;https://en.wikipedia.org/wiki/Service_locator_pattern&quot;&gt;service locator design pattern&lt;/a&gt; that will register, find, and couple components together. &lt;br /&gt;Angular uses angular.injector function to create the $injector passing all listed modules.&lt;br /&gt;This is what Angular run (behind the scene)  to generate the injector:  &lt;br /&gt;
-&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;// create an injector
-var $injector = angular.injector([&#39;ng&#39;]);
-
-// use the injector to kick off your application
-// use the type inference to auto inject arguments, or use implicit injection.
-$injector.invoke(function($rootScope, $compile, $document) {
-  $compile($document)($rootScope);
-  $rootScope.$digest();
- });&lt;/code&gt;&lt;/pre&gt;If, for any reason you want to access the injector programmatically , you can get it from angular.element.  For example , if we are adding dynamic html using jQuery, and want to hook it with the rest of the angular app:  &lt;br /&gt;
-&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;var $div = $(&#39;
-     &amp;lt;div ng-controller=&amp;quot;MyCtrl&amp;quot;&amp;gt;
-     {{content.label}}&amp;lt;/div&amp;gt;&#39;
-  );
-  $(document.body).append($div);
-  angular.element(document).injector().invoke(function($compile) {
-    var scope = angular.element($div).scope();
-    $compile($div)(scope);
- });&lt;/code&gt;&lt;/pre&gt;&lt;br /&gt;&lt;h3&gt;How Injector resolve the dependencies?&lt;/h3&gt;Angular style of resolving dependencies uses IDs which are string values to identify components and modules.&lt;br /&gt;These IDs are called &quot;Dependency Annotation&quot;.&lt;br /&gt;There are three types of annotations:&lt;br /&gt;&lt;ol&gt;&lt;li&gt;Using the inline array annotation (preferred)&amp;nbsp;&lt;/li&gt;&lt;li&gt;Using the $inject property annotation&amp;nbsp;&lt;/li&gt;&lt;li&gt;Implicitly from the function parameter names &lt;/li&gt;&lt;/ol&gt;&lt;br /&gt;&lt;ol&gt;&lt;h3&gt;&lt;li&gt;Inline Array Annotation&lt;/li&gt;&lt;/h3&gt;Every component as an ID, and when we register it we pass its dependency IDs as an array.&lt;br /&gt;Code worth 1000 words, and we here list the code to register a module and its controller.&lt;br /&gt;
- &lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;var someModule = angular.module(&#39;someModule&#39;, []);
- someModule.controller(&#39;MyController&#39;, [&#39;$scope&#39;, &#39;greeter&#39;, function($scope, greeter) {
- // .....}]);&lt;/code&gt;&lt;/pre&gt;The Annotations are the string values:  &#39;$scope&#39;, &#39;greeter&#39;.&lt;br /&gt;And the IDs are &#39;someModule&#39;, &#39;MyController&#39;.&lt;br /&gt;The Injector will register a module with the ID : &#39;someModule&#39;, and its controller with ID: &#39;MyController&#39;.&lt;br /&gt;And it will look for other components with IDs: &#39;$scope&#39; and &#39;greeter&#39; and inject them in the controller.&lt;br /&gt;This is the safest way to do annotation, the problem with it, is that you have to make sure that the annotation array is in sync with the function parameters, and they are in the exact order.&lt;br /&gt;Any out of sync will make your application go nuts. &lt;h3&gt;&lt;li&gt;Using the $inject property annotation&lt;/li&gt;&lt;/h3&gt;$inject property is a property added to an Angular service (or component) which is an array of the annotations.&lt;br /&gt;This is an example of it &lt;br /&gt;
- &lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;var MyController = function($scope, greeter) {
-    //....
- };
- MyController.$inject = [&#39;$scope&#39;, &#39;greeter&#39;];
- someModule.controller(&#39;MyController&#39;, MyController);&lt;/code&gt;&lt;/pre&gt;As you can see the syntax is cleaner with this approach, but we still have to make sure that the annotation array is in sync with the function parameters. &lt;h3&gt;&lt;li&gt;Implicit Annotation&lt;/li&gt;&lt;/h3&gt;Implicit annotation means the Injector will get the dependency that has in ID the same as the parameter name.&lt;br /&gt;So the code will be as simple as : 
- &lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt; var MyController = function($scope, greeter) {
-     //....
- };
- someModule.controller(&#39;MyController&#39;, MyController);&lt;/code&gt;&lt;/pre&gt;We don&#39;t have to keep track of the parameters to keep them sync with the annotation.&lt;br /&gt;This method is the easiest, except that if we are going to minify our code then it won&#39;t work, because minification will minify as well the parameter names.&lt;br /&gt;&lt;h3&gt;&lt;li&gt;Using ng-annotate&lt;/li&gt;&lt;/h3&gt;In order to get advantage of the simplicity of implicit annotation, the community came up with a solution for the minification problem.&lt;br /&gt;&lt;a href=&quot;https://github.com/olov/ng-annotate&quot;&gt;ng-annotate&lt;/a&gt; is a third party tool that will add annotations to your code.&lt;br /&gt;You just write your code like you write using the implicit annotation, which means you don&#39;t write any annotations.&lt;br /&gt;And you just mark-up your function which require injection with the &quot;ngInject&quot; directive prologue.&lt;br /&gt;Directive prologue (a well known example of it is &quot;use strict&quot;) , are string values which should be written at the beginning of a file, or a function.&lt;br /&gt;We can re-write our previous example as this: 
- &lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt; var MyController = function($scope, greeter) {
-     &quot;ngInject&quot;;
-     //....
-};
-someModule.controller(&#39;MyController&#39;, MyController);&lt;/code&gt;&lt;/pre&gt;ng-annotate tool will parse your code and when it encounters the &quot;ngInject&quot; directive prologue, it will add the $inject property annotation. &lt;br /&gt;Another way to do that is to add /*@ngInject*/ before the function, like this 
-&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt; var MyController = /*@ngInject*/ 
-function($scope, greeter) {
-   //....
-};
-someModule.controller(&#39;MyController&#39;, MyController);&lt;/code&gt;&lt;/pre&gt;In order to do that we need first to install the tool: &lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt; npm install -g ng-annotate&lt;/code&gt;&lt;/pre&gt;and then run the tool on our code 
-&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt; ng-annotate -a source.js&lt;/code&gt;&lt;/pre&gt;&lt;/ol&gt;&lt;h3&gt;Using strict mode&lt;/h3&gt;If you are defining a new service, but you forgot to add the dependency annotations, then angular will assume that you are planning to use implicit annotation, and that might introduce bugs.&lt;br /&gt;For that reason, Angular introduced the &quot;strict mode&quot; in using dependency injection.&lt;br /&gt;To use the strict mode, add the directive &lt;i&gt;&lt;b&gt;ng-strict-di&lt;/b&gt;&lt;/i&gt; into the same HTML element that has the &lt;i&gt;&lt;b&gt;ng-app&lt;/b&gt;&lt;/i&gt; directive.&lt;br /&gt;This is an example: &lt;br /&gt;&lt;pre&gt;&lt;code class=&quot;language-html&quot;&gt;&amp;lt;html ng-app=&amp;quot;myApp&amp;quot; ng-strict-di&amp;gt;
-&amp;lt;body&amp;gt;
-........
-&amp;lt;/body&amp;gt;
-&amp;lt;/html&amp;gt;&lt;/code&gt;&lt;/pre&gt;When you have in your code somewhere that try to use implicit annotations, then it will throw an error. </description>
-        <pubDate>Thu, 07 Apr 2016 21:52:00 -0600</pubDate>
-        <link>https://blog.gisspan.com/2016/04/angular-dependecy-injection.html</link>
-        <guid isPermaLink="true">https://blog.gisspan.com/2016/04/angular-dependecy-injection.html</guid>
-        
-        <category>angular</category>
-        
-        
-      </item>
-    
-      <item>
-        <title>Angular best practices using NodeJS Style Modules</title>
-        <description>As JavaScript applications tend to grow in size, the need to organize and structure our code become essentials.&lt;br /&gt;JavaScript modules was the answer to structure our code in a clean, maintainable, testable way.&lt;br /&gt;The purpose of this post is to show how to write clean Angular code, and how to structure it to be re-usable, testable using NodeJs style modules.&lt;!--more--&gt;&lt;br /&gt;We will see how our structure will follow &lt;a href=&quot;https://github.com/johnpapa/angular-styleguide/tree/master/a1&quot;&gt;the Angular community best practices and guidelines&lt;/a&gt;. &lt;br /&gt;&lt;ol&gt;&lt;h3&gt;&lt;li&gt;NodeJS modules, and JavaScript Modules&lt;/li&gt;&lt;/h3&gt;Until EchmaScript 2015 (formerly ES6), JavaScript didn&#39;t have built in API for modules, and developers had to count on third party frameworks.&lt;br /&gt;There are two main flavours of modules: AMD, and CommonJS which is what NodeJs used to build their modules.&lt;br /&gt;This post is not going to describe the differences between the two, and I will just say that I decided to use NodeJS Style.&lt;br /&gt;Even though NodeJs modules cannot be used directly in a web browser, but with the help of tools like browserify, or webpack we can use any NodeJs module. &lt;h3&gt;&lt;li&gt;Angular modules and best practices&lt;/li&gt;&lt;/h3&gt;Angular was built with the modular design in mind.&lt;br /&gt;Angular has the &lt;a href=&quot;https://docs.angularjs.org/api/ng/function/angular.module&quot;&gt;Module API&lt;/a&gt;, which allows to build modular applications.&lt;br /&gt;And the Angular team recommend dividing our application into modules according to their functionality, each functionality has its own module, and the module will contain everything related to the functionality (services, factories, directives, controllers, etc...) .&lt;br /&gt;From &lt;a href=&quot;https://docs.angularjs.org/api/ng/function/angular.module&quot;&gt;Angular Documentation&lt;/a&gt;, a module is a collection of services, directives, controllers, filters, and configuration information.&lt;br /&gt;&lt;h3&gt;&lt;li&gt;Write Angular module as NodeJS Module &lt;/li&gt;&lt;/h3&gt;Angular modules are conceptual and logical partitioning of the code. A module represent a separate functionality that can be tested separately.&lt;br /&gt;Angular modules don&#39;t employ any physical or file structure, and we can write multi modules in one file, or one modules in different files.&lt;br /&gt;But writing every Angular module as NodeJS module will help achieve many good practices.&lt;br /&gt;Let us start on how to structure the root and entry point of our application.&lt;br /&gt;The following picture shows the best practice of how to structure the files in an Angular application. &lt;div class=&quot;separator&quot; style=&quot;clear: both; text-align: center;&quot;&gt;&lt;a href=&quot;https://2.bp.blogspot.com/-XgWOZOs1NPA/VwMapw4qsCI/AAAAAAAADtc/iLVQxPol0zM9Y-Dive6VkRWIA-O0AMcRg/s1600/Screenshot%2Bfrom%2B2016-04-04%2B19%253A52%253A07.png&quot; imageanchor=&quot;1&quot; style=&quot;margin-left: 1em; margin-right: 1em;&quot;&gt;&lt;img border=&quot;0&quot; height=&quot;400&quot; src=&quot;https://2.bp.blogspot.com/-XgWOZOs1NPA/VwMapw4qsCI/AAAAAAAADtc/iLVQxPol0zM9Y-Dive6VkRWIA-O0AMcRg/s400/Screenshot%2Bfrom%2B2016-04-04%2B19%253A52%253A07.png&quot; width=&quot;355&quot; /&gt;&lt;/a&gt;&lt;/div&gt;&lt;h3&gt;&lt;li&gt;Explain the file structure&lt;/li&gt;&lt;/h3&gt;We can specify the following guidelines in structuring the application.  &lt;ul&gt;&lt;li&gt;App.js&lt;/li&gt;&lt;b&gt;&lt;i&gt;App.js&lt;/i&gt;&lt;/b&gt; is the entry point for our application. It has the code for the main module (the application module). The file should exist in the root folder. &lt;li&gt;&lt;b&gt;&lt;i&gt;config.js&lt;/i&gt;&lt;/b&gt; and &lt;b&gt;&lt;i&gt;run.js&lt;/i&gt;&lt;/b&gt;&lt;/li&gt;Each Angular module can have a running block, and a configuration block.&lt;br /&gt;We have one file for each.&lt;br /&gt;&lt;li&gt;Single responsibility guideline&lt;/li&gt;One of the guideline in the Angular community guideline was &lt;a href=&quot;https://github.com/johnpapa/angular-styleguide/blob/master/a1/README.md#single-responsibility&quot; target=&quot;_blank&quot;&gt;Single Responsibility guideline&lt;/a&gt;. And as you saw before, by creating a file for the running block and another file for the configuration block, we are following this guideline. &lt;li&gt;A folder for each Angular module&lt;/li&gt;Building an Angular applications on module-based design &lt;a href=&quot;https://github.com/johnpapa/angular-styleguide/blob/master/a1/README.md#modules&quot; target=&quot;_blank&quot;&gt;is a good practice that is recommended by the community&lt;/a&gt;. And we store each module in a separate folder.&lt;br /&gt;In the above example, we have four modules: &lt;b&gt;&lt;i&gt;payment&lt;/i&gt;&lt;/b&gt;, &lt;b&gt;&lt;i&gt;home&lt;/i&gt;&lt;/b&gt;, &lt;b&gt;&lt;i&gt;common&lt;/i&gt;&lt;/b&gt; and &lt;b&gt;&lt;i&gt;auth&lt;/i&gt;&lt;/b&gt;.&lt;br /&gt;And in case a module has many sub-modules then we create sub-folders for this sub-modules, as in the sub-modules: &lt;b&gt;&lt;i&gt;emailLogin&lt;/i&gt;&lt;/b&gt;, &lt;b&gt;&lt;i&gt;oauth&lt;/i&gt;&lt;/b&gt; in our module &lt;b&gt;&lt;i&gt;auth&lt;/i&gt;&lt;/b&gt;. &lt;li&gt;A separate file for each module component&lt;/li&gt;An Angular module can contains: controllers, services, directives.&lt;br /&gt;As we said, we follow single responsibility guideline, so we create a file for each component.&lt;br /&gt;In the above example we have a file called &lt;b&gt;&lt;i&gt;navbar-controller.js&lt;/i&gt;&lt;/b&gt;, which is a directive for the main module. &lt;/ul&gt;&lt;h3&gt;&lt;li&gt;Writing the entry point for main application&lt;/li&gt;&lt;/h3&gt;Let us see now the code inside the app.js file. &lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;// contents of the file app.js
-// -----------------------------------------
-&#39;use strict&#39;;
-
-require(&#39;angular&#39;);
-require(&#39;angular-touch&#39;);
-require(&#39;angular-ui-router&#39;);
-require(&#39;angular-bootstrap&#39;);
-angular.module(&#39;app&#39;, [
-        &#39;ui.router&#39;,
-        &#39;ngTouch&#39;,
-        &#39;ui.bootstrap&#39;,
-        require(&#39;./auth&#39;),
-        require(&#39;./home&#39;),
-        require(&#39;./common&#39;),
-        require(&#39;./payment&#39;)
-    ])
-    .config(require(&#39;./config&#39;))
-    .run(require(&#39;./run&#39;))
-    .controller(&#39;NavbarCtrl&#39;, [&#39;$scope&#39;, require(&#39;./navbar-controller&#39;)]);&lt;/code&gt;&lt;/pre&gt;Analysing the above code: &lt;ul&gt;&lt;li&gt;First add external required libraries&lt;/li&gt;As you see, we start by adding required libraries (&lt;b&gt;&lt;i&gt;angular&lt;/i&gt;&lt;/b&gt;, &lt;b&gt;&lt;i&gt;angular-touch&lt;/i&gt;&lt;/b&gt;,...etc) at the beginning of the file.&lt;br /&gt;&lt;li&gt;Next we define and register the main application module &quot;&lt;b&gt;&lt;i&gt;&lt;span style=&quot;color: #cc0000;&quot;&gt;app&lt;/span&gt;&lt;/i&gt;&lt;/b&gt;&quot;&lt;/li&gt;&lt;li&gt;Add dependencies using the require statement&lt;/li&gt;&lt;li&gt;As you see, we define the &lt;b&gt;&lt;i&gt;run&lt;/i&gt;&lt;/b&gt; block, and &lt;b&gt;&lt;i&gt;config&lt;/i&gt;&lt;/b&gt; block using the require statement.&lt;br /&gt;This will load the equivalent file with the same name in the require statement (with .js suffix).  To bootstrap the previous code, all what we have to do is to hook the &quot;app&quot; main module in the html page like this: 
-&lt;pre data-line=&quot;4&quot;&gt;&lt;code class=&quot;language-html&quot;&gt;// contents of the file index.html page
-// ----------------------------------------
-&amp;lt;html class=&quot;no-js&quot; lang=&quot;en&quot;
-ng-app=&quot;app&quot;&amp;gt; 
-&amp;lt;head&amp;gt;&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;&lt;/ul&gt;&lt;h3&gt;&lt;li&gt;But how a module component will be written?&lt;/li&gt;&lt;/h3&gt;Now let us see how we write a module component, and let us take as an example the file &quot;&lt;b&gt;&lt;i&gt;navbar-controller.js&lt;/i&gt;&lt;/b&gt;&quot;: 
-&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;// contents of the file navbar-controller.js
-// -----------------------------------------
-&#39;use strict&#39;;
-module.exports = 
-    function ($scope) {
-        // .......
-        // .......
-    };&lt;/code&gt;&lt;/pre&gt;We just write the controller function, and assign it to &lt;b&gt;&lt;i&gt;module.exports&lt;/i&gt;&lt;/b&gt;, where &lt;b&gt;&lt;i&gt;module.exports&lt;/i&gt;&lt;/b&gt; is the code that will be visible from outside the file.&lt;br /&gt;This is a NodeJS (or CommonJS syntax), and I am not going to cover it in this post, and I assume that you know it.&lt;br /&gt;&lt;h3&gt;&lt;li&gt;Digging into the module file structure&lt;/li&gt;&lt;/h3&gt;Now, let us see how to structure and build a module using NodeJS standard.&lt;br /&gt;The following files are what a typical Angular module consists of:&lt;br /&gt; &lt;div class=&quot;separator&quot; style=&quot;clear: both; text-align: center;&quot;&gt;&lt;a href=&quot;https://4.bp.blogspot.com/-iCbCU72CSQk/VwMu7xtbGsI/AAAAAAAADts/Rbj2n4tuAh0jCo1DMdLCknAc6eEIwJOiA/s1600/Screenshot%2Bfrom%2B2016-04-04%2B21%253A19%253A48.png&quot; imageanchor=&quot;1&quot; style=&quot;margin-left: 1em; margin-right: 1em;&quot;&gt;&lt;img border=&quot;0&quot; height=&quot;320&quot; src=&quot;https://4.bp.blogspot.com/-iCbCU72CSQk/VwMu7xtbGsI/AAAAAAAADts/Rbj2n4tuAh0jCo1DMdLCknAc6eEIwJOiA/s320/Screenshot%2Bfrom%2B2016-04-04%2B21%253A19%253A48.png&quot; width=&quot;317&quot; /&gt;&lt;/a&gt;&lt;/div&gt;Let us examine the above file structure: &lt;br /&gt; &lt;ul&gt;&lt;li&gt;index.js&lt;/li&gt;We notice the file index.js.&lt;br /&gt;When we use the require statement like this : &lt;br /&gt;require(&#39;emailLogin&#39;)&lt;br /&gt;The loader will try to load the file emailLogin.js&lt;br /&gt;In case it didn&#39;t find it the it will look for the directory &quot;emailLogin&quot; with a file : index.js. &lt;br /&gt;We will use the file index.js to register and configure the module. &lt;br /&gt;&lt;li&gt;config.js, run.js&lt;/li&gt;&lt;li&gt;Again, as we discussed it with the main app, each module can has its config block and running block, and we create a corresponding file for each. &lt;/li&gt;&lt;li&gt;a separate js file for each module compoenent&lt;/li&gt;&lt;li&gt; &lt;/li&gt;&lt;/ul&gt;&lt;h3&gt;&lt;li&gt;Examine registration code for a module: &lt;/li&gt;&lt;/h3&gt;Let us see how we register a module using the nodejs api: &lt;br /&gt; 
-&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;// contents of the file emailLogin/index.js
-// -----------------------------------------
-&#39;use strict&#39;;
-
-require(&#39;angular&#39;);
-require(&#39;angular-resource&#39;);
-require(&#39;angular-ui-router&#39;);
-
-module.exports =
-   angular.module(&#39;app.auth.email&#39;,  [&#39;ui.router&#39;, &#39;ngResource&#39;])
-      .config(require(&#39;./config&#39;))
-      .controller(&#39;signupCtrl&#39;, require(&#39;./signup-controller&#39;))
-      .controller(&#39;loginCtrl&#39;, require(&#39;./login-controller&#39;))
-      .controller(&#39;singedupCtrl&#39;, require(&#39;./signedup-controller&#39;))
-      .factory(&#39;User&#39;, require(&#39;./user-factory&#39;))
-      .directive(&#39;compareTo&#39;, require(&#39;./compareTo-directive&#39;)).name;&lt;/code&gt;&lt;/pre&gt;As you can see from the previous code, we configure the module in index.js, and we define all its components using the require statement, which will import the corresponding file. &lt;h3&gt;&lt;li&gt;How to make NodeJS modules work in the browser? &lt;/li&gt;&lt;/h3&gt;These NodeJS modules and the require statement work on a file system, which is not going to work in a browser environment.&lt;br /&gt;But with the use of tools like Browserify, or Webpack, we can process these nodeJs files into a file that is consumable by the browser.&lt;br /&gt;I am not going to explain how these tools work (in this post at least), and I will just show how to do it. I will use the browserify tool as an example: &lt;ol&gt;&lt;li&gt;Install browserify using npm&lt;/li&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;npm install browserify&lt;/code&gt;&lt;/pre&gt;&lt;li&gt;Run browserify&lt;/li&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;browserify app.js -o bundle.js&lt;/code&gt;&lt;/pre&gt;As you can see, we only had to specify the app.js file as input.&lt;br /&gt;Browserify will figure out the required libraries from the usage of the require statements. &lt;/ol&gt;&lt;/ol&gt;</description>
-        <pubDate>Mon, 04 Apr 2016 21:03:00 -0600</pubDate>
-        <link>https://blog.gisspan.com/2016/04/angular-best-practices-using-nodejs.html</link>
-        <guid isPermaLink="true">https://blog.gisspan.com/2016/04/angular-best-practices-using-nodejs.html</guid>
-        
-        <category>angular</category>
         
         
       </item>
