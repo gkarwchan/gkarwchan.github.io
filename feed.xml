@@ -6,9 +6,240 @@
 </description>
     <link>https://blog.gisspan.com/</link>
     <atom:link href="https://blog.gisspan.com/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Wed, 14 Sep 2016 23:26:56 -0600</pubDate>
-    <lastBuildDate>Wed, 14 Sep 2016 23:26:56 -0600</lastBuildDate>
+    <pubDate>Thu, 13 Oct 2016 19:03:08 -0600</pubDate>
+    <lastBuildDate>Thu, 13 Oct 2016 19:03:08 -0600</lastBuildDate>
     <generator>Jekyll v3.1.6</generator>
+    
+      <item>
+        <title>Everything you need to know about Date-Time in Asp.NET &amp; JSON.</title>
+        <description>
+&lt;p&gt;Date-Time data type is a complex issue. Complex enough to make you confuse overtime you are writing code that return dates from the web server to the browser.&lt;br /&gt;
+ASP.NET MVC 5 and Web API 2 serialize dates differently, which might create more confusion for developers who are using both serializations in one web application.&lt;br /&gt;
+I am trying to cover everything you need to know about Date and Date serialization to JSON, in ASP.NET, and what issues are related to them.&lt;br /&gt;
+I wanted to cover as well the issues with JavaScript date data type, but I will leave that to another post, because there are tons of issues that can be covered when it comes to JavaScript and date.
+&lt;!--more--&gt;
+&lt;br /&gt;
+&lt;br /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;ambiguity-of-datetime-values&quot;&gt;Ambiguity of Date/Time values&lt;/h2&gt;
+&lt;p&gt;The main problem with date/time is its ambiguity. For example when I have a datetime as : 2016/05/05 10:00:00 AM, 
+I have to know to which timezone this value belong in order to clear any abmiguity.&lt;br /&gt;
+If we add to the timezone, that the value can be from a different calendar than the GregorianCalendar, then we add more complexity to that abmiguity.&lt;br /&gt;
+In this post, I am going to avoid talking about different calendars, assuming that all dates are from the default us-en calendar (the Gregorain canlendar).&lt;br /&gt;
+How to clear the ambiguity of date/time values?&lt;br /&gt;
+&lt;br /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;unambiguous-representation-of-datetime&quot;&gt;Unambiguous representation of Date/Time&lt;/h2&gt;
+&lt;p&gt;There are different formats that the industry came up with to Unamiguously represent a single point of time. The web development industry came up with different solutions to have an Unambiguous representation of time values:&lt;/p&gt;
+
+&lt;h5 id=&quot;utc-time&quot;&gt;UTC Time&lt;/h5&gt;
+&lt;p&gt;UTC stands for Coordinated Universal Time, which is the time in Timezone zero, disregarding the daylight saving time.&lt;br /&gt;
+UTC is an Unambiguous representation of a single point of a time values, and a UTC time is the same for someone live in California to someone live in China.&lt;br /&gt;
+A possible solution that web developers do, is to store date/times in their UTC values, and do all the server manipulation, calculation with the UTC value, and send it to the browsers as UTC values, and the JavaScript on the browsers will converted to local time to show it on the web pages.&lt;/p&gt;
+
+&lt;h5 id=&quot;iso-8601&quot;&gt;ISO 8601&lt;/h5&gt;
+&lt;p&gt;There are plenty of date representation in the web, but the most famous and the one that was adopted by JavaScript on a large scale was the ISO-8601. This is an example of how ISO 8601 works&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-markup&quot;&gt;Date: 2016-10-12 10:18:42 Pacific time
+ISO 8601: 2016-10-11T10:18:42-06:00
+
+Date: 2016-10-12 10:18:42 UTC time
+ISO 8601: 2016-10-11T10:18:42z
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;date-representation-in-net&quot;&gt;Date representation in .NET&lt;/h2&gt;
+&lt;p&gt;.NET specially with version 4 and later has full support for dates, time zones, and converting between timezone, which help developers achieve all the date challenges they face. 
+In .NET the following classes are involved or related to Date:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;System.DateTime&lt;/li&gt;
+  &lt;li&gt;System.DateTimeOffset&lt;/li&gt;
+  &lt;li&gt;System.TimeSpan&lt;/li&gt;
+  &lt;li&gt;System.TimeZoneInfo&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h4 id=&quot;datetime-structure&quot;&gt;DateTime structure&lt;/h4&gt;
+
+&lt;p&gt;The DateTime class was the first introduced by .NET since version 1.0 and it doesn’t offer so much to represent timezones.
+The only timezone that DateTime allow is Local time zone, and UTC time zone. It provides is a property 
+&lt;code class=&quot;language-wiki&quot;&gt;Kind&lt;/code&gt; of type : &lt;code class=&quot;language-wiki&quot;&gt;DateTimeKind&lt;/code&gt; which is an enumeration that provides three kinds of date/time:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-csharp&quot;&gt;//DateTimeKind Enumeration 
+Local
+Utc
+Unspecified&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;You can specify the kind when you create the DateTime object, which is an optional parameter,  like this:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-csharp&quot;&gt;// DateTime constructor: DateTime(year, month, day, hour, minute, second, kind)
+var localTime = new DateTime(2016, 10, 10, 10, 10, 10, DateTimeKind.Local);
+var utcTime = new DateTime(2016, 10, 10, 10, 10, 10, DateTimeKind.Utc);
+var localCurrentTime = DateTime.Now; // this is local time
+
+//when omitted then it is Unspecified:
+var localTime = new DateTime(year, month, day, hour, minute, second); // this is Unspecified
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h5 id=&quot;when-to-use-datetime&quot;&gt;When to use DateTime?&lt;/h5&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;You deal with only local time, and you don’t have cross-timezone calculation.&lt;/li&gt;
+  &lt;li&gt;You deal only with UTC date time.&lt;/li&gt;
+  &lt;li&gt;You deal with abstract date/time (using Unspecified). For example to represent multi-national stores where all stores open at 8:00 AM.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&quot;datetimeoffset-timezoneinfo&quot;&gt;DateTimeOffset TimeZoneInfo&lt;/h4&gt;
+&lt;p&gt;The new structure  &lt;em&gt;DateTimeOffset&lt;/em&gt; structure was introduce to support dates with different timezones.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-csharp&quot;&gt;DateTimeOffset = DateTime + Offset from UTC
+
+// The constructor of DateTimeOffset has both component:
+// DateTimeOffset(DateTime, TimeOffset);
+var pacificTime = new DateTimeOffset(new DateTime(2016, 10, 10), new TimeOffset(-7, 0, 0));
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;It is not a good practice to hard code the time offset (-7) above, beside we could make mistakes because of daylight saving, and this is where we use the class &lt;strong&gt;&lt;em&gt;TimeZoneInfo&lt;/em&gt;&lt;/strong&gt;.&lt;br /&gt;
+TimeZoneInfo has all the timezones of the world, and we can search a specific time zone by its name using the method FindSystemTimeZoneById.&lt;br /&gt;
+For example we can rewrite the above code:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-csharp&quot;&gt;var pacificTime = new DateTimeOffset(new DateTime(2016, 10, 10), 
+    TimeZoneInfo.FindSystemTimeZoneById(&quot;Pacific Standard Time&quot;).BaseUtcOffset
+);
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;To check all the time zones ID(s), &lt;a href=&quot;https://msdn.microsoft.com/en-us/library/ms912391(v=winembedded.11).aspx&quot;&gt;you can find it here&lt;/a&gt;&lt;br /&gt;
+&lt;br /&gt;&lt;/p&gt;
+
+&lt;h5 id=&quot;when-to-use-datetimeoffset&quot;&gt;When to use DateTimeOffset?&lt;/h5&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Your code deals with different time values belong to different timezones.&lt;/li&gt;
+  &lt;li&gt;You need to convert between different timezones.&lt;/li&gt;
+  &lt;li&gt;You need to do date time calculation for dates that don’t belong to your local server timezone or UTC timezone.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;datetime-in-json--javascipt&quot;&gt;Date/Time in JSON &amp;amp; JavaScipt&lt;/h2&gt;
+&lt;p&gt;JSON lacks the definition of date/time, and that is because JavaScipt lacks the definition of date/time literals. JavaScript support the date/time through the &lt;em&gt;&lt;strong&gt;Date&lt;/strong&gt;&lt;/em&gt; object, and its methods and constructors.&lt;br /&gt;
+To create a Date object in JavaScript there are these options:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;new Date():&lt;/strong&gt;&lt;br /&gt;
+    To create the current date.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;new Date(integer_value):&lt;/strong&gt;&lt;br /&gt;
+    the number of milliseconds since 1-Jan-1970 00:00:00 UTC (Unix Epoch).&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;new Date(string_value):&lt;/strong&gt;&lt;br /&gt;
+    this is an ISO-8601 format of date/time or any recognizable date string.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;new Date(year, month, day[, hour, minute, seconds, milliseconds])&lt;/strong&gt;&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Date/time in Javascript is a huge subject, but for this post, I am going to cover only what is related to ASP.NET and how Asp.NET serialize dates to JSON.&lt;br /&gt;
+&lt;br /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;aspnet-serialization-of-datetime-to-json&quot;&gt;Asp.NET Serialization of Date/Time to JSON&lt;/h2&gt;
+
+&lt;p&gt;ASP.NET has three different JSON Serializers, each serialize datetime differently:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Web API 2 serializer: (JSON.NET).&lt;/li&gt;
+  &lt;li&gt;ASP.NET MVC Serializer.&lt;/li&gt;
+  &lt;li&gt;DataContractJsonSerializer&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Let us start from WEB API 2 serializer:&lt;br /&gt;
+&lt;br /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;web-api-2-json-serializer&quot;&gt;Web API 2 JSON Serializer&lt;/h4&gt;
+&lt;p&gt;The default JSON serializer in Web API 2 is not from Microsoft, but it is a third party library &lt;a href=&quot;http://www.newtonsoft.com&quot;&gt;(JSON.NET) from NewtonSoft&lt;/a&gt;.&lt;br /&gt;
+It is available through System.Net.Http.Formatting.JsonMediaTypeFormatter. to return JSON date in Web API 2 we do the following in the APP_Start/WebApiConfig.cs:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-csharp&quot;&gt;// in the file APP_Start/WebApiConfig.cs
+config.Formatters.JsonFormatter.SupportedMediaTypes.Add(new MediaTypeHeaderValue(&quot;text/html&quot;) );&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;JSON.NET serializes the datetime to ISO-8601 format, and the following examples show how it serialize the date, assuming the local time is Pacific time (-7 hours):&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;Date value&lt;/th&gt;
+      &lt;th&gt;serialized value&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;DateTime.Now (Pacific time)&lt;/td&gt;
+      &lt;td&gt;2016-10-11T19:25:34.8346658-07:00&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;DateTime.UtcNow&lt;/td&gt;
+      &lt;td&gt;2016-10-12T01:25:34.8346658Z&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;New DateTime(2016, 6, 6, 4, 5,5 )&lt;/td&gt;
+      &lt;td&gt;2016-06-06T04:05:05&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;New DateTimeOffset(New DateTime(2016, 6, 6, 4, 5,5 ), new TimeSpan(-2, 0,0))&lt;/td&gt;
+      &lt;td&gt;2016-06-06T04:05:05-02:00&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;aspnet-mvc-serializer&quot;&gt;ASP.NET MVC Serializer&lt;/h4&gt;
+&lt;p&gt;ASP.NET Controller (System.Web.Mvc.Controller) has a built in method &lt;strong&gt;Json&lt;/strong&gt; that return JsonResult.&lt;br /&gt;
+This method uses JavaScriptSerializer (System.Web.Script.Serialization.JavaScriptSerializer). 
+This serializer serializes the date differently, and it return back in the format: “\/Date(ticks)\/”.&lt;br /&gt;
+Where ticks are the number of milliseconds since 1-Jan-1970 00:00:00 UTC (Unix Epoch). An example:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;&quot;\&quot;\/Date(1335205592410)\/\&quot;&quot; &lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The rational behind this format you can find it &lt;a href=&quot;https://msdn.microsoft.com/en-us/library/bb299886.aspx#intro_to_json_sidebarb&quot;&gt;here&lt;/a&gt;.&lt;br /&gt;
+To consume this value in JavaScript, we have to do more tricks on the client side, by tacking away the &lt;strong&gt;Date()&lt;/strong&gt; and return the number inside and create from the number the date.&lt;br /&gt;
+The following code will do that:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;var parsed = JSON.parse(data, function(key, value) { 
+  if (typeof value === &#39;string&#39;) { 
+    var d = /\/Date\((\d*)\)\//.exec(value); 
+    return (d) ? new Date(+d[1]) : value; 
+  } 
+return value; });
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Or a simpler version, but less robust:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;var parsed = JSON.parse(data, function(key, value) { 
+  if (typeof value === &#39;string&#39;) { 
+    var d = /\/Date\(/.exec(value); 
+    return (d) ? new Date(parseInt(value.substr(6))) : value; 
+  } 
+return value; });
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Obviously, JavaScriptSerializer doesn’t tell the timezone of the value, and it is not a good choise if we are dealing with different time zones.&lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;Beside the date/time problems JavaScriptSerializer has more distadvantages comparing to JSON.NET serializer, which encouraged lots of developers in the community to abandon it and use JSON.NET serializer instead.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;datacontractjsonserializer-serializer&quot;&gt;DataContractJsonSerializer Serializer&lt;/h4&gt;
+&lt;p&gt;DataContractJsonSerializer (System.Runtime.Serialization.Json.DataContractJsonSerializer) is a third serializer that comes with .NET framework. It is not the default serializer, so you need to use it explicitaley.&lt;br /&gt;
+In case you want to spend the effort to write code to change the default serializer, then it is better to use JSON.NET serializer instead because it is better on different aspects.&lt;br /&gt;
+Since JSON.NET serializer was introduced, not many developers used this serializer, so I am really goint to ignore it.&lt;/p&gt;
+
+&lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h2&gt;
+&lt;p&gt;I hope that was a good coverage of all the issues related to date/time in ASP.NET, and that you now understand why JSON.NET serializer was officially adopted by Web API team over JavaScriptSerializer.&lt;/p&gt;
+
+</description>
+        <pubDate>Tue, 11 Oct 2016 09:45:00 -0600</pubDate>
+        <link>https://blog.gisspan.com/2016/10/Everything-you-need-to-know-about-dates.html</link>
+        <guid isPermaLink="true">https://blog.gisspan.com/2016/10/Everything-you-need-to-know-about-dates.html</guid>
+        
+        <category>asp.net</category>
+        
+        
+      </item>
     
       <item>
         <title>The advantages of IHttpActionResult in Web API 2.</title>
@@ -1496,25 +1727,6 @@ Authorization: MAC id=&quot;h480djs93hd8&quot;,
         <pubDate>Fri, 29 Apr 2016 19:45:00 -0600</pubDate>
         <link>https://blog.gisspan.com/2016/04/token-based-authentication-and-jwt.html</link>
         <guid isPermaLink="true">https://blog.gisspan.com/2016/04/token-based-authentication-and-jwt.html</guid>
-        
-        <category>security</category>
-        
-        
-      </item>
-    
-      <item>
-        <title>Making sense of SSL, RSA, X509 and CSR</title>
-        <description>This is the second part of learning about SSL/TLS.&lt;br /&gt;&lt;a href=&quot;http://blog.gisspan.com/2016/03/secure-your-web-site-with-ssl.html&quot;&gt;The first part was how to protect the site with SSL.&lt;/a&gt;&lt;br /&gt;This part is about explaining more the terms, technologies, protocols, standards used in SSL. &lt;!--more--&gt;&lt;h3&gt;What is SSL/TLS:&lt;/h3&gt;SSL is the standard protocol to secure the communication between a web server and a browser, by creating an encrypted link between the two.&lt;br /&gt;SSL last version was 3.0, and TLS&amp;nbsp; succeeds SSL, and become the new standard. But still some components of the protocols have the name SSL, like SSL certificate for example, so when you see the name SSL it most probably means the new TLS, because SSL is rarely used any more.&lt;br /&gt;&lt;br /&gt;&lt;h3&gt;SSL/TLS workflow and TLS Handshake:&lt;/h3&gt;When a browser hits the web server using the &lt;b&gt;&lt;i&gt;HTTPS&lt;/i&gt;&lt;/b&gt; protocol, it start a process of creating an encrypted session between the two.&lt;br /&gt;At the beginning, the encryption used is public-key encryption, which is an asymmetric type encryption.&lt;br /&gt;The web server has a couple of keys public and private. It sends the public key to the browsers, and the browsers use the public key to encrypt the communications later.&lt;br /&gt;Only the web server can know how to decrypt the communication.&lt;br /&gt;Because the public key decryption is slow and expensive, so the web server and the browser will switch to symmetric encryption where only one key is required.&lt;br /&gt;They negotiate between each other on what the best encryption algorithm they should use. The algorithm used would depend on the server and the browser.&lt;br /&gt;This negotiation phase is called TLS handshake.&lt;br /&gt;&lt;h3&gt;Protocols, standards and concepts used in SSL&lt;/h3&gt;
-
-&lt;ol&gt;&lt;h3&gt;&lt;li&gt;Public key encryption: RSA&lt;/li&gt;&lt;/h3&gt;As we mentioned the server that implement SSL has pair of keys, public and private, which are used during the TLS handshake. &lt;br /&gt;The most common public key encryption used in SSL is the RSA. &lt;br /&gt;In OpenSSL tools, the RSA is the default option when generating a public/private key.&lt;br /&gt;To generate key pairs with OpenSSL, we generate first a private key, then generate a public key depending on the private key.&lt;br /&gt;Example of generate a private key: &lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;openssl genrsa -out {private-key-filename} 2048&lt;/code&gt;&lt;/pre&gt;The 2048 is the size of the private key, which is now a days considered the appropriate secure size. Less than 2048 is not secure, and bigger than 2048 will be slow to process.&lt;br /&gt;to extract a public key from the private key : &lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;openssl rsa -pubout -in {private-key-filename} -out {public-key-filename}&lt;/code&gt;&lt;/pre&gt;&lt;h3&gt;
-    &lt;li&gt;PEM Protocol&lt;/li&gt;&lt;/h3&gt;When we generate the keys in the previous example, the generate files will contains data like this:&amp;nbsp; 
-    &lt;br /&gt;&lt;br /&gt;
-    &lt;blockquote&gt;-----BEGIN PRIVATE KEY-----&lt;br /&gt;MIIEczCCA1ugAwIBAgIBADANBgkqhkiG9w0BAQQFAD..AkGA1UEBhMCR0Ix&lt;br /&gt;EzARBgNVBAgTClNvbWUtU3RhdGUxFDASBgNVBAoTC0..0EgTHRkMTcwNQYD&lt;br /&gt;......&lt;br /&gt;......&lt;br /&gt;It8una2gY4l2O//on88r5IWJlm1L0oA8e4fR2yrBHX..adsGeFKkyNrwGi/&lt;br /&gt;7vQMfXdGsRrXNGRGnX+vWDZ3/zWI0joDtCkNnqEpVn..HoX&lt;br /&gt;-----END CERTIFICATE-----&lt;/blockquote&gt;
-    &lt;br/&gt;
-    This format called PEM format, stands for Privacy Enhanced Mail.&lt;br /&gt;PEM is a text representation of the real binary key in DER format(X.509 ASN.1 key), it is base64 encoding of the DER binary format.&lt;br /&gt;We could store the binary version of the file only with &lt;b&gt;&lt;i&gt;DER&lt;/i&gt;&lt;/b&gt; encoding, but the most common way is the PEM version.&lt;br /&gt;&lt;h3&gt;&lt;li&gt;Digital Identity&lt;/li&gt;&lt;/h3&gt;As a user, in order to trust a web site for your precious information, you need to trust the web site owner.&lt;br /&gt;Similarly, if you receive an email, you want to trust that the email you received was sent by the email owner, and not hacked by anyone else.&lt;br /&gt;In real life, we have our identity card, which is a trusted document issued by a trusted authority (the government) which is a prove of our identity.&lt;br /&gt; The industry came up with similar policies and standards to handle the digital identity. &lt;h3&gt;&lt;li&gt;Public Key Infrastructure: PKI and Certificate Authority&lt;/li&gt;&lt;/h3&gt;The PKI is the infrastructure that the industry created to manage the digital identities.&lt;br /&gt;The PKI created a hierarchical body of many organizations which their role is to issue digital identies.&lt;br /&gt;These organizations called Certificate Authority (CA), and when you want to protect your site with SSL/TLS, you have to communicate with them, and they have to follow up with you to make sure that you are a legitimate company, and you are who you want to claim you are.&lt;br /&gt;The digital identity has many four types ranked depending on their security level and how much investigation the CA will do before they submit a certificate.&lt;br /&gt;Please find out these types in my previous post. &lt;h3&gt;&lt;li&gt;Digital Certificate : X.509&lt;/li&gt;&lt;/h3&gt;As we discussed before, SSL required the web server to have public key, and a digital identity, to give to the browsers.&lt;br /&gt;The industry decided to combine these two in one file, which is called : digital certificate, or SSL certificate.&lt;br /&gt;PKI policies defined the format for this certificate in a standard called X.509.&lt;br /&gt;Certificate format X.509 v3&lt;br /&gt;&lt;ol&gt;&lt;li&gt;Version Number&amp;nbsp;&lt;/li&gt;&lt;li&gt;Serial Number&amp;nbsp;&lt;/li&gt;&lt;li&gt;Signature Algorithm ID&amp;nbsp;&lt;/li&gt;&lt;li&gt;Issuer Name&lt;/li&gt;&lt;li&gt;Validity period&lt;/li&gt;&lt;ul&gt;&lt;li&gt;Not Before&lt;/li&gt;&lt;li&gt;Not After&lt;/li&gt;&lt;/ul&gt;&lt;li&gt;Subject name&lt;/li&gt;&lt;li&gt;Subject Public Key Info&lt;/li&gt;&lt;ul&gt;&lt;li&gt;Public Key Algorithm&lt;/li&gt;&lt;li&gt;Subject Public Key&lt;/li&gt;&lt;/ul&gt;&lt;li&gt;Issuer Unique Identifier (optional)&lt;/li&gt;&lt;li&gt;Subject Unique Identifier (optional)&lt;/li&gt;&lt;li&gt;Extensions (optional)&lt;/li&gt;... &lt;li&gt;Certificate Signature Algorithm&lt;/li&gt;&lt;li&gt;Certificate Signature&lt;/li&gt;&lt;/ol&gt;&lt;h3&gt;&lt;li&gt;CSR: Certificate Signing Request&lt;/li&gt;&lt;/h3&gt;The certificate is issued by one of CA(s), and in order to get a certificate you have to contact one of the CA(s) and send them a request in the format: CSR (Certificate Signing Request).&lt;br/&gt;The CSR is a PEM formatted file with the following information: &lt;ul&gt;&lt;li&gt;Common Name&lt;/li&gt;&lt;li&gt;Organization&lt;/li&gt;&lt;li&gt;Organizational Unit&lt;/li&gt;&lt;li&gt;City&lt;/li&gt;&lt;li&gt;State/County/Region&lt;/li&gt;&lt;li&gt;Country&lt;/li&gt;&lt;li&gt;Email Address&lt;/li&gt;&lt;li&gt;Public Key&lt;/li&gt;&lt;/ul&gt;You can generate a CSR by either doing it from a web server, or using openssl tools like the following: &lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;openssl req -new -sha256 -key privatekey.key -out request.csr&lt;/code&gt;&lt;/pre&gt;When you run the previous command, it will prompt you to enter all the CSR details &lt;/ol&gt;</description>
-        <pubDate>Mon, 18 Apr 2016 23:42:00 -0600</pubDate>
-        <link>https://blog.gisspan.com/2016/04/making-sense-of-ssl-rsa-x509-and-csr.html</link>
-        <guid isPermaLink="true">https://blog.gisspan.com/2016/04/making-sense-of-ssl-rsa-x509-and-csr.html</guid>
         
         <category>security</category>
         
