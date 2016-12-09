@@ -127,6 +127,30 @@
   <div class="page-content">
      <ul class="post-list">
         <li> <div class="post-excerpt">
+          <a href="/2016/12/Sending-Email-with-embedded-image-with-aws.html"  class="post-title-excerpt" >Sending emails with image embedded using Amazon's AWS SES API using .NET.</a>
+          <div class="excerpt-body post-font">
+<p>To send an email with AWS services, there are two options, either connecting directly to the AWS SMTP server with SMTP protocols, but then you have to open SMTP ports (587 or 25 usually).
+Otherwise you can use the AWS API which are bunch of REST API services that you can call them over HTTPS.<br />
+AWS SES API has two options to send emails <a href="http://docs.aws.amazon.com/ses/latest/DeveloperGuide/send-email-api.html">as described in the documentation</a>:</p>
+
+<ol>
+  <li>
+    <p>Send simple formatted email:<br />
+which will make your life easy, but you are limited to send only text messages.</p>
+  </li>
+  <li>
+    <p>Send raw email in order to send an embedded image or more complicated content.</p>
+  </li>
+</ol>
+
+<p>In order to send raw email with embedded images, you can just find some code on stackoverflow, but I will try in this post to describe what is going on, and how raw email works, so you can understand the process in details.</p>
+
+<br/><br/>
+          <a href="/2016/12/Sending-Email-with-embedded-image-with-aws.html"> read more ...</a></div>
+          
+          </div>
+            
+          <div class="post-excerpt">
           <a href="/2016/10/Everything-you-need-to-know-about-dates.html"  class="post-title-excerpt" >Everything you need to know about Date-Time in Asp.NET & JSON.</a>
           <div class="excerpt-body post-font">
 <p>Date-Time data type is a complex issue. Complex enough to make you confuse overtime you are writing code that return dates from the web server to the browser.<br />

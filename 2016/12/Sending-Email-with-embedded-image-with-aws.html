@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Sending emails with image embedded using Amazon's AWS SES API using .NET.</title>
+  <meta name="description" content="To send an email with AWS services, there are two options, either connecting directly to the AWS SMTP server with SMTP protocols, but then you have to open S...">
+
+
+  <!-- CSS Reset -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/3.0.3/normalize.css">
+
+  <!-- utilities -->
+  <link rel="stylesheet" href="/css/milligram.min.css" >
+  <link rel="stylesheet" href="/css/prism.css">
+
+  <link rel="stylesheet" href="/css/main.css">
+  <script src="/js/prism.js"></script>
+  <link rel="canonical" href="https://blog.gisspan.com/2016/12/Sending-Email-with-embedded-image-with-aws.html">
+  <link rel="alternate" type="application/rss+xml" title="Web matters" href="https://blog.gisspan.com/feed.xml">
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-79713706-1', 'auto');
+    ga('send', 'pageview');
+
+  </script>
+</head>
+
+
+  <body>
+    <div class="container">
+      <header class="site-header row">
+  <div class="column column-25">
+    <a class="site-title" href="/">Web matters</a>
+  </div>
+  <div class="column">
+    <nav class="site-nav">
+        
+          
+          <a class="page-link" href="/about/">About Me</a>
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        <a class="page-link" href="/feed.xml"><img src="/img/feed.png" ></img></a>
+    </nav>
+  </div>
+</header>
+
+
+            <article class="post row" itemscope itemtype="http://schema.org/BlogPosting">
+    <div class="content">
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">Sending emails with image embedded using Amazon's AWS SES API using .NET.</h1>
+        <p class="post-meta"><time datetime="2016-12-08T09:45:00-07:00" itemprop="datePublished">Dec 8, 2016</time> • <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name">Ghassan Karwchan</span></span></p>
+      </header>
+      <div class="post-content post-font" itemprop="articleBody">
+        
+<p>To send an email with AWS services, there are two options, either connecting directly to the AWS SMTP server with SMTP protocols, but then you have to open SMTP ports (587 or 25 usually).
+Otherwise you can use the AWS API which are bunch of REST API services that you can call them over HTTPS.<br />
+AWS SES API has two options to send emails <a href="http://docs.aws.amazon.com/ses/latest/DeveloperGuide/send-email-api.html">as described in the documentation</a>:</p>
+
+<ol>
+  <li>
+    <p>Send simple formatted email:<br />
+which will make your life easy, but you are limited to send only text messages.</p>
+  </li>
+  <li>
+    <p>Send raw email in order to send an embedded image or more complicated content.</p>
+  </li>
+</ol>
+
+<p>In order to send raw email with embedded images, you can just find some code on stackoverflow, but I will try in this post to describe what is going on, and how raw email works, so you can understand the process in details.
+<!--more-->
+<br />
+<br /></p>
+
+<blockquote>
+  <p>PS: If you just want a code that works, please refer <a href="http://stackoverflow.com/questions/6743139/send-attachments-with-amazon-ses">to this stackoverflow post</a>, or <a href="https://www.youtube.com/watch?v=PQdt-tZxkEA">this video</a>.<br />
+I am trying here to describe the details behind those solutions, and why they works and what the difference between them.</p>
+</blockquote>
+
+<h2 id="what-is-an-email-message">What is an email message?</h2>
+<p>As the following diagram shows, the client sends email messages to an email serves using SMTP protocols over port 587, and email servers communicate with the same SMTP protocol over port 25.</p>
+
+<div class="column" style="align: center">
+  <p><img src="/img/smtp.jpg" alt="smtp" height="400px" width="auto" align="center" /></p>
+</div>
+<p>An email message that is transferred from end to end consists of three parts:</p>
+
+<ol>
+  <li><strong>Envelope</strong>:<br />
+The envelope contains the actual routing information that is communicated between the email client and the mail server during the SMTP session. It is constructed by the SMTP protocol, and it is analogous to the information on a postal envelope.
+<br /></li>
+  <li>
+    <p><strong>Header</strong>:
+Contains metadata of the message, examples are the sender’s address, the recipient’s address, the subject, and the date.
+<br /></p>
+  </li>
+  <li><strong>Body</strong>:
+Contains the text message.</li>
+</ol>
+
+<p><br /></p>
+
+<h2 id="message-format">Message format</h2>
+<p>SMTP covers only the envelope part, and the rest of the message is covered by another protocol the <a href="https://tools.ietf.org/search/rfc5322">Internet Message Format (RFC 5322)</a>.<br />
+Internet Message Format defines the format of the <strong>Header</strong> and the <strong>Body</strong> that consists the message.<br />
+<br /></p>
+
+<h4 id="simple-message-format">Simple message format</h4>
+<p>This is an example a simple message:<br />
+<br /></p>
+
+<pre><code class="language-markup">From: "Andrew" &lt;andrew@example.com&gt;
+To: "Bob" &lt;bob@example.com&gt;
+Date: Fri, 17 Dec 2010 14:26:21 -0800
+Subject: Hello
+Message-ID: &lt;61967230-7A45-4A9D-BEC9-87CBCF2211C9@example.com&gt;
+Accept-Language: en-US
+Content-Language: en-US
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
+
+Hello, I hope you are having a good day.
+
+-Andrew</code></pre>
+
+<p><br />
+From the following example we can extract the following:</p>
+
+<ul>
+  <li>The header and body are separated by a blank line.</li>
+  <li>The header consists of multi lines, each line represent a header field with its value separated by a colon.</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="using-mime">Using MIME</h2>
+<p>The SMTP protocol was designed to send data composed of 7-bit ASCII characters. And Internet Message Format was design with that restriction in mind. But email spread out and there was requirements to send more complicated data format as attachments or Unicode characters, and the industry came up with a new protocol called Multipurpose Internet Mail Extensions (MIME).<br />
+MIME still send data as 7-bit ASCII, but it encode the non-ASCII data to do that, and the most used encoding is <strong>base64</strong> encoding.<br />
+The MIME standard works by breaking the message body into pultiple parts and then specifying what is to be done with each part.<br />
+<br /></p>
+
+<h4 id="email-with-an-attachment">Email with an attachment</h4>
+<p>Let’s see an example of an attachment:<br />
+<br /></p>
+
+<pre><code class="language-markup">From: "Bob" &lt;bob@example.com&gt;
+To: "Andrew" &lt;andrew@example.com&gt;
+Date: Wed, 2 Mar 2011 11:39:34 -0800
+Subject: Customer service contact info
+Message-ID: &lt;97DCB304-C529-4779-BEBC-FC8357FCC4D2@example.com&gt;
+Accept-Language: en-US
+Content-Language: en-US
+Content-Type: multipart/mixed;
+  boundary="_003_97DCB304C5294779BEBCFC8357FCC4D2"
+MIME-Version: 1.0
+
+--_003_97DCB304C5294779BEBCFC8357FCC4D2
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
+
+Hi Andrew.  Here are the customer service names and telephone numbers I promised you. 
+
+See attached.
+
+-Bob
+
+--_003_97DCB304C5294779BEBCFC8357FCC4D2
+Content-Type: text/plain; name="cust-serv.txt"
+Content-Description: cust-serv.txt
+Content-Disposition: attachment; filename="cust-serv.txt"; size=1180;
+  creation-date="Wed, 02 Mar 2011 11:39:39 GMT";
+  modification-date="Wed, 02 Mar 2011 11:39:39 GMT"
+Content-Transfer-Encoding: base64
+
+TWFyeSBEYXZpcyAtICgzMjEpIDU1NS03NDY1DQpDYXJsIFRob21hcyAtICgzMjEpIDU1NS01MjM1
+DQpTYW0gRmFycmlzIC0gKDMyMSkgNTU1LTIxMzQ=
+
+--_003_97DCB304C5294779BEBCFC8357FCC4D2
+</code></pre>
+<p><br /></p>
+
+<p>We should notice the following:</p>
+
+<ul>
+  <li>A blank line still separate the body from the header</li>
+  <li>The content type is “<strong>mulitpart/mixed</strong>”</li>
+  <li>A “boundary” parameter specifies where each part begin and ends</li>
+  <li>The “<strong>Content-Disposition</strong>” header field specifies how the client should handle the attachment.</li>
+  <li>The “<strong>Content-Transfer-Encoding</strong>” is base64, and this is the standard way that the Mime types are stored in 7-bit Ascii based text, because the SMTP still transfer the message as 7-bit Ascii.<br />
+<br /></li>
+</ul>
+
+<h4 id="email-with-embedded-image">Email with embedded image</h4>
+<p>Let’s see how an email with an embedded image is represented:<br />
+<br /></p>
+
+<pre><code class="language-markup">From: Bob &lt;bob@example.com&gt;
+To: &lt;john@example.com&gt;
+Subject: The deal you want.
+Content-Type: multipart/related;
+	boundary="--boundary_1_16494d19-57aa-4462-a4c8-c8e5abefb2aa";
+	type="text/html"
+
+----boundary_1_16494d19-57aa-4462-a4c8-c8e5abefb2aa
+Content-Type: text/html; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
+
+&lt;html&gt;
+&lt;head&gt;&lt;/head&gt;
+&lt;body&gt;
+&lt;img src="cid:BannerId"&gt;&lt;br&gt;
+The deal you want
+&lt;/body&gt;
+&lt;/html&gt;
+
+----boundary_1_16494d19-57aa-4462-a4c8-c8e5abefb2aa
+Content-Type: image/jpeg
+Content-Transfer-Encoding: base64
+Content-ID: &lt;BannerId&gt;
+
+
+iVBORw0KGgoAAAANSUhEUgAAAykAAABXCAYAAAAAqgpGAAAAAXNSR0IArs4c6QAAAARnQU1B
+.......
+paVF/g8NZOLQHqTPpAAAAABJRU5ErkJggg==
+----boundary_1_16494d19-57aa-4462-a4c8-c8e5abefb2aa--
+
+</code></pre>
+<p><br /></p>
+
+<p>We should notice the following:</p>
+
+<ul>
+  <li>A blank line still separate the body from the header, and boundary parameter still used to separate parts.</li>
+  <li>the content of the body must be HTML.</li>
+  <li>The content type is “<strong>mulitpart/related</strong>” : and this type is used for compound documents, those messages in which the separate body parts are intended to work together to provide the full meaning of the message</li>
+  <li>The image part has a header field called “<strong>Content-ID</strong>” which has value <strong>BannerId</strong> equal to an “ID” in the html document that specify where the image will be embedded, which is defined in the pattern <strong>“cid:BannerId”</strong>.</li>
+  <li>The binary of the image is represented as base64<br />
+<br /></li>
+</ul>
+
+<h2 id="calling-aws-ses-api-using-c">Calling AWS SES API using C#</h2>
+<p>Let us now jump to programming, and see how we can call AWS SES API.<br />
+.NET provides the namespace <strong>System.Net.Mail</strong> that helps interact with a SMTP server and send emails with complicated content. It abstract the low level of generating these raw data of the email message.<br />
+But, when we use AWS SES API, we want to see and use these raw messages generated by .NET classes. Unfortunately, .NET doesn’t provide an easy way to generate these raw messages.<br />
+This is why the community came up with third-party libraries like the following:<br />
+<a href="http://nugetmusthaves.com/Package/MimeKit">MimeKit</a>
+<a href="http://nugetmusthaves.com/Package/MimeKitLite">MimeKitLite</a>
+and there are others.<br />
+The above libraries will generate and parse MIME based raw messages.</p>
+
+<p>To see a solution that uses MimeKitLite, <a href="https://www.youtube.com/watch?v=PQdt-tZxkEA">see this video</a>.
+<br />
+Or, there is a way to generate the raw message from Microsoft .NET assemblies, but with a small hack.<br />
+The namespace <a href="https://msdn.microsoft.com/en-us/library/system.net.mail(v=vs.110).aspx">System.Net.Mail</a> provides internal classes and methods that cannot used directly, but can be accessed using reflection.<br />
+There are these two useful entities:</p>
+
+<ul>
+  <li>System.Net.Mail.Message has an internal method called “Send”, which will generate the “Raw” message and write it into a stream.</li>
+  <li>System.Net.Mail.MailWriter is an internal class that is used by the above method to write the “Raw” message.</li>
+</ul>
+
+<p>As an example of using the above please <a href="http://stackoverflow.com/questions/6743139/send-attachments-with-amazon-ses">see this stackoverflow</a></p>
+
+      </div>
+      <div id="disqus_thread"></div>
+        <script>
+            /**
+             *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+             *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables
+             */
+            /*
+            var disqus_config = function () {
+                this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+                this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+            };
+            */
+            (function() {  // DON'T EDIT BELOW THIS LINE
+                var d = document, s = d.createElement('script');
+                
+                s.src = '//bloggisspancom.disqus.com/embed.js';
+                
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+        <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+     </div>
+  </article>
+
+
+      <footer class="site-footer row">
+<div class="column column-25">
+  <ul class="contact-list">
+          <li>Web matters</li>
+          <li><a href="mailto:ghassan.karwchan@gmail.com">ghassan.karwchan@gmail.com</a></li>
+  </ul>
+</div>
+<div class="column column-25">
+  <ul class="social-media-list">
+          
+          <li>
+            <a href="https://github.com/gkarwchan"><span class="icon icon--github"><svg viewBox="0 0 16 16"><path fill="#828282" d="M7.999,0.431c-4.285,0-7.76,3.474-7.76,7.761 c0,3.428,2.223,6.337,5.307,7.363c0.388,0.071,0.53-0.168,0.53-0.374c0-0.184-0.007-0.672-0.01-1.32 c-2.159,0.469-2.614-1.04-2.614-1.04c-0.353-0.896-0.862-1.135-0.862-1.135c-0.705-0.481,0.053-0.472,0.053-0.472 c0.779,0.055,1.189,0.8,1.189,0.8c0.692,1.186,1.816,0.843,2.258,0.645c0.071-0.502,0.271-0.843,0.493-1.037 C4.86,11.425,3.049,10.76,3.049,7.786c0-0.847,0.302-1.54,0.799-2.082C3.768,5.507,3.501,4.718,3.924,3.65 c0,0,0.652-0.209,2.134,0.796C6.677,4.273,7.34,4.187,8,4.184c0.659,0.003,1.323,0.089,1.943,0.261 c1.482-1.004,2.132-0.796,2.132-0.796c0.423,1.068,0.157,1.857,0.077,2.054c0.497,0.542,0.798,1.235,0.798,2.082 c0,2.981-1.814,3.637-3.543,3.829c0.279,0.24,0.527,0.713,0.527,1.437c0,1.037-0.01,1.874-0.01,2.129 c0,0.208,0.14,0.449,0.534,0.373c3.081-1.028,5.302-3.935,5.302-7.362C15.76,3.906,12.285,0.431,7.999,0.431z"/></svg>
+</span><span class="username">gkarwchan</span></a>
+
+          </li>
+          
+
+          
+          <li>
+            <a href="https://twitter.com/ghassankarwchan"><span class="icon icon--twitter"><svg viewBox="0 0 16 16"><path fill="#828282" d="M15.969,3.058c-0.586,0.26-1.217,0.436-1.878,0.515c0.675-0.405,1.194-1.045,1.438-1.809c-0.632,0.375-1.332,0.647-2.076,0.793c-0.596-0.636-1.446-1.033-2.387-1.033c-1.806,0-3.27,1.464-3.27,3.27 c0,0.256,0.029,0.506,0.085,0.745C5.163,5.404,2.753,4.102,1.14,2.124C0.859,2.607,0.698,3.168,0.698,3.767 c0,1.134,0.577,2.135,1.455,2.722C1.616,6.472,1.112,6.325,0.671,6.08c0,0.014,0,0.027,0,0.041c0,1.584,1.127,2.906,2.623,3.206 C3.02,9.402,2.731,9.442,2.433,9.442c-0.211,0-0.416-0.021-0.615-0.059c0.416,1.299,1.624,2.245,3.055,2.271 c-1.119,0.877-2.529,1.4-4.061,1.4c-0.264,0-0.524-0.015-0.78-0.046c1.447,0.928,3.166,1.469,5.013,1.469 c6.015,0,9.304-4.983,9.304-9.304c0-0.142-0.003-0.283-0.009-0.423C14.976,4.29,15.531,3.714,15.969,3.058z"/></svg>
+</span><span class="username">ghassankarwchan</span></a>
+
+          </li>
+          
+        </ul>
+</div>
+<div class="column">
+  This web site was built using <a href="https://jekyllrb.com/">Jekyll</a>.<br />
+  If you are interest in the code <a href="https://github.com/gkarwchan/BlogWebsite">you can find it here</a>.
+</div>
+
+</footer>
+
+    </div>
+  </body>
+
+</html>

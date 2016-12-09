@@ -6,9 +6,231 @@
 </description>
     <link>https://blog.gisspan.com/</link>
     <atom:link href="https://blog.gisspan.com/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 13 Oct 2016 19:03:08 -0600</pubDate>
-    <lastBuildDate>Thu, 13 Oct 2016 19:03:08 -0600</lastBuildDate>
+    <pubDate>Thu, 08 Dec 2016 22:11:14 -0700</pubDate>
+    <lastBuildDate>Thu, 08 Dec 2016 22:11:14 -0700</lastBuildDate>
     <generator>Jekyll v3.1.6</generator>
+    
+      <item>
+        <title>Sending emails with image embedded using Amazon&#39;s AWS SES API using .NET.</title>
+        <description>
+&lt;p&gt;To send an email with AWS services, there are two options, either connecting directly to the AWS SMTP server with SMTP protocols, but then you have to open SMTP ports (587 or 25 usually).
+Otherwise you can use the AWS API which are bunch of REST API services that you can call them over HTTPS.&lt;br /&gt;
+AWS SES API has two options to send emails &lt;a href=&quot;http://docs.aws.amazon.com/ses/latest/DeveloperGuide/send-email-api.html&quot;&gt;as described in the documentation&lt;/a&gt;:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;Send simple formatted email:&lt;br /&gt;
+which will make your life easy, but you are limited to send only text messages.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Send raw email in order to send an embedded image or more complicated content.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;In order to send raw email with embedded images, you can just find some code on stackoverflow, but I will try in this post to describe what is going on, and how raw email works, so you can understand the process in details.
+&lt;!--more--&gt;
+&lt;br /&gt;
+&lt;br /&gt;&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;PS: If you just want a code that works, please refer &lt;a href=&quot;http://stackoverflow.com/questions/6743139/send-attachments-with-amazon-ses&quot;&gt;to this stackoverflow post&lt;/a&gt;, or &lt;a href=&quot;https://www.youtube.com/watch?v=PQdt-tZxkEA&quot;&gt;this video&lt;/a&gt;.&lt;br /&gt;
+I am trying here to describe the details behind those solutions, and why they works and what the difference between them.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&quot;what-is-an-email-message&quot;&gt;What is an email message?&lt;/h2&gt;
+&lt;p&gt;As the following diagram shows, the client sends email messages to an email serves using SMTP protocols over port 587, and email servers communicate with the same SMTP protocol over port 25.&lt;/p&gt;
+
+&lt;div class=&quot;column&quot; style=&quot;align: center&quot;&gt;
+  &lt;p&gt;&lt;img src=&quot;/img/smtp.jpg&quot; alt=&quot;smtp&quot; height=&quot;400px&quot; width=&quot;auto&quot; align=&quot;center&quot; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;p&gt;An email message that is transferred from end to end consists of three parts:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;&lt;strong&gt;Envelope&lt;/strong&gt;:&lt;br /&gt;
+The envelope contains the actual routing information that is communicated between the email client and the mail server during the SMTP session. It is constructed by the SMTP protocol, and it is analogous to the information on a postal envelope.
+&lt;br /&gt;&lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;Header&lt;/strong&gt;:
+Contains metadata of the message, examples are the sender’s address, the recipient’s address, the subject, and the date.
+&lt;br /&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Body&lt;/strong&gt;:
+Contains the text message.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;message-format&quot;&gt;Message format&lt;/h2&gt;
+&lt;p&gt;SMTP covers only the envelope part, and the rest of the message is covered by another protocol the &lt;a href=&quot;https://tools.ietf.org/search/rfc5322&quot;&gt;Internet Message Format (RFC 5322)&lt;/a&gt;.&lt;br /&gt;
+Internet Message Format defines the format of the &lt;strong&gt;Header&lt;/strong&gt; and the &lt;strong&gt;Body&lt;/strong&gt; that consists the message.&lt;br /&gt;
+&lt;br /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;simple-message-format&quot;&gt;Simple message format&lt;/h4&gt;
+&lt;p&gt;This is an example a simple message:&lt;br /&gt;
+&lt;br /&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-markup&quot;&gt;From: &quot;Andrew&quot; &amp;lt;andrew@example.com&amp;gt;
+To: &quot;Bob&quot; &amp;lt;bob@example.com&amp;gt;
+Date: Fri, 17 Dec 2010 14:26:21 -0800
+Subject: Hello
+Message-ID: &amp;lt;61967230-7A45-4A9D-BEC9-87CBCF2211C9@example.com&amp;gt;
+Accept-Language: en-US
+Content-Language: en-US
+Content-Type: text/plain; charset=&quot;us-ascii&quot;
+Content-Transfer-Encoding: quoted-printable
+
+Hello, I hope you are having a good day.
+
+-Andrew&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;br /&gt;
+From the following example we can extract the following:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;The header and body are separated by a blank line.&lt;/li&gt;
+  &lt;li&gt;The header consists of multi lines, each line represent a header field with its value separated by a colon.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;using-mime&quot;&gt;Using MIME&lt;/h2&gt;
+&lt;p&gt;The SMTP protocol was designed to send data composed of 7-bit ASCII characters. And Internet Message Format was design with that restriction in mind. But email spread out and there was requirements to send more complicated data format as attachments or Unicode characters, and the industry came up with a new protocol called Multipurpose Internet Mail Extensions (MIME).&lt;br /&gt;
+MIME still send data as 7-bit ASCII, but it encode the non-ASCII data to do that, and the most used encoding is &lt;strong&gt;base64&lt;/strong&gt; encoding.&lt;br /&gt;
+The MIME standard works by breaking the message body into pultiple parts and then specifying what is to be done with each part.&lt;br /&gt;
+&lt;br /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;email-with-an-attachment&quot;&gt;Email with an attachment&lt;/h4&gt;
+&lt;p&gt;Let’s see an example of an attachment:&lt;br /&gt;
+&lt;br /&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-markup&quot;&gt;From: &quot;Bob&quot; &amp;lt;bob@example.com&amp;gt;
+To: &quot;Andrew&quot; &amp;lt;andrew@example.com&amp;gt;
+Date: Wed, 2 Mar 2011 11:39:34 -0800
+Subject: Customer service contact info
+Message-ID: &amp;lt;97DCB304-C529-4779-BEBC-FC8357FCC4D2@example.com&amp;gt;
+Accept-Language: en-US
+Content-Language: en-US
+Content-Type: multipart/mixed;
+  boundary=&quot;_003_97DCB304C5294779BEBCFC8357FCC4D2&quot;
+MIME-Version: 1.0
+
+--_003_97DCB304C5294779BEBCFC8357FCC4D2
+Content-Type: text/plain; charset=&quot;us-ascii&quot;
+Content-Transfer-Encoding: quoted-printable
+
+Hi Andrew.  Here are the customer service names and telephone numbers I promised you. 
+
+See attached.
+
+-Bob
+
+--_003_97DCB304C5294779BEBCFC8357FCC4D2
+Content-Type: text/plain; name=&quot;cust-serv.txt&quot;
+Content-Description: cust-serv.txt
+Content-Disposition: attachment; filename=&quot;cust-serv.txt&quot;; size=1180;
+  creation-date=&quot;Wed, 02 Mar 2011 11:39:39 GMT&quot;;
+  modification-date=&quot;Wed, 02 Mar 2011 11:39:39 GMT&quot;
+Content-Transfer-Encoding: base64
+
+TWFyeSBEYXZpcyAtICgzMjEpIDU1NS03NDY1DQpDYXJsIFRob21hcyAtICgzMjEpIDU1NS01MjM1
+DQpTYW0gRmFycmlzIC0gKDMyMSkgNTU1LTIxMzQ=
+
+--_003_97DCB304C5294779BEBCFC8357FCC4D2
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;p&gt;We should notice the following:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;A blank line still separate the body from the header&lt;/li&gt;
+  &lt;li&gt;The content type is “&lt;strong&gt;mulitpart/mixed&lt;/strong&gt;”&lt;/li&gt;
+  &lt;li&gt;A “boundary” parameter specifies where each part begin and ends&lt;/li&gt;
+  &lt;li&gt;The “&lt;strong&gt;Content-Disposition&lt;/strong&gt;” header field specifies how the client should handle the attachment.&lt;/li&gt;
+  &lt;li&gt;The “&lt;strong&gt;Content-Transfer-Encoding&lt;/strong&gt;” is base64, and this is the standard way that the Mime types are stored in 7-bit Ascii based text, because the SMTP still transfer the message as 7-bit Ascii.&lt;br /&gt;
+&lt;br /&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&quot;email-with-embedded-image&quot;&gt;Email with embedded image&lt;/h4&gt;
+&lt;p&gt;Let’s see how an email with an embedded image is represented:&lt;br /&gt;
+&lt;br /&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-markup&quot;&gt;From: Bob &amp;lt;bob@example.com&amp;gt;
+To: &amp;lt;john@example.com&amp;gt;
+Subject: The deal you want.
+Content-Type: multipart/related;
+	boundary=&quot;--boundary_1_16494d19-57aa-4462-a4c8-c8e5abefb2aa&quot;;
+	type=&quot;text/html&quot;
+
+----boundary_1_16494d19-57aa-4462-a4c8-c8e5abefb2aa
+Content-Type: text/html; charset=&quot;us-ascii&quot;
+Content-Transfer-Encoding: quoted-printable
+
+&amp;lt;html&amp;gt;
+&amp;lt;head&amp;gt;&amp;lt;/head&amp;gt;
+&amp;lt;body&amp;gt;
+&amp;lt;img src=&quot;cid:BannerId&quot;&amp;gt;&amp;lt;br&amp;gt;
+The deal you want
+&amp;lt;/body&amp;gt;
+&amp;lt;/html&amp;gt;
+
+----boundary_1_16494d19-57aa-4462-a4c8-c8e5abefb2aa
+Content-Type: image/jpeg
+Content-Transfer-Encoding: base64
+Content-ID: &amp;lt;BannerId&amp;gt;
+
+
+iVBORw0KGgoAAAANSUhEUgAAAykAAABXCAYAAAAAqgpGAAAAAXNSR0IArs4c6QAAAARnQU1B
+.......
+paVF/g8NZOLQHqTPpAAAAABJRU5ErkJggg==
+----boundary_1_16494d19-57aa-4462-a4c8-c8e5abefb2aa--
+
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;p&gt;We should notice the following:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;A blank line still separate the body from the header, and boundary parameter still used to separate parts.&lt;/li&gt;
+  &lt;li&gt;the content of the body must be HTML.&lt;/li&gt;
+  &lt;li&gt;The content type is “&lt;strong&gt;mulitpart/related&lt;/strong&gt;” : and this type is used for compound documents, those messages in which the separate body parts are intended to work together to provide the full meaning of the message&lt;/li&gt;
+  &lt;li&gt;The image part has a header field called “&lt;strong&gt;Content-ID&lt;/strong&gt;” which has value &lt;strong&gt;BannerId&lt;/strong&gt; equal to an “ID” in the html document that specify where the image will be embedded, which is defined in the pattern &lt;strong&gt;“cid:BannerId”&lt;/strong&gt;.&lt;/li&gt;
+  &lt;li&gt;The binary of the image is represented as base64&lt;br /&gt;
+&lt;br /&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;calling-aws-ses-api-using-c&quot;&gt;Calling AWS SES API using C#&lt;/h2&gt;
+&lt;p&gt;Let us now jump to programming, and see how we can call AWS SES API.&lt;br /&gt;
+.NET provides the namespace &lt;strong&gt;System.Net.Mail&lt;/strong&gt; that helps interact with a SMTP server and send emails with complicated content. It abstract the low level of generating these raw data of the email message.&lt;br /&gt;
+But, when we use AWS SES API, we want to see and use these raw messages generated by .NET classes. Unfortunately, .NET doesn’t provide an easy way to generate these raw messages.&lt;br /&gt;
+This is why the community came up with third-party libraries like the following:&lt;br /&gt;
+&lt;a href=&quot;http://nugetmusthaves.com/Package/MimeKit&quot;&gt;MimeKit&lt;/a&gt;
+&lt;a href=&quot;http://nugetmusthaves.com/Package/MimeKitLite&quot;&gt;MimeKitLite&lt;/a&gt;
+and there are others.&lt;br /&gt;
+The above libraries will generate and parse MIME based raw messages.&lt;/p&gt;
+
+&lt;p&gt;To see a solution that uses MimeKitLite, &lt;a href=&quot;https://www.youtube.com/watch?v=PQdt-tZxkEA&quot;&gt;see this video&lt;/a&gt;.
+&lt;br /&gt;
+Or, there is a way to generate the raw message from Microsoft .NET assemblies, but with a small hack.&lt;br /&gt;
+The namespace &lt;a href=&quot;https://msdn.microsoft.com/en-us/library/system.net.mail(v=vs.110).aspx&quot;&gt;System.Net.Mail&lt;/a&gt; provides internal classes and methods that cannot used directly, but can be accessed using reflection.&lt;br /&gt;
+There are these two useful entities:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;System.Net.Mail.Message has an internal method called “Send”, which will generate the “Raw” message and write it into a stream.&lt;/li&gt;
+  &lt;li&gt;System.Net.Mail.MailWriter is an internal class that is used by the above method to write the “Raw” message.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;As an example of using the above please &lt;a href=&quot;http://stackoverflow.com/questions/6743139/send-attachments-with-amazon-ses&quot;&gt;see this stackoverflow&lt;/a&gt;&lt;/p&gt;
+</description>
+        <pubDate>Thu, 08 Dec 2016 09:45:00 -0700</pubDate>
+        <link>https://blog.gisspan.com/2016/12/Sending-Email-with-embedded-image-with-aws.html</link>
+        <guid isPermaLink="true">https://blog.gisspan.com/2016/12/Sending-Email-with-embedded-image-with-aws.html</guid>
+        
+        <category>asp.net</category>
+        
+        <category>AWS</category>
+        
+        
+      </item>
     
       <item>
         <title>Everything you need to know about Date-Time in Asp.NET &amp; JSON.</title>
@@ -637,7 +859,7 @@ If you prefer to have the support of a huge community, then Kafka will be the ch
         <link>https://blog.gisspan.com/2016/09/Stream-real-time-data.html</link>
         <guid isPermaLink="true">https://blog.gisspan.com/2016/09/Stream-real-time-data.html</guid>
         
-        <category>cloud</category>
+        <category>AWS</category>
         
         <category>big data</category>
         
@@ -695,7 +917,7 @@ To install and configure AWS commadn line interface and create an Amazon account
         <link>https://blog.gisspan.com/2016/08/Analyse-website-log-with-AWS-data-analysis-services.html</link>
         <guid isPermaLink="true">https://blog.gisspan.com/2016/08/Analyse-website-log-with-AWS-data-analysis-services.html</guid>
         
-        <category>cloud</category>
+        <category>AWS</category>
         
         <category>big data</category>
         
@@ -1700,35 +1922,6 @@ And now we can use the oauthService promise as we mentioned above
         <guid isPermaLink="true">https://blog.gisspan.com/2016/05/using-angular-promise-to-wrap-up-oauth.html</guid>
         
         <category>angular</category>
-        
-        
-      </item>
-    
-      <item>
-        <title>Token Based Authentication and JWT</title>
-        <description>HTTP protocol specified only two standard&amp;nbsp; authentication mechanisms, which are implemented in every browser, the &lt;a href=&quot;http://blog.gisspan.com/2016/03/web-security-basic-authentication.html&quot; target=&quot;_blank&quot;&gt;HTTP basic authentication&lt;/a&gt;&amp;nbsp; , and Digest authentication.&lt;br /&gt;Because they only reference the user name that they pass with the calls, the development communities in every web development platform came up with their better customized solutions.&lt;!--more--&gt;&lt;h3&gt;The main common idea of enhanced authentication:&lt;/h3&gt;There is one main basic idea behind all security technologies used in all programming platforms, which is authenticate the user only once and issuing a &quot;&lt;b&gt;&lt;i&gt;ticket&lt;/i&gt;&lt;/b&gt;&quot; or &quot;&lt;b&gt;&lt;i&gt;token&lt;/i&gt;&lt;/b&gt;&quot;, and the client will use that ticket for every subsequent call.&lt;br /&gt;The token/ticket will have an expiry date and time, which will be invalid after that time. &lt;br /&gt;&lt;h3&gt;How the web browser send the token:&lt;/h3&gt;One of the early idea developed was using the cookies to save the token, but a better solution emerged, which is sending the token in the header of every request, which proved to be a better solution in many different ways. The phrase &quot;Token Based Authentication&quot; is mostly used in the industry to describe the later solution, even the term include the first solution as well. We will cover the cookie solution briefly and then jump to cover in more details the  &lt;br /&gt;
-
-&lt;ol&gt;&lt;h3&gt;&lt;li&gt;Cookies Based Authentication:&lt;/li&gt;&lt;/h3&gt;
-This solution was used for a long time, and the most famous implementation for it was ASP.NET Forms Authentication, and Wordpress as well.&lt;br /&gt; The server after authenticate the user, will respond with a response that has a &lt;b&gt;&lt;i&gt;Set-Cookie&lt;/i&gt;&lt;/b&gt; header attribute in the response header, which looks like this  &lt;pre&gt;&lt;code class=&quot;language-http&quot;&gt;HTTP/1.0 200 OK
-Content-type: text/html
-Set-Cookie: theme=light
-Set-Cookie: sessionToken=abc123; Expires=Wed, 09 Jun 2021 10:18:14 GMT&lt;/code&gt;&lt;/pre&gt;
-The browser (assuming they allow cookies), will keep the cookie until it is expired, and will submit it on every request to that web site as follows:   
-&lt;pre&gt;&lt;code class=&quot;language-http&quot;&gt;GET /spec.html HTTP/1.1
-Host: www.example.org
-Cookie: theme=light; sessionToken=abc123&lt;/code&gt;&lt;/pre&gt;Earlier implementation for this approach were using sessions and saving the sessions and sending the session ID as the &quot;ticket&quot;, but because sessions are not easy to scale, the session stopped being used long time ago.&lt;br /&gt;Cookies had many issues (that we are going to cover in next section), which pushed the industry to find better solutions, which brought the idea of token based authentication. &lt;h3&gt;&lt;li&gt;Token Based Authentication:&lt;/li&gt;&lt;/h3&gt;Using the same approach of generating an access token when authenticating, but instead of sending the token in a cookie, it use an HTTP header attribute (usually Authorization HTTP header) to send the token.&lt;br /&gt;This solution was developed mainly by OAuth authentication, but it doesn&#39;t have to be used only in OAuth, and it can be used by local security based solution.&lt;br /&gt;The solution became mature with development of more robust standard like &lt;a href=&quot;https://jwt.io/&quot;&gt;Jason Web Token (JWT)&lt;/a&gt;, which became the de facto standard for modern web security.&lt;br /&gt;There are two common approach to send this access token:&lt;br /&gt;&lt;ol&gt;&lt;li&gt;Bearer token&lt;/li&gt;Bearer token is an non encrypted token. If you want to use it, you should use it over HTTPS. &lt;br /&gt;This is how a call with the bearer token will look like 
-&lt;pre&gt;&lt;code class=&quot;language-http&quot;&gt;GET /resource/1 HTTP/1.1
-Host: example.com
-Authorization: Bearer mF_9.B5f-4.1JqM&lt;/code&gt;&lt;/pre&gt;&lt;li&gt;MAC token&lt;/li&gt;MAC token is an encrypted token, and it is more complex than the bearer. &lt;pre&gt;&lt;code class=&quot;language-http&quot;&gt;GET /resource/1 HTTP/1.1
-Host: example.com
-Authorization: MAC id=&quot;h480djs93hd8&quot;,
-    nonce=&quot;274312:dj83hs9s&quot;,
-    mac=&quot;kDZvddkndxvhGRXZhvuDjEWhGeE=&quot;&lt;/code&gt;&lt;/pre&gt;&lt;/ol&gt;&lt;/ol&gt; &lt;h3&gt;Advantages of token based authentication over cookies&lt;/h3&gt;The are many advantages: &lt;ol&gt;&lt;li&gt;Cookies could be disabled by the user&lt;/li&gt;In that case you have to force your users to use cookies in order for them to use your application. &lt;li&gt;They won&#39;t work across-domains&lt;/li&gt;So you cannot use the same credentials with many different domains, where in token based, you can authenticate in one place, and use the same token across many different domains. &lt;li&gt;Cookies and mobiles are not friends together&lt;/li&gt;&lt;li&gt;Cookies are volunerables for &lt;a href=&quot;https://en.wikipedia.org/wiki/Cross-site_request_forgery&quot;&gt;CSRF attacks&lt;/a&gt;&lt;/li&gt; &lt;/ol&gt; &lt;h3&gt;JSON Web Tokens (JWT)&lt;/h3&gt;JWT became lately the most common used authentication solution for APIs and mobile solutions. &lt;br/&gt; JWT is a claim based authentication. When a user authenticate itself only at the beginning, the application checks what this user have access to, and what the user will claim, and issues a token that will have all these claims, and then signed with a hash algorithm, and send it back to the client.&lt;br/&gt;The client will store the token either with a cookie, or with an HTML5 local data store, and upon each request the client will submit this data in the header of the request as a bearer token or a MAC token. JWT as the token based authentication is not supported by the browsers, and requires some kind of JavaScript libraries to support it. </description>
-        <pubDate>Fri, 29 Apr 2016 19:45:00 -0600</pubDate>
-        <link>https://blog.gisspan.com/2016/04/token-based-authentication-and-jwt.html</link>
-        <guid isPermaLink="true">https://blog.gisspan.com/2016/04/token-based-authentication-and-jwt.html</guid>
-        
-        <category>security</category>
         
         
       </item>
