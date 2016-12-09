@@ -351,7 +351,7 @@ There are these two useful entities:</p>
 
 <p>As an example of using the above approach</p>
 
-<pre><code class="language-csharp">public static MemoryStream ConvertMailMessageToMemoryStream(MailMessage message)
+<pre><code class="language-csharp">public static MemoryStream GetRawEmail(MailMessage message)
     {
         Assembly assembly = typeof(SmtpClient).Assembly;
         Type mailWriterType = assembly.GetType("System.Net.Mail.MailWriter");
@@ -359,10 +359,14 @@ There are these two useful entities:</p>
         ConstructorInfo mailWriterContructor = mailWriterType.GetConstructor
             (BindingFlags.Instance | BindingFlags.NonPublic, null, new[] { typeof(Stream) }, null);
         object mailWriter = mailWriterContructor.Invoke(new object[] { fileStream });
-        MethodInfo sendMethod = typeof(MailMessage).GetMethod("Send", BindingFlags.Instance | BindingFlags.NonPublic);
-        sendMethod.Invoke(message, BindingFlags.Instance | BindingFlags.NonPublic, null, new[] { mailWriter, true }, null);
-        MethodInfo closeMethod = mailWriter.GetType().GetMethod("Close", BindingFlags.Instance | BindingFlags.NonPublic);
-        closeMethod.Invoke(mailWriter, BindingFlags.Instance | BindingFlags.NonPublic, null, new object[] { }, null);
+        MethodInfo sendMethod = typeof(MailMessage).GetMethod("Send", 
+            BindingFlags.Instance | BindingFlags.NonPublic);
+        sendMethod.Invoke(message, BindingFlags.Instance 
+            | BindingFlags.NonPublic, null, new[] { mailWriter, true }, null);
+        MethodInfo closeMethod = mailWriter.GetType().GetMethod
+            ("Close", BindingFlags.Instance | BindingFlags.NonPublic);
+        closeMethod.Invoke(mailWriter, BindingFlags.Instance 
+            | BindingFlags.NonPublic, null, new object[] { }, null);
         return fileStream;
     }</code></pre>
 

@@ -6,8 +6,8 @@
 </description>
     <link>https://blog.gisspan.com/</link>
     <atom:link href="https://blog.gisspan.com/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 08 Dec 2016 22:51:18 -0700</pubDate>
-    <lastBuildDate>Thu, 08 Dec 2016 22:51:18 -0700</lastBuildDate>
+    <pubDate>Fri, 09 Dec 2016 03:32:33 -0700</pubDate>
+    <lastBuildDate>Fri, 09 Dec 2016 03:32:33 -0700</lastBuildDate>
     <generator>Jekyll v3.1.6</generator>
     
       <item>
@@ -235,7 +235,7 @@ There are these two useful entities:&lt;/p&gt;
 
 &lt;p&gt;As an example of using the above approach&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&quot;language-csharp&quot;&gt;public static MemoryStream ConvertMailMessageToMemoryStream(MailMessage message)
+&lt;pre&gt;&lt;code class=&quot;language-csharp&quot;&gt;public static MemoryStream GetRawEmail(MailMessage message)
     {
         Assembly assembly = typeof(SmtpClient).Assembly;
         Type mailWriterType = assembly.GetType(&quot;System.Net.Mail.MailWriter&quot;);
@@ -243,10 +243,14 @@ There are these two useful entities:&lt;/p&gt;
         ConstructorInfo mailWriterContructor = mailWriterType.GetConstructor
             (BindingFlags.Instance | BindingFlags.NonPublic, null, new[] { typeof(Stream) }, null);
         object mailWriter = mailWriterContructor.Invoke(new object[] { fileStream });
-        MethodInfo sendMethod = typeof(MailMessage).GetMethod(&quot;Send&quot;, BindingFlags.Instance | BindingFlags.NonPublic);
-        sendMethod.Invoke(message, BindingFlags.Instance | BindingFlags.NonPublic, null, new[] { mailWriter, true }, null);
-        MethodInfo closeMethod = mailWriter.GetType().GetMethod(&quot;Close&quot;, BindingFlags.Instance | BindingFlags.NonPublic);
-        closeMethod.Invoke(mailWriter, BindingFlags.Instance | BindingFlags.NonPublic, null, new object[] { }, null);
+        MethodInfo sendMethod = typeof(MailMessage).GetMethod(&quot;Send&quot;, 
+            BindingFlags.Instance | BindingFlags.NonPublic);
+        sendMethod.Invoke(message, BindingFlags.Instance 
+            | BindingFlags.NonPublic, null, new[] { mailWriter, true }, null);
+        MethodInfo closeMethod = mailWriter.GetType().GetMethod
+            (&quot;Close&quot;, BindingFlags.Instance | BindingFlags.NonPublic);
+        closeMethod.Invoke(mailWriter, BindingFlags.Instance 
+            | BindingFlags.NonPublic, null, new object[] { }, null);
         return fileStream;
     }&lt;/code&gt;&lt;/pre&gt;
 </description>
