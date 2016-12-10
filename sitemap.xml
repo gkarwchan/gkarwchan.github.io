@@ -254,6 +254,9 @@
 <loc>https://blog.gisspan.com/tag/asp.net</loc>
 </url>
 <url>
+<loc>https://blog.gisspan.com/tag/build-&-ci</loc>
+</url>
+<url>
 <loc>https://blog.gisspan.com/tag/azure</loc>
 </url>
 <url>
@@ -279,9 +282,6 @@
 </url>
 <url>
 <loc>https://blog.gisspan.com/tag/react</loc>
-</url>
-<url>
-<loc>https://blog.gisspan.com/tag/webpack</loc>
 </url>
 <url>
 <loc>https://blog.gisspan.com/tag/aws</loc>

@@ -216,6 +216,9 @@ pre[class*="language-"] {
 .devops {
   background-color: #ac3939; }
 
+.build.\&.CI {
+  background-color: #ac3939; }
+
 .unit.test {
   background-color: #ac3939; }
 
