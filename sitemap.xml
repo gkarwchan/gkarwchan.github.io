@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 <url>
+<loc>https://blog.gisspan.com/2017/02/Implementing-OAuth-on-mobile-Facebook-login-as-example.html</loc>
+<lastmod>2017-02-01T09:45:00-07:00</lastmod>
+</url>
+<url>
 <loc>https://blog.gisspan.com/2016/12/Sending-Email-with-embedded-image-with-aws.html</loc>
 <lastmod>2016-12-08T09:45:00-07:00</lastmod>
 </url>
@@ -277,6 +281,9 @@
 </url>
 <url>
 <loc>https://blog.gisspan.com/tag/big-data</loc>
+</url>
+<url>
+<loc>https://blog.gisspan.com/tag/mobile</loc>
 </url>
 <url>
 <loc>https://blog.gisspan.com/page2/</loc>

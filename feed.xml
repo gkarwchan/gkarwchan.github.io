@@ -6,9 +6,219 @@
 </description>
     <link>https://blog.gisspan.com/</link>
     <atom:link href="https://blog.gisspan.com/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Fri, 09 Dec 2016 20:42:31 -0700</pubDate>
-    <lastBuildDate>Fri, 09 Dec 2016 20:42:31 -0700</lastBuildDate>
+    <pubDate>Fri, 03 Feb 2017 11:58:24 -0700</pubDate>
+    <lastBuildDate>Fri, 03 Feb 2017 11:58:24 -0700</lastBuildDate>
     <generator>Jekyll v3.1.6</generator>
+    
+      <item>
+        <title>The proper way to use OAuth in a native app.</title>
+        <description>
+&lt;p&gt;&lt;a href=&quot;https://www.ietf.org/&quot;&gt;IETF&lt;/a&gt; submitted &lt;a href=&quot;https://tools.ietf.org/html/draft-ietf-oauth-native-apps-07&quot;&gt;a draft&lt;/a&gt; on the best approach to implement OAuth in a mobile native app. They recommended a specific flow and some security considerations.&lt;br /&gt;
+I am going to show how to implement these in the code on both mobile platforms iOS, and Android using Facebook authentication service as an example of OAuth provider, and then show how Facebook and Google SDK for those platforms are implementing this apporaches.&lt;br /&gt;
+This is not an OAuth tutorial, so I am assuming that you are familiar with OAuth terminologies and workflows. &lt;!--more--&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;the-security-considertations-for-native-app&quot;&gt;The security considertations for native app&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&quot;https://www.ietf.org/&quot;&gt;IETF&lt;/a&gt; submitted &lt;a href=&quot;https://tools.ietf.org/html/draft-ietf-oauth-native-apps-07&quot;&gt;a draft&lt;/a&gt; on the best approach to implement OAuth in a mobile native app, and in that draft IETF made the statement that:&lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;OAuth 2.0 authorization requests from native apps should only be made through external user-agents, primarily the user’s browser.&lt;br /&gt;
+This practice is also known as the AppAuth pattern, in reference to open source libraries that implement it.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;In order to statisfy the previous statement and to provide more solid, security solution for OAuth on native app, IETF provide the following security considertations:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Don’t use embeded user agent like web-view, because the native app can capture user credentials when entered on OAuth website.&lt;/li&gt;
+  &lt;li&gt;Register your application with the OAuth provider and specify it is a native app.&lt;/li&gt;
+  &lt;li&gt;It is not recommended to use OAuth implicit flow with a native app.&lt;/li&gt;
+  &lt;li&gt;Don’t store your application secret (which you obtain upon registering your application) in the code. There is a work around to use your secret when required which we are giong to see later.&lt;/li&gt;
+  &lt;li&gt;Most OAuth providers provide the parameter &lt;code class=&quot;language-wiki&quot;&gt;state&lt;/code&gt; in their service to protect against CSRF attacks.&lt;/li&gt;
+  &lt;li&gt;If you are building your own OAuth authentication services, then make sure the HTTP redirect address will have the application identifier as schema of the URL, which we are going to show it later.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;appauth-or-authorization-code-flow&quot;&gt;AppAuth or Authorization Code Flow&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&quot;https://tools.ietf.org/html/draft-ietf-oauth-native-apps-07#section-4.1&quot;&gt;Section 4.1&lt;/a&gt; in that draft shows the authorization flow of the AppAuth approach and it is very similar to Authorization Code Flow. Don’t worry about getting its details, because I am going to describe them later:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-css&quot;&gt;+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~+
+|          User Device           |
+| +---------------------------+  |                     +-----------+
+| |                           |  | (5) Authz Code      |           |
+| |        Client App         |-----------------------&amp;gt;|  Token    |
+| |                           |&amp;lt;-----------------------|  Endpoint |
+| +---------------------------+  | (6) Access Token,   |           |
+|    |              ^            |     Refresh Token   +-----------+
+|    | (1)          | (4)        |
+|    | Authz        | Authz      |
+|    | Request      | Code       |
+|    v              |            |
+| +---------------------------+  |                   +---------------+
+| |                           |  | (2) Authz Request |               |
+| |          Browser          |---------------------&amp;gt;| Authorization |
+| |                           |&amp;lt;---------------------| Endpoint      |
+| +---------------------------+  | (3) Authz Code    |               |
+|                                |                   +---------------+
++~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~+
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;p&gt;I am going to re-represent the same flow in the previous diagram with a more graphics in a simpler diagram that anyone can understand (including me).&lt;/p&gt;
+
+&lt;div class=&quot;column&quot; style=&quot;align: center&quot;&gt;
+  &lt;p&gt;&lt;img src=&quot;/img/oauth.png&quot; alt=&quot;smtp&quot; height=&quot;600px&quot; width=&quot;auto&quot; align=&quot;center&quot; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+
+&lt;p&gt;&lt;br /&gt;
+I am going to implement that using the Facebook Authorization service as an example of the OAuth provider. But, I am just showing this as an example, becuase in real life if you want to connect using Facebook, then I recommend using Facebook SDK for iOS and Android, and not using my code.
+Anyway, my code is going to be conceptual steps that show only the exact step implementations, and not a whole application.&lt;br /&gt;
+&lt;br /&gt;
+&lt;br /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;step-1--2-request-auhorization&quot;&gt;step 1 &amp;amp; 2: Request Auhorization&lt;/h4&gt;
+&lt;p&gt;In this step we are going to launch the external web browser with URL of the Facebook Authorization EndPoint:&lt;br /&gt;
+The Facebook Authorization EndPoint is:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-http&quot;&gt;https://www.facebook.com/v2.8/dialog/oauth?
+  client_id={app-id}
+  &amp;amp;redirect_uri={redirect-uri}
+  &amp;amp;state={state}
+  &amp;amp;response_type=code
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The parameters are as follows:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;redirect_uri is the URL that you want to redirect the process back to. For a native app, the redirect url should be special which we should see how later.&lt;/li&gt;
+  &lt;li&gt;state: is an arbitrary unique string that is used to protect against CSRF.&lt;/li&gt;
+  &lt;li&gt;response_type: has many options, but for our AppAuth it is proper to use “code”.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Launching the browser from the native code.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-java&quot;&gt; // For Android:
+// ---------------------------------
+
+AppUri authzUrl =Uri.parse(&quot;https://www.facebook.com/v2.8/dialog/oauth?client_id=xxxx&amp;amp;state=abcd&amp;amp;response_type=code&quot;);
+Intent launchBrowser = new Intent(Intent.ACTION_VIEW, authzUrl);
+startActivity(launchBrowser);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;br /&gt;
+And for iOS:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-objectivec&quot;&gt; // For iOS:
+// ---------------------------------
+
+NSString* launchUrl =@&quot;https://www.facebook.com/v2.8/dialog/oauth?client_id=xxxx&amp;amp;state=abcd&amp;amp;response_type=code&quot;;
+[[UIApplication sharedApplication] openURL:[NSURL URLWithString: launchUrl]];
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Facebook will direct you to enter your credentials, and then ask you to allow the application to access your token.&lt;br /&gt;
+When the user confirm the authorization server will respond with HTTP redirect like the following:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-http&quot;&gt;HTTP/1.1 302 Found
+Location: my-app-id://oauth.callback?code=the-code-returned-by-service
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;pay attention to the shceme in the URL: &lt;code class=&quot;language-wiki&quot;&gt; my-app-id:// &lt;/code&gt; which we are going to talk about in the next step.&lt;br /&gt;
+Let’s move to step 3 &amp;amp; 4.
+&lt;br /&gt;
+&lt;br /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;step-3--4-authorization-endpoint-response&quot;&gt;step 3 &amp;amp; 4: Authorization endpoint response&lt;/h4&gt;
+
+&lt;p&gt;In Step 4 we should return back to the App from the external browser. The most common way is to use &lt;strong&gt;Custom URI Scheme&lt;/strong&gt;.&lt;br /&gt;
+Custom URI Scheme is a technique used in both iOS and Android to support inter-app communication, so app1 can communicate with app2 by launching a request like this:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-http&quot;&gt;app2://some-page-and-parameters&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;So, now let’s see how to define custom URI scheme in both platforms.&lt;br /&gt;
+&lt;br /&gt;&lt;/p&gt;
+
+&lt;p&gt;In Android we create an activity that will handle the redirect by defining its intent-filter to respond to BROWSABLE activites. the code will be similar to this:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-markup&quot;&gt;&amp;lt;!-- android --&amp;gt;
+&amp;lt;activity android:name=&quot;.my-activity-handler&quot;&amp;gt;
+  &amp;lt;intent-filter&amp;gt;
+    &amp;lt;action android:name=&quot;android.intent.action.VIEW&quot; /&amp;gt;
+    &amp;lt;category android:name=&quot;android.intent.category.DEFAULT&quot; /&amp;gt;
+    &amp;lt;category android:name=&quot;android.intent.category.BROWSABLE&quot; /&amp;gt;
+    &amp;lt;data android:scheme=&quot;my-app-id&quot; /&amp;gt;
+  &amp;lt;/intent-filter&amp;gt;
+&amp;lt;/activity&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;br /&gt;
+&lt;br /&gt;
+In iOS we define the custom URI Scheme in the plist file:&lt;/p&gt;
+&lt;div class=&quot;column&quot; style=&quot;align: center&quot;&gt;
+  &lt;p&gt;&lt;img src=&quot;/img/plist.png&quot; alt=&quot;smtp&quot; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+
+&lt;p&gt;and in the application delegate file we write a handler for application:openUrl&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-objectivec&quot;&gt; // For iOS:
+// in AppDelegate.m
+// --------------------------------
+
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url
+{ 
+  NSString *queryString = [url query]; 
+  for (NSString *param in [queryString componentsSeparatedByString:@&quot;&amp;amp;&quot;]) { 
+    NSArray *keyValuePair = [param componentsSeparatedByString:@&quot;=&quot;]; 
+    if([keyValuePair objectAtIndex:0] isEqualToString:@&quot;code&quot;)
+    {
+      // continue with authorization code in [keyValuePair objectAtIndex:1]  //
+    }
+  }; 
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;br /&gt;
+&lt;br /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;step-5--6-trading-authorization-code-with-the-token&quot;&gt;step 5 &amp;amp; 6: Trading authorization code with the token&lt;/h4&gt;
+
+&lt;p&gt;The final step is to communicate with the Token Endpoint and send the authorization code received from the previous step.&lt;br /&gt;
+To do that in Facebook, we call Facebook Token Endpoint as follows:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-http&quot;&gt;GET https://graph.facebook.com/v2.8/oauth/access_token?
+   client_id={app-id}
+   &amp;amp;redirect_uri={redirect-uri}
+   &amp;amp;client_secret={app-secret}
+   &amp;amp;code={code-parameter}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Now there is a huge problem with this, because it requires the client secret, which is something that you should never use from your native code, becaues someone can hack it and get it.&lt;br /&gt;
+It is highly recommended to call this service from a back-end server, so you might have to have a back-end server.&lt;br /&gt;
+P.S: You can build a simple server component with a &lt;a href=&quot;https://github.com/ParsePlatform/parse-server&quot;&gt;perse-server&lt;/a&gt; and host it on Redhat openshift free cloud servers.&lt;br /&gt;
+So, we will assume that we have a back-end server that will call this for us, and we have to call it passing our authorization code we received from previous step, like this.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-http&quot;&gt;GET https://my-token-service?code={code-parameter}&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;To call this service in iOS:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-objectivec&quot;&gt; // For iOS:
+// --------------------------------
+NSMutableURLRequest *request= [[[NSMutableURLRequest alloc] init] autorelease];
+[request setURL: [NSURL URLWithString:@&quot;https://my-token-service?code=xxxx&quot;]];
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;For Android&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-java&quot;&gt; // For Android:
+// ---------------------------------
+DefualtHttpClient httpClient = new DefaultHttpClient();
+HttpGet get = new HttpGet(&quot;https://my-token-service?code=xxxxx&quot;);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;br /&gt;
+&lt;br /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;final-statment&quot;&gt;Final statment&lt;/h4&gt;
+&lt;p&gt;Just reminder that the code above was conceptual to describe the process in more practical way. If you are going to use Facebook OAuth, then it is way easier and better to use Facebook SDK.&lt;/p&gt;
+
+</description>
+        <pubDate>Wed, 01 Feb 2017 09:45:00 -0700</pubDate>
+        <link>https://blog.gisspan.com/2017/02/Implementing-OAuth-on-mobile-Facebook-login-as-example.html</link>
+        <guid isPermaLink="true">https://blog.gisspan.com/2017/02/Implementing-OAuth-on-mobile-Facebook-login-as-example.html</guid>
+        
+        <category>mobile</category>
+        
+        <category>security</category>
+        
+        
+      </item>
     
       <item>
         <title>Sending emails with attachments or embedded image using Amazon&#39;s AWS SES API &amp; .NET.</title>
@@ -1629,364 +1839,6 @@ A good exercise is to think carefully on what the best way to represent the hier
         <pubDate>Fri, 24 Jun 2016 09:45:00 -0600</pubDate>
         <link>https://blog.gisspan.com/2016/06/angular-ui-router-nested-views-with-security.html</link>
         <guid isPermaLink="true">https://blog.gisspan.com/2016/06/angular-ui-router-nested-views-with-security.html</guid>
-        
-        <category>angular</category>
-        
-        
-      </item>
-    
-      <item>
-        <title>Using Angular promise to wrap up an OAuth callback</title>
-        <description>I am going to show how to wrap the OAuth callback flow with an Angular promise, and how that will help create a clean and maintainable code.
-&lt;!--more--&gt;
-This is not a tutorial about OAuth, and I am assuming: 
-&lt;br /&gt;
-&lt;ul&gt;
-&lt;li&gt;you already have a good knowledge about OAuth authentication and its concepts.&lt;/li&gt;
-&lt;li&gt;
-you already have some knowledge about promises in JavaScript.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3&gt;
-OAuth Authentication workflow&lt;/h3&gt;
-OAuth is an open standard that allow third-party providers like Facebook and Google to provide authentication service for your application.&lt;br /&gt;
-Using &lt;a href=&quot;https://tools.ietf.org/html/rfc6749#section-1.3.1&quot;&gt;Authorization Code Flow&lt;/a&gt;,&amp;nbsp; and using Facebook login as an example. The flow in the application will go like this.&lt;br /&gt;
-&lt;ol&gt;
-&lt;li&gt;Start from our application login page&lt;/li&gt;
-Our login page will have buttons to login with facebook or twitter or...,. 
-
-
-&lt;div class=&quot;separator&quot; style=&quot;clear: both; text-align: center;&quot;&gt;
-&lt;a href=&quot;https://1.bp.blogspot.com/-8SihecLncqM/Vz0rErlirpI/AAAAAAAAEFE/YBrB3RfPXbg0ThpeTvoHt-O-lMqiBiBEACLcB/s1600/Freebie-PSD-Signin-Button.jpg&quot; imageanchor=&quot;1&quot; style=&quot;margin-left: 1em; margin-right: 1em;&quot;&gt;&lt;img border=&quot;0&quot; height=&quot;200&quot; src=&quot;https://1.bp.blogspot.com/-8SihecLncqM/Vz0rErlirpI/AAAAAAAAEFE/YBrB3RfPXbg0ThpeTvoHt-O-lMqiBiBEACLcB/s200/Freebie-PSD-Signin-Button.jpg&quot; width=&quot;270&quot; /&gt;&lt;/a&gt;&lt;/div&gt;
-&lt;li&gt;Clicking on a button will open a popup window that navigate to our application login URL.&lt;/li&gt;
-&lt;li&gt;On server side of our application, the login code communicates with OAuth authentication server (the Facebook server that host the service)&lt;/li&gt;
-&lt;li&gt;The authentication server will send a confirmation&lt;/li&gt;
-The confirmation is something like this.
-&lt;div class=&quot;separator&quot; style=&quot;clear: both; text-align: center;&quot;&gt;
-&lt;a href=&quot;https://3.bp.blogspot.com/-4I3oJD7C3h8/Vzvp02cWp9I/AAAAAAAAEEs/TxeZtKRTTYo9BkAJHaPlq1XySZ6sN-qAgCLcB/s1600/wQyB0.gif&quot; imageanchor=&quot;1&quot; style=&quot;margin-left: 1em; margin-right: 1em;&quot;&gt;&lt;img border=&quot;0&quot; height=&quot;331&quot; src=&quot;https://3.bp.blogspot.com/-4I3oJD7C3h8/Vzvp02cWp9I/AAAAAAAAEEs/TxeZtKRTTYo9BkAJHaPlq1XySZ6sN-qAgCLcB/s400/wQyB0.gif&quot; width=&quot;400&quot; /&gt;&lt;/a&gt;&lt;/div&gt;
-&lt;li&gt;The user could just close the window by clicking on the close button (X button)&lt;/li&gt;
-&lt;li&gt;Or the user will chose to confirm or deny the request&lt;/li&gt;
-In both cases, the authentication server will respond by calling back our server with a POST HTTP call that we should specify its URL when registering the application with Facebook.
-This POST HTTP call is called &lt;b&gt;&lt;i&gt;Callback URL&lt;/i&gt;&lt;/b&gt;
-&lt;/ol&gt;
-&lt;h3&gt;
-The JavaScript client side code:&lt;/h3&gt;
-I am going to cover only the JavaScript side code, and not the server code. Anyway if you used a third party OAuth library then your server side code will be very minimal (only few lines). All programming languages has OAuth library (C#, Ruby, PHP, Python...)&lt;br /&gt;
-There are three functionalities that we want to write in JavaScript.&lt;br /&gt;
-&lt;ol&gt;
-&lt;li&gt;Code to open the popup window&lt;/li&gt;
-&lt;li&gt;Code on the callback URL to receive the response from the user, and the user token&lt;/li&gt;
-And this is the most important code.
-&lt;li&gt;We need as well to watch the popup window:&lt;/li&gt;
-Because the user could just click on the close window button without responding to the confirmation
-&lt;/ol&gt;
-&lt;br /&gt;
-&lt;h3&gt;
-The Final Goal&lt;/h3&gt;
-We want to wrap the authentication process with a promise, and write a handler on when the process is successful or failed.&lt;br /&gt;
-We want to have the promise like this:&lt;br /&gt;
-&lt;pre class=&quot;line-numbers&quot;&gt;&lt;code class=&quot;language-javascript&quot;&gt;oauthService.authenticate(provider.url, provider.name)
-        .then(function(response) {
-          $log.debug(&#39;successful login&#39;);
-          $log.debug(response);
-          // do something with login
-        })
-        .catch(function(error) {
-          $log.debug(&quot;didn&#39;t login&quot;);
-          $log.debug(error);
-        /* error could be one of the following:
-          user denied
-          user closed the window
-          popup is blocked on the browser
-          the authentication server failed for some reason
-        */
-        });
-      
-    };&lt;/code&gt;&lt;/pre&gt;
-&lt;h3&gt;
-Start writing the code&lt;/h3&gt;
-Let us start with open a popup window.&lt;br /&gt;
-Let us make that an Angular service.
-&lt;br /&gt;
-&lt;pre class=&quot;line-numbers&quot;&gt;&lt;code class=&quot;language-javascript&quot;&gt;function popupService ($window) {
-  var service = {
-     window : null,
-     open : function(url, provider) {
-        this.window = $window.open(url, &#39;_blank&#39;, &#39;width=200,height=100&#39;); 
-     }
-  };
-  
-  return service;
-}
-popupService.$inject = [&#39;$window&#39;];&lt;/code&gt;&lt;/pre&gt;
-It is better to take the string that has the window specs to an Angular constants like this.
-
-&lt;br /&gt;
-&lt;pre class=&quot;line-numbers&quot;&gt;&lt;code class=&quot;language-javascript&quot;&gt;function popupConstants () {
-    facebook: &#39;width=580,height=400&#39;,
-    gplus: &#39;width=452, height=633&#39;,
-    twitter: &#39;width=495,height=645&#39;&#39; 
-}
-
-function popupService ($window, popupConstants) {
-  var service = {
-     window : null,
-     open : function(url, provider) {
-        this.window = $window.open(url, &#39;_blank&#39;, popupConstants[provider]); 
-     }
-  };
-  
-  return service;
-}
-
-
-popupService.$inject = [&#39;$window&#39;, &#39;popupConstants&#39;];
-
-
-angular.module(&#39;app&#39;)
-.constants(&#39;popupConstants&#39;, popupConstants)
-.service(&#39;popupService&#39;, popupService);&lt;/code&gt;&lt;/pre&gt;
-Now let us write the code that will check on the popup.&lt;br /&gt;
-We have to write a code that regularly check if the window opened in the first step is still open, and we will use the JavaScript interval, but better we will use the Angular&#39;s $interval which is a promise wrapper around the JavaScript native interval.
-
-&lt;br /&gt;
-&lt;pre class=&quot;line-numbers&quot;&gt;&lt;code class=&quot;language-javascript&quot;&gt;function popupService ($window, popupConstants, $rootScope, $interval) {
-  var service = {
-     window : null,
-     localCheckPopup: null,
-     open : function(url, provider) {
-        this.window = $window.open(url, &#39;_blank&#39;, popupConstants[provider]);
-        this.observePopup();
-        return true; 
-     },
-     checkPopup: function() {
-        if (this.window.closed) {
-            $interval.cancel(this.interval);
-            // Notify the application that the window is closed by the user.
-            $rootScope.$emit(&#39;window-closed&#39;);
-        }
-     },
-     observePopup: function() {
-       this.localCheckPopup = angular.bind(this, this.checkPopup);
-        this.interval = $interval(function() {
-            this.localCheckPopup();
-        }, 500);
-     }
-  };
-  
-  return service;
-}&lt;/code&gt;&lt;/pre&gt;
-&lt;h3&gt;
-Important points to notice from the above code&lt;/h3&gt;
-In the above code we created a function called observePopup that will run in interval 500 ms to check on the window.&lt;br /&gt;
-The tip from the previous code is using angular.bind.&lt;br /&gt;
-When the function checkPopup is called by the interval process, it will lose the &quot;this&quot; scope, because it is no longer called inside the object.&lt;br /&gt;
-Angular&#39;s bind is like calling
-
-&lt;br /&gt;
-&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;checkup.apply(this)&lt;/code&gt;&lt;/pre&gt;
-What is still remaining is what we are going to use to notify the other code that the window was closed? &lt;br /&gt;
-The convenient way is to use Angular&#39;s $emit/$on for notification, and it is always better to use it on the $rootScope&lt;br /&gt;
-&lt;h3&gt;
-Writing the OAuth callback JavaScript code&lt;/h3&gt;
-The OAuth authentication server (The Facebook server in our case), will response back when we answer the confirmation page above, by calling a HTTP POST URL, that we registered when we register the application with Facebook.&lt;br /&gt;
-We should have server code that will handle the POST, but on our client side we can write JavaScript code on the html page that will return from the POST URL, to notify our JavaScript code that the user logged in or rejected.&lt;br /&gt;
-As I mentioned, I am not covering the server side code, but I will show how to pass the user token we got from the Facebook server into JavaScript.&lt;br /&gt;
-Assuming that we are using Asp.NET MVC, and assume that in the POST callback controller handler we receive the user token in a .NET object variable called &quot;user&quot;, we can serialize the object to JSON, and pass it to JavaScript through Razor template like this
-&lt;br /&gt;
-&lt;pre&gt;&lt;code class=&quot;language-csharp&quot;&gt;var data = somedata;
-var viewModel = new ViewModel();
-var serializer = new JavaScriptSerializer();
-viewModel.JsonData = serializer.Serialize(data);
-
-return View(&quot;viewname&quot;, viewModel);&lt;/code&gt;&lt;/pre&gt;
-And on the view side, we add this JavaScript code
-&lt;br /&gt;
-&lt;pre&gt;&lt;code class=&quot;JavaScript&quot;&gt;var user = &amp;lt;%= Model.JsonData %&amp;gt;&lt;/code&gt;&lt;/pre&gt;
-&lt;h3&gt;
-Hook up the OAuth page with our application&lt;/h3&gt;
-Hooking up the above JavaScript user with our application is not easy.&lt;br /&gt;
-Because the popup window was redirected to the facebook authentication website, it cannot communicate with our JavaScript code directly.&lt;br /&gt;
-The only way to communicate between windows that belong to different domains is to use JavaScript &lt;i&gt;&lt;b&gt;window.postMessage&lt;/b&gt;&lt;/i&gt;.&lt;br /&gt;
-But we even don&#39;t know and don&#39;t have a handle to the calling window (our application window).&lt;br /&gt;
-The only connection we have is when we open the window, we got a handle to the popup window, which we can communicate with the popup window.&lt;br /&gt;
-To fix this problem, we will do the following:
-&lt;br /&gt;
-&lt;ul&gt;
-&lt;li&gt;From Angular code, we will get a handle to the popup window.&lt;/li&gt;
-&lt;li&gt;Use the popup handle to postMessage sending the Angular App window as parameter&lt;/li&gt;
-&lt;li&gt;Because we don&#39;t know when the OAuth callback will be executed, so we have to keep repeating sending the postMessage with a parameter &quot;&lt;i&gt;&lt;b&gt;requestLogin&lt;/b&gt;&lt;/i&gt;&quot;.&lt;/li&gt;
-and the best way to do it is to hook it with the obeservePopup function that we showed before.&lt;br /&gt;
-We add inside the interval function the following line:
-&lt;pre&gt;&lt;code class=&quot;JavaScript&quot;&gt;service.window.postMessage(&#39;requestLogin&#39;, &#39;*&#39;);&lt;/code&gt;&lt;/pre&gt;
-&lt;li&gt;On the POST callback JavaScript side we listen to the postMessage with the addEventListenr&lt;/li&gt;
-&lt;li&gt;When the OAuth facebook server callback the POST URL, and execute the JavaScript, the code will receive the message with the Angular App window, wich&lt;/li&gt;
-&lt;/ul&gt;
-The code on the OAuth callback page will be:
-&lt;br /&gt;
-&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;window.addEventListener(&#39;message&#39;, function(e) {
-            if (e.data === &#39;requestLogin&#39;) {
-                e.source.postMessage({
-                    message : &#39;loginSuccess&#39;,
-                    userLogged: &amp;lt;%= Model.JsonData %&amp;gt;
-                }, &#39;*&#39;);
-                window.setTimeout(window.close, 500);
-            }
-        });&lt;/code&gt;&lt;/pre&gt;
-The function observePopup will be:
-&lt;br /&gt;
-&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;obeservePopup: function() {
-            this.interval = $interval(function() {
-                 if (service.window.closed) {
-                     $interval.cancel(service.interval);
-                     $rootScope.$emit(&#39;window-closed&#39;);
-                 }
-                 service.window.postMessage(&#39;requestLogin&#39;, &#39;*&#39;);
-            }, 500);
-        }&lt;/code&gt;&lt;/pre&gt;
-As you see on the OAuth page callback, we are sending a message loginSuccess when the user confirm the login process.&lt;br /&gt;
-When we receive this message from the Angular side, we should stop the interval that we built before.
-The final code for the popup service will be like this:
-
-
-&lt;br /&gt;
-&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;function($log, auth_popupConstants, $window, $interval, $rootScope) {
-
-    var service = {
-        window: null,
-        interval: null,
-        cancelObserver: function(e) {
-            if (e.data.message &amp;amp;&amp;amp; e.data.message === &#39;loginSuccess&#39;) {
-                $interval.cancel(service.interval);
-            }
-        }, 
-        open: function(url, provider) {
-            $window.addEventListener(&#39;message&#39;, this.cancelObserver);
-            var optionsString = stringifyOptions(prepareOptions(auth_popupConstants[provider], $window));
-            this.window = $window.open(url, &#39;_blank&#39;, optionsString);
-            if (!this.window) {
-                $interval.cancel(this.interval);
-                return false;
-            } 
-            this.obeservePopup();
-            return true;
-        },
-        obeservePopup: function() {
-            this.interval = $interval(function() {
-                 if (service.window.closed) {
-                     $interval.cancel(service.interval);
-                     $rootScope.$emit(&#39;window-closed&#39;);
-                 }
-                 service.window.postMessage(&#39;requestLogin&#39;, &#39;*&#39;);
-            }, 500);
-        }
-    };
-
-    return service;
-};&lt;/code&gt;&lt;/pre&gt;
-
-
-
-
-&lt;h3&gt;Using Angular Promises API&lt;/h3&gt;
-After we wrote all required code, let&#39;s now go the fun part. Let us build the promise that will wrap the whole process&lt;br/&gt;
-When we dealing with promises, there are two distinctive types of APIs.
-&lt;br /&gt;
-&lt;ol&gt;
-&lt;li&gt;Creating promises&lt;/li&gt;
-&lt;li&gt;Using promises.&lt;/li&gt;
-&lt;/ol&gt;
-
-And corresponding to the previous types, Angular organizes its $q API into two distinctive groups:
-
-&lt;br /&gt;
-&lt;ol&gt;
-&lt;li&gt;The deferred API to create promises&lt;/li&gt;
-&lt;li&gt;The promise API to consume promises.&lt;/li&gt;
-&lt;/ol&gt;
-
-We already did mentioned that we want to wrap the whole process with a promise that we can consume it like this:
-&lt;pre class=&quot;line-numbers&quot;&gt;&lt;code class=&quot;language-javascript&quot;&gt;oauthService.authenticate(provider.url, provider.name)
-        .then(function(response) {
-          $log.debug(&#39;successful login&#39;);
-          $log.debug(response);
-          // do something with login
-        })
-        .catch(function(error) {
-          $log.debug(&quot;didn&#39;t login&quot;);
-          $log.debug(error);
-        /* error could be one of the following:
-          user denied
-          user closed the window
-          popup is blocked on the browser
-          the authentication server failed for some reason
-        */
-        });
-      
-    };&lt;/code&gt;&lt;/pre&gt;
-The above code is the &lt;b&gt;&lt;i&gt;Promise API&lt;/i&gt;&lt;/b&gt; in the $q library.&lt;br/&gt;
-Let us talk about the fun part and how to create a promise.&lt;br/&gt;
-The &lt;b&gt;&lt;i&gt;deferred API&lt;/i&gt; &lt;/b&gt;is for creating a new promise.&lt;br/&gt;
-
-It is not that common that we create a new promise, because Angular already provide a promise façade for most common JavaScript APIs that are using callbacks, like Ajax, timeout, interval...&lt;br /&gt;
-But our OAuth callback flow is a great example to introduce a new promise.&lt;br/&gt;
-I will just add the code to create that promise:
-
-&lt;pre class=&quot;line-numbers&quot;&gt;&lt;code class=&quot;language-javascript&quot;&gt;function oauthService($q, popupService, $window, $log, $rootScope) {
-    var service = {
-        deferred:null,
-        loginSuccess: null,
-        popupClosed: null,
-        listen: function() {
-            this.loginSuccess = angular.bind(this, this.handleLoginSuccess);
-            this.popupClosed = angular.bind(this, this.handlePopupClosed);
-            $window.addEventListener(&#39;message&#39;, this.loginSuccess, false);
-            $rootScope.$on(&#39;window-closed&#39;, this.popupClosed);
-        },
-        handleLoginSuccess: function(e) {
-            if (e.data.message &amp;amp;&amp;amp; e.data.message === &#39;loginSuccess&#39;) {
-                this.deferred.resolve(e.data.userLogged);
-            }
-        },
-        handlePopupClosed: function() {
-            this.deferred.reject(&#39;the popup was closed&#39;);
-        },
-        authenticate: function(url, provider) {
-            this.deferred = $q.defer();
-            this.listen();
-            
-            var opened = popupService.open(url, provider);
-            if (!opened) {
-                   this.deferred.reject(&#39;popup blocked by browser&#39;);
-            }
-            
-            
-            return this.deferred.promise;
-        }
-    };
-
-    return service;
-};   &lt;/code&gt;&lt;/pre&gt;
-
-
-&lt;h3&gt;Notes from the previous code&lt;/h3&gt;
-&lt;ul&gt;
-&lt;li&gt;We create a promise with &lt;/li&gt;
-&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;this.deferred = $q.defer();&lt;/code&gt;&lt;/pre&gt;
-&lt;li&gt;Then we define how we resolve the promise with&lt;/li&gt;
- &lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;this.deferred.resolve(e.data.userLogged);&lt;/code&gt;&lt;/pre&gt;
-Which is executed when we receive the message from the OAuth callback page.
-&lt;li&gt;we reject the promise&lt;/li&gt;
-When we receive a notification from Angular $rootScope when the user close the OAuth window without confirming
-&lt;li&gt;Another reason to reject the promise&lt;/li&gt;
-When the browser block the popup, then we cannot open a new window, and &lt;b&gt;&lt;i&gt;popupservice.open&lt;/i&gt;&lt;/b&gt; will return false;
-&lt;/ul&gt;
-
-
-And now we can use the oauthService promise as we mentioned above
-</description>
-        <pubDate>Thu, 26 May 2016 19:45:00 -0600</pubDate>
-        <link>https://blog.gisspan.com/2016/05/using-angular-promise-to-wrap-up-oauth.html</link>
-        <guid isPermaLink="true">https://blog.gisspan.com/2016/05/using-angular-promise-to-wrap-up-oauth.html</guid>
         
         <category>angular</category>
         
