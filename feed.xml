@@ -6,9 +6,137 @@
 </description>
     <link>https://blog.gisspan.com/</link>
     <atom:link href="https://blog.gisspan.com/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Fri, 03 Feb 2017 11:58:24 -0700</pubDate>
-    <lastBuildDate>Fri, 03 Feb 2017 11:58:24 -0700</lastBuildDate>
+    <pubDate>Wed, 22 Feb 2017 22:40:05 -0700</pubDate>
+    <lastBuildDate>Wed, 22 Feb 2017 22:40:05 -0700</lastBuildDate>
     <generator>Jekyll v3.1.6</generator>
+    
+      <item>
+        <title>Redux Vs. MVC, Why and How?.</title>
+        <description>
+&lt;p&gt;In last two or three years, we started to see the rise of Redux-based (or Unidirectional data flow architecture in general) in the user interface side of the applications, and the slowly decline of MVC based architecture in the UI side.&lt;br /&gt;
+What Redux has of advantages over MVC, and what problems it solves?  I am going to show what the benefits of Redux over MVC.&lt;br /&gt;
+Redux library by itself is not enough to build a whole system, and this is why there is an echo system developed around Redux.
+I am going to show the basic echo system needed to build a Redux application, or the essential building blocks of a any redux-based application. &lt;!--more--&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;first-the-problem-with-mvc&quot;&gt;First, The Problem with MVC&lt;/h2&gt;
+&lt;p&gt;To explain why Redux became so popular, let us see the problems with the existing MVC or MVC alike UI applications.&lt;br /&gt;
+Let us see how MVC works?&lt;br /&gt;
+The following diagram show the data flow and control flow for the strict MVC pattern.&lt;/p&gt;
+
+&lt;div class=&quot;column&quot; style=&quot;align: center&quot;&gt;
+  &lt;p&gt;&lt;img src=&quot;/img/MVC-basic.svg.png&quot; alt=&quot;smtp&quot; height=&quot;300px&quot; width=&quot;auto&quot; align=&quot;center&quot; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+
+&lt;p&gt;There are other variations of MVC, specifically Model-View-ViewModel (MVVM) which was created specifically to represent the UI in a thick UI environment to help unit test the UI.&lt;br /&gt;
+The following diagram shows the control flow in MVVM and MVP (Model-View-Presenter).&lt;/p&gt;
+
+&lt;div class=&quot;column&quot; style=&quot;align: center&quot;&gt;
+  &lt;p&gt;&lt;img src=&quot;/img/mvc-mvp-mvvm.png&quot; alt=&quot;smtp&quot; height=&quot;300px&quot; width=&quot;auto&quot; align=&quot;center&quot; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;p&gt;We can refer to all above patterns as MVW (Model-View-Whatever).&lt;br /&gt;
+&lt;br /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;what-the-problem-with-mvw&quot;&gt;What the problem with MVW?&lt;/h4&gt;
+
+&lt;p&gt;MVW is easy to manage in a simple application, with few models/controllers.
+But we can easily start to witness problems as we grow in size with the following problems:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;The the more models/controllers that are updating the same UI.&lt;/li&gt;
+  &lt;li&gt;Asynchronous network calls to retrieve data add uncertainty of when the model will be changed or modified, and imagine the user changing the UI while a callback from asynchronous call comeback, then we will have “nondeterministic” status of the UI.&lt;/li&gt;
+  &lt;li&gt;Change state/model has another layer of complexity which is the mutation. When to consider the state or model is changed and how to build tools to help recognize the mutation.&lt;/li&gt;
+  &lt;li&gt;Adding to that if the application is a collaborative applications, (like google docs for examples) where lots of data changes happening in real-time.&lt;/li&gt;
+  &lt;li&gt;No way to do undo (travel back in time) easily without adding so much extra code.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;We can summarize the above as : “There is no single source of truth of the applications at any given time.”, and at any give time we cannot know how the UI will be,  and this create &lt;strong&gt;non-determinism&lt;/strong&gt; UI.&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;“Nondeterminism = parallel processing + shared state”
+~ Martin Odersky (Scala designer)&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&quot;redux-solution&quot;&gt;Redux Solution&lt;/h2&gt;
+&lt;p&gt;Redux is just one variation of a whole trend in UI architecture called : &lt;code class=&quot;language-wiki&quot;&gt;&amp;nbsp;Unidirectional User Interface Architecture&amp;nbsp;&lt;/code&gt;.&lt;br /&gt;
+For example there is &lt;a href=&quot;https://facebook.github.io/flux/&quot;&gt;Flux&lt;/a&gt; (Redux is just a variation of Flux),  &lt;a href=&quot;https://cycle.js.org/&quot;&gt;Cycle.js&lt;/a&gt;, &lt;a href=&quot;https://github.com/mobxjs/mobx&quot;&gt;MobX&lt;/a&gt;, and &lt;a href=&quot;http://elm-lang.org/&quot;&gt;Elm&lt;/a&gt; has its own implementation of that architecture.&lt;br /&gt;
+&lt;br /&gt;&lt;/p&gt;
+
+&lt;p&gt;As stated from the &lt;a href=&quot;http://redux.js.org/docs/introduction/Motivation.html&quot;&gt;Redux motivation&lt;/a&gt;, Redux tries to make: &lt;strong&gt;“state mutation predictable”&lt;/strong&gt;, and it tries to achieve that by the following:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Have one single source of truth (from the state)&lt;/li&gt;
+  &lt;li&gt;States are read only and immutable.&lt;/li&gt;
+  &lt;li&gt;Changes are made with &lt;a href=&quot;https://en.wikipedia.org/wiki/Pure_function&quot;&gt;pure functions&lt;/a&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;p&gt;We will explain all these points in details, when we see how Redux works.&lt;/p&gt;
+
+&lt;h4 id=&quot;how-redux-works&quot;&gt;How Redux works?&lt;/h4&gt;
+&lt;p&gt;There is a wornderful diagram that describe the flow in Redux. &lt;a href=&quot;http://slides.com/jenyaterpil/redux-from-twitter-hype-to-production#/&quot;&gt;I got this diagram from this presentation&lt;/a&gt;.&lt;/p&gt;
+&lt;div class=&quot;column&quot; style=&quot;align: center&quot;&gt;
+  &lt;p&gt;&lt;img src=&quot;/img/redux.gif&quot; alt=&quot;smtp&quot; height=&quot;600px&quot; width=&quot;auto&quot; align=&quot;center&quot; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;p&gt;This is the data flow:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Models/states in the application should reside in a container called “Store”. Even we can have many stores in an application, but Redux differs from others (like Flux) by leaning toward one store.&lt;/li&gt;
+  &lt;li&gt;Communication to the store should happen through one gate, which is a function called “dispatch”.&lt;/li&gt;
+  &lt;li&gt;Anything wants to modify the state should dispatch “Actions” which are a simple javaScript objects that describe what we want to modify and the new data.&lt;/li&gt;
+  &lt;li&gt;The Store receives the actions, and pass it to “Reducers” which are pure functions that modify the store’s state and produce a new state.&lt;/li&gt;
+  &lt;li&gt;Store’s state is immutable, and any modification will generate always a new state.&lt;/li&gt;
+  &lt;li&gt;The Store will notify any subscribers about new changes.&lt;/li&gt;
+  &lt;li&gt;UI render itself, using  pure functions taking the store’s state as input parameter.&lt;/li&gt;
+  &lt;li&gt;Asynchrounous network calls will modify the store through actions as everything else.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h4 id=&quot;why-redux-is-better-&quot;&gt;Why Redux is better ?&lt;/h4&gt;
+&lt;p&gt;Redux solves many problems:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Because we use pure functions everywhere, so alwas the output is deterministic, and we have deterministic UI.&lt;/li&gt;
+  &lt;li&gt;Time Travelling: Because we change the state through actions which are pure JavaScript objects, which means we can at any moment re-create the state from scratch if we keep a log of those actions, so time-travelling will be a breath.&lt;/li&gt;
+  &lt;li&gt;Logging actions, we can know who modify the state, and when exactly.&lt;/li&gt;
+  &lt;li&gt;Collaborative programs like (google docs) can be acheived easily by sending Actions on the wire and recreate them there.&lt;/li&gt;
+  &lt;li&gt;Easy debugging, by logging all actions on production we can re-create the whole situation.&lt;/li&gt;
+  &lt;li&gt;Deterministic UI, because UI rendering using pure function, and the same input will always generate the same output.&lt;/li&gt;
+  &lt;li&gt;Unit test is so easy, because we are testing pure functions for UI and state mutation.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;setup-redux-application&quot;&gt;Setup Redux application&lt;/h2&gt;
+&lt;p&gt;I am going to speak here theoretically, and not writing any code.&lt;br /&gt;
+To use Redux in an application, there are few libraries that you Must have and you cannot work without them (in my opinion):&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Redux itself:&lt;br /&gt;
+ First you need Redux itself, which is available through npm.&lt;/li&gt;
+  &lt;li&gt;integration with other libraries:&lt;br /&gt;
+  As we mentioned above, Redux’s store has one method called &lt;code class=&quot;language-wiki&quot;&gt;&amp;nbsp;&amp;nbsp;dispatch&amp;nbsp;&amp;nbsp;&lt;/code&gt; and it has another method to subscribe to state changes called &lt;code class=&quot;language-wiki&quot;&gt;&amp;nbsp;&amp;nbsp;subscribe&amp;nbsp;&amp;nbsp;&lt;/code&gt;. We can simply use these methods to communicate to the store. But most probably we are using another library for UI, and Redux community created an easy way to integrate with lots of libraries, for example angular has &lt;a href=&quot;https://github.com/angular-redux/store&quot;&gt;ng-redux&lt;/a&gt;, and React has &lt;a href=&quot;https://github.com/reactjs/react-redux&quot;&gt;react-redux&lt;/a&gt;. Even Backbone, and Elmer.&lt;/li&gt;
+  &lt;li&gt;middle-ware to handle asynchronous calls:&lt;br /&gt;
+  Preferably use middle-ware to handle asynchronous calls, so you will have a unified way to send actions regardless if you sending simple objects, or actions that do async calls. There are plenty of options, the simplest is &lt;a href=&quot;https://github.com/gaearon/redux-thunk&quot;&gt;redux-thunk&lt;/a&gt;. But more advanced will be &lt;a href=&quot;https://github.com/redux-saga/redux-saga&quot;&gt;redux-saga&lt;/a&gt; or &lt;a href=&quot;https://github.com/redux-observable/redux-observable/&quot;&gt;redux-observable&lt;/a&gt;.&lt;/li&gt;
+  &lt;li&gt;Logger:&lt;br /&gt;
+  don’t do development without having a logger. It is a life-saving. &lt;a href=&quot;https://github.com/evgenyrodionov/redux-logger&quot;&gt;redux-logger&lt;/a&gt;. It logs every actions with the state before and after the action.&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://facebook.github.io/immutable-js/&quot;&gt;Immutable.js&lt;/a&gt; or &lt;a href=&quot;https://github.com/rtfeldman/seamless-immutable&quot;&gt;Seamless-immutable&lt;/a&gt;:&lt;br /&gt;
+  Don’t do complex modification for the state without using immutable library
+Redux communication can be achieved directly through javaScript only by using the “&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h4 id=&quot;there-is-more-to-the-echo-system&quot;&gt;There is more to the echo system&lt;/h4&gt;
+&lt;p&gt;There is more to the echo system, but I only put the minimun that you must have to work. Although you don’t have to use them, and you can go away using Redux by itself, but expect some trouble when your application become more complex.&lt;/p&gt;
+</description>
+        <pubDate>Wed, 22 Feb 2017 09:45:00 -0700</pubDate>
+        <link>https://blog.gisspan.com/2017/02/Redux-Vs-MVC,-Why-and-How.html</link>
+        <guid isPermaLink="true">https://blog.gisspan.com/2017/02/Redux-Vs-MVC,-Why-and-How.html</guid>
+        
+        <category>javascript</category>
+        
+        
+      </item>
     
       <item>
         <title>The proper way to use OAuth in a native app.</title>
@@ -1733,114 +1861,6 @@ Animal.speak = function() {
         <guid isPermaLink="true">https://blog.gisspan.com/2016/07/ES6-classes-the-good-part.html</guid>
         
         <category>javascript</category>
-        
-        
-      </item>
-    
-      <item>
-        <title>Example on using Angular UI Router nested views to build a clean solution</title>
-        <description>&lt;p&gt;&lt;a href=&quot;https://github.com/angular-ui/ui-router&quot;&gt;Angular UI Router&lt;/a&gt; is the de-facto solution for single page applications and
- flexible routing in angular. It has many useful features such as nested views and states that can help us write clean code.&lt;br /&gt;
-A careful consideration on how we structure our application in nested states/views, and a thoughtful process of designing and structuring the state tree, can
- help us achieve a solid design and a clean architecture for our application.&lt;br /&gt;
-We are going to see a brief example on how to use the nested states feature to implement an elegant solution for the security of an application.
- &lt;!--more--&gt;&lt;br /&gt;
-&lt;/p&gt;
-
-&lt;h2 id=&quot;our-application-security-requirements&quot;&gt;Our Application Security Requirements&lt;/h2&gt;
-&lt;p&gt;In a nutshell, we need to build an application that has the following requirements:&lt;/p&gt;
-&lt;ol&gt;
- &lt;li&gt;The application has three security roles:    
-        &lt;ul&gt;  
-            &lt;li&gt;Read only role.&lt;/li&gt;  
-            &lt;li&gt;Editor role.&lt;/li&gt;  
-            &lt;li&gt;Admin role.&lt;/li&gt;  
-        &lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;Each role has access to his own pages and urls and cannot access pages of other roles.&lt;/li&gt;
-&lt;li&gt;When a read only user try to access a URL for an admin, by typing the URL in the address bar, the application will refuse&lt;/li&gt;
-&lt;/ol&gt;
-&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;This is a diagram to shows the hierarchical states and pages.&lt;/strong&gt;&lt;br /&gt;
-&lt;img src=&quot;/img/states.png&quot; alt=&quot;states&quot; width=&quot;600px&quot; height=&quot;auto&quot; align=&quot;center&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;what-angular-ui-router-can-provide&quot;&gt;What Angular UI router can provide?&lt;/h2&gt;
-&lt;p&gt;The main power in Angular UI Router is in its ability to nest states and views and share data between them.  &lt;br /&gt;
-From the library web site I quote:&lt;/p&gt;
-&lt;blockquote&gt;
-Nested states and views have a hierarchical model, where state/views in the higher level share data with their child states/views
-, and sharing data will help with re-usability of the code by taking the commonality in the model and code into a higher states.  
-&lt;/blockquote&gt;
-&lt;p&gt;Parent states share with its children two main properties:&lt;/p&gt;
-&lt;ul&gt; 
-&lt;li&gt;Resolved dependencies defined via resolve. &lt;/li&gt;
-&lt;li&gt;Custom data properties.&lt;/li&gt;  
-&lt;/ul&gt;
-
-&lt;h2 id=&quot;implement-user-state&quot;&gt;Implement user state&lt;/h2&gt;
-&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;$stateProvider.state(&#39;user&#39;, {
-    abstract: true,
-    url: &#39;/&#39;,
-    template: &#39;&lt;ui-view /&gt;&#39;,
-    data: {
-        userToken : userToken;
-    }
-});&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;In the previous example, we added the user token to the &lt;em&gt;data&lt;/em&gt; property of the top level state, which means in any child state
- we can access that user token with this syntax:&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;function controller($state){
-    var userId = $state.current.data.userId;
-}&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;By putting this important piece of the information in the top level state, then we can assure that anywhere in our application, either in the config code, or the controller code, we have access to this piece of the information.&lt;/p&gt;
-&lt;blockquote&gt;
-And that was one method of using nested states to have a clean solution by sharing important data in the top-level states.   
- &lt;/blockquote&gt;
-
-&lt;h2 id=&quot;implement-the-admin-role-state&quot;&gt;Implement the admin role state&lt;/h2&gt;
-&lt;p&gt;Assuming we have a REST service called &lt;em&gt;authService&lt;/em&gt; that has an action &lt;em&gt;checkRole&lt;/em&gt;. And the REST service accepts two parameters:&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;userId&lt;/li&gt;
-&lt;li&gt;role name&lt;/li&gt;
-&lt;/ol&gt;
-&lt;p&gt;The service will return a JavaScript promise which resolve successfully in case the user belong to that role, or reject if the user doesn’t belong to that role.&lt;br /&gt;
-We can use this service as a &lt;em&gt;resolve&lt;/em&gt; property of the admin state, like this.&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;$stateProvider.state(&#39;user.admin&#39;, {
-    abstract: true,
-    url: &#39;/admin&#39;,
-    resolve:{
-        roleCheck:  function(authService, $state){
-            // query the auth service to make sure that the user has admin access
-            return authService.checkRole($state.current.data.userId, &#39;admin&#39;);
-        }
-}}&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;In the previous code, if the user didn’t belong to the role, then the promise will fail, which will prevent the Angular from moving to the state.&lt;br /&gt;
-We used the resolve property of the state, to prevent moving to the state if the user doesn’t belong to the role.&lt;br /&gt;
-The service when resolved can return back useful information for all the admin states, and pages.&lt;/p&gt;
-
-&lt;blockquote&gt;
-This is another usage of nested states features that help build a clean solution, by using resolve to control the flow, and share data at the same time. 
-&lt;/blockquote&gt;
-
-&lt;p&gt;So, when the user will change the URL in the browser to point to an admin page, this resolve will check if the user has the permission ot move there or not and will move to that page if the user has the right to do that.&lt;/p&gt;
-
-&lt;blockquote&gt;
-P.S: Please note that this client side code is not a real robust security solution, because a malicious user can easily hack it, and still we need a good security on the server side of the code.
-&lt;/blockquote&gt;
-
-&lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h2&gt;
-&lt;p&gt;We introduced how to use the Angular routing UI nested states, and views to show how to write a clean code implementing the security of the system.&lt;br /&gt;
-Nested states and views can be used an a similar fashion to re-use and share the code between parts of the applications.&lt;br /&gt;
-A good exercise is to think carefully on what the best way to represent the hierarchical states / urls that our applications is going to have, because a good decisions on structuring the state tree will help build a clean code.&lt;/p&gt;
-
-</description>
-        <pubDate>Fri, 24 Jun 2016 09:45:00 -0600</pubDate>
-        <link>https://blog.gisspan.com/2016/06/angular-ui-router-nested-views-with-security.html</link>
-        <guid isPermaLink="true">https://blog.gisspan.com/2016/06/angular-ui-router-nested-views-with-security.html</guid>
-        
-        <category>angular</category>
         
         
       </item>
