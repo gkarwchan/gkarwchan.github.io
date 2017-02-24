@@ -6,8 +6,8 @@
 </description>
     <link>https://blog.gisspan.com/</link>
     <atom:link href="https://blog.gisspan.com/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Wed, 22 Feb 2017 22:40:05 -0700</pubDate>
-    <lastBuildDate>Wed, 22 Feb 2017 22:40:05 -0700</lastBuildDate>
+    <pubDate>Thu, 23 Feb 2017 18:28:23 -0700</pubDate>
+    <lastBuildDate>Thu, 23 Feb 2017 18:28:23 -0700</lastBuildDate>
     <generator>Jekyll v3.1.6</generator>
     
       <item>
@@ -44,7 +44,7 @@ The following diagram shows the control flow in MVVM and MVP (Model-View-Present
 But we can easily start to witness problems as we grow in size with the following problems:&lt;/p&gt;
 
 &lt;ol&gt;
-  &lt;li&gt;The the more models/controllers that are updating the same UI.&lt;/li&gt;
+  &lt;li&gt;There is need when models/controllers communicate with each others (through a service layer probably), and these modules changes the states of each others, and the more controllers, the more easy to lose control of who changed the state of a controller.&lt;/li&gt;
   &lt;li&gt;Asynchronous network calls to retrieve data add uncertainty of when the model will be changed or modified, and imagine the user changing the UI while a callback from asynchronous call comeback, then we will have “nondeterministic” status of the UI.&lt;/li&gt;
   &lt;li&gt;Change state/model has another layer of complexity which is the mutation. When to consider the state or model is changed and how to build tools to help recognize the mutation.&lt;/li&gt;
   &lt;li&gt;Adding to that if the application is a collaborative applications, (like google docs for examples) where lots of data changes happening in real-time.&lt;/li&gt;

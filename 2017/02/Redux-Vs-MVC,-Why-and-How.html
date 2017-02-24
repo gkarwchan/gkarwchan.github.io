@@ -160,7 +160,7 @@ The following diagram shows the control flow in MVVM and MVP (Model-View-Present
 But we can easily start to witness problems as we grow in size with the following problems:</p>
 
 <ol>
-  <li>The the more models/controllers that are updating the same UI.</li>
+  <li>There is need when models/controllers communicate with each others (through a service layer probably), and these modules changes the states of each others, and the more controllers, the more easy to lose control of who changed the state of a controller.</li>
   <li>Asynchronous network calls to retrieve data add uncertainty of when the model will be changed or modified, and imagine the user changing the UI while a callback from asynchronous call comeback, then we will have “nondeterministic” status of the UI.</li>
   <li>Change state/model has another layer of complexity which is the mutation. When to consider the state or model is changed and how to build tools to help recognize the mutation.</li>
   <li>Adding to that if the application is a collaborative applications, (like google docs for examples) where lots of data changes happening in real-time.</li>
