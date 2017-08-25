@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Universal <s>(Isomorphic)</s> React Application. Beyond the basics.</title>
+  <meta name="description" content="I decided to write this post, because I didn’t find any blog post, article, or a tutorial that will sum up for developers what the issues they are going to f...">
+
+
+  <!-- CSS Reset -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/3.0.3/normalize.css">
+
+  <!-- utilities -->
+  <link rel="stylesheet" href="/css/milligram.min.css" >
+  <link rel="stylesheet" href="/css/prism.css">
+
+  <link rel="stylesheet" href="/css/main.css">
+  <script src="/js/prism.js"></script>
+  <link rel="canonical" href="https://blog.gisspan.com/2017/06/Universal-react-app-beyong-the-basics.html">
+  <link rel="alternate" type="application/rss+xml" title="Web matters" href="https://blog.gisspan.com/feed.xml">
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-79713706-1', 'auto');
+    ga('send', 'pageview');
+
+  </script>
+</head>
+
+
+  <body>
+    <div class="container">
+      <header class="site-header row">
+  <div class="column column-25">
+    <a class="site-title" href="/">Web matters</a>
+  </div>
+  <div class="column">
+    <nav class="site-nav">
+        
+          
+          <a class="page-link" href="/about/">About Me</a>
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        <a class="page-link" href="/feed.xml"><img src="/img/feed.png" ></img></a>
+    </nav>
+  </div>
+</header>
+
+
+            <article class="post row" itemscope itemtype="http://schema.org/BlogPosting">
+    <div class="content">
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">Universal <s>(Isomorphic)</s> React Application. Beyond the basics.</h1>
+        <p class="post-meta"><time datetime="2017-06-24T09:45:00-06:00" itemprop="datePublished">Jun 24, 2017</time> • <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name">Ghassan Karwchan</span></span></p>
+      </header>
+      <div class="post-content post-font" itemprop="articleBody">
+        
+<p>I decided to write this post, because I didn’t find any blog post, article, or a tutorial that will sum up for developers what the issues they are going to face when they build a universal application.<br />
+If you googled a tutorial on how to build a universal react application, you will find a lot, but most of them are just covering the surface, hello-world examples. But as you go further, or even you decided to use one of the universal frameworks/boilerplate, you will start to face some issues and difficulties.<!--more--><br />
+<br />
+P.S: This post is not a tutorial on building a universal application, and in fact, it is assuming that you already know what universal app is, or what are its benefits, and why people use it, and neither it is a React tutorial, and I assume you already know React, and webpack.</p>
+
+<p><br /></p>
+
+<h2 id="universal-challenges">Universal challenges</h2>
+<p>All challenges related to universal application can be categorised in one of these categories:</p>
+
+<ul>
+  <li>Universal rendering.</li>
+  <li>Universal routing.</li>
+  <li>Universal data retrieval.</li>
+  <li>Build and development process.</li>
+  <li>Sharing libraries between server and client.
+<br /><br /></li>
+</ul>
+
+<h2 id="universal-rendering">Universal Rendering</h2>
+<p>Let us start with the basic of a React application and describe the rendering process in React and in Single Page Application in general.<br />
+A typical React application will run on the client side (on the browser) and does its rendering of the web pages on the client side. A typical React application consists of many components, and in a “sane” React application, there will be only one root component that will contains all other components as its children.<br />
+The entry point for a React app, will be rendering that root component when loading the page, and the code will be similar to this:</p>
+
+<pre><code class="language-javascript">import ReactDOM from 'react-dom';
+import RootApp from './components/RootApp';
+ReactDOM.render(&lt;RootApp /&gt;, document.getElementById('root_placeholder'));</code></pre>
+
+<p>In a universal application, everything on the client stays the same, and we add another rendering of the application on the server.<br />
+<strong>How to do that?</strong>: Using React’s <code class="language-wiki">&nbsp;&nbsp; renderToString&nbsp;&nbsp;</code><br />
+React is universal-friendly library, and has the ability to render on the server using its function: renderToString.<br />
+The code in NodeJs application will be similar to this:</p>
+
+<pre><code class="language-javascript">import { renderToString } from 'react-dom/server';
+import RootApp from './components/RootApp';
+export default function serverRenderer() {
+    return (req, res, next) =&gt; {
+        res.status(200).send(`
+            &lt;!doctype html&gt;
+            &lt;html&gt; 
+              &lt;head&gt; &lt;title&gt;App&lt;/title&gt; &lt;/head&gt;  
+              &lt;body&gt;
+                &lt;div id="root_placeholder"&gt;
+                    ${renderToString(&lt;RootApp /&gt;)}
+                &lt;/div&gt;
+                &lt;script src="/client.js"&gt;&lt;/script&gt;
+              &lt;/body&gt;
+            &lt;/html&gt;
+        `); 
+    };
+}</code></pre>
+<p><br /></p>
+
+<h4 id="so-does-client-rendering-work-as-well">So, does client rendering work as well?</h4>
+<p>After we added the server rendering, the client code stays the same, which means the client code stills has the code to do rendering when the page loaded.<br />
+But, because React is universal-aware, React on the client will checkes if the rendering did happen already, and in case it happened then it will skip it.<br />
+So, the rendering process will happen only once.<br />
+Which lead us to some interesting fact: It is easy to switch off Server rendering.<br />
+<br /></p>
+
+<h4 id="switch-off-server-side-rendering">Switch off Server Side Rendering?</h4>
+
+<p>So, by just having a small <strong>“if”</strong> statement before doing server rendering, we can switch off totally the server rendering and switch back to client rendering as a normal non-universal React application.</p>
+<pre><code class="language-javascript">....
+var htmlBody = isItUniversal ? renderToString(&lt;RootApp/&gt;) : '';
+function serverRenderer() {
+    return (req, res, next) =&gt; {
+        res.status(200).send(`
+            &lt;!doctype html&gt;
+            &lt;html&gt; 
+              &lt;head&gt; &lt;title&gt;App&lt;/title&gt; &lt;/head&gt;  
+              &lt;body&gt;
+                &lt;div id="root_placeholder"&gt;
+                    ${htmlBody}
+                &lt;/div&gt;
+                &lt;script src="/client.js"&gt;&lt;/script&gt;
+              &lt;/body&gt;
+            &lt;/html&gt;
+        `); 
+    };
+}</code></pre>
+<p><br />
+It is common practice in universal boilerplate/frameworks to see they provide a way for developers to switch that server-side rendering.<br />
+<br /></p>
+
+<h4 id="rendering-with-redux">Rendering with Redux</h4>
+<p>As we know in a typical Redux-enabled React application, rendering is happening by populating the Redux store, and React components will subscribe to that redux store, and render as HTML.<br />
+Redux is like React a universal-friendly library.<br />
+The scenario is to populate the redux store on the server, and do the rendering on the server.<br />
+React on the client side will know that the component is already rendered, so it will skip rendering.</p>
+
+<p>But, because redux and react-redux needs the redux store to sync with components states, so there is a trick that has to be done.
+We have to pass to the redux on the client side, the whole redux state after populating the store.<br />
+Applications will do that by passing the state into the client javascript code through the &amp;ltscript&gt; html tag, and they pass it as a global javascript variable like this:</p>
+<pre><code class="language-javascript">function renderFullPage(html, preloadedState) {
+  return `
+  &lt;!doctype html&gt;
+  &lt;html&gt;
+    &lt;head&gt;  &lt;title&gt;Redux Universal Example&lt;/title&gt;  &lt;/head&gt;
+    &lt;body&gt;
+      &lt;div id="root_placeholder"&gt;${htmlBody}&lt;/div&gt;
+      &lt;script&gt;
+        // WARNING: See the following for security issues around embedding JSON in HTML:
+        // http://redux.js.org/docs/recipes/ServerRendering.html#security-considerations
+        window.__PRELOADED_STATE__ = ${JSON.stringify(preloadedState).replace(/&lt;/g, '\\u003c')}
+      &lt;/script&gt;
+      &lt;script src="/client.js"&gt;&lt;/script&gt;
+    &lt;/body&gt;
+  &lt;/html&gt;
+  `
+}</code></pre>
+<p><br /></p>
+
+<h2 id="universal-routing">Universal Routing</h2>
+<p>Ideally, we should define routes and routing in one place only, and both client and server read them from the same place.<br />
+Again, with the help of React-Router which is a universal-friendly library we can achieve a universal (client/server) routing.<br />
+On the server (Speaking of NodeJs application), We can achieve this, by delegating the routing to the routes defined on the client using react-router format.<br />
+Keep in mind that in a “sane” react application, the root component is the routing component, which define a wrapper around the routes that match React components.<br />
+So, it is usual in universal application, that the server routing code will have only one and only one general routing handler like this:</p>
+<pre><code class="language-javascript">app.get('*', (req, res) =&gt; {
+…..
+….
+renderToString(
+  &lt;Router location={req.url} context={context}&gt;
+    &lt;Route&gt;
+    ....
+  &lt;/Router&gt;
+);
+…
+}
+</code></pre>
+<p><br /></p>
+
+<h4 id="handling-server-side-code-with-one-routing-handler">Handling server side code with one routing handler</h4>
+<p>If in ideal universal application, we have only one general route handler, then how to run server side code that is depending on which current route?<br />
+react-router has a function called <code class="language-wiki">&nbsp;&nbsp; match&nbsp;&nbsp;</code>  which will help us detecting the current route on the server side, and then we can run the related server code. The code will be similar to this:</p>
+
+<pre><code class="language-javascript">import React from 'react';
+import { renderToString } from 'react-dom/server';
+// and these to match the url to routes and then render
+import { match, RouterContext } from 'react-router';
+
+// we define our routes into the following module, and we import it on both server and client
+import routes from './modules/routes';
+
+// One and only one route handler on the sersverworks
+
+app.get('*', (req, res) =&gt; {
+  // match is a react-router function that will help us detect current route
+  match({ routes: routes, location: req.url }, (err, redirect, props) =&gt; {
+    // here where we detect the routes and location, to find out the current location
+    // and run the server code accordingly:
+  })
+})
+</code></pre>
+<p><br /></p>
+
+<h2 id="development-challenges">Development Challenges</h2>
+<p>Development environment and developer setup is effected by the universal application, and we are going to list here what the issues are:</p>
+
+<h4 id="hot-module-replacement">Hot Module Replacement</h4>
+<p>In a typical client side application, React developers usually use Webpack-dev-server with HMR (Hot module replacement), to give a smooth development experience with on-the-fly build/refresh to test the application as they write code.</p>
+
+<p>In a full-stack application, it is not usual to use webpack-dev-server, because webpack-dev-server is an express-based web server by itself, so developers switch to use a library called “webpack-dev-middleware”, with “webpack-hot-middleware”.<br />
+For universal application, there is another library: <a href="https://www.npmjs.com/package/webpack-hot-server-middleware">“webpack-hot-server-middleware”</a> that is universal-friendly.</p>
+
+<p>How to use it?</p>
+<pre><code class="language-javascript">const express = require('express');
+const webpack = require('webpack');
+const webpackDevMiddleware = require('webpack-dev-middleware');
+const webpackHotServerMiddleware = require('webpack-hot-server-middleware');
+const config = require('./webpack.config.js');
+const app = express();
+const compiler = webpack(config);
+
+app.use(webpackDevMiddleware(compiler, {
+  serverSideRender: true
+}));
+app.use(webpackHotServerMiddleware(compiler));
+
+app.listen(6060);
+</code></pre>
+<p><br />
+Webpack Hot Server Middleware expects your Webpack config to export an array of configurations, one for your client bundle and one for your server bundle, e.g.</p>
+<pre><code class="language-javascript">// webpack.config.js 
+module.exports = [ 
+  { name: 'client', target: 'web', entry: './client.js' ... }, 
+  { name: 'server', target: 'node', entry: './server.js' ... } 
+];
+</code></pre>
+<p><br /></p>
+
+<h4 id="css--css-modules">CSS &amp; CSS Modules:</h4>
+<p><a href="https://github.com/css-modules/css-modules">CSS Modules</a> are commonly used css library in react applications, because it fits the react components architecture.<br />
+in css-module we import css file into the javascript file as follows:</p>
+
+<pre><code class="language-javascript">// this code inside javascript file
+import styles from ‘xxx.css’</code></pre>
+
+<p>There is no problem for production, because the build process (usually a webpack process) will recognize those css files, and build a final css file if using extract-text-webpack-plugin, or inject it into the final html if using style-loader.<br />
+But during active development (and with HMR), it is the server that is doing the css rendering stuff (remember it is the server that is rendering the page).<br />
+Node has to learn about css, and this where the library <a href="https://github.com/css-modules/css-modules-require-hook">css-modules-require-hook</a> plays a role.<br />
+it is a <a href="https://www.npmjs.com/package/require-hook">Node require hook</a> that allows Node to require and deal with css file. And you can configure it to deal files with SASS and SCSS extensions as well.</p>
+
+<h4 id="redux-dev-tools">Redux Dev Tools:</h4>
+<p>If you are using <a href="https://github.com/gaearon/redux-devtools">Redux Devtools</a>, and <a href="http://extension.remotedev.io/">redux devtools extensions</a>, then you need to do extra work to make it works with redux server side rendering.
+You need to use <a href="https://github.com/zalmoxisus/remote-redux-devtools">remote-redux-dev-tools</a>. It is more complex to describe it in this post, so just read it how to use it in the website, and I might write a future blog about it.<br />
+<br /></p>
+
+<h2 id="build-process-and-code-sharing-between-server-and-client">Build process, and code sharing between server and client</h2>
+<p>The build process for a universal application, will generate a final client side javascript code, that is compressed and maybe uglified, and generates css code, that either embedded into one HTML page, or in a separate files download, depending if we use webpack’s style-loader, or extract-text-webpack-plugin.<br />
+On the server side, the build process won’t usually compress the final code, but it might transpile it from babel (if we used babel on the code).</p>
+
+<p>There is a big trick about universal applications that you should be aware of:</p>
+
+<blockquote>
+  <p>If , for any reason, a nodejs related code was called from the client, or if any of the client side code required some nodejs or node-based library, then the webpack will package that library , and many other node-related stuff into the final browser code, generating a huge compressed javascript file.</p>
+</blockquote>
+
+<p>I am not going to describe how that happen, but I will point you to <a href="https://medium.com/walmartlabs/webpack-optimization-a-case-study-92b130334b6c">this interesting article</a> that describes this problem in details.
+To avoid this problem, it is better have two separate build config, one for the server, and one for the client, as we saw an example before (refer to the code above).<br />
+Or you might use a better webpack, called <a href="https://www.npmjs.com/package/universal-webpack">universal webpack</a></p>
+
+
+      </div>
+      <div id="disqus_thread"></div>
+        <script>
+            /**
+             *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+             *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables
+             */
+            /*
+            var disqus_config = function () {
+                this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+                this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+            };
+            */
+            (function() {  // DON'T EDIT BELOW THIS LINE
+                var d = document, s = d.createElement('script');
+                
+                s.src = '//bloggisspancom.disqus.com/embed.js';
+                
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+        <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+     </div>
+  </article>
+
+
+      <footer class="site-footer row">
+<div class="column column-30">
+  <ul class="contact-list">
+          <li>Web matters</li>
+          <li><a href="mailto:ghassan.karwchan@gmail.com">ghassan.karwchan@gmail.com</a></li>
+  </ul>
+</div>
+<div class="column column-25">
+  <ul class="social-media-list">
+          
+          <li>
+            <a href="https://github.com/gkarwchan"><span class="icon icon--github"><svg viewBox="0 0 16 16"><path fill="#828282" d="M7.999,0.431c-4.285,0-7.76,3.474-7.76,7.761 c0,3.428,2.223,6.337,5.307,7.363c0.388,0.071,0.53-0.168,0.53-0.374c0-0.184-0.007-0.672-0.01-1.32 c-2.159,0.469-2.614-1.04-2.614-1.04c-0.353-0.896-0.862-1.135-0.862-1.135c-0.705-0.481,0.053-0.472,0.053-0.472 c0.779,0.055,1.189,0.8,1.189,0.8c0.692,1.186,1.816,0.843,2.258,0.645c0.071-0.502,0.271-0.843,0.493-1.037 C4.86,11.425,3.049,10.76,3.049,7.786c0-0.847,0.302-1.54,0.799-2.082C3.768,5.507,3.501,4.718,3.924,3.65 c0,0,0.652-0.209,2.134,0.796C6.677,4.273,7.34,4.187,8,4.184c0.659,0.003,1.323,0.089,1.943,0.261 c1.482-1.004,2.132-0.796,2.132-0.796c0.423,1.068,0.157,1.857,0.077,2.054c0.497,0.542,0.798,1.235,0.798,2.082 c0,2.981-1.814,3.637-3.543,3.829c0.279,0.24,0.527,0.713,0.527,1.437c0,1.037-0.01,1.874-0.01,2.129 c0,0.208,0.14,0.449,0.534,0.373c3.081-1.028,5.302-3.935,5.302-7.362C15.76,3.906,12.285,0.431,7.999,0.431z"/></svg>
+</span><span class="username">gkarwchan</span></a>
+
+          </li>
+          
+
+          
+          <li>
+            <a href="https://twitter.com/ghassankarwchan"><span class="icon icon--twitter"><svg viewBox="0 0 16 16"><path fill="#828282" d="M15.969,3.058c-0.586,0.26-1.217,0.436-1.878,0.515c0.675-0.405,1.194-1.045,1.438-1.809c-0.632,0.375-1.332,0.647-2.076,0.793c-0.596-0.636-1.446-1.033-2.387-1.033c-1.806,0-3.27,1.464-3.27,3.27 c0,0.256,0.029,0.506,0.085,0.745C5.163,5.404,2.753,4.102,1.14,2.124C0.859,2.607,0.698,3.168,0.698,3.767 c0,1.134,0.577,2.135,1.455,2.722C1.616,6.472,1.112,6.325,0.671,6.08c0,0.014,0,0.027,0,0.041c0,1.584,1.127,2.906,2.623,3.206 C3.02,9.402,2.731,9.442,2.433,9.442c-0.211,0-0.416-0.021-0.615-0.059c0.416,1.299,1.624,2.245,3.055,2.271 c-1.119,0.877-2.529,1.4-4.061,1.4c-0.264,0-0.524-0.015-0.78-0.046c1.447,0.928,3.166,1.469,5.013,1.469 c6.015,0,9.304-4.983,9.304-9.304c0-0.142-0.003-0.283-0.009-0.423C14.976,4.29,15.531,3.714,15.969,3.058z"/></svg>
+</span><span class="username">ghassankarwchan</span></a>
+
+          </li>
+          
+        </ul>
+</div>
+<div class="column">
+  This web site was built using <a href="https://jekyllrb.com/">Jekyll</a>.<br />
+  If you are interest in the code <a href="https://github.com/gkarwchan/BlogWebsite">you can find it here</a>.
+</div>
+
+</footer>
+
+    </div>
+  </body>
+
+</html>
