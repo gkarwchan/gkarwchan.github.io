@@ -6,8 +6,8 @@
 </description>
     <link>https://blog.gisspan.com/</link>
     <atom:link href="https://blog.gisspan.com/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 24 Aug 2017 19:25:26 -0600</pubDate>
-    <lastBuildDate>Thu, 24 Aug 2017 19:25:26 -0600</lastBuildDate>
+    <pubDate>Thu, 24 Aug 2017 19:32:03 -0600</pubDate>
+    <lastBuildDate>Thu, 24 Aug 2017 19:32:03 -0600</lastBuildDate>
     <generator>Jekyll v3.1.6</generator>
     
       <item>
@@ -249,12 +249,12 @@ Or you might use a better webpack, called &lt;a href=&quot;https://www.npmjs.com
       </item>
     
       <item>
-        <title>Redux Vs. MVC, Why and How?.</title>
+        <title>Redux Vs. MVC, Why and How?</title>
         <description>
 &lt;p&gt;In last two or three years, we started to see the rise of Redux-based (or Unidirectional data flow architecture in general) in the user interface side of the applications, and the slowly decline of MVC based architecture in the UI side.&lt;br /&gt;
 What Redux has of advantages over MVC, and what problems it solves?  I am going to show what the benefits of Redux over MVC.&lt;br /&gt;
-Redux library by itself is not enough to build a whole system, and this is why there is an echo system developed around Redux.
-I am going to show the basic echo system needed to build a Redux application, or the essential building blocks of a any redux-based application. &lt;!--more--&gt;&lt;/p&gt;
+Redux library by itself is not enough to build a whole system, and this is why there is an ecosystem developed around Redux.
+I am going to show the basic ecosystem needed to build a Redux application, or the essential building blocks of a any redux-based application. &lt;!--more--&gt;&lt;/p&gt;
 
 &lt;p&gt;&lt;br /&gt;&lt;/p&gt;
 
@@ -364,8 +364,8 @@ To use Redux in an application, there are few libraries that you Must have and y
 Redux communication can be achieved directly through javaScript only by using the “&lt;/li&gt;
 &lt;/ol&gt;
 
-&lt;h4 id=&quot;there-is-more-to-the-echo-system&quot;&gt;There is more to the echo system&lt;/h4&gt;
-&lt;p&gt;There is more to the echo system, but I only put the minimun that you must have to work. Although you don’t have to use them, and you can go away using Redux by itself, but expect some trouble when your application become more complex.&lt;/p&gt;
+&lt;h4 id=&quot;there-is-more-to-the-ecosystem&quot;&gt;There is more to the ecosystem&lt;/h4&gt;
+&lt;p&gt;There is more to the ecosystem, but I only put the minimun that you must have to work. Although you don’t have to use them, and you can go away using Redux by itself, but expect some trouble when your application become more complex.&lt;/p&gt;
 </description>
         <pubDate>Wed, 22 Feb 2017 09:45:00 -0700</pubDate>
         <link>https://blog.gisspan.com/2017/02/Redux-Vs-MVC,-Why-and-How.html</link>
