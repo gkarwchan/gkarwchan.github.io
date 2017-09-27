@@ -19,7 +19,7 @@
 
   <link rel="stylesheet" href="/css/main.css">
   <script src="/js/prism.js"></script>
-  <link rel="canonical" href="https://blog.gisspan.com/2017/06/Universal-react-app-beyong-the-basics.html">
+  <link rel="canonical" href="https://blog.gisspan.com/2017/08/Universal-react-app-beyong-the-basics.html">
   <link rel="alternate" type="application/rss+xml" title="Web matters" href="https://blog.gisspan.com/feed.xml">
   <script>
     (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -117,7 +117,7 @@
     <div class="content">
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">Universal <s>(Isomorphic)</s> React Application. Beyond the basics.</h1>
-        <p class="post-meta"><time datetime="2017-06-24T09:45:00-06:00" itemprop="datePublished">Jun 24, 2017</time> • <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name">Ghassan Karwchan</span></span></p>
+        <p class="post-meta"><time datetime="2017-08-24T09:45:00-06:00" itemprop="datePublished">Aug 24, 2017</time> • <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name">Ghassan Karwchan</span></span></p>
       </header>
       <div class="post-content post-font" itemprop="articleBody">
         
@@ -215,7 +215,19 @@ React on the client side will know that the component is already rendered, so it
 <p>But, because redux and react-redux needs the redux store to sync with components states, so there is a trick that has to be done.
 We have to pass to the redux on the client side, the whole redux state after populating the store.<br />
 Applications will do that by passing the state into the client javascript code through the &amp;ltscript&gt; html tag, and they pass it as a global javascript variable like this:</p>
-<pre><code class="language-javascript">function renderFullPage(html, preloadedState) {
+<pre><code class="language-javascript">import { Provider }              from 'react-redux';
+//import routes;
+import { routes } from './routes';
+function renderFullPage(html, preloadedState) {
+  // Create redux store
+  const store = myReduxStore();
+  const InitialView = (
+        &lt;Provider store={store}&gt;
+          &lt;RoutingContext routes={routes} /&gt;
+        &lt;/Provider&gt;
+  );
+  const htmlBody = renderToString(InitialView);
+  const initialState = store.getState();
   return `
   &lt;!doctype html&gt;
   &lt;html&gt;
@@ -232,7 +244,17 @@ Applications will do that by passing the state into the client javascript code t
   &lt;/html&gt;
   `
 }</code></pre>
-<p><br /></p>
+<p><br />
+And on the client side, we get that global windows variable, and load it into the redux:</p>
+
+<pre><code class="language-javascript">const initialState = window.__PRELOADED_STATE__;
+  const store = createStore(rootReducer, initialState);
+  render(
+    &lt;Provider store={store}&gt;
+      &lt;Router history={browserHistory}&gt;{routes}&lt;/Router&gt;
+    &lt;/Provider&gt;,
+    document.querySelector("#root_placeholder")
+  );</code></pre>
 
 <h2 id="universal-routing">Universal Routing</h2>
 <p>Ideally, we should define routes and routing in one place only, and both client and server read them from the same place.<br />

@@ -120,54 +120,62 @@
         <p class="post-meta"><time datetime="2016-05-26T19:45:00-06:00" itemprop="datePublished">May 26, 2016</time> • <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name">Ghassan Karwchan</span></span></p>
       </header>
       <div class="post-content post-font" itemprop="articleBody">
-        I am going to show how to wrap the OAuth callback flow with an Angular promise, and how that will help create a clean and maintainable code.
+        
+<p>I am going to show how to wrap the OAuth callback flow with an Angular promise, and how that will help create a clean and maintainable code.
 <!--more-->
-This is not a tutorial about OAuth, and I am assuming: 
-<br />
+This is not a tutorial about OAuth, and I am assuming:</p>
+
 <ul>
-<li>you already have a good knowledge about OAuth authentication and its concepts.</li>
-<li>
-you already have some knowledge about promises in JavaScript.</li>
+  <li>you already have a good knowledge about OAuth authentication and its concepts.</li>
+  <li>you already have some knowledge about promises in JavaScript.</li>
 </ul>
-<h3>
-OAuth Authentication workflow</h3>
-OAuth is an open standard that allow third-party providers like Facebook and Google to provide authentication service for your application.<br />
-Using <a href="https://tools.ietf.org/html/rfc6749#section-1.3.1">Authorization Code Flow</a>,&nbsp; and using Facebook login as an example. The flow in the application will go like this.<br />
-<ol>
-<li>Start from our application login page</li>
-Our login page will have buttons to login with facebook or twitter or...,. 
 
+<h3 id="oauth-authentication-workflow">OAuth Authentication workflow</h3>
+<p>OAuth is an open standard that allow third-party providers like Facebook and Google to provide authentication service for your application.<br />
+In our example, we are going to use <a href="https://tools.ietf.org/html/rfc6749#section-1.3.1">Authorization Code Flow</a>, and using Facebook login as an example. The flow in our application will go like this:</p>
+<div>
 
-<div class="separator" style="clear: both; text-align: center;">
-<a href="https://1.bp.blogspot.com/-8SihecLncqM/Vz0rErlirpI/AAAAAAAAEFE/YBrB3RfPXbg0ThpeTvoHt-O-lMqiBiBEACLcB/s1600/Freebie-PSD-Signin-Button.jpg" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"><img border="0" height="200" src="https://1.bp.blogspot.com/-8SihecLncqM/Vz0rErlirpI/AAAAAAAAEFE/YBrB3RfPXbg0ThpeTvoHt-O-lMqiBiBEACLcB/s200/Freebie-PSD-Signin-Button.jpg" width="270" /></a></div>
-<li>Clicking on a button will open a popup window that navigate to our application login URL.</li>
-<li>On server side of our application, the login code communicates with OAuth authentication server (the Facebook server that host the service)</li>
-<li>The authentication server will send a confirmation</li>
-The confirmation is something like this.
-<div class="separator" style="clear: both; text-align: center;">
-<a href="https://3.bp.blogspot.com/-4I3oJD7C3h8/Vzvp02cWp9I/AAAAAAAAEEs/TxeZtKRTTYo9BkAJHaPlq1XySZ6sN-qAgCLcB/s1600/wQyB0.gif" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"><img border="0" height="331" src="https://3.bp.blogspot.com/-4I3oJD7C3h8/Vzvp02cWp9I/AAAAAAAAEEs/TxeZtKRTTYo9BkAJHaPlq1XySZ6sN-qAgCLcB/s400/wQyB0.gif" width="400" /></a></div>
-<li>The user could just close the window by clicking on the close button (X button)</li>
-<li>Or the user will chose to confirm or deny the request</li>
+  <ol>
+    <li>Start from our application login page:<br />
+Our login page will have buttons to login with facebook or twitter or other social media login:
+      <div class="column" style="text-align: center">
+        <p><img src="/img/Freebie-PSD-Signin-Button.jpg" alt="social media login" height="300px" width="auto" align="center" /></p>
+      </div>
+    </li>
+    <li>Clicking on a button will open a popup window that navigate to our application login URL.</li>
+    <li>On server side of our application, the login code communicates with OAuth authentication server (the Facebook server that host the service).</li>
+    <li>The authentication server will send a confirmation:<br />
+ The confirmation is something like this:
+      <div class="column" style="text-align: center">
+        <p><img src="/img/oautconfirm.gif" alt="social media login" height="300px" width="auto" align="center" /></p>
+      </div>
+    </li>
+    <li>The user could just close the window by clicking on the close button (X button).</li>
+    <li>Or the user will chose to confirm or deny the request.<br />
 In both cases, the authentication server will respond by calling back our server with a POST HTTP call that we should specify its URL when registering the application with Facebook.
-This POST HTTP call is called <b><i>Callback URL</i></b>
-</ol>
-<h3>
-The JavaScript client side code:</h3>
-I am going to cover only the JavaScript side code, and not the server code. Anyway if you used a third party OAuth library then your server side code will be very minimal (only few lines). All programming languages has OAuth library (C#, Ruby, PHP, Python...)<br />
-There are three functionalities that we want to write in JavaScript.<br />
-<ol>
-<li>Code to open the popup window</li>
-<li>Code on the callback URL to receive the response from the user, and the user token</li>
-And this is the most important code.
-<li>We need as well to watch the popup window:</li>
-Because the user could just click on the close window button without responding to the confirmation
-</ol>
-<br />
-<h3>
-The Final Goal</h3>
-We want to wrap the authentication process with a promise, and write a handler on when the process is successful or failed.<br />
-We want to have the promise like this:<br />
-<pre class="line-numbers"><code class="language-javascript">oauthService.authenticate(provider.url, provider.name)
+This POST HTTP call is called: <strong>Callback URL</strong></li>
+  </ol>
+
+  <p><br /></p>
+
+  <h3 id="the-javascript-client-side-code">The JavaScript client side code:</h3>
+  <p>I am going to cover only the JavaScript side code, and not the server code. Anyway if you used a third party OAuth library then your server side code will be very minimal (only few lines). All programming languages has OAuth library (C#, Ruby, PHP, Python…). <br />
+There are three functionalities that we want to write in JavaScript.</p>
+
+  <ol>
+    <li>Code to open the popup window.</li>
+    <li>Code on the callback URL to receive the response from the user, and the user token (which is the biggest complicated piece)</li>
+    <li>We need as well to watch the popup window:
+Because the user could just click on the close window button without responding to the confirmation.</li>
+  </ol>
+
+  <p><br /></p>
+
+  <h3 id="the-final-goal">The Final Goal</h3>
+  <p>We want to wrap the authentication process with a promise, and write a handler on when the process is successful or failed.<br />
+We want to have the promise like this:</p>
+
+  <pre class="line-numbers"><code class="language-javascript">oauthService.authenticate(provider.url, provider.name)
         .then(function(response) {
           $log.debug('successful login');
           $log.debug(response);
@@ -185,12 +193,14 @@ We want to have the promise like this:<br />
         });
       
     };</code></pre>
-<h3>
-Start writing the code</h3>
-Let us start with open a popup window.<br />
-Let us make that an Angular service.
-<br />
-<pre class="line-numbers"><code class="language-javascript">function popupService ($window) {
+
+  <p><br /></p>
+
+  <h3 id="start-writing-the-code">Start writing the code</h3>
+
+  <p>Let us start with open a popup window. We are going to write that as an Angular service:</p>
+
+  <pre class="line-numbers"><code class="language-javascript">function popupService ($window) {
   var service = {
      window : null,
      open : function(url, provider) {
@@ -201,10 +211,10 @@ Let us make that an Angular service.
   return service;
 }
 popupService.$inject = ['$window'];</code></pre>
-It is better to take the string that has the window specs to an Angular constants like this.
 
-<br />
-<pre class="line-numbers"><code class="language-javascript">function popupConstants () {
+  <p>It is better to take the string that has the window specs to an Angular constants like this:</p>
+
+  <pre class="line-numbers"><code class="language-javascript">function popupConstants () {
     facebook: 'width=580,height=400',
     gplus: 'width=452, height=633',
     twitter: 'width=495,height=645'' 
@@ -217,22 +227,19 @@ function popupService ($window, popupConstants) {
         this.window = $window.open(url, '_blank', popupConstants[provider]); 
      }
   };
-  
   return service;
 }
 
-
 popupService.$inject = ['$window', 'popupConstants'];
 
-
 angular.module('app')
-.constants('popupConstants', popupConstants)
-.service('popupService', popupService);</code></pre>
-Now let us write the code that will check on the popup.<br />
-We have to write a code that regularly check if the window opened in the first step is still open, and we will use the JavaScript interval, but better we will use the Angular's $interval which is a promise wrapper around the JavaScript native interval.
+    .constants('popupConstants', popupConstants)
+    .service('popupService', popupService);</code></pre>
 
-<br />
-<pre class="line-numbers"><code class="language-javascript">function popupService ($window, popupConstants, $rootScope, $interval) {
+  <p>Now let us write the code that will check on the popup:<br />
+We have to write a code that regularly check if the window opened in the first step is still open, and we will use the JavaScript interval, but better we will use the Angular’s $interval which is a promise wrapper around the JavaScript native interval.</p>
+
+  <pre class="line-numbers"><code class="language-javascript">function popupService ($window, popupConstants, $rootScope, $interval) {
   var service = {
      window : null,
      localCheckPopup: null,
@@ -255,58 +262,61 @@ We have to write a code that regularly check if the window opened in the first s
         }, 500);
      }
   };
-  
   return service;
 }</code></pre>
-<h3>
-Important points to notice from the above code</h3>
-In the above code we created a function called observePopup that will run in interval 500 ms to check on the window.<br />
-The tip from the previous code is using angular.bind.<br />
-When the function checkPopup is called by the interval process, it will lose the "this" scope, because it is no longer called inside the object.<br />
-Angular's bind is like calling
 
-<br />
-<pre><code class="language-javascript">checkup.apply(this)</code></pre>
-What is still remaining is what we are going to use to notify the other code that the window was closed? <br />
-The convenient way is to use Angular's $emit/$on for notification, and it is always better to use it on the $rootScope<br />
-<h3>
-Writing the OAuth callback JavaScript code</h3>
-The OAuth authentication server (The Facebook server in our case), will response back when we answer the confirmation page above, by calling a HTTP POST URL, that we registered when we register the application with Facebook.<br />
+  <h4 id="important-points-to-notice-from-the-above-code">Important points to notice from the above code</h4>
+  <p>In the above code we created a function called observePopup that will run in interval 500 ms to check on the window.<br />
+The tip from the previous code is using angular.bind.<br />
+When the function checkPopup is called by the interval process, it will lose the “this” scope, because it is no longer called inside the object.<br />
+Angular’s bind is like calling:</p>
+
+  <pre><code class="language-javascript">checkPopup.apply(this)</code></pre>
+
+  <p>What is still remaining is what we are going to use to notify the other code that the window was closed? <br />
+The convenient way is to use Angular’s $emit/$on for notification, and it is always better to use it on the $rootScope<br /></p>
+
+  <h3 id="writing-the-oauth-callback-javascript-code">Writing the OAuth callback JavaScript code:</h3>
+  <p>The OAuth authentication server (The Facebook server in our case), will response back when we answer the confirmation page above, by calling a HTTP POST URL, that we registered when we register the application with Facebook.<br />
 We should have server code that will handle the POST, but on our client side we can write JavaScript code on the html page that will return from the POST URL, to notify our JavaScript code that the user logged in or rejected.<br />
 As I mentioned, I am not covering the server side code, but I will show how to pass the user token we got from the Facebook server into JavaScript.<br />
-Assuming that we are using Asp.NET MVC, and assume that in the POST callback controller handler we receive the user token in a .NET object variable called "user", we can serialize the object to JSON, and pass it to JavaScript through Razor template like this
-<br />
-<pre><code class="language-csharp">var data = somedata;
+Assuming that we are using Asp.NET MVC, and assume that in the POST callback controller handler we receive the user token in a .NET object variable called “user”, we can serialize the object to JSON, and pass it to JavaScript through Razor template like this:</p>
+
+  <pre><code class="language-csharp">var data = somedata;
 var viewModel = new ViewModel();
 var serializer = new JavaScriptSerializer();
 viewModel.JsonData = serializer.Serialize(data);
 
 return View("viewname", viewModel);</code></pre>
-And on the view side, we add this JavaScript code
-<br />
-<pre><code class="JavaScript">var user = &lt;%= Model.JsonData %&gt;</code></pre>
-<h3>
-Hook up the OAuth page with our application</h3>
-Hooking up the above JavaScript user with our application is not easy.<br />
+  <p>And on the view side, we add this JavaScript code:</p>
+
+  <pre><code class="language-javascript">var user = &lt;%= Model.JsonData %&gt;</code></pre>
+
+  <h3 id="hook-up-the-oauth-page-with-our-application">Hook up the OAuth page with our application</h3>
+
+  <p>Hooking up the above JavaScript user with our application is not easy.<br />
 Because the popup window was redirected to the facebook authentication website, it cannot communicate with our JavaScript code directly.<br />
-The only way to communicate between windows that belong to different domains is to use JavaScript <i><b>window.postMessage</b></i>.<br />
-But we even don't know and don't have a handle to the calling window (our application window).<br />
+The only way to communicate between windows that belong to different domains is to use JavaScript <strong>window.postMessage</strong>.<br />
+But we even don’t know and don’t have a handle to the calling window (our application window).<br />
 The only connection we have is when we open the window, we got a handle to the popup window, which we can communicate with the popup window.<br />
-To fix this problem, we will do the following:
-<br />
-<ul>
-<li>From Angular code, we will get a handle to the popup window.</li>
-<li>Use the popup handle to postMessage sending the Angular App window as parameter</li>
-<li>Because we don't know when the OAuth callback will be executed, so we have to keep repeating sending the postMessage with a parameter "<i><b>requestLogin</b></i>".</li>
-and the best way to do it is to hook it with the obeservePopup function that we showed before.<br />
-We add inside the interval function the following line:
-<pre><code class="JavaScript">service.window.postMessage('requestLogin', '*');</code></pre>
-<li>On the POST callback JavaScript side we listen to the postMessage with the addEventListenr</li>
-<li>When the OAuth facebook server callback the POST URL, and execute the JavaScript, the code will receive the message with the Angular App window, wich</li>
-</ul>
-The code on the OAuth callback page will be:
-<br />
-<pre><code class="language-javascript">window.addEventListener('message', function(e) {
+To fix this problem, we will do the following:</p>
+
+  <ul>
+    <li>From Angular code, we will get a handle to the popup window.</li>
+    <li>Use the popup handle to postMessage sending the Angular App window as parameter.</li>
+    <li>Because we don’t know when the OAuth callback will be executed, so we have to keep repeating sending the postMessage with a parameter <strong>requestLogin</strong>.<br />
+  and the best way to do it is to hook it with the obeservePopup function that we showed before.<br />
+  We add inside the interval function the following line:
+      <pre><code class="language-javascript">service.window.postMessage('requestLogin', '*');</code></pre>
+    </li>
+    <li>On the POST callback JavaScript side we listen to the postMessage with the addEventListenr.</li>
+    <li>When the OAuth facebook server callback the POST URL, and execute the JavaScript, the code will receive the message with the Angular App window, wich.</li>
+  </ul>
+
+  <p><br />
+The code on the OAuth callback page will be:</p>
+
+  <pre><code class="language-javascript">window.addEventListener('message', function(e) {
             if (e.data === 'requestLogin') {
                 e.source.postMessage({
                     message : 'loginSuccess',
@@ -315,9 +325,8 @@ The code on the OAuth callback page will be:
                 window.setTimeout(window.close, 500);
             }
         });</code></pre>
-The function observePopup will be:
-<br />
-<pre><code class="language-javascript">obeservePopup: function() {
+  <p>The function observePopup will be:</p>
+  <pre><code class="language-javascript">obeservePopup: function() {
             this.interval = $interval(function() {
                  if (service.window.closed) {
                      $interval.cancel(service.interval);
@@ -326,14 +335,11 @@ The function observePopup will be:
                  service.window.postMessage('requestLogin', '*');
             }, 500);
         }</code></pre>
-As you see on the OAuth page callback, we are sending a message loginSuccess when the user confirm the login process.<br />
+  <p>As you see on the OAuth page callback, we are sending a message loginSuccess when the user confirm the login process.<br />
 When we receive this message from the Angular side, we should stop the interval that we built before.
-The final code for the popup service will be like this:
+The final code for the popup service will be like this:</p>
 
-
-<br />
-<pre><code class="language-javascript">function($log, auth_popupConstants, $window, $interval, $rootScope) {
-
+  <pre><code class="language-javascript">function($log, auth_popupConstants, $window, $interval, $rootScope) {
     var service = {
         window: null,
         interval: null,
@@ -363,32 +369,27 @@ The final code for the popup service will be like this:
             }, 500);
         }
     };
-
     return service;
 };</code></pre>
 
+  <h3 id="using-angular-promises-api">Using Angular Promises API</h3>
+  <p>After we wrote all required code, let’s now go the fun part. Let us build the promise that will wrap the whole process.<br />
+When we dealing with promises, there are two distinctive types of APIs.</p>
 
+  <ol>
+    <li>Creating promises.</li>
+    <li>Using promises.</li>
+  </ol>
 
+  <p>And corresponding to the previous types, Angular organizes its $q API into two distinctive groups:</p>
 
-<h3>Using Angular Promises API</h3>
-After we wrote all required code, let's now go the fun part. Let us build the promise that will wrap the whole process<br/>
-When we dealing with promises, there are two distinctive types of APIs.
-<br />
-<ol>
-<li>Creating promises</li>
-<li>Using promises.</li>
-</ol>
+  <ol>
+    <li>The deferred API to create promises.</li>
+    <li>The promise API to consume promises.</li>
+  </ol>
 
-And corresponding to the previous types, Angular organizes its $q API into two distinctive groups:
-
-<br />
-<ol>
-<li>The deferred API to create promises</li>
-<li>The promise API to consume promises.</li>
-</ol>
-
-We already did mentioned that we want to wrap the whole process with a promise that we can consume it like this:
-<pre class="line-numbers"><code class="language-javascript">oauthService.authenticate(provider.url, provider.name)
+  <p>We already did mentioned that we want to wrap the whole process with a promise that we can consume it like this:</p>
+  <pre class="line-numbers"><code class="language-javascript">oauthService.authenticate(provider.url, provider.name)
         .then(function(response) {
           $log.debug('successful login');
           $log.debug(response);
@@ -404,17 +405,16 @@ We already did mentioned that we want to wrap the whole process with a promise t
           the authentication server failed for some reason
         */
         });
-      
     };</code></pre>
-The above code is the <b><i>Promise API</i></b> in the $q library.<br/>
-Let us talk about the fun part and how to create a promise.<br/>
-The <b><i>deferred API</i> </b>is for creating a new promise.<br/>
+  <p>The above code is the <em><strong>Promise API</strong></em> in the $q library.<br />
+Let us talk about the fun part and how to create a promise.<br />
+The <em><strong>deferred API</strong></em> is for creating a new promise.</p>
 
-It is not that common that we create a new promise, because Angular already provide a promise façade for most common JavaScript APIs that are using callbacks, like Ajax, timeout, interval...<br />
-But our OAuth callback flow is a great example to introduce a new promise.<br/>
-I will just add the code to create that promise:
+  <p>It is not that common that we create a new promise, because Angular already provide a promise façade for most common JavaScript APIs that are using callbacks, like Ajax, timeout, interval…<br />
+But our OAuth callback flow is a great example to introduce a new promise.<br />
+I will just add the code to create that promise:</p>
 
-<pre class="line-numbers"><code class="language-javascript">function oauthService($q, popupService, $window, $log, $rootScope) {
+  <pre class="line-numbers"><code class="language-javascript">function oauthService($q, popupService, $window, $log, $rootScope) {
     var service = {
         deferred:null,
         loginSuccess: null,
@@ -436,36 +436,37 @@ I will just add the code to create that promise:
         authenticate: function(url, provider) {
             this.deferred = $q.defer();
             this.listen();
-            
+
             var opened = popupService.open(url, provider);
             if (!opened) {
                    this.deferred.reject('popup blocked by browser');
             }
-            
-            
             return this.deferred.promise;
         }
     };
-
     return service;
 };   </code></pre>
 
+  <h5 id="notes-from-the-previous-code">Notes from the previous code</h5>
 
-<h3>Notes from the previous code</h3>
-<ul>
-<li>We create a promise with </li>
-<pre><code class="language-javascript">this.deferred = $q.defer();</code></pre>
-<li>Then we define how we resolve the promise with</li>
- <pre><code class="language-javascript">this.deferred.resolve(e.data.userLogged);</code></pre>
-Which is executed when we receive the message from the OAuth callback page.
-<li>we reject the promise</li>
-When we receive a notification from Angular $rootScope when the user close the OAuth window without confirming
-<li>Another reason to reject the promise</li>
-When the browser block the popup, then we cannot open a new window, and <b><i>popupservice.open</i></b> will return false;
-</ul>
+  <ul>
+    <li>We create a promise with:
+      <pre><code class="language-javascript">this.deferred = $q.defer();</code></pre>
+    </li>
+    <li>Then we define how we resolve the promise with:
+      <pre><code class="language-javascript">this.deferred.resolve(e.data.userLogged);</code></pre>
+      <p>Which is executed when we receive the message from the OAuth callback page.</p>
+    </li>
+    <li>we reject the promise:
+  When we receive a notification from Angular $rootScope when the user close the OAuth window without confirming</li>
+    <li>Another reason to reject the promise:<br />
+  When the browser block the popup, then we cannot open a new window, and <em><strong>popupservice.open</strong></em> will return false;</li>
+  </ul>
 
+  <p><br /></p>
 
-And now we can use the oauthService promise as we mentioned above
+  <p>And now we can use the oauthService promise as we mentioned above</p>
+</div>
 
       </div>
       <div id="disqus_thread"></div>

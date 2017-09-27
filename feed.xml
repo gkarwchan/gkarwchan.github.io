@@ -6,9 +6,266 @@
 </description>
     <link>https://blog.gisspan.com/</link>
     <atom:link href="https://blog.gisspan.com/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 24 Aug 2017 19:34:55 -0600</pubDate>
-    <lastBuildDate>Thu, 24 Aug 2017 19:34:55 -0600</lastBuildDate>
+    <pubDate>Wed, 27 Sep 2017 00:42:57 -0600</pubDate>
+    <lastBuildDate>Wed, 27 Sep 2017 00:42:57 -0600</lastBuildDate>
     <generator>Jekyll v3.1.6</generator>
+    
+      <item>
+        <title>Advanced HTTPS</title>
+        <description>
+&lt;p&gt;Adding an SSL Certificate and enabling HTTPS on your web site is not the end of the road for securing your website, and securing the communication to your website.&lt;br /&gt;
+It is just the start, and you need to do more steps related to HTTPS to guarantee your site safety, and your visitor safety.
+In this post I am going to describe:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;TLS and its algorithms in more depth.&lt;/li&gt;
+  &lt;li&gt;Insecure protocols, and algorithm.&lt;/li&gt;
+  &lt;li&gt;Best algorithm combination.&lt;/li&gt;
+  &lt;li&gt;Redirect from HTTP using HSTS.
+&lt;!--more--&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
+&lt;p&gt;If you want to learn more about HTTPS and its basic concepts, I wrote two posts about &lt;a href=&quot;/2016/03/secure-your-web-site-with-ssl.html&quot;&gt;creating an SSL Certificate&lt;/a&gt; and &lt;a href=&quot;/2016/04/making-sense-of-ssl-rsa-x509-and-csr.html&quot;&gt;SSL/TLS terminologies&lt;/a&gt; that cover lots of basic knowledge on that subject. I recommend reading them to know the basic and how to implement HTTPS on your web site.&lt;br /&gt;
+After enabling HTTPS on your web site, you should do the following:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;disable insecure protocol SSL 3.0.&lt;/li&gt;
+  &lt;li&gt;either disable TLS 1.0 or disable all insecure algorithms.&lt;/li&gt;
+  &lt;li&gt;disable ciphers that are insecure.&lt;/li&gt;
+  &lt;li&gt;redirect from http to https using HSTS.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;tls-releases&quot;&gt;TLS Releases&lt;/h2&gt;
+&lt;p&gt;TLS protocol keeps developing and enhancing its security. The newer versions are better and more secure and more difficult to break than the older ones, and older versions become less secure or even insecure.&lt;br /&gt;
+Old versions like TLS 1.0 and all SSL are considered insecure nowadays.&lt;br /&gt;
+This is a table of TLS releases and its status.&lt;br /&gt;
+&lt;br /&gt;&lt;/p&gt;
+
+&lt;div style=&quot;width:70%; align:center; margin:auto&quot;&gt;
+
+  &lt;table&gt;
+    &lt;thead&gt;
+      &lt;tr&gt;
+        &lt;th&gt;Protocol Version&lt;/th&gt;
+        &lt;th&gt;Security Status&lt;/th&gt;
+      &lt;/tr&gt;
+    &lt;/thead&gt;
+    &lt;tbody&gt;
+      &lt;tr&gt;
+        &lt;td&gt;SSL 2.0&lt;/td&gt;
+        &lt;td&gt;Insecure&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;SSL 3.0&lt;/td&gt;
+        &lt;td&gt;Insecure&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;TLS 1.0&lt;/td&gt;
+        &lt;td&gt;Depends on configuration&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;TLS 1.1&lt;/td&gt;
+        &lt;td&gt;Depends on algorithm&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;TLS 1.2&lt;/td&gt;
+        &lt;td&gt;Depends on algorithm&lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/tbody&gt;
+  &lt;/table&gt;
+
+&lt;/div&gt;
+
+&lt;h4 id=&quot;what-tls-protocol-version-my-website-support&quot;&gt;What TLS protocol version my website support?&lt;/h4&gt;
+&lt;p&gt;How do you know what TLS protocols your website is supporting?&lt;br /&gt;
+If you are developing on Windows/IIS, then (as my knowledge goes back only to Windows Server 2008), as long as you have Windows Server 2008 Service Pack 1, and higer, then you are having up-to-date TLS 1.2.&lt;br /&gt;
+If you are developing NodeJs, or Go language website, on a Linux operating system, then NodeJs, and Go are using OpenSSL software, and if you have if you are updating your server regularly (as you should), then you have TLS 1.2.&lt;/p&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;which-protocol-version-is-being-used&quot;&gt;Which protocol version is being used?&lt;/h4&gt;
+&lt;p&gt;When a browser visit your website, there is a process called TLS handshake, where the web server and the browser will find what is the highest TLS protocols that both support, and they will use it.&lt;br /&gt;
+&lt;br /&gt;
+&lt;br /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;disable-ssl-protocols-30-and-20&quot;&gt;Disable SSL protocols 3.0 and 2.0&lt;/h2&gt;
+&lt;p&gt;As we mentioned SSL 2.0 and 3.0 are insecure, and we should disable them permenantly.&lt;br /&gt;
+SSL insecurity was very serious, that triggered Web servers, and browsers to disable it permenantly.&lt;br /&gt;
+Here is a list of when major web browsers disabled SSL 3.0:&lt;/p&gt;
+
+&lt;div style=&quot;width:70%; align:center; margin:auto&quot;&gt;
+
+  &lt;table&gt;
+    &lt;thead&gt;
+      &lt;tr&gt;
+        &lt;th&gt;Web Browser&lt;/th&gt;
+        &lt;th&gt;Version&lt;/th&gt;
+        &lt;th&gt;Release Date&lt;/th&gt;
+      &lt;/tr&gt;
+    &lt;/thead&gt;
+    &lt;tbody&gt;
+      &lt;tr&gt;
+        &lt;td&gt;Chrome&lt;/td&gt;
+        &lt;td&gt;40&lt;/td&gt;
+        &lt;td&gt;January 2015&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;Firefox&lt;/td&gt;
+        &lt;td&gt;35&lt;/td&gt;
+        &lt;td&gt;January 2015&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;Explorer&lt;/td&gt;
+        &lt;td&gt;11 (patches)&lt;/td&gt;
+        &lt;td&gt;January 2015&lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/tbody&gt;
+  &lt;/table&gt;
+
+&lt;/div&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;p&gt;For the web server side, I am covering NodeJS or Go language on Linux server, and IIS solutions on Windows Servers. If your solution is not one of these, refer &lt;a href=&quot;http://disablessl3.com&quot;&gt;to this website&lt;/a&gt; to find a solution.&lt;/p&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;nodejs--go-on-linux&quot;&gt;NodeJS &amp;amp; Go on Linux&lt;/h4&gt;
+&lt;p&gt;if you are doing NodeJs or Go language website, then you are using OpenSSL.&lt;br /&gt;
+Even your Linux regular update should take care of it, but double check that you have the proper OpenSSL version:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;OpenSSL 1.0.1 users should upgrade to 1.0.1j.&lt;/li&gt;
+  &lt;li&gt;OpenSSL 1.0.0 users should upgrade to 1.0.0o.&lt;/li&gt;
+  &lt;li&gt;OpenSSL 0.9.8 users should upgrade to 0.9.8zc.&lt;/li&gt;
+  &lt;li&gt;OpenSSL 1.0.2 users are laughing.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;But still you can have this line of code to make sure your web server won’t fallback to SSL if the browser (a melicious user) requested that.&lt;/p&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;iis-and-windows-server&quot;&gt;IIS and Windows Server&lt;/h4&gt;
+
+&lt;p&gt;Edit the Windows Registry as follows:&lt;br /&gt;
+&lt;br /&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\SSL 3.0\Server]
+&quot;Enabled&quot;=dword:00000000
+
+[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\SSL 2.0\Server]
+&quot;Enabled&quot;=dword:00000000
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;br /&gt;
+&lt;br /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;what-about-tls-10&quot;&gt;What about TLS 1.0?&lt;/h2&gt;
+&lt;p&gt;Some consider TLS 1.0 is insecure, and it is better to disable it, but there is one problem with disabling TLS 1.0, which is IE before 11, and I mean IE 8 to 10 have TLS 1.1 disabled by default, and only TLS 1.0 is enabled by default.&lt;br /&gt;
+If you don’t care to support IE before 11, then it is better to disable it on your website, and in case you have to support old IE, then you have no choice but to disable all vulnerable ciphers in TLS 1.0.&lt;/p&gt;
+
+&lt;h4 id=&quot;how-bad-tls-10&quot;&gt;How bad TLS 1.0?&lt;/h4&gt;
+&lt;p&gt;I am not a security expert, but according from my modest knowledge, the biggest weakness of TLS 1.0 is that it include a means by which can downgrade to SSL 3.0, and that TLS 1.0 cryptographic initialization being predictable in some implementation, which means if someone with millions of dollars will dedicate to crack your HTTPS to force it to downgrade.&lt;/p&gt;
+
+&lt;p&gt;&lt;br /&gt;
+&lt;br /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;tls-algorithms&quot;&gt;TLS Algorithms&lt;/h2&gt;
+&lt;p&gt;TLS protocols define suite of algorithms to encrypt the data, and these algorithms can be categorized in three categories:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Key exchange or key agreement.&lt;/li&gt;
+  &lt;li&gt;Ciphers.&lt;/li&gt;
+  &lt;li&gt;Data integrity.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;key-exchange&quot;&gt;Key exchange&lt;/h4&gt;
+&lt;p&gt;Key exchange are the inialize the handshake to decide on the next phase of cipher that will be used.&lt;br /&gt;
+Some of the secure algorithms: &lt;strong&gt;RSA, DHE-RSA, ECDHE-RSA, ECDHE-ECDSA, Kerberos&lt;/strong&gt;.&lt;br /&gt;
+And some of insecure algorithms: &lt;strong&gt;DH-ANON, ECDH-ANON&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;ciphers&quot;&gt;Ciphers&lt;/h4&gt;
+&lt;p&gt;Ciphers are the main encryption algorithms.&lt;br /&gt;
+Some of the secure algorithms: &lt;strong&gt;AES, Camellia, SEED&lt;/strong&gt;.&lt;br /&gt;
+And some of insecure algorithms: &lt;strong&gt;IDES, 3DES, DES, RC4&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;data-integrity&quot;&gt;Data Integrity&lt;/h4&gt;
+&lt;p&gt;Secure algorithms: &lt;strong&gt;SHA256/384&lt;/strong&gt;.&lt;br /&gt;
+Insecure algorithms: &lt;strong&gt;MD5, SHA1&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;h4 id=&quot;disable-insecure-algorithms-in-nodejs&quot;&gt;Disable insecure algorithms in NodeJs&lt;/h4&gt;
+&lt;p&gt;To disable insecure algorithms in nodejs, we specify the list when we initialize the https server.&lt;br /&gt;
+We pass the options &lt;strong&gt;ciphers&lt;/strong&gt; as follows:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;var server = https.createServer({
+    key: privateKey,
+    cert: certificate,
+    ca: certificateAuthority,
+    ciphers: &quot;ECDHE-RSA-AES128-SHA256:!RC4:!HIGH!MD5&quot;,
+    app);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The ciphers is a string of sub-strings separated by colon “:” which enable or disable an algorithm.&lt;br /&gt;
+If the sub-string start with &lt;strong&gt;”!”&lt;/strong&gt;, then it means disable.&lt;br /&gt;
+So, in the previous example I am disabling MD5, RC4, and HIGH.&lt;br /&gt;
+A common practice is to specify the three types of algorithms (key exchange, cipher and data integrity) in one string seperated by “-“.&lt;br /&gt;
+So, in the previous example: &lt;strong&gt;“ECDHE-RSA-AES128-SHA256”&lt;/strong&gt; means use ECDHE-RSA for key exchange, and AES128 for cipher, and SHA256 for data integrity.&lt;br /&gt;
+&lt;br /&gt;&lt;/p&gt;
+
+&lt;p&gt;This is a list that will let you pass &lt;a href=&quot;https://www.ssllabs.com/ssltest/&quot;&gt;SSL labs test&lt;/a&gt; with A+:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;[ &#39;ECDHE-RSA-AES128-GCM-SHA256&#39;,
+  &#39;ECDHE-ECDSA-AES128-GCM-SHA256&#39;,
+  &#39;ECDHE-RSA-AES256-GCM-SHA384&#39;,
+  &#39;ECDHE-ECDSA-AES256-GCM-SHA384&#39;,
+  &#39;DHE-RSA-AES128-GCM-SHA256&#39;,
+  &#39;ECDHE-RSA-AES128-SHA256&#39;,
+  &#39;DHE-RSA-AES128-SHA256&#39;,
+  &#39;ECDHE-RSA-AES256-SHA384&#39;,
+  &#39;DHE-RSA-AES256-SHA384&#39;,
+  &#39;ECDHE-RSA-AES256-SHA256&#39;,
+  &#39;DHE-RSA-AES256-SHA256&#39;,
+  &#39;HIGH&#39;, &#39;!aNULL&#39;, &#39;!eNULL&#39;,
+  &#39;!EXPORT&#39;, &#39;!DES&#39;, &#39;!RC4&#39;,
+  &#39;!MD5&#39;, &#39;!PSK&#39;, &#39;!SRP&#39;, &#39;!CAMELLIA&#39;, &#39;!3DES&#39;
+  ].join(&#39;:&#39;)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;br /&gt;
+&lt;br /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;redirect-from-http-to-https-and-hsts&quot;&gt;Redirect from HTTP to HTTPS and HSTS&lt;/h2&gt;
+&lt;p&gt;You need to provide a redirection from your website from http to https, so when the user visit your website without specifying the https, will be directed to https.&lt;br /&gt;
+The more traditional way, is to build an HTTP redirect (301), either in your application, or through the web server.&lt;br /&gt;
+All web servers: IIS, Apache, NGINX.. have a way to do that indirection.&lt;/p&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;hsts&quot;&gt;HSTS&lt;/h4&gt;
+&lt;p&gt;There is a new way emerging, and it is more secure than the 301-redirect: HSTS (HTTP Strict Transport Security).&lt;br /&gt;
+The only complication with it that it requires both Browsers, and web servers to support it.&lt;br /&gt;
+As most modern browsers support it, so you can count on it.&lt;br /&gt;
+When an agent visit an http address, it respond with a result with a header field named &lt;strong&gt;Strict-Transport-Security&lt;/strong&gt;.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-http&quot;&gt;Strict-Transport-Security: max-age=31536000&lt;/code&gt;&lt;/pre&gt;
+</description>
+        <pubDate>Tue, 26 Sep 2017 09:45:00 -0600</pubDate>
+        <link>https://blog.gisspan.com/2017/09/Advanced-https.html</link>
+        <guid isPermaLink="true">https://blog.gisspan.com/2017/09/Advanced-https.html</guid>
+        
+        <category>security</category>
+        
+        
+      </item>
     
       <item>
         <title>Universal &lt;s&gt;(Isomorphic)&lt;/s&gt; React Application. Beyond the basics.</title>
@@ -107,7 +364,19 @@ React on the client side will know that the component is already rendered, so it
 &lt;p&gt;But, because redux and react-redux needs the redux store to sync with components states, so there is a trick that has to be done.
 We have to pass to the redux on the client side, the whole redux state after populating the store.&lt;br /&gt;
 Applications will do that by passing the state into the client javascript code through the &amp;amp;ltscript&amp;gt; html tag, and they pass it as a global javascript variable like this:&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;function renderFullPage(html, preloadedState) {
+&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;import { Provider }              from &#39;react-redux&#39;;
+//import routes;
+import { routes } from &#39;./routes&#39;;
+function renderFullPage(html, preloadedState) {
+  // Create redux store
+  const store = myReduxStore();
+  const InitialView = (
+        &amp;lt;Provider store={store}&amp;gt;
+          &amp;lt;RoutingContext routes={routes} /&amp;gt;
+        &amp;lt;/Provider&amp;gt;
+  );
+  const htmlBody = renderToString(InitialView);
+  const initialState = store.getState();
   return `
   &amp;lt;!doctype html&amp;gt;
   &amp;lt;html&amp;gt;
@@ -124,7 +393,17 @@ Applications will do that by passing the state into the client javascript code t
   &amp;lt;/html&amp;gt;
   `
 }&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;br /&gt;
+And on the client side, we get that global windows variable, and load it into the redux:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;const initialState = window.__PRELOADED_STATE__;
+  const store = createStore(rootReducer, initialState);
+  render(
+    &amp;lt;Provider store={store}&amp;gt;
+      &amp;lt;Router history={browserHistory}&amp;gt;{routes}&amp;lt;/Router&amp;gt;
+    &amp;lt;/Provider&amp;gt;,
+    document.querySelector(&quot;#root_placeholder&quot;)
+  );&lt;/code&gt;&lt;/pre&gt;
 
 &lt;h2 id=&quot;universal-routing&quot;&gt;Universal Routing&lt;/h2&gt;
 &lt;p&gt;Ideally, we should define routes and routing in one place only, and both client and server read them from the same place.&lt;br /&gt;
@@ -237,9 +516,9 @@ To avoid this problem, it is better have two separate build config, one for the 
 Or you might use a better webpack, called &lt;a href=&quot;https://www.npmjs.com/package/universal-webpack&quot;&gt;universal webpack&lt;/a&gt;&lt;/p&gt;
 
 </description>
-        <pubDate>Sat, 24 Jun 2017 09:45:00 -0600</pubDate>
-        <link>https://blog.gisspan.com/2017/06/Universal-react-app-beyong-the-basics.html</link>
-        <guid isPermaLink="true">https://blog.gisspan.com/2017/06/Universal-react-app-beyong-the-basics.html</guid>
+        <pubDate>Thu, 24 Aug 2017 09:45:00 -0600</pubDate>
+        <link>https://blog.gisspan.com/2017/08/Universal-react-app-beyong-the-basics.html</link>
+        <guid isPermaLink="true">https://blog.gisspan.com/2017/08/Universal-react-app-beyong-the-basics.html</guid>
         
         <category>javascript</category>
         
@@ -594,13 +873,9 @@ Otherwise you can use the AWS API which are bunch of REST API services that you 
 AWS SES API has two options to send emails &lt;a href=&quot;http://docs.aws.amazon.com/ses/latest/DeveloperGuide/send-email-api.html&quot;&gt;as described in the documentation&lt;/a&gt;:&lt;/p&gt;
 
 &lt;ol&gt;
-  &lt;li&gt;
-    &lt;p&gt;Send simple formatted email:&lt;br /&gt;
-which will make your life easy, but you are limited to send only text messages.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Send raw email in order to send an embedded image or more complicated content.&lt;/p&gt;
-  &lt;/li&gt;
+  &lt;li&gt;Send simple formatted email:&lt;br /&gt;
+which will make your life easy, but you are limited to send only text messages.&lt;/li&gt;
+  &lt;li&gt;Send raw email in order to send an embedded image or more complicated content.&lt;/li&gt;
 &lt;/ol&gt;
 
 &lt;p&gt;In order to send raw email with embedded images, you can just find some code on stackoverflow, but I will try in this post to describe what is going on, and how raw email works, so you can understand the process in details.
@@ -985,21 +1260,10 @@ For example we can rewrite the above code:&lt;/p&gt;
 To create a Date object in JavaScript there are these options:&lt;/p&gt;
 
 &lt;ol&gt;
-  &lt;li&gt;
-    &lt;p&gt;&lt;strong&gt;new Date():&lt;/strong&gt;&lt;br /&gt;
-    To create the current date.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;&lt;strong&gt;new Date(integer_value):&lt;/strong&gt;&lt;br /&gt;
-    the number of milliseconds since 1-Jan-1970 00:00:00 UTC (Unix Epoch).&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;&lt;strong&gt;new Date(string_value):&lt;/strong&gt;&lt;br /&gt;
-    this is an ISO-8601 format of date/time or any recognizable date string.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;&lt;strong&gt;new Date(year, month, day[, hour, minute, seconds, milliseconds])&lt;/strong&gt;&lt;/p&gt;
-  &lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;new Date()&lt;/strong&gt;: To create the current date.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;new Date(integer_value)&lt;/strong&gt;: the number of milliseconds since 1-Jan-1970 00:00:00 UTC (Unix Epoch).&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;new Date(string_value)&lt;/strong&gt;: the ISO-8601 format of date/time or any recognizable date string.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;new Date(year, month, day[, hour, minute, seconds, milliseconds])&lt;/strong&gt;&lt;/li&gt;
 &lt;/ol&gt;
 
 &lt;p&gt;Date/time in Javascript is a huge subject, but for this post, I am going to cover only what is related to ASP.NET and how Asp.NET serialize dates to JSON.&lt;br /&gt;
@@ -1524,7 +1788,7 @@ In this post and following posts, I am going to describe these services, and how
 
 &lt;ol&gt;
   &lt;li&gt;Introduction to big data (this post).&lt;/li&gt;
-  &lt;li&gt;Streaming real time data (coming).&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;/2016/09/Stream-real-time-data.html&quot;&gt;Streaming real time data&lt;/a&gt;.&lt;/li&gt;
   &lt;li&gt;Hadoop &amp;amp; MapReduce (coming).&lt;/li&gt;
   &lt;li&gt;HBase patterns (coming).&lt;/li&gt;
   &lt;li&gt;Spark and data analysis with Python (coming).&lt;/li&gt;
@@ -1750,123 +2014,6 @@ To transform the sass files, we use the module/loaders in webpack as follows:
         <category>react</category>
         
         <category>build &amp; CI</category>
-        
-        
-      </item>
-    
-      <item>
-        <title>Arguably the best approach to create objects in JavaScript.</title>
-        <description>
-&lt;p&gt;Douglas Crockford expressed his preference on creating objects and inheritance in JavaScript
- In his lecture &lt;a href=&quot;https://www.youtube.com/watch?v=bo36MrBfTk4&quot;&gt;The Better Parts&lt;/a&gt;.&lt;br /&gt;
-In this lecture he expressed that although prototypal inheritance is better than classical inheritance, but the better is to avoid prototypal inheritance and avoid using &lt;em&gt;&lt;strong&gt;this&lt;/strong&gt;&lt;/em&gt; keyword, and instead he introduced a new pattern similar to factory function.&lt;br /&gt;
-His approach was backed by &lt;a href=&quot;https://twitter.com/_ericelliott&quot;&gt;Eric Elliott&lt;/a&gt; in his lecture : &lt;a href=&quot;https://vimeo.com/69255635&quot;&gt;Classical Inheritance is Obsolete&lt;/a&gt;.&lt;br /&gt;
-I am going to explain this approach and show some examples on how to use it.&lt;!--more--&gt;
-&lt;br /&gt;
-&lt;br /&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;douglas-crockford-new-approach&quot;&gt;Douglas Crockford new approach&lt;/h2&gt;
-&lt;p&gt;In the lecture he summarized the way of creating objects with this pseudo-code:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;function constructor(spec){
-  let {member} = spec,
-
-  {other} = other_constructor(spec),
-
-  method = function() {
-    // access to member, other, method....
-  };
-
-  return Object.freeze({
-    method,
-    other
-  });
-}&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;The above code is just a pseudo-code to express the idea, and the destructuring assignments there are not necessarily going to be implemented by &lt;a href=&quot;https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment&quot;&gt;destructuring assignments&lt;/a&gt;.&lt;br /&gt;
-Let us shows an example of using the above code:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;var car = function(carSpec) {
-  let {maker, year} = carSpec,
-  ignite = function() {
-    console.log(&#39;ignite.....&#39;);
-  },
-  
-  getMaker = function() {
-    return maker;
-  },
-  
-  getAge = function() {
-    return (new Date()).getFullYear() - year;
-  };
-  
-  return {
-    ignite,
-    getMaker,
-    getAge
-  };
-};
-
-var sedan = function(carSpec) {
-  let type = &#39;Sedan&#39;,
-      {weels} = carSpec,
-      carInfo = car(carSpec),
-      drive = function() {
-        console.log(`${carInfo.getMaker()} ${type} drive with ${weels} weels`);
-      };
-  
-  return {
-    drive,
-    carInfo
-  }; 
-};
-
-
-var aCar = car({maker: &#39;Toyota&#39;, year: 2004});
-console.log(aCar.getMaker());  // Toyota
-console.log(aCar.getAge());   // 12
-
-var honda = sedan({maker: &#39;Honda&#39;, year: 2008, weels: 4});
-
-honda.drive();    // &quot;Honda Sedan drive with 4 weels&quot;
-honda.carInfo.ignite();  // ignite....
-
-console.log(honda.carInfo.getAge()); // 8&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h4 id=&quot;the-benefits-of-the-above-code&quot;&gt;The benefits of the above code:&lt;/h4&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Encapsulation: All variables defined inside the constructor are hidden to the outside, and only accessible by the constructor functions.&lt;/li&gt;
-  &lt;li&gt;No worry about the usage of &lt;code class=&quot;language-wiki&quot;&gt;&amp;nbsp;this&amp;nbsp;&lt;/code&gt; keyword anymore: You don’t have to worry about the context of the function and the usage of &lt;em&gt;&lt;strong&gt;this&lt;/strong&gt;&lt;/em&gt;.&lt;/li&gt;
-  &lt;li&gt;Code reusage is simpler: No inheritance and long prototype chain to worry about.&lt;/li&gt;
-  &lt;li&gt;Match design pattern &lt;strong&gt;Composition Over Inheritance&lt;/strong&gt;: There is a well-known design pattern by the gang of four: &lt;a href=&quot;https://en.wikipedia.org/wiki/Composition_over_inheritance&quot;&gt;Composition Over Inheritance&lt;/a&gt;, and this approach embrace it, because we are composing other objects.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h4 id=&quot;what-is-wrong-with-prototypal-inheritance&quot;&gt;What is wrong with prototypal inheritance?&lt;/h4&gt;
-&lt;p&gt;We can list the following challenges with the prototypal inheritance:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;confusion of who own the property / attribute: Is the property owned by the object or by its prototype? To know that we have to use other functions to know that.&lt;/li&gt;
-  &lt;li&gt;&lt;code class=&quot;language-wiki&quot;&gt;&amp;nbsp;this&amp;nbsp;&lt;/code&gt; keyword can be interpreted differently depending on the caller.&lt;/li&gt;
-  &lt;li&gt;Retroactive Heredity: This is a term used by Crockford to describe the complexity that the JavaScript engine has to deal with to keep track of the prototype chain. This explains why the ES6 introduced a new way to set directly the prototype with &lt;em&gt;&lt;strong&gt;setPrototypeOf&lt;/strong&gt;&lt;/em&gt; but recommended against using it because of the performance hit that we will encounter.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;For all the above reason, and because we have an alternative for creating objects, so Crockford suggesting avoid using prototypal inheritance.&lt;/p&gt;
-&lt;blockquote&gt;
-  &lt;p&gt;If a feature is sometimes useful and sometimes dangerous and if there is a better option then always use the better option.&lt;br /&gt;
-Douglas Crockford&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;h4 id=&quot;when-prototypal-inheritance-is-appropriate&quot;&gt;When prototypal inheritance is appropriate?&lt;/h4&gt;
-&lt;p&gt;The biggest benefit of prototypal inheritance is &lt;strong&gt;Memory Conservation&lt;/strong&gt;, because prototype objects are created once, and shared among all other objects that reference them as a prototype.&lt;br /&gt;
-Because nowadays computers and devices become more powerful, and has lots of memory, this feature is arguably untenable when you are doing 90% of programs that need tens or few hundreds of objects. But, when your application is creating hundreds or thousands of the same object over and over, then memory conservation become very reasonable, and you should switch to use the &lt;a href=&quot;https://blog.gisspan.com/2016/07/ES6-classes-the-good-part.html&quot;&gt;new Class keyword of ES6&lt;/a&gt;.&lt;/p&gt;
-
-</description>
-        <pubDate>Tue, 19 Jul 2016 09:45:00 -0600</pubDate>
-        <link>https://blog.gisspan.com/2016/07/Constructor-Vs-Factory.html</link>
-        <guid isPermaLink="true">https://blog.gisspan.com/2016/07/Constructor-Vs-Factory.html</guid>
-        
-        <category>javascript</category>
         
         
       </item>
