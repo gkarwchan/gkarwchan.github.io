@@ -1,0 +1,2022 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Web matters</title>
+    <description>A blog about web programming that covers the full stack. JavaScript on the client side, and on the server side, it could be .NET, Go, Python.
+</description>
+    <link>https://blog.gisspan.com/</link>
+    <atom:link href="https://blog.gisspan.com/feed.xml" rel="self" type="application/rss+xml"/>
+    <pubDate>Wed, 27 Sep 2017 18:09:13 -0600</pubDate>
+    <lastBuildDate>Wed, 27 Sep 2017 18:09:13 -0600</lastBuildDate>
+    <generator>Jekyll v3.1.6</generator>
+    
+      <item>
+        <title>Advanced HTTPS</title>
+        <description>
+&lt;p&gt;Adding an SSL Certificate and enabling HTTPS on your web site is not the end of the road for securing your website, and securing the communication to your website.&lt;br /&gt;
+It is just the start, and you need to do more steps related to HTTPS to guarantee your site safety, and your visitor safety.
+In this post I am going to describe:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;TLS and its algorithms in more depth.&lt;/li&gt;
+  &lt;li&gt;Insecure protocols, and algorithm.&lt;/li&gt;
+  &lt;li&gt;Best algorithm combination.&lt;/li&gt;
+  &lt;li&gt;Redirect from HTTP using HSTS.
+&lt;!--more--&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
+&lt;p&gt;If you want to learn more about HTTPS and its basic concepts, I wrote two posts about &lt;a href=&quot;/2016/03/secure-your-web-site-with-ssl.html&quot;&gt;creating an SSL Certificate&lt;/a&gt; and &lt;a href=&quot;/2016/04/making-sense-of-ssl-rsa-x509-and-csr.html&quot;&gt;SSL/TLS terminologies&lt;/a&gt; that cover lots of basic knowledge on that subject. I recommend reading them to know the basic and how to implement HTTPS on your web site.&lt;br /&gt;
+After enabling HTTPS on your web site, you should do the following:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;disable insecure protocol SSL 3.0.&lt;/li&gt;
+  &lt;li&gt;either disable TLS 1.0 or disable all insecure algorithms.&lt;/li&gt;
+  &lt;li&gt;disable ciphers that are insecure.&lt;/li&gt;
+  &lt;li&gt;redirect from http to https using HSTS.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;tls-releases&quot;&gt;TLS Releases&lt;/h2&gt;
+&lt;p&gt;TLS protocol keeps developing and enhancing its security. The newer versions are better and more secure and more difficult to break than the older ones, and older versions become less secure or even insecure.&lt;br /&gt;
+Old versions like TLS 1.0 and all SSL are considered insecure nowadays.&lt;br /&gt;
+This is a table of TLS releases and its status.&lt;br /&gt;
+&lt;br /&gt;&lt;/p&gt;
+
+&lt;div style=&quot;width:70%; align:center; margin:auto&quot;&gt;
+
+  &lt;table&gt;
+    &lt;thead&gt;
+      &lt;tr&gt;
+        &lt;th&gt;Protocol Version&lt;/th&gt;
+        &lt;th&gt;Security Status&lt;/th&gt;
+      &lt;/tr&gt;
+    &lt;/thead&gt;
+    &lt;tbody&gt;
+      &lt;tr&gt;
+        &lt;td&gt;SSL 2.0&lt;/td&gt;
+        &lt;td&gt;Insecure&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;SSL 3.0&lt;/td&gt;
+        &lt;td&gt;Insecure&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;TLS 1.0&lt;/td&gt;
+        &lt;td&gt;Depends on configuration&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;TLS 1.1&lt;/td&gt;
+        &lt;td&gt;Depends on algorithm&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;TLS 1.2&lt;/td&gt;
+        &lt;td&gt;Depends on algorithm&lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/tbody&gt;
+  &lt;/table&gt;
+
+&lt;/div&gt;
+
+&lt;h4 id=&quot;what-tls-protocol-version-my-website-support&quot;&gt;What TLS protocol version my website support?&lt;/h4&gt;
+&lt;p&gt;How do you know what TLS protocols your website is supporting?&lt;br /&gt;
+If you are developing on Windows/IIS, then (as my knowledge goes back only to Windows Server 2008), as long as you have Windows Server 2008 Service Pack 1, and higer, then you are having up-to-date TLS 1.2.&lt;br /&gt;
+If you are developing NodeJs, or Go language website, on a Linux operating system, then NodeJs, and Go are using OpenSSL software, and if you have if you are updating your server regularly (as you should), then you have TLS 1.2.&lt;/p&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;which-protocol-version-is-being-used&quot;&gt;Which protocol version is being used?&lt;/h4&gt;
+&lt;p&gt;When a browser visit your website, there is a process called TLS handshake, where the web server and the browser will find what is the highest TLS protocols that both support, and they will use it.&lt;br /&gt;
+&lt;br /&gt;
+&lt;br /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;disable-ssl-protocols-30-and-20&quot;&gt;Disable SSL protocols 3.0 and 2.0&lt;/h2&gt;
+&lt;p&gt;As we mentioned SSL 2.0 and 3.0 are insecure, and we should disable them permenantly.&lt;br /&gt;
+SSL insecurity was very serious, that triggered Web servers, and browsers to disable it permenantly.&lt;br /&gt;
+Here is a list of when major web browsers disabled SSL 3.0:&lt;/p&gt;
+
+&lt;div style=&quot;width:70%; align:center; margin:auto&quot;&gt;
+
+  &lt;table&gt;
+    &lt;thead&gt;
+      &lt;tr&gt;
+        &lt;th&gt;Web Browser&lt;/th&gt;
+        &lt;th&gt;Version&lt;/th&gt;
+        &lt;th&gt;Release Date&lt;/th&gt;
+      &lt;/tr&gt;
+    &lt;/thead&gt;
+    &lt;tbody&gt;
+      &lt;tr&gt;
+        &lt;td&gt;Chrome&lt;/td&gt;
+        &lt;td&gt;40&lt;/td&gt;
+        &lt;td&gt;January 2015&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;Firefox&lt;/td&gt;
+        &lt;td&gt;35&lt;/td&gt;
+        &lt;td&gt;January 2015&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;Explorer&lt;/td&gt;
+        &lt;td&gt;11 (patches)&lt;/td&gt;
+        &lt;td&gt;January 2015&lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/tbody&gt;
+  &lt;/table&gt;
+
+&lt;/div&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;p&gt;For the web server side, I am covering NodeJS or Go language on Linux server, and IIS solutions on Windows Servers. If your solution is not one of these, refer &lt;a href=&quot;http://disablessl3.com&quot;&gt;to this website&lt;/a&gt; to find a solution.&lt;/p&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;nodejs--go-on-linux&quot;&gt;NodeJS &amp;amp; Go on Linux&lt;/h4&gt;
+&lt;p&gt;if you are doing NodeJs or Go language website, then you are using OpenSSL.&lt;br /&gt;
+Even your Linux regular update should take care of it, but double check that you have the proper OpenSSL version:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;OpenSSL 1.0.1 users should upgrade to 1.0.1j.&lt;/li&gt;
+  &lt;li&gt;OpenSSL 1.0.0 users should upgrade to 1.0.0o.&lt;/li&gt;
+  &lt;li&gt;OpenSSL 0.9.8 users should upgrade to 0.9.8zc.&lt;/li&gt;
+  &lt;li&gt;OpenSSL 1.0.2 users are laughing.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;But still you can have this line of code to make sure your web server won’t fallback to SSL if the browser (a melicious user) requested that.&lt;/p&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;iis-and-windows-server&quot;&gt;IIS and Windows Server&lt;/h4&gt;
+
+&lt;p&gt;Edit the Windows Registry as follows:&lt;br /&gt;
+&lt;br /&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\SSL 3.0\Server]
+&quot;Enabled&quot;=dword:00000000
+
+[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\SSL 2.0\Server]
+&quot;Enabled&quot;=dword:00000000
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;br /&gt;
+&lt;br /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;what-about-tls-10&quot;&gt;What about TLS 1.0?&lt;/h2&gt;
+&lt;p&gt;Some consider TLS 1.0 is insecure, and it is better to disable it, but there is one problem with disabling TLS 1.0, which is IE before 11, and I mean IE 8 to 10 have TLS 1.1 disabled by default, and only TLS 1.0 is enabled by default.&lt;br /&gt;
+If you don’t care to support IE before 11, then it is better to disable it on your website, and in case you have to support old IE, then you have no choice but to disable all vulnerable ciphers in TLS 1.0.&lt;/p&gt;
+
+&lt;h4 id=&quot;how-bad-tls-10&quot;&gt;How bad TLS 1.0?&lt;/h4&gt;
+&lt;p&gt;I am not a security expert, but according from my modest knowledge, the biggest weakness of TLS 1.0 is that it include a means by which can downgrade to SSL 3.0, and that TLS 1.0 cryptographic initialization being predictable in some implementation, which means if someone with millions of dollars will dedicate to crack your HTTPS to force it to downgrade.&lt;/p&gt;
+
+&lt;p&gt;&lt;br /&gt;
+&lt;br /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;tls-algorithms&quot;&gt;TLS Algorithms&lt;/h2&gt;
+&lt;p&gt;TLS protocols define suite of algorithms to encrypt the data, and these algorithms can be categorized in three categories:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Key exchange or key agreement.&lt;/li&gt;
+  &lt;li&gt;Ciphers.&lt;/li&gt;
+  &lt;li&gt;Data integrity.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;key-exchange&quot;&gt;Key exchange&lt;/h4&gt;
+&lt;p&gt;Key exchange are the inialize the handshake to decide on the next phase of cipher that will be used.&lt;br /&gt;
+Some of the secure algorithms: &lt;strong&gt;RSA, DHE-RSA, ECDHE-RSA, ECDHE-ECDSA, Kerberos&lt;/strong&gt;.&lt;br /&gt;
+And some of insecure algorithms: &lt;strong&gt;DH-ANON, ECDH-ANON&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;ciphers&quot;&gt;Ciphers&lt;/h4&gt;
+&lt;p&gt;Ciphers are the main encryption algorithms.&lt;br /&gt;
+Some of the secure algorithms: &lt;strong&gt;AES, Camellia, SEED&lt;/strong&gt;.&lt;br /&gt;
+And some of insecure algorithms: &lt;strong&gt;IDES, 3DES, DES, RC4&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;data-integrity&quot;&gt;Data Integrity&lt;/h4&gt;
+&lt;p&gt;Secure algorithms: &lt;strong&gt;SHA256/384&lt;/strong&gt;.&lt;br /&gt;
+Insecure algorithms: &lt;strong&gt;MD5, SHA1&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;h4 id=&quot;disable-insecure-algorithms-in-nodejs&quot;&gt;Disable insecure algorithms in NodeJs&lt;/h4&gt;
+&lt;p&gt;To disable insecure algorithms in nodejs, we specify the list when we initialize the https server.&lt;br /&gt;
+We pass the options &lt;strong&gt;ciphers&lt;/strong&gt; as follows:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;var server = https.createServer({
+    key: privateKey,
+    cert: certificate,
+    ca: certificateAuthority,
+    ciphers: &quot;ECDHE-RSA-AES128-SHA256:!RC4:!HIGH!MD5&quot;,
+    app);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The ciphers is a string of sub-strings separated by colon “:” which enable or disable an algorithm.&lt;br /&gt;
+If the sub-string start with &lt;strong&gt;”!”&lt;/strong&gt;, then it means disable.&lt;br /&gt;
+So, in the previous example I am disabling MD5, RC4, and HIGH.&lt;br /&gt;
+A common practice is to specify the three types of algorithms (key exchange, cipher and data integrity) in one string seperated by “-“.&lt;br /&gt;
+So, in the previous example: &lt;strong&gt;“ECDHE-RSA-AES128-SHA256”&lt;/strong&gt; means use ECDHE-RSA for key exchange, and AES128 for cipher, and SHA256 for data integrity.&lt;br /&gt;
+&lt;br /&gt;&lt;/p&gt;
+
+&lt;p&gt;This is a list that will let you pass &lt;a href=&quot;https://www.ssllabs.com/ssltest/&quot;&gt;SSL labs test&lt;/a&gt; with A+:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;[ &#39;ECDHE-RSA-AES128-GCM-SHA256&#39;,
+  &#39;ECDHE-ECDSA-AES128-GCM-SHA256&#39;,
+  &#39;ECDHE-RSA-AES256-GCM-SHA384&#39;,
+  &#39;ECDHE-ECDSA-AES256-GCM-SHA384&#39;,
+  &#39;DHE-RSA-AES128-GCM-SHA256&#39;,
+  &#39;ECDHE-RSA-AES128-SHA256&#39;,
+  &#39;DHE-RSA-AES128-SHA256&#39;,
+  &#39;ECDHE-RSA-AES256-SHA384&#39;,
+  &#39;DHE-RSA-AES256-SHA384&#39;,
+  &#39;ECDHE-RSA-AES256-SHA256&#39;,
+  &#39;DHE-RSA-AES256-SHA256&#39;,
+  &#39;HIGH&#39;, &#39;!aNULL&#39;, &#39;!eNULL&#39;,
+  &#39;!EXPORT&#39;, &#39;!DES&#39;, &#39;!RC4&#39;,
+  &#39;!MD5&#39;, &#39;!PSK&#39;, &#39;!SRP&#39;, &#39;!CAMELLIA&#39;, &#39;!3DES&#39;
+  ].join(&#39;:&#39;)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;br /&gt;
+&lt;br /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;redirect-from-http-to-https-and-hsts&quot;&gt;Redirect from HTTP to HTTPS and HSTS&lt;/h2&gt;
+&lt;p&gt;You need to provide a redirection from your website from http to https, so when the user visit your website without specifying the https, will be directed to https.&lt;br /&gt;
+The more traditional way, is to build an HTTP redirect (301), either in your application, or through the web server.&lt;br /&gt;
+All web servers: IIS, Apache, NGINX.. have a way to do that indirection.&lt;/p&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;hsts&quot;&gt;HSTS&lt;/h4&gt;
+&lt;p&gt;There is a new way emerging, and it is more secure than the 301-redirect: HSTS (HTTP Strict Transport Security).&lt;br /&gt;
+The only complication with it that it requires both Browsers, and web servers to support it.&lt;br /&gt;
+As most modern browsers support it, so you can count on it.&lt;br /&gt;
+When an agent visit an http address, it respond with a result with a header field named &lt;strong&gt;Strict-Transport-Security&lt;/strong&gt;.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-http&quot;&gt;Strict-Transport-Security: max-age=31536000&lt;/code&gt;&lt;/pre&gt;
+</description>
+        <pubDate>Tue, 26 Sep 2017 09:45:00 -0600</pubDate>
+        <link>https://blog.gisspan.com/2017/09/Advanced-https.html</link>
+        <guid isPermaLink="true">https://blog.gisspan.com/2017/09/Advanced-https.html</guid>
+        
+        <category>security</category>
+        
+        
+      </item>
+    
+      <item>
+        <title>Universal &lt;s&gt;(Isomorphic)&lt;/s&gt; React Application. Beyond the basics.</title>
+        <description>
+&lt;p&gt;I decided to write this post, because I didn’t find any blog post, article, or a tutorial that will sum up for developers what the issues they are going to face when they build a universal application.&lt;br /&gt;
+If you googled a tutorial on how to build a universal react application, you will find a lot, but most of them are just covering the surface, hello-world examples. But as you go further, or even you decided to use one of the universal frameworks/boilerplate, you will start to face some issues and difficulties.&lt;!--more--&gt;&lt;br /&gt;
+&lt;br /&gt;
+P.S: This post is not a tutorial on building a universal application, and in fact, it is assuming that you already know what universal app is, or what are its benefits, and why people use it, and neither it is a React tutorial, and I assume you already know React, and webpack.&lt;/p&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;universal-challenges&quot;&gt;Universal challenges&lt;/h2&gt;
+&lt;p&gt;All challenges related to universal application can be categorised in one of these categories:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Universal rendering.&lt;/li&gt;
+  &lt;li&gt;Universal routing.&lt;/li&gt;
+  &lt;li&gt;Universal data retrieval.&lt;/li&gt;
+  &lt;li&gt;Build and development process.&lt;/li&gt;
+  &lt;li&gt;Sharing libraries between server and client.
+&lt;br /&gt;&lt;br /&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;universal-rendering&quot;&gt;Universal Rendering&lt;/h2&gt;
+&lt;p&gt;Let us start with the basic of a React application and describe the rendering process in React and in Single Page Application in general.&lt;br /&gt;
+A typical React application will run on the client side (on the browser) and does its rendering of the web pages on the client side. A typical React application consists of many components, and in a “sane” React application, there will be only one root component that will contains all other components as its children.&lt;br /&gt;
+The entry point for a React app, will be rendering that root component when loading the page, and the code will be similar to this:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;import ReactDOM from &#39;react-dom&#39;;
+import RootApp from &#39;./components/RootApp&#39;;
+ReactDOM.render(&amp;lt;RootApp /&amp;gt;, document.getElementById(&#39;root_placeholder&#39;));&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;In a universal application, everything on the client stays the same, and we add another rendering of the application on the server.&lt;br /&gt;
+&lt;strong&gt;How to do that?&lt;/strong&gt;: Using React’s &lt;code class=&quot;language-wiki&quot;&gt;&amp;nbsp;&amp;nbsp; renderToString&amp;nbsp;&amp;nbsp;&lt;/code&gt;&lt;br /&gt;
+React is universal-friendly library, and has the ability to render on the server using its function: renderToString.&lt;br /&gt;
+The code in NodeJs application will be similar to this:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;import { renderToString } from &#39;react-dom/server&#39;;
+import RootApp from &#39;./components/RootApp&#39;;
+export default function serverRenderer() {
+    return (req, res, next) =&amp;gt; {
+        res.status(200).send(`
+            &amp;lt;!doctype html&amp;gt;
+            &amp;lt;html&amp;gt; 
+              &amp;lt;head&amp;gt; &amp;lt;title&amp;gt;App&amp;lt;/title&amp;gt; &amp;lt;/head&amp;gt;  
+              &amp;lt;body&amp;gt;
+                &amp;lt;div id=&quot;root_placeholder&quot;&amp;gt;
+                    ${renderToString(&amp;lt;RootApp /&amp;gt;)}
+                &amp;lt;/div&amp;gt;
+                &amp;lt;script src=&quot;/client.js&quot;&amp;gt;&amp;lt;/script&amp;gt;
+              &amp;lt;/body&amp;gt;
+            &amp;lt;/html&amp;gt;
+        `); 
+    };
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;so-does-client-rendering-work-as-well&quot;&gt;So, does client rendering work as well?&lt;/h4&gt;
+&lt;p&gt;After we added the server rendering, the client code stays the same, which means the client code stills has the code to do rendering when the page loaded.&lt;br /&gt;
+But, because React is universal-aware, React on the client will checkes if the rendering did happen already, and in case it happened then it will skip it.&lt;br /&gt;
+So, the rendering process will happen only once.&lt;br /&gt;
+Which lead us to some interesting fact: It is easy to switch off Server rendering.&lt;br /&gt;
+&lt;br /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;switch-off-server-side-rendering&quot;&gt;Switch off Server Side Rendering?&lt;/h4&gt;
+
+&lt;p&gt;So, by just having a small &lt;strong&gt;“if”&lt;/strong&gt; statement before doing server rendering, we can switch off totally the server rendering and switch back to client rendering as a normal non-universal React application.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;....
+var htmlBody = isItUniversal ? renderToString(&amp;lt;RootApp/&amp;gt;) : &#39;&#39;;
+function serverRenderer() {
+    return (req, res, next) =&amp;gt; {
+        res.status(200).send(`
+            &amp;lt;!doctype html&amp;gt;
+            &amp;lt;html&amp;gt; 
+              &amp;lt;head&amp;gt; &amp;lt;title&amp;gt;App&amp;lt;/title&amp;gt; &amp;lt;/head&amp;gt;  
+              &amp;lt;body&amp;gt;
+                &amp;lt;div id=&quot;root_placeholder&quot;&amp;gt;
+                    ${htmlBody}
+                &amp;lt;/div&amp;gt;
+                &amp;lt;script src=&quot;/client.js&quot;&amp;gt;&amp;lt;/script&amp;gt;
+              &amp;lt;/body&amp;gt;
+            &amp;lt;/html&amp;gt;
+        `); 
+    };
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;br /&gt;
+It is common practice in universal boilerplate/frameworks to see they provide a way for developers to switch that server-side rendering.&lt;br /&gt;
+&lt;br /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;rendering-with-redux&quot;&gt;Rendering with Redux&lt;/h4&gt;
+&lt;p&gt;As we know in a typical Redux-enabled React application, rendering is happening by populating the Redux store, and React components will subscribe to that redux store, and render as HTML.&lt;br /&gt;
+Redux is like React a universal-friendly library.&lt;br /&gt;
+The scenario is to populate the redux store on the server, and do the rendering on the server.&lt;br /&gt;
+React on the client side will know that the component is already rendered, so it will skip rendering.&lt;/p&gt;
+
+&lt;p&gt;But, because redux and react-redux needs the redux store to sync with components states, so there is a trick that has to be done.
+We have to pass to the redux on the client side, the whole redux state after populating the store.&lt;br /&gt;
+Applications will do that by passing the state into the client javascript code through the &amp;amp;ltscript&amp;gt; html tag, and they pass it as a global javascript variable like this:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;import { Provider }              from &#39;react-redux&#39;;
+//import routes;
+import { routes } from &#39;./routes&#39;;
+function renderFullPage(html, preloadedState) {
+  // Create redux store
+  const store = myReduxStore();
+  const InitialView = (
+        &amp;lt;Provider store={store}&amp;gt;
+          &amp;lt;RoutingContext routes={routes} /&amp;gt;
+        &amp;lt;/Provider&amp;gt;
+  );
+  const htmlBody = renderToString(InitialView);
+  const initialState = store.getState();
+  return `
+  &amp;lt;!doctype html&amp;gt;
+  &amp;lt;html&amp;gt;
+    &amp;lt;head&amp;gt;  &amp;lt;title&amp;gt;Redux Universal Example&amp;lt;/title&amp;gt;  &amp;lt;/head&amp;gt;
+    &amp;lt;body&amp;gt;
+      &amp;lt;div id=&quot;root_placeholder&quot;&amp;gt;${htmlBody}&amp;lt;/div&amp;gt;
+      &amp;lt;script&amp;gt;
+        // WARNING: See the following for security issues around embedding JSON in HTML:
+        // http://redux.js.org/docs/recipes/ServerRendering.html#security-considerations
+        window.__PRELOADED_STATE__ = ${JSON.stringify(preloadedState).replace(/&amp;lt;/g, &#39;\\u003c&#39;)}
+      &amp;lt;/script&amp;gt;
+      &amp;lt;script src=&quot;/client.js&quot;&amp;gt;&amp;lt;/script&amp;gt;
+    &amp;lt;/body&amp;gt;
+  &amp;lt;/html&amp;gt;
+  `
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;br /&gt;
+And on the client side, we get that global windows variable, and load it into the redux:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;const initialState = window.__PRELOADED_STATE__;
+  const store = createStore(rootReducer, initialState);
+  render(
+    &amp;lt;Provider store={store}&amp;gt;
+      &amp;lt;Router history={browserHistory}&amp;gt;{routes}&amp;lt;/Router&amp;gt;
+    &amp;lt;/Provider&amp;gt;,
+    document.querySelector(&quot;#root_placeholder&quot;)
+  );&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&quot;universal-routing&quot;&gt;Universal Routing&lt;/h2&gt;
+&lt;p&gt;Ideally, we should define routes and routing in one place only, and both client and server read them from the same place.&lt;br /&gt;
+Again, with the help of React-Router which is a universal-friendly library we can achieve a universal (client/server) routing.&lt;br /&gt;
+On the server (Speaking of NodeJs application), We can achieve this, by delegating the routing to the routes defined on the client using react-router format.&lt;br /&gt;
+Keep in mind that in a “sane” react application, the root component is the routing component, which define a wrapper around the routes that match React components.&lt;br /&gt;
+So, it is usual in universal application, that the server routing code will have only one and only one general routing handler like this:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;app.get(&#39;*&#39;, (req, res) =&amp;gt; {
+…..
+….
+renderToString(
+  &amp;lt;Router location={req.url} context={context}&amp;gt;
+    &amp;lt;Route&amp;gt;
+    ....
+  &amp;lt;/Router&amp;gt;
+);
+…
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;handling-server-side-code-with-one-routing-handler&quot;&gt;Handling server side code with one routing handler&lt;/h4&gt;
+&lt;p&gt;If in ideal universal application, we have only one general route handler, then how to run server side code that is depending on which current route?&lt;br /&gt;
+react-router has a function called &lt;code class=&quot;language-wiki&quot;&gt;&amp;nbsp;&amp;nbsp; match&amp;nbsp;&amp;nbsp;&lt;/code&gt;  which will help us detecting the current route on the server side, and then we can run the related server code. The code will be similar to this:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;import React from &#39;react&#39;;
+import { renderToString } from &#39;react-dom/server&#39;;
+// and these to match the url to routes and then render
+import { match, RouterContext } from &#39;react-router&#39;;
+
+// we define our routes into the following module, and we import it on both server and client
+import routes from &#39;./modules/routes&#39;;
+
+// One and only one route handler on the sersverworks
+
+app.get(&#39;*&#39;, (req, res) =&amp;gt; {
+  // match is a react-router function that will help us detect current route
+  match({ routes: routes, location: req.url }, (err, redirect, props) =&amp;gt; {
+    // here where we detect the routes and location, to find out the current location
+    // and run the server code accordingly:
+  })
+})
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;development-challenges&quot;&gt;Development Challenges&lt;/h2&gt;
+&lt;p&gt;Development environment and developer setup is effected by the universal application, and we are going to list here what the issues are:&lt;/p&gt;
+
+&lt;h4 id=&quot;hot-module-replacement&quot;&gt;Hot Module Replacement&lt;/h4&gt;
+&lt;p&gt;In a typical client side application, React developers usually use Webpack-dev-server with HMR (Hot module replacement), to give a smooth development experience with on-the-fly build/refresh to test the application as they write code.&lt;/p&gt;
+
+&lt;p&gt;In a full-stack application, it is not usual to use webpack-dev-server, because webpack-dev-server is an express-based web server by itself, so developers switch to use a library called “webpack-dev-middleware”, with “webpack-hot-middleware”.&lt;br /&gt;
+For universal application, there is another library: &lt;a href=&quot;https://www.npmjs.com/package/webpack-hot-server-middleware&quot;&gt;“webpack-hot-server-middleware”&lt;/a&gt; that is universal-friendly.&lt;/p&gt;
+
+&lt;p&gt;How to use it?&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;const express = require(&#39;express&#39;);
+const webpack = require(&#39;webpack&#39;);
+const webpackDevMiddleware = require(&#39;webpack-dev-middleware&#39;);
+const webpackHotServerMiddleware = require(&#39;webpack-hot-server-middleware&#39;);
+const config = require(&#39;./webpack.config.js&#39;);
+const app = express();
+const compiler = webpack(config);
+
+app.use(webpackDevMiddleware(compiler, {
+  serverSideRender: true
+}));
+app.use(webpackHotServerMiddleware(compiler));
+
+app.listen(6060);
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;br /&gt;
+Webpack Hot Server Middleware expects your Webpack config to export an array of configurations, one for your client bundle and one for your server bundle, e.g.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;// webpack.config.js 
+module.exports = [ 
+  { name: &#39;client&#39;, target: &#39;web&#39;, entry: &#39;./client.js&#39; ... }, 
+  { name: &#39;server&#39;, target: &#39;node&#39;, entry: &#39;./server.js&#39; ... } 
+];
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;css--css-modules&quot;&gt;CSS &amp;amp; CSS Modules:&lt;/h4&gt;
+&lt;p&gt;&lt;a href=&quot;https://github.com/css-modules/css-modules&quot;&gt;CSS Modules&lt;/a&gt; are commonly used css library in react applications, because it fits the react components architecture.&lt;br /&gt;
+in css-module we import css file into the javascript file as follows:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;// this code inside javascript file
+import styles from ‘xxx.css’&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;There is no problem for production, because the build process (usually a webpack process) will recognize those css files, and build a final css file if using extract-text-webpack-plugin, or inject it into the final html if using style-loader.&lt;br /&gt;
+But during active development (and with HMR), it is the server that is doing the css rendering stuff (remember it is the server that is rendering the page).&lt;br /&gt;
+Node has to learn about css, and this where the library &lt;a href=&quot;https://github.com/css-modules/css-modules-require-hook&quot;&gt;css-modules-require-hook&lt;/a&gt; plays a role.&lt;br /&gt;
+it is a &lt;a href=&quot;https://www.npmjs.com/package/require-hook&quot;&gt;Node require hook&lt;/a&gt; that allows Node to require and deal with css file. And you can configure it to deal files with SASS and SCSS extensions as well.&lt;/p&gt;
+
+&lt;h4 id=&quot;redux-dev-tools&quot;&gt;Redux Dev Tools:&lt;/h4&gt;
+&lt;p&gt;If you are using &lt;a href=&quot;https://github.com/gaearon/redux-devtools&quot;&gt;Redux Devtools&lt;/a&gt;, and &lt;a href=&quot;http://extension.remotedev.io/&quot;&gt;redux devtools extensions&lt;/a&gt;, then you need to do extra work to make it works with redux server side rendering.
+You need to use &lt;a href=&quot;https://github.com/zalmoxisus/remote-redux-devtools&quot;&gt;remote-redux-dev-tools&lt;/a&gt;. It is more complex to describe it in this post, so just read it how to use it in the website, and I might write a future blog about it.&lt;br /&gt;
+&lt;br /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;build-process-and-code-sharing-between-server-and-client&quot;&gt;Build process, and code sharing between server and client&lt;/h2&gt;
+&lt;p&gt;The build process for a universal application, will generate a final client side javascript code, that is compressed and maybe uglified, and generates css code, that either embedded into one HTML page, or in a separate files download, depending if we use webpack’s style-loader, or extract-text-webpack-plugin.&lt;br /&gt;
+On the server side, the build process won’t usually compress the final code, but it might transpile it from babel (if we used babel on the code).&lt;/p&gt;
+
+&lt;p&gt;There is a big trick about universal applications that you should be aware of:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;If , for any reason, a nodejs related code was called from the client, or if any of the client side code required some nodejs or node-based library, then the webpack will package that library , and many other node-related stuff into the final browser code, generating a huge compressed javascript file.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;I am not going to describe how that happen, but I will point you to &lt;a href=&quot;https://medium.com/walmartlabs/webpack-optimization-a-case-study-92b130334b6c&quot;&gt;this interesting article&lt;/a&gt; that describes this problem in details.
+To avoid this problem, it is better have two separate build config, one for the server, and one for the client, as we saw an example before (refer to the code above).&lt;br /&gt;
+Or you might use a better webpack, called &lt;a href=&quot;https://www.npmjs.com/package/universal-webpack&quot;&gt;universal webpack&lt;/a&gt;&lt;/p&gt;
+
+</description>
+        <pubDate>Thu, 24 Aug 2017 09:45:00 -0600</pubDate>
+        <link>https://blog.gisspan.com/2017/08/Universal-react-app-beyong-the-basics.html</link>
+        <guid isPermaLink="true">https://blog.gisspan.com/2017/08/Universal-react-app-beyong-the-basics.html</guid>
+        
+        <category>javascript</category>
+        
+        <category>react</category>
+        
+        
+      </item>
+    
+      <item>
+        <title>Redux Vs. MVC, Why and How?</title>
+        <description>
+&lt;p&gt;In last two or three years, we started to see the rise of Redux-based (or Unidirectional data flow architecture in general) in the user interface side of the applications, and the slowly decline of MVC based architecture in the UI side.&lt;br /&gt;
+What Redux has of advantages over MVC, and what problems it solves?  I am going to show what the benefits of Redux over MVC.&lt;br /&gt;
+Redux library by itself is not enough to build a whole system, and this is why there is an ecosystem developed around Redux.
+I am going to show the basic ecosystem needed to build a Redux application, or the essential building blocks of a any redux-based application. &lt;!--more--&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;first-the-problem-with-mvc&quot;&gt;First, The Problem with MVC&lt;/h2&gt;
+&lt;p&gt;To explain why Redux became so popular, let us see the problems with the existing MVC or MVC alike UI applications.&lt;br /&gt;
+Let us see how MVC works?&lt;br /&gt;
+The following diagram show the data flow and control flow for the strict MVC pattern.&lt;/p&gt;
+
+&lt;div class=&quot;column&quot; style=&quot;align: center&quot;&gt;
+  &lt;p&gt;&lt;img src=&quot;/img/MVC-basic.svg.png&quot; alt=&quot;smtp&quot; height=&quot;300px&quot; width=&quot;auto&quot; align=&quot;center&quot; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+
+&lt;p&gt;There are other variations of MVC, specifically Model-View-ViewModel (MVVM) which was created specifically to represent the UI in a thick UI environment to help unit test the UI.&lt;br /&gt;
+The following diagram shows the control flow in MVVM and MVP (Model-View-Presenter).&lt;/p&gt;
+
+&lt;div class=&quot;column&quot; style=&quot;align: center&quot;&gt;
+  &lt;p&gt;&lt;img src=&quot;/img/mvc-mvp-mvvm.png&quot; alt=&quot;smtp&quot; height=&quot;300px&quot; width=&quot;auto&quot; align=&quot;center&quot; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;p&gt;We can refer to all above patterns as MVW (Model-View-Whatever).&lt;br /&gt;
+&lt;br /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;what-the-problem-with-mvw&quot;&gt;What the problem with MVW?&lt;/h4&gt;
+
+&lt;p&gt;MVW is easy to manage in a simple application, with few models/controllers.
+But we can easily start to witness problems as we grow in size with the following problems:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;There is need when models/controllers communicate with each others (through a service layer probably), and these modules changes the states of each others, and the more controllers, the more easy to lose control of who changed the state of a controller.&lt;/li&gt;
+  &lt;li&gt;Asynchronous network calls to retrieve data add uncertainty of when the model will be changed or modified, and imagine the user changing the UI while a callback from asynchronous call comeback, then we will have “nondeterministic” status of the UI.&lt;/li&gt;
+  &lt;li&gt;Change state/model has another layer of complexity which is the mutation. When to consider the state or model is changed and how to build tools to help recognize the mutation.&lt;/li&gt;
+  &lt;li&gt;Adding to that if the application is a collaborative applications, (like google docs for examples) where lots of data changes happening in real-time.&lt;/li&gt;
+  &lt;li&gt;No way to do undo (travel back in time) easily without adding so much extra code.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;We can summarize the above as : “There is no single source of truth of the applications at any given time.”, and at any give time we cannot know how the UI will be,  and this create &lt;strong&gt;non-determinism&lt;/strong&gt; UI.&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;“Nondeterminism = parallel processing + shared state”
+~ Martin Odersky (Scala designer)&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&quot;redux-solution&quot;&gt;Redux Solution&lt;/h2&gt;
+&lt;p&gt;Redux is just one variation of a whole trend in UI architecture called : &lt;code class=&quot;language-wiki&quot;&gt;&amp;nbsp;Unidirectional User Interface Architecture&amp;nbsp;&lt;/code&gt;.&lt;br /&gt;
+For example there is &lt;a href=&quot;https://facebook.github.io/flux/&quot;&gt;Flux&lt;/a&gt; (Redux is just a variation of Flux),  &lt;a href=&quot;https://cycle.js.org/&quot;&gt;Cycle.js&lt;/a&gt;, &lt;a href=&quot;https://github.com/mobxjs/mobx&quot;&gt;MobX&lt;/a&gt;, and &lt;a href=&quot;http://elm-lang.org/&quot;&gt;Elm&lt;/a&gt; has its own implementation of that architecture.&lt;br /&gt;
+&lt;br /&gt;&lt;/p&gt;
+
+&lt;p&gt;As stated from the &lt;a href=&quot;http://redux.js.org/docs/introduction/Motivation.html&quot;&gt;Redux motivation&lt;/a&gt;, Redux tries to make: &lt;strong&gt;“state mutation predictable”&lt;/strong&gt;, and it tries to achieve that by the following:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Have one single source of truth (from the state)&lt;/li&gt;
+  &lt;li&gt;States are read only and immutable.&lt;/li&gt;
+  &lt;li&gt;Changes are made with &lt;a href=&quot;https://en.wikipedia.org/wiki/Pure_function&quot;&gt;pure functions&lt;/a&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;p&gt;We will explain all these points in details, when we see how Redux works.&lt;/p&gt;
+
+&lt;h4 id=&quot;how-redux-works&quot;&gt;How Redux works?&lt;/h4&gt;
+&lt;p&gt;There is a wornderful diagram that describe the flow in Redux. &lt;a href=&quot;http://slides.com/jenyaterpil/redux-from-twitter-hype-to-production#/&quot;&gt;I got this diagram from this presentation&lt;/a&gt;.&lt;/p&gt;
+&lt;div class=&quot;column&quot; style=&quot;align: center&quot;&gt;
+  &lt;p&gt;&lt;img src=&quot;/img/redux.gif&quot; alt=&quot;smtp&quot; height=&quot;600px&quot; width=&quot;auto&quot; align=&quot;center&quot; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;p&gt;This is the data flow:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Models/states in the application should reside in a container called “Store”. Even we can have many stores in an application, but Redux differs from others (like Flux) by leaning toward one store.&lt;/li&gt;
+  &lt;li&gt;Communication to the store should happen through one gate, which is a function called “dispatch”.&lt;/li&gt;
+  &lt;li&gt;Anything wants to modify the state should dispatch “Actions” which are a simple javaScript objects that describe what we want to modify and the new data.&lt;/li&gt;
+  &lt;li&gt;The Store receives the actions, and pass it to “Reducers” which are pure functions that modify the store’s state and produce a new state.&lt;/li&gt;
+  &lt;li&gt;Store’s state is immutable, and any modification will generate always a new state.&lt;/li&gt;
+  &lt;li&gt;The Store will notify any subscribers about new changes.&lt;/li&gt;
+  &lt;li&gt;UI render itself, using  pure functions taking the store’s state as input parameter.&lt;/li&gt;
+  &lt;li&gt;Asynchrounous network calls will modify the store through actions as everything else.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h4 id=&quot;why-redux-is-better-&quot;&gt;Why Redux is better ?&lt;/h4&gt;
+&lt;p&gt;Redux solves many problems:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Because we use pure functions everywhere, so alwas the output is deterministic, and we have deterministic UI.&lt;/li&gt;
+  &lt;li&gt;Time Travelling: Because we change the state through actions which are pure JavaScript objects, which means we can at any moment re-create the state from scratch if we keep a log of those actions, so time-travelling will be a breath.&lt;/li&gt;
+  &lt;li&gt;Logging actions, we can know who modify the state, and when exactly.&lt;/li&gt;
+  &lt;li&gt;Collaborative programs like (google docs) can be acheived easily by sending Actions on the wire and recreate them there.&lt;/li&gt;
+  &lt;li&gt;Easy debugging, by logging all actions on production we can re-create the whole situation.&lt;/li&gt;
+  &lt;li&gt;Deterministic UI, because UI rendering using pure function, and the same input will always generate the same output.&lt;/li&gt;
+  &lt;li&gt;Unit test is so easy, because we are testing pure functions for UI and state mutation.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;setup-redux-application&quot;&gt;Setup Redux application&lt;/h2&gt;
+&lt;p&gt;I am going to speak here theoretically, and not writing any code.&lt;br /&gt;
+To use Redux in an application, there are few libraries that you Must have and you cannot work without them (in my opinion):&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Redux itself:&lt;br /&gt;
+ First you need Redux itself, which is available through npm.&lt;/li&gt;
+  &lt;li&gt;integration with other libraries:&lt;br /&gt;
+  As we mentioned above, Redux’s store has one method called &lt;code class=&quot;language-wiki&quot;&gt;&amp;nbsp;&amp;nbsp;dispatch&amp;nbsp;&amp;nbsp;&lt;/code&gt; and it has another method to subscribe to state changes called &lt;code class=&quot;language-wiki&quot;&gt;&amp;nbsp;&amp;nbsp;subscribe&amp;nbsp;&amp;nbsp;&lt;/code&gt;. We can simply use these methods to communicate to the store. But most probably we are using another library for UI, and Redux community created an easy way to integrate with lots of libraries, for example angular has &lt;a href=&quot;https://github.com/angular-redux/store&quot;&gt;ng-redux&lt;/a&gt;, and React has &lt;a href=&quot;https://github.com/reactjs/react-redux&quot;&gt;react-redux&lt;/a&gt;. Even Backbone, and Elmer.&lt;/li&gt;
+  &lt;li&gt;middle-ware to handle asynchronous calls:&lt;br /&gt;
+  Preferably use middle-ware to handle asynchronous calls, so you will have a unified way to send actions regardless if you sending simple objects, or actions that do async calls. There are plenty of options, the simplest is &lt;a href=&quot;https://github.com/gaearon/redux-thunk&quot;&gt;redux-thunk&lt;/a&gt;. But more advanced will be &lt;a href=&quot;https://github.com/redux-saga/redux-saga&quot;&gt;redux-saga&lt;/a&gt; or &lt;a href=&quot;https://github.com/redux-observable/redux-observable/&quot;&gt;redux-observable&lt;/a&gt;.&lt;/li&gt;
+  &lt;li&gt;Logger:&lt;br /&gt;
+  don’t do development without having a logger. It is a life-saving. &lt;a href=&quot;https://github.com/evgenyrodionov/redux-logger&quot;&gt;redux-logger&lt;/a&gt;. It logs every actions with the state before and after the action.&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://facebook.github.io/immutable-js/&quot;&gt;Immutable.js&lt;/a&gt; or &lt;a href=&quot;https://github.com/rtfeldman/seamless-immutable&quot;&gt;Seamless-immutable&lt;/a&gt;:&lt;br /&gt;
+  Don’t do complex modification for the state without using immutable library
+Redux communication can be achieved directly through javaScript only by using the “&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h4 id=&quot;there-is-more-to-the-ecosystem&quot;&gt;There is more to the ecosystem&lt;/h4&gt;
+&lt;p&gt;There is more to the ecosystem, but I only put the minimun that you must have to work. Although you don’t have to use them, and you can go away using Redux by itself, but expect some trouble when your application become more complex.&lt;/p&gt;
+</description>
+        <pubDate>Wed, 22 Feb 2017 09:45:00 -0700</pubDate>
+        <link>https://blog.gisspan.com/2017/02/Redux-Vs-MVC,-Why-and-How.html</link>
+        <guid isPermaLink="true">https://blog.gisspan.com/2017/02/Redux-Vs-MVC,-Why-and-How.html</guid>
+        
+        <category>javascript</category>
+        
+        
+      </item>
+    
+      <item>
+        <title>The proper way to use OAuth in a native app.</title>
+        <description>
+&lt;p&gt;&lt;a href=&quot;https://www.ietf.org/&quot;&gt;IETF&lt;/a&gt; submitted &lt;a href=&quot;https://tools.ietf.org/html/draft-ietf-oauth-native-apps-07&quot;&gt;a draft&lt;/a&gt; on the best approach to implement OAuth in a mobile native app. They recommended a specific flow and some security considerations.&lt;br /&gt;
+I am going to show how to implement these in the code on both mobile platforms iOS, and Android using Facebook authentication service as an example of OAuth provider, and then show how Facebook and Google SDK for those platforms are implementing this apporaches.&lt;br /&gt;
+This is not an OAuth tutorial, so I am assuming that you are familiar with OAuth terminologies and workflows. &lt;!--more--&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;the-security-considertations-for-native-app&quot;&gt;The security considertations for native app&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&quot;https://www.ietf.org/&quot;&gt;IETF&lt;/a&gt; submitted &lt;a href=&quot;https://tools.ietf.org/html/draft-ietf-oauth-native-apps-07&quot;&gt;a draft&lt;/a&gt; on the best approach to implement OAuth in a mobile native app, and in that draft IETF made the statement that:&lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;OAuth 2.0 authorization requests from native apps should only be made through external user-agents, primarily the user’s browser.&lt;br /&gt;
+This practice is also known as the AppAuth pattern, in reference to open source libraries that implement it.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;In order to statisfy the previous statement and to provide more solid, security solution for OAuth on native app, IETF provide the following security considertations:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Don’t use embeded user agent like web-view, because the native app can capture user credentials when entered on OAuth website.&lt;/li&gt;
+  &lt;li&gt;Register your application with the OAuth provider and specify it is a native app.&lt;/li&gt;
+  &lt;li&gt;It is not recommended to use OAuth implicit flow with a native app.&lt;/li&gt;
+  &lt;li&gt;Don’t store your application secret (which you obtain upon registering your application) in the code. There is a work around to use your secret when required which we are giong to see later.&lt;/li&gt;
+  &lt;li&gt;Most OAuth providers provide the parameter &lt;code class=&quot;language-wiki&quot;&gt;state&lt;/code&gt; in their service to protect against CSRF attacks.&lt;/li&gt;
+  &lt;li&gt;If you are building your own OAuth authentication services, then make sure the HTTP redirect address will have the application identifier as schema of the URL, which we are going to show it later.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;appauth-or-authorization-code-flow&quot;&gt;AppAuth or Authorization Code Flow&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&quot;https://tools.ietf.org/html/draft-ietf-oauth-native-apps-07#section-4.1&quot;&gt;Section 4.1&lt;/a&gt; in that draft shows the authorization flow of the AppAuth approach and it is very similar to Authorization Code Flow. Don’t worry about getting its details, because I am going to describe them later:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-css&quot;&gt;+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~+
+|          User Device           |
+| +---------------------------+  |                     +-----------+
+| |                           |  | (5) Authz Code      |           |
+| |        Client App         |-----------------------&amp;gt;|  Token    |
+| |                           |&amp;lt;-----------------------|  Endpoint |
+| +---------------------------+  | (6) Access Token,   |           |
+|    |              ^            |     Refresh Token   +-----------+
+|    | (1)          | (4)        |
+|    | Authz        | Authz      |
+|    | Request      | Code       |
+|    v              |            |
+| +---------------------------+  |                   +---------------+
+| |                           |  | (2) Authz Request |               |
+| |          Browser          |---------------------&amp;gt;| Authorization |
+| |                           |&amp;lt;---------------------| Endpoint      |
+| +---------------------------+  | (3) Authz Code    |               |
+|                                |                   +---------------+
++~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~+
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;p&gt;I am going to re-represent the same flow in the previous diagram with a more graphics in a simpler diagram that anyone can understand (including me).&lt;/p&gt;
+
+&lt;div class=&quot;column&quot; style=&quot;align: center&quot;&gt;
+  &lt;p&gt;&lt;img src=&quot;/img/oauth.png&quot; alt=&quot;smtp&quot; height=&quot;600px&quot; width=&quot;auto&quot; align=&quot;center&quot; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+
+&lt;p&gt;&lt;br /&gt;
+I am going to implement that using the Facebook Authorization service as an example of the OAuth provider. But, I am just showing this as an example, becuase in real life if you want to connect using Facebook, then I recommend using Facebook SDK for iOS and Android, and not using my code.
+Anyway, my code is going to be conceptual steps that show only the exact step implementations, and not a whole application.&lt;br /&gt;
+&lt;br /&gt;
+&lt;br /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;step-1--2-request-auhorization&quot;&gt;step 1 &amp;amp; 2: Request Auhorization&lt;/h4&gt;
+&lt;p&gt;In this step we are going to launch the external web browser with URL of the Facebook Authorization EndPoint:&lt;br /&gt;
+The Facebook Authorization EndPoint is:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-http&quot;&gt;https://www.facebook.com/v2.8/dialog/oauth?
+  client_id={app-id}
+  &amp;amp;redirect_uri={redirect-uri}
+  &amp;amp;state={state}
+  &amp;amp;response_type=code
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The parameters are as follows:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;redirect_uri is the URL that you want to redirect the process back to. For a native app, the redirect url should be special which we should see how later.&lt;/li&gt;
+  &lt;li&gt;state: is an arbitrary unique string that is used to protect against CSRF.&lt;/li&gt;
+  &lt;li&gt;response_type: has many options, but for our AppAuth it is proper to use “code”.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Launching the browser from the native code.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-java&quot;&gt; // For Android:
+// ---------------------------------
+
+AppUri authzUrl =Uri.parse(&quot;https://www.facebook.com/v2.8/dialog/oauth?client_id=xxxx&amp;amp;state=abcd&amp;amp;response_type=code&quot;);
+Intent launchBrowser = new Intent(Intent.ACTION_VIEW, authzUrl);
+startActivity(launchBrowser);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;br /&gt;
+And for iOS:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-objectivec&quot;&gt; // For iOS:
+// ---------------------------------
+
+NSString* launchUrl =@&quot;https://www.facebook.com/v2.8/dialog/oauth?client_id=xxxx&amp;amp;state=abcd&amp;amp;response_type=code&quot;;
+[[UIApplication sharedApplication] openURL:[NSURL URLWithString: launchUrl]];
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Facebook will direct you to enter your credentials, and then ask you to allow the application to access your token.&lt;br /&gt;
+When the user confirm the authorization server will respond with HTTP redirect like the following:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-http&quot;&gt;HTTP/1.1 302 Found
+Location: my-app-id://oauth.callback?code=the-code-returned-by-service
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;pay attention to the shceme in the URL: &lt;code class=&quot;language-wiki&quot;&gt; my-app-id:// &lt;/code&gt; which we are going to talk about in the next step.&lt;br /&gt;
+Let’s move to step 3 &amp;amp; 4.
+&lt;br /&gt;
+&lt;br /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;step-3--4-authorization-endpoint-response&quot;&gt;step 3 &amp;amp; 4: Authorization endpoint response&lt;/h4&gt;
+
+&lt;p&gt;In Step 4 we should return back to the App from the external browser. The most common way is to use &lt;strong&gt;Custom URI Scheme&lt;/strong&gt;.&lt;br /&gt;
+Custom URI Scheme is a technique used in both iOS and Android to support inter-app communication, so app1 can communicate with app2 by launching a request like this:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-http&quot;&gt;app2://some-page-and-parameters&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;So, now let’s see how to define custom URI scheme in both platforms.&lt;br /&gt;
+&lt;br /&gt;&lt;/p&gt;
+
+&lt;p&gt;In Android we create an activity that will handle the redirect by defining its intent-filter to respond to BROWSABLE activites. the code will be similar to this:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-markup&quot;&gt;&amp;lt;!-- android --&amp;gt;
+&amp;lt;activity android:name=&quot;.my-activity-handler&quot;&amp;gt;
+  &amp;lt;intent-filter&amp;gt;
+    &amp;lt;action android:name=&quot;android.intent.action.VIEW&quot; /&amp;gt;
+    &amp;lt;category android:name=&quot;android.intent.category.DEFAULT&quot; /&amp;gt;
+    &amp;lt;category android:name=&quot;android.intent.category.BROWSABLE&quot; /&amp;gt;
+    &amp;lt;data android:scheme=&quot;my-app-id&quot; /&amp;gt;
+  &amp;lt;/intent-filter&amp;gt;
+&amp;lt;/activity&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;br /&gt;
+&lt;br /&gt;
+In iOS we define the custom URI Scheme in the plist file:&lt;/p&gt;
+&lt;div class=&quot;column&quot; style=&quot;align: center&quot;&gt;
+  &lt;p&gt;&lt;img src=&quot;/img/plist.png&quot; alt=&quot;smtp&quot; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+
+&lt;p&gt;and in the application delegate file we write a handler for application:openUrl&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-objectivec&quot;&gt; // For iOS:
+// in AppDelegate.m
+// --------------------------------
+
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url
+{ 
+  NSString *queryString = [url query]; 
+  for (NSString *param in [queryString componentsSeparatedByString:@&quot;&amp;amp;&quot;]) { 
+    NSArray *keyValuePair = [param componentsSeparatedByString:@&quot;=&quot;]; 
+    if([keyValuePair objectAtIndex:0] isEqualToString:@&quot;code&quot;)
+    {
+      // continue with authorization code in [keyValuePair objectAtIndex:1]  //
+    }
+  }; 
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;br /&gt;
+&lt;br /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;step-5--6-trading-authorization-code-with-the-token&quot;&gt;step 5 &amp;amp; 6: Trading authorization code with the token&lt;/h4&gt;
+
+&lt;p&gt;The final step is to communicate with the Token Endpoint and send the authorization code received from the previous step.&lt;br /&gt;
+To do that in Facebook, we call Facebook Token Endpoint as follows:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-http&quot;&gt;GET https://graph.facebook.com/v2.8/oauth/access_token?
+   client_id={app-id}
+   &amp;amp;redirect_uri={redirect-uri}
+   &amp;amp;client_secret={app-secret}
+   &amp;amp;code={code-parameter}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Now there is a huge problem with this, because it requires the client secret, which is something that you should never use from your native code, becaues someone can hack it and get it.&lt;br /&gt;
+It is highly recommended to call this service from a back-end server, so you might have to have a back-end server.&lt;br /&gt;
+P.S: You can build a simple server component with a &lt;a href=&quot;https://github.com/ParsePlatform/parse-server&quot;&gt;perse-server&lt;/a&gt; and host it on Redhat openshift free cloud servers.&lt;br /&gt;
+So, we will assume that we have a back-end server that will call this for us, and we have to call it passing our authorization code we received from previous step, like this.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-http&quot;&gt;GET https://my-token-service?code={code-parameter}&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;To call this service in iOS:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-objectivec&quot;&gt; // For iOS:
+// --------------------------------
+NSMutableURLRequest *request= [[[NSMutableURLRequest alloc] init] autorelease];
+[request setURL: [NSURL URLWithString:@&quot;https://my-token-service?code=xxxx&quot;]];
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;For Android&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-java&quot;&gt; // For Android:
+// ---------------------------------
+DefualtHttpClient httpClient = new DefaultHttpClient();
+HttpGet get = new HttpGet(&quot;https://my-token-service?code=xxxxx&quot;);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;br /&gt;
+&lt;br /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;final-statment&quot;&gt;Final statment&lt;/h4&gt;
+&lt;p&gt;Just reminder that the code above was conceptual to describe the process in more practical way. If you are going to use Facebook OAuth, then it is way easier and better to use Facebook SDK.&lt;/p&gt;
+
+</description>
+        <pubDate>Wed, 01 Feb 2017 09:45:00 -0700</pubDate>
+        <link>https://blog.gisspan.com/2017/02/Implementing-OAuth-on-mobile-Facebook-login-as-example.html</link>
+        <guid isPermaLink="true">https://blog.gisspan.com/2017/02/Implementing-OAuth-on-mobile-Facebook-login-as-example.html</guid>
+        
+        <category>mobile</category>
+        
+        <category>security</category>
+        
+        
+      </item>
+    
+      <item>
+        <title>Sending emails with attachments or embedded image using Amazon&#39;s AWS SES API &amp; .NET.</title>
+        <description>
+&lt;p&gt;To send an email with AWS services, there are two options, either connecting directly to the AWS SMTP server with SMTP protocols, but then you have to open SMTP ports (587 or 25 usually).
+Otherwise you can use the AWS API which are bunch of REST API services that you can call them over HTTPS.&lt;br /&gt;
+AWS SES API has two options to send emails &lt;a href=&quot;http://docs.aws.amazon.com/ses/latest/DeveloperGuide/send-email-api.html&quot;&gt;as described in the documentation&lt;/a&gt;:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Send simple formatted email:&lt;br /&gt;
+which will make your life easy, but you are limited to send only text messages.&lt;/li&gt;
+  &lt;li&gt;Send raw email in order to send an embedded image or more complicated content.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;In order to send raw email with embedded images, you can just find some code on stackoverflow, but I will try in this post to describe what is going on, and how raw email works, so you can understand the process in details.
+&lt;!--more--&gt;
+&lt;br /&gt;
+&lt;br /&gt;&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;PS: If you just want a code that works, you can just skip to the end of the article and get the code.&lt;br /&gt;
+I am trying here to describe the details of the solution, and give deeper understanding of the email protocols.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&quot;what-is-an-email-message&quot;&gt;What is an email message?&lt;/h2&gt;
+&lt;p&gt;As the following diagram shows, the client sends email messages to an email serves using SMTP protocols over port 587, and email servers communicate with the same SMTP protocol over port 25.&lt;/p&gt;
+
+&lt;div class=&quot;column&quot; style=&quot;align: center&quot;&gt;
+  &lt;p&gt;&lt;img src=&quot;/img/smtp.jpg&quot; alt=&quot;smtp&quot; height=&quot;400px&quot; width=&quot;auto&quot; align=&quot;center&quot; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;p&gt;An email message that is transferred from end to end consists of three parts:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;&lt;strong&gt;Envelope&lt;/strong&gt;:&lt;br /&gt;
+The envelope contains the actual routing information that is communicated between the email client and the mail server during the SMTP session. It is constructed by the SMTP protocol, and it is analogous to the information on a postal envelope.
+&lt;br /&gt;&lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;Header&lt;/strong&gt;:
+Contains metadata of the message, examples are the sender’s address, the recipient’s address, the subject, and the date.
+&lt;br /&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Body&lt;/strong&gt;:
+Contains the text message.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;message-format&quot;&gt;Message format&lt;/h2&gt;
+&lt;p&gt;SMTP covers only the envelope part, and the rest of the message is covered by another protocol the &lt;a href=&quot;https://tools.ietf.org/search/rfc5322&quot;&gt;Internet Message Format (RFC 5322)&lt;/a&gt;.&lt;br /&gt;
+Internet Message Format defines the format of the &lt;strong&gt;Header&lt;/strong&gt; and the &lt;strong&gt;Body&lt;/strong&gt; that consists the message.&lt;br /&gt;
+&lt;br /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;simple-message-format&quot;&gt;Simple message format&lt;/h4&gt;
+&lt;p&gt;This is an example a simple message:&lt;br /&gt;
+&lt;br /&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-markup&quot;&gt;From: &quot;Andrew&quot; &amp;lt;andrew@example.com&amp;gt;
+To: &quot;Bob&quot; &amp;lt;bob@example.com&amp;gt;
+Date: Fri, 17 Dec 2010 14:26:21 -0800
+Subject: Hello
+Message-ID: &amp;lt;61967230-7A45-4A9D-BEC9-87CBCF2211C9@example.com&amp;gt;
+Accept-Language: en-US
+Content-Language: en-US
+Content-Type: text/plain; charset=&quot;us-ascii&quot;
+Content-Transfer-Encoding: quoted-printable
+
+Hello, I hope you are having a good day.
+
+-Andrew&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;br /&gt;
+From the following example we can extract the following:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;The header and body are separated by a blank line.&lt;/li&gt;
+  &lt;li&gt;The header consists of multi lines, each line represent a header field with its value separated by a colon.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;using-mime&quot;&gt;Using MIME&lt;/h2&gt;
+&lt;p&gt;The SMTP protocol was designed to send data composed of 7-bit ASCII characters. And Internet Message Format was design with that restriction in mind. But email spread out and there was requirements to send more complicated data format as attachments or Unicode characters, and the industry came up with a new protocol called Multipurpose Internet Mail Extensions (MIME).&lt;br /&gt;
+MIME still send data as 7-bit ASCII, but it encode the non-ASCII data to do that, and the most used encoding is &lt;strong&gt;base64&lt;/strong&gt; encoding.&lt;br /&gt;
+The MIME standard works by breaking the message body into pultiple parts and then specifying what is to be done with each part.&lt;br /&gt;
+&lt;br /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;email-with-an-attachment&quot;&gt;Email with an attachment&lt;/h4&gt;
+&lt;p&gt;Let’s see an example of an attachment:&lt;br /&gt;
+&lt;br /&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-markup&quot;&gt;From: &quot;Bob&quot; &amp;lt;bob@example.com&amp;gt;
+To: &quot;Andrew&quot; &amp;lt;andrew@example.com&amp;gt;
+Date: Wed, 2 Mar 2011 11:39:34 -0800
+Subject: Customer service contact info
+Message-ID: &amp;lt;97DCB304-C529-4779-BEBC-FC8357FCC4D2@example.com&amp;gt;
+Accept-Language: en-US
+Content-Language: en-US
+Content-Type: multipart/mixed;
+  boundary=&quot;_003_97DCB304C5294779BEBCFC8357FCC4D2&quot;
+MIME-Version: 1.0
+
+--_003_97DCB304C5294779BEBCFC8357FCC4D2
+Content-Type: text/plain; charset=&quot;us-ascii&quot;
+Content-Transfer-Encoding: quoted-printable
+
+Hi Andrew.  Here are the customer service names and telephone numbers I promised you. 
+
+See attached.
+
+-Bob
+
+--_003_97DCB304C5294779BEBCFC8357FCC4D2
+Content-Type: text/plain; name=&quot;cust-serv.txt&quot;
+Content-Description: cust-serv.txt
+Content-Disposition: attachment; filename=&quot;cust-serv.txt&quot;; size=1180;
+  creation-date=&quot;Wed, 02 Mar 2011 11:39:39 GMT&quot;;
+  modification-date=&quot;Wed, 02 Mar 2011 11:39:39 GMT&quot;
+Content-Transfer-Encoding: base64
+
+TWFyeSBEYXZpcyAtICgzMjEpIDU1NS03NDY1DQpDYXJsIFRob21hcyAtICgzMjEpIDU1NS01MjM1
+DQpTYW0gRmFycmlzIC0gKDMyMSkgNTU1LTIxMzQ=
+
+--_003_97DCB304C5294779BEBCFC8357FCC4D2
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;p&gt;We should notice the following:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;A blank line still separate the body from the header&lt;/li&gt;
+  &lt;li&gt;The content type is “&lt;strong&gt;mulitpart/mixed&lt;/strong&gt;”&lt;/li&gt;
+  &lt;li&gt;A “boundary” parameter specifies where each part begin and ends&lt;/li&gt;
+  &lt;li&gt;The “&lt;strong&gt;Content-Disposition&lt;/strong&gt;” header field specifies how the client should handle the attachment.&lt;/li&gt;
+  &lt;li&gt;The “&lt;strong&gt;Content-Transfer-Encoding&lt;/strong&gt;” is base64, and this is the standard way that the Mime types are stored in 7-bit Ascii based text, because the SMTP still transfer the message as 7-bit Ascii.&lt;br /&gt;
+&lt;br /&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&quot;email-with-embedded-image&quot;&gt;Email with embedded image&lt;/h4&gt;
+&lt;p&gt;Let’s see how an email with an embedded image is represented:&lt;br /&gt;
+&lt;br /&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-markup&quot;&gt;From: Bob &amp;lt;bob@example.com&amp;gt;
+To: &amp;lt;john@example.com&amp;gt;
+Subject: The deal you want.
+Content-Type: multipart/related;
+	boundary=&quot;--boundary_1_16494d19-57aa-4462-a4c8-c8e5abefb2aa&quot;;
+	type=&quot;text/html&quot;
+
+----boundary_1_16494d19-57aa-4462-a4c8-c8e5abefb2aa
+Content-Type: text/html; charset=&quot;us-ascii&quot;
+Content-Transfer-Encoding: quoted-printable
+
+&amp;lt;html&amp;gt;
+&amp;lt;head&amp;gt;&amp;lt;/head&amp;gt;
+&amp;lt;body&amp;gt;
+&amp;lt;img src=&quot;cid:BannerId&quot;&amp;gt;&amp;lt;br&amp;gt;
+The deal you want
+&amp;lt;/body&amp;gt;
+&amp;lt;/html&amp;gt;
+
+----boundary_1_16494d19-57aa-4462-a4c8-c8e5abefb2aa
+Content-Type: image/jpeg
+Content-Transfer-Encoding: base64
+Content-ID: &amp;lt;BannerId&amp;gt;
+
+
+iVBORw0KGgoAAAANSUhEUgAAAykAAABXCAYAAAAAqgpGAAAAAXNSR0IArs4c6QAAAARnQU1B
+.......
+paVF/g8NZOLQHqTPpAAAAABJRU5ErkJggg==
+----boundary_1_16494d19-57aa-4462-a4c8-c8e5abefb2aa--
+
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;p&gt;We should notice the following:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;A blank line still separate the body from the header, and boundary parameter still used to separate parts.&lt;/li&gt;
+  &lt;li&gt;the content of the body must be HTML.&lt;/li&gt;
+  &lt;li&gt;The content type is “&lt;strong&gt;mulitpart/related&lt;/strong&gt;” : and this type is used for compound documents, those messages in which the separate body parts are intended to work together to provide the full meaning of the message&lt;/li&gt;
+  &lt;li&gt;The image part has a header field called “&lt;strong&gt;Content-ID&lt;/strong&gt;” which has value &lt;strong&gt;BannerId&lt;/strong&gt; equal to an “ID” in the html document that specify where the image will be embedded, which is defined in the pattern &lt;strong&gt;“cid:BannerId”&lt;/strong&gt;.&lt;/li&gt;
+  &lt;li&gt;The binary of the image is represented as base64&lt;br /&gt;
+&lt;br /&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;calling-aws-ses-api-using-c&quot;&gt;Calling AWS SES API using C#&lt;/h2&gt;
+&lt;p&gt;Let us now jump to programming, and see how we can call AWS SES API.&lt;br /&gt;
+&lt;br /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;the-shortage-of-net-framework&quot;&gt;The shortage of .NET framework&lt;/h4&gt;
+&lt;p&gt;.NET provides the namespace &lt;strong&gt;System.Net.Mail&lt;/strong&gt; that helps interact with a SMTP server and send emails with complicated contents (attachments, embedded images, …etc). It abstracts the low level of generating these raw data of the email message.&lt;br /&gt;
+But, when we use AWS SES API, we want to see and use these raw messages generated by .NET classes. Unfortunately, .NET doesn’t provide an easy way to generate these raw messages.&lt;br /&gt;
+But there are three solutions:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;We build the raw message ourselves, which is going to be a nightmare and a magnet for bugs.&lt;/li&gt;
+  &lt;li&gt;Using un undocumented hack in .NET assemblies.&lt;/li&gt;
+  &lt;li&gt;Using third party libraries that does generate the raw message.
+&lt;br /&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Of course, I am not interested in building the raw message by myself, so let’s ignore that and describe the two other solutions:&lt;br /&gt;
+&lt;br /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;using-a-hack-in-net-framework&quot;&gt;Using a hack in .NET Framework&lt;/h4&gt;
+&lt;p&gt;There is an undocumented way to generate the raw message from Microsoft .NET assemblies, but with a small hack.
+The namespace System.Net.Mail provides &lt;a href=&quot;https://msdn.microsoft.com/en-us/library/7c5ka91b.aspx&quot;&gt;internal&lt;/a&gt; classes and members that cannot be called directly, but can be accessed using reflection.
+There are these two useful entities:
+System.Net.Mail.MailMessage has an internal method called “Send”, which will generate the “Raw” message and write it into a stream.
+System.Net.Mail.MailWriter is an internal class that is used by the above method to write the “Raw” message.
+I used this approach, and I will show a sample code of it:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-csharp&quot;&gt;public void SendMessage()
+{
+    // Here we construct the System.Net.Mail.MailMessage 
+    // using all the tools in the System.Net.Mail namespace 
+    // that help us build a complicated message.
+    // for examples: Attachment, LinedResource (for embedded resources)...
+    System.Net.Mail.MailMessage message = ConstructMessage();
+
+    // Here where we generate the raw message
+    var rawASCII_message = ConvertMessageToAscii(message);
+    
+}
+
+private string ConvertMessageToAscii(MailMessage message)
+{
+    Assembly assembly = typeof(SmtpClient).Assembly;
+    Type mailWriterType = assembly.GetType(&quot;System.Net.Mail.MailWriter&quot;);
+    MemoryStream fileStream = new MemoryStream();
+
+    // Create an instance of the internal class MailWriter
+    ConstructorInfo mailWriterContructor = mailWriterType.GetConstructor
+        (BindingFlags.Instance | BindingFlags.NonPublic, null, new[] { typeof(Stream) }, null);
+    object mailWriter = mailWriterContructor.Invoke(new object[] { fileStream });
+
+    // Call the internal method &quot;Send&quot; of the MailMessage
+    MethodInfo sendMethod = typeof(MailMessage).GetMethod(&quot;Send&quot;, 
+        BindingFlags.Instance | BindingFlags.NonPublic);
+    sendMethod.Invoke(message, BindingFlags.Instance 
+        | BindingFlags.NonPublic, null, new[] { mailWriter, true }, null);
+
+    // Now mailWriter has the raw data
+    // Read the stream as ASCII
+    var reader = new StreamReader(mailWriter, Encoding.ASCII);
+    var rawMessage = reader.ReadToEnd();
+    MethodInfo closeMethod = mailWriter.GetType().GetMethod
+        (&quot;Close&quot;, BindingFlags.Instance | BindingFlags.NonPublic);
+    
+    closeMethod.Invoke(mailWriter, BindingFlags.Instance 
+        | BindingFlags.NonPublic, null, new object[] { }, null);
+    return rawMessage;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;br /&gt;
+&lt;br /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;third-party-solutions&quot;&gt;Third-party solutions&lt;/h4&gt;
+&lt;p&gt;The .NET community came up with third-party libraries that help parse/generate all MIME types that are even not supported by .NET framework:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;http://nugetmusthaves.com/Package/MimeKit&quot;&gt;MimeKit&lt;/a&gt;.&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://nugetmusthaves.com/Package/MimeKitLite&quot;&gt;MimeKitLite&lt;/a&gt;.&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://anmar.eu.org/projects/sharpmimetools/&quot;&gt;SharpMimeTools&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://hpop.sourceforge.net/&quot;&gt;OpenPop.NET&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;and there are others.&lt;br /&gt;
+The above libraries will generate and parse MIME based raw messages.&lt;/p&gt;
+
+&lt;p&gt;To see a solution that uses MimeKitLite, &lt;a href=&quot;https://www.youtube.com/watch?v=PQdt-tZxkEA&quot;&gt;see this video&lt;/a&gt;.&lt;br /&gt;
+&lt;br /&gt;&lt;/p&gt;
+
+</description>
+        <pubDate>Thu, 08 Dec 2016 09:45:00 -0700</pubDate>
+        <link>https://blog.gisspan.com/2016/12/Sending-Email-with-embedded-image-with-aws.html</link>
+        <guid isPermaLink="true">https://blog.gisspan.com/2016/12/Sending-Email-with-embedded-image-with-aws.html</guid>
+        
+        <category>asp.net</category>
+        
+        <category>AWS</category>
+        
+        
+      </item>
+    
+      <item>
+        <title>Everything you need to know about Date-Time in Asp.NET &amp; JSON.</title>
+        <description>
+&lt;p&gt;Date-Time data type is a complex issue. Complex enough to make you confuse overtime you are writing code that return dates from the web server to the browser.&lt;br /&gt;
+ASP.NET MVC 5 and Web API 2 serialize dates differently, which might create more confusion for developers who are using both serializations in one web application.&lt;br /&gt;
+I am trying to cover everything you need to know about Date and Date serialization to JSON, in ASP.NET, and what issues are related to them.&lt;br /&gt;
+I wanted to cover as well the issues with JavaScript date data type, but I will leave that to another post, because there are tons of issues that can be covered when it comes to JavaScript and date.
+&lt;!--more--&gt;
+&lt;br /&gt;
+&lt;br /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;ambiguity-of-datetime-values&quot;&gt;Ambiguity of Date/Time values&lt;/h2&gt;
+&lt;p&gt;The main problem with date/time is its ambiguity. For example when I have a datetime as : 2016/05/05 10:00:00 AM, 
+I have to know to which timezone this value belong in order to clear any abmiguity.&lt;br /&gt;
+If we add to the timezone, that the value can be from a different calendar than the GregorianCalendar, then we add more complexity to that abmiguity.&lt;br /&gt;
+In this post, I am going to avoid talking about different calendars, assuming that all dates are from the default us-en calendar (the Gregorain canlendar).&lt;br /&gt;
+How to clear the ambiguity of date/time values?&lt;br /&gt;
+&lt;br /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;unambiguous-representation-of-datetime&quot;&gt;Unambiguous representation of Date/Time&lt;/h2&gt;
+&lt;p&gt;There are different formats that the industry came up with to Unamiguously represent a single point of time. The web development industry came up with different solutions to have an Unambiguous representation of time values:&lt;/p&gt;
+
+&lt;h5 id=&quot;utc-time&quot;&gt;UTC Time&lt;/h5&gt;
+&lt;p&gt;UTC stands for Coordinated Universal Time, which is the time in Timezone zero, disregarding the daylight saving time.&lt;br /&gt;
+UTC is an Unambiguous representation of a single point of a time values, and a UTC time is the same for someone live in California to someone live in China.&lt;br /&gt;
+A possible solution that web developers do, is to store date/times in their UTC values, and do all the server manipulation, calculation with the UTC value, and send it to the browsers as UTC values, and the JavaScript on the browsers will converted to local time to show it on the web pages.&lt;/p&gt;
+
+&lt;h5 id=&quot;iso-8601&quot;&gt;ISO 8601&lt;/h5&gt;
+&lt;p&gt;There are plenty of date representation in the web, but the most famous and the one that was adopted by JavaScript on a large scale was the ISO-8601. This is an example of how ISO 8601 works&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-markup&quot;&gt;Date: 2016-10-12 10:18:42 Pacific time
+ISO 8601: 2016-10-11T10:18:42-06:00
+
+Date: 2016-10-12 10:18:42 UTC time
+ISO 8601: 2016-10-11T10:18:42z
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;date-representation-in-net&quot;&gt;Date representation in .NET&lt;/h2&gt;
+&lt;p&gt;.NET specially with version 4 and later has full support for dates, time zones, and converting between timezone, which help developers achieve all the date challenges they face. 
+In .NET the following classes are involved or related to Date:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;System.DateTime&lt;/li&gt;
+  &lt;li&gt;System.DateTimeOffset&lt;/li&gt;
+  &lt;li&gt;System.TimeSpan&lt;/li&gt;
+  &lt;li&gt;System.TimeZoneInfo&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h4 id=&quot;datetime-structure&quot;&gt;DateTime structure&lt;/h4&gt;
+
+&lt;p&gt;The DateTime class was the first introduced by .NET since version 1.0 and it doesn’t offer so much to represent timezones.
+The only timezone that DateTime allow is Local time zone, and UTC time zone. It provides is a property 
+&lt;code class=&quot;language-wiki&quot;&gt;Kind&lt;/code&gt; of type : &lt;code class=&quot;language-wiki&quot;&gt;DateTimeKind&lt;/code&gt; which is an enumeration that provides three kinds of date/time:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-csharp&quot;&gt;//DateTimeKind Enumeration 
+Local
+Utc
+Unspecified&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;You can specify the kind when you create the DateTime object, which is an optional parameter,  like this:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-csharp&quot;&gt;// DateTime constructor: DateTime(year, month, day, hour, minute, second, kind)
+var localTime = new DateTime(2016, 10, 10, 10, 10, 10, DateTimeKind.Local);
+var utcTime = new DateTime(2016, 10, 10, 10, 10, 10, DateTimeKind.Utc);
+var localCurrentTime = DateTime.Now; // this is local time
+
+//when omitted then it is Unspecified:
+var localTime = new DateTime(year, month, day, hour, minute, second); // this is Unspecified
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h5 id=&quot;when-to-use-datetime&quot;&gt;When to use DateTime?&lt;/h5&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;You deal with only local time, and you don’t have cross-timezone calculation.&lt;/li&gt;
+  &lt;li&gt;You deal only with UTC date time.&lt;/li&gt;
+  &lt;li&gt;You deal with abstract date/time (using Unspecified). For example to represent multi-national stores where all stores open at 8:00 AM.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&quot;datetimeoffset-timezoneinfo&quot;&gt;DateTimeOffset TimeZoneInfo&lt;/h4&gt;
+&lt;p&gt;The new structure  &lt;em&gt;DateTimeOffset&lt;/em&gt; structure was introduce to support dates with different timezones.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-csharp&quot;&gt;DateTimeOffset = DateTime + Offset from UTC
+
+// The constructor of DateTimeOffset has both component:
+// DateTimeOffset(DateTime, TimeOffset);
+var pacificTime = new DateTimeOffset(new DateTime(2016, 10, 10), new TimeOffset(-7, 0, 0));
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;It is not a good practice to hard code the time offset (-7) above, beside we could make mistakes because of daylight saving, and this is where we use the class &lt;strong&gt;&lt;em&gt;TimeZoneInfo&lt;/em&gt;&lt;/strong&gt;.&lt;br /&gt;
+TimeZoneInfo has all the timezones of the world, and we can search a specific time zone by its name using the method FindSystemTimeZoneById.&lt;br /&gt;
+For example we can rewrite the above code:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-csharp&quot;&gt;var pacificTime = new DateTimeOffset(new DateTime(2016, 10, 10), 
+    TimeZoneInfo.FindSystemTimeZoneById(&quot;Pacific Standard Time&quot;).BaseUtcOffset
+);
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;To check all the time zones ID(s), &lt;a href=&quot;https://msdn.microsoft.com/en-us/library/ms912391(v=winembedded.11).aspx&quot;&gt;you can find it here&lt;/a&gt;&lt;br /&gt;
+&lt;br /&gt;&lt;/p&gt;
+
+&lt;h5 id=&quot;when-to-use-datetimeoffset&quot;&gt;When to use DateTimeOffset?&lt;/h5&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Your code deals with different time values belong to different timezones.&lt;/li&gt;
+  &lt;li&gt;You need to convert between different timezones.&lt;/li&gt;
+  &lt;li&gt;You need to do date time calculation for dates that don’t belong to your local server timezone or UTC timezone.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;datetime-in-json--javascipt&quot;&gt;Date/Time in JSON &amp;amp; JavaScipt&lt;/h2&gt;
+&lt;p&gt;JSON lacks the definition of date/time, and that is because JavaScipt lacks the definition of date/time literals. JavaScript support the date/time through the &lt;em&gt;&lt;strong&gt;Date&lt;/strong&gt;&lt;/em&gt; object, and its methods and constructors.&lt;br /&gt;
+To create a Date object in JavaScript there are these options:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;&lt;strong&gt;new Date()&lt;/strong&gt;: To create the current date.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;new Date(integer_value)&lt;/strong&gt;: the number of milliseconds since 1-Jan-1970 00:00:00 UTC (Unix Epoch).&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;new Date(string_value)&lt;/strong&gt;: the ISO-8601 format of date/time or any recognizable date string.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;new Date(year, month, day[, hour, minute, seconds, milliseconds])&lt;/strong&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Date/time in Javascript is a huge subject, but for this post, I am going to cover only what is related to ASP.NET and how Asp.NET serialize dates to JSON.&lt;br /&gt;
+&lt;br /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;aspnet-serialization-of-datetime-to-json&quot;&gt;Asp.NET Serialization of Date/Time to JSON&lt;/h2&gt;
+
+&lt;p&gt;ASP.NET has three different JSON Serializers, each serialize datetime differently:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Web API 2 serializer: (JSON.NET).&lt;/li&gt;
+  &lt;li&gt;ASP.NET MVC Serializer.&lt;/li&gt;
+  &lt;li&gt;DataContractJsonSerializer&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Let us start from WEB API 2 serializer:&lt;br /&gt;
+&lt;br /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;web-api-2-json-serializer&quot;&gt;Web API 2 JSON Serializer&lt;/h4&gt;
+&lt;p&gt;The default JSON serializer in Web API 2 is not from Microsoft, but it is a third party library &lt;a href=&quot;http://www.newtonsoft.com&quot;&gt;(JSON.NET) from NewtonSoft&lt;/a&gt;.&lt;br /&gt;
+It is available through System.Net.Http.Formatting.JsonMediaTypeFormatter. to return JSON date in Web API 2 we do the following in the APP_Start/WebApiConfig.cs:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-csharp&quot;&gt;// in the file APP_Start/WebApiConfig.cs
+config.Formatters.JsonFormatter.SupportedMediaTypes.Add(new MediaTypeHeaderValue(&quot;text/html&quot;) );&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;JSON.NET serializes the datetime to ISO-8601 format, and the following examples show how it serialize the date, assuming the local time is Pacific time (-7 hours):&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;Date value&lt;/th&gt;
+      &lt;th&gt;serialized value&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;DateTime.Now (Pacific time)&lt;/td&gt;
+      &lt;td&gt;2016-10-11T19:25:34.8346658-07:00&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;DateTime.UtcNow&lt;/td&gt;
+      &lt;td&gt;2016-10-12T01:25:34.8346658Z&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;New DateTime(2016, 6, 6, 4, 5,5 )&lt;/td&gt;
+      &lt;td&gt;2016-06-06T04:05:05&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;New DateTimeOffset(New DateTime(2016, 6, 6, 4, 5,5 ), new TimeSpan(-2, 0,0))&lt;/td&gt;
+      &lt;td&gt;2016-06-06T04:05:05-02:00&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;aspnet-mvc-serializer&quot;&gt;ASP.NET MVC Serializer&lt;/h4&gt;
+&lt;p&gt;ASP.NET Controller (System.Web.Mvc.Controller) has a built in method &lt;strong&gt;Json&lt;/strong&gt; that return JsonResult.&lt;br /&gt;
+This method uses JavaScriptSerializer (System.Web.Script.Serialization.JavaScriptSerializer). 
+This serializer serializes the date differently, and it return back in the format: “\/Date(ticks)\/”.&lt;br /&gt;
+Where ticks are the number of milliseconds since 1-Jan-1970 00:00:00 UTC (Unix Epoch). An example:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;&quot;\&quot;\/Date(1335205592410)\/\&quot;&quot; &lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The rational behind this format you can find it &lt;a href=&quot;https://msdn.microsoft.com/en-us/library/bb299886.aspx#intro_to_json_sidebarb&quot;&gt;here&lt;/a&gt;.&lt;br /&gt;
+To consume this value in JavaScript, we have to do more tricks on the client side, by tacking away the &lt;strong&gt;Date()&lt;/strong&gt; and return the number inside and create from the number the date.&lt;br /&gt;
+The following code will do that:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;var parsed = JSON.parse(data, function(key, value) { 
+  if (typeof value === &#39;string&#39;) { 
+    var d = /\/Date\((\d*)\)\//.exec(value); 
+    return (d) ? new Date(+d[1]) : value; 
+  } 
+return value; });
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Or a simpler version, but less robust:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;var parsed = JSON.parse(data, function(key, value) { 
+  if (typeof value === &#39;string&#39;) { 
+    var d = /\/Date\(/.exec(value); 
+    return (d) ? new Date(parseInt(value.substr(6))) : value; 
+  } 
+return value; });
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Obviously, JavaScriptSerializer doesn’t tell the timezone of the value, and it is not a good choise if we are dealing with different time zones.&lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;Beside the date/time problems JavaScriptSerializer has more distadvantages comparing to JSON.NET serializer, which encouraged lots of developers in the community to abandon it and use JSON.NET serializer instead.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;datacontractjsonserializer-serializer&quot;&gt;DataContractJsonSerializer Serializer&lt;/h4&gt;
+&lt;p&gt;DataContractJsonSerializer (System.Runtime.Serialization.Json.DataContractJsonSerializer) is a third serializer that comes with .NET framework. It is not the default serializer, so you need to use it explicitaley.&lt;br /&gt;
+In case you want to spend the effort to write code to change the default serializer, then it is better to use JSON.NET serializer instead because it is better on different aspects.&lt;br /&gt;
+Since JSON.NET serializer was introduced, not many developers used this serializer, so I am really goint to ignore it.&lt;/p&gt;
+
+&lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h2&gt;
+&lt;p&gt;I hope that was a good coverage of all the issues related to date/time in ASP.NET, and that you now understand why JSON.NET serializer was officially adopted by Web API team over JavaScriptSerializer.&lt;/p&gt;
+
+</description>
+        <pubDate>Tue, 11 Oct 2016 09:45:00 -0600</pubDate>
+        <link>https://blog.gisspan.com/2016/10/Everything-you-need-to-know-about-dates.html</link>
+        <guid isPermaLink="true">https://blog.gisspan.com/2016/10/Everything-you-need-to-know-about-dates.html</guid>
+        
+        <category>asp.net</category>
+        
+        
+      </item>
+    
+      <item>
+        <title>The advantages of IHttpActionResult in Web API 2.</title>
+        <description>
+&lt;p&gt;Web API 2 introduced the new interface IHttpActionResult to return back REST responses, where Web API 1 was using the class HttpResponseMessage to represent HTTP response, and HTTPResponseException to represent HTTP response error.&lt;/p&gt;
+
+&lt;p&gt;IHttpActionResult allows developers to enhance their Web API 1 code to be :&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;More testable.&lt;/li&gt;
+  &lt;li&gt;More reusable.&lt;/li&gt;
+  &lt;li&gt;Cleaner, and more elegant.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;We are going to unleash the potential of this interface and see some creative ideas on how to use it.&lt;!--more--&gt;
+&lt;br /&gt;
+&lt;br /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;start-from-http-protocol&quot;&gt;Start from HTTP Protocol&lt;/h4&gt;
+&lt;p&gt;First of all, let’s see what Web API is trying to do, and let us look at the HTTP response. A usual responses coming from a web server look like:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-http&quot;&gt;HTTP/1.1 200 OK
+Cache-Control: max-age=1200
+Content-Length: 10
+Content-Type: text/plain; charset=utf-16
+Server: Microsoft-IIS/8.0
+Date: Mon, 27 Jan 2014 08:53:35 GMT
+
+hello
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;This is a successful response, which we can know from the code &lt;code class=&quot;language-wiki&quot;&gt;200&lt;/code&gt;.&lt;br /&gt;
+Another example of a failed response:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-http&quot;&gt;HTTP/1.1 404 Not Found
+Content-type: text/html
+Content-length: 47
+  
+Sorry, the object you requested was not found.
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;the-traditional-thinking-of-web-api-1&quot;&gt;The traditional thinking of Web API 1&lt;/h2&gt;
+&lt;p&gt;Web API 1 introduced HttpResponseMessage, and by looking at the class properties in the picture down, you can see it is a literal .NET representation of the HTTP response.&lt;/p&gt;
+
+&lt;div class=&quot;column&quot; style=&quot;align: center&quot;&gt;
+  &lt;p&gt;&lt;img src=&quot;/img/HttpResponseMessage.png&quot; alt=&quot;states&quot; height=&quot;300px&quot; width=&quot;auto&quot; align=&quot;center&quot; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+
+&lt;p&gt;By using HttpResponseMessage we can craft any HTTP response we want. For example to create the HTTP response mentioned above:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-csharp&quot;&gt;var response = new HttpResonseMessage(HttpStatusCode.OK);
+response.Content = new StringContent(&quot;hello&quot;);
+response.Content.Headers.ContentType = new MediaTypeHeaderValue(&quot;text/plain&quot;);
+response.Headers.CatcheControl = new CacheControlHeaderValue {MaxAge = TimeSpan.FromMinutes(2)};
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;One problem with the code above is that it is ignoring the request, and the request content type, and this is why most of the time we will create the response like this:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-csharp&quot;&gt;var response = request.CreateResponse(HttpStatusCode.OK, new StringContent(&quot;hello&quot;));
+response.Headers.CatcheControl = new CacheControlHeaderValue {MaxAge = TimeSpan.FromMinutes(2)};
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;By using request.CreateResponse, Web API will create the response with content type requested by the request.&lt;br /&gt;
+&lt;br /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;worth-mentioning-alternatives&quot;&gt;Worth mentioning alternatives&lt;/h4&gt;
+&lt;p&gt;Before we move to Web API 2, it is worth mentioned that Web API 1 provides some built-in translation from any object type to HttpResponseMessage. For example, all these are valid return types of a Controller action:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-csharp&quot;&gt;void Post()
+IEnumeration&amp;lt;string&amp;gt; Get()
+string Get(int id);
+MyCustomClass Get(int id);&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;br /&gt;
+Web API will serialize the object returned and wrap it in a successful HttpResponseMessage with status code 200.&lt;br /&gt;
+And in the case of &lt;em&gt;void&lt;/em&gt;, the Web API return &lt;code class=&quot;language-wiki&quot;&gt;&amp;nbsp;204 No Content&amp;nbsp;&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;web-api-2-and-ihttpactionresult&quot;&gt;Web API 2 and IHttpActionResult&lt;/h2&gt;
+
+&lt;p&gt;To see the advantages of this interface, let us check an example in the version 1, and see its translation into version 2.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-csharp&quot;&gt;public class ProductsController : ApiController
+{
+    IProductRepository _repository;
+    public ProductsController(IProductRepository repository)
+    {
+        _repository = repository;
+    }
+    public HttpResponseMessage Get(int id)
+    {
+      try {
+        Product product = _repository.GetById(id);
+        if (product == null)
+        {
+            return Request.CreateResponse(HttpStatusCode.NotFound);
+        }
+        var response = Request.CreateResponse(product);
+        // add more code for caching and other custom response headers...
+        // for example: 
+        response.Headers.CatcheControl = new CacheControlHeaderValue {MaxAge = TimeSpan.FromMinutes(1)};
+        return response;
+      }
+      catch (Exception ex) {
+        return Request.CreateResponse(HttpStatusCode.InternalServerError);
+      }
+    }
+}&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The problems with previous code are:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;The class is responsible of calling repository and creating the HttpResponseMessage.&lt;/li&gt;
+  &lt;li&gt;There is no easy way to re-use code that set response header, like the caching for example.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Let us rewrite the code using IHttpActionResult:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-csharp&quot;&gt;public class ProductsController : ApiController
+{
+    IProductRepository _repository;
+    public ProductsController(IProductRepository repository)
+    {
+        _repository = repository;
+    }
+    public HttpResponseMessage Get(int id)
+    {
+      try {
+        Product product = _repository.GetById(id);
+        if (product == null)
+        {
+            return NotFound();
+        }
+        return Ok(product);
+      }
+      catch (Exception ex) {
+        return InternalServerError(ex);
+      }
+    }
+}&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Where Ok, NotFound, InternalServerError are ApiController methods that are returning concrete implementation of IHttpActionResult.&lt;br /&gt;
+Web API already comes with a library of classes that implement this interface which represent the most used responses on the web like : Ok, NotFound…, and they are located in the library &lt;a href=&quot;https://msdn.microsoft.com/en-us/library/system.web.http.results.aspx&quot;&gt;system.web.http.results&lt;/a&gt;.&lt;br /&gt;
+&lt;br /&gt;
+The benefits of using the previous code are:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Separation of concerns.&lt;/li&gt;
+  &lt;li&gt;Better testability.&lt;/li&gt;
+  &lt;li&gt;Produce reusable code.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;separation-of-concerns&quot;&gt;1. Separation of concerns&lt;/h4&gt;
+&lt;p&gt;The code that produce the HttpResponseMessage is separate, and we can implement our own generation of the response message, and our controller concern only on retrieving the data from the repository.&lt;/p&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;better-testability&quot;&gt;2. Better testability&lt;/h4&gt;
+&lt;p&gt;Let us write test code for the previous code:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-csharp&quot;&gt;[TestMethod]
+public void GetReturnsProductWithSameId()
+{
+    var mockRepository = new Mock&amp;lt;IProductRepository&amp;gt;();
+    mockRepository.Setup(x =&amp;gt; x.GetById(3))
+        .Returns(new Product { Id = 3 });
+
+    var controller = new ProductsController(mockRepository.Object);
+
+    IHttpActionResult actionResult = controller.Get(3);
+    var contentResult = actionResult as OkNegotiatedContentResult&amp;lt;Product&amp;gt;;
+
+    Assert.IsNotNull(contentResult);
+    Assert.IsNotNull(contentResult.Content);
+    Assert.AreEqual(3, contentResult.Content.Id);
+}&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Obviously, testing is easier because we are testing the business logic which is retrieving data, and not generating the Http Response.&lt;/p&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;produce-reusable-code&quot;&gt;3. Produce reusable code&lt;/h4&gt;
+
+&lt;p&gt;Let us write the code that add the cash repose header to the response.&lt;/p&gt;
+
+&lt;p&gt;In order to do that, I will borrow &lt;a href=&quot;https://gist.github.com/bradwilson/8586562&quot;&gt;this brilliant idea&lt;/a&gt; of using chaining IHttpActionResult together to write reusable Http Response Headers.&lt;br /&gt;
+Let us create a code that implement IHttpActionResult and crate a response header for cashing: &lt;br /&gt;
+(P.S: I am borrowing his code, but just make it simpler)&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-csharp&quot;&gt;public class CachedResult&amp;lt;T&amp;gt; : IHttpActionResult where T : IHttpActionResult
+{
+    public T InnerResult { get; private set; }
+    public CachedResult(T innerResult)
+    {
+      InnerResult = innerResult;
+    }
+
+    public async Task&amp;lt;HttpResonseMessage&amp;gt; ExecuteAsync(CancellationToken cancellationToken)
+    {
+        var response = await InnerResult.ExecuteAsync(cancellationToken);
+        response.Headers.CacheControl = new CacheControlHeaderValue
+        {
+          MaxAge = TimeSpan.FromMinutes(2)
+        };
+        return response;
+    }
+}&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The above code will take an IHttpActionResult in the construction and add a caching header to it. To use it, we can do the following code:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-csharp&quot;&gt;var responseOk =  Ok(product);
+var cachedResult = new CachedResult&amp;lt;System.Web.Http.OkResult&amp;gt;(responseOk);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Or we can do better, by creating an extension method to the IHttpActionResult, like this:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-csharp&quot;&gt;public static class HttpActionResultExtensions
+{
+  public static CachedResult&amp;lt;T&amp;gt; Cached&amp;lt;T&amp;gt;(this T actionResult) where T : IHttpActionResult
+  {
+    return new CachedResult&amp;lt;T&amp;gt;(actionResult);
+  }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;And now we can use it as follows:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-csharp&quot;&gt;var responseOk =  Ok(product).Cached();&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The Chached extension method can be reused whenever we want to add Cache response header to the HttpResponseMessage&lt;/p&gt;
+
+</description>
+        <pubDate>Wed, 14 Sep 2016 09:45:00 -0600</pubDate>
+        <link>https://blog.gisspan.com/2016/09/IHttpActionResult.html</link>
+        <guid isPermaLink="true">https://blog.gisspan.com/2016/09/IHttpActionResult.html</guid>
+        
+        <category>asp.net</category>
+        
+        
+      </item>
+    
+      <item>
+        <title>Streaming real data with AWS - Part 2.</title>
+        <description>
+&lt;p&gt;Technology of big data is booming and moving fast, and one of the major sector of big data booming is the requirements to process and analyze real time data that is helping lots of industries using real time data, from IoT, to the analyzing social networks.&lt;br /&gt;
+But real time data has its challenges, which the industry answered with many different solutions.&lt;br /&gt;
+In this post we are going to cover the technical solutions in AWS for streaming real time data.  &lt;!--more--&gt;
+&lt;br /&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;problems-with-real-time-data-processing&quot;&gt;Problems with real-time data processing&lt;/h2&gt;
+&lt;p&gt;Real time data produces its unique challenges and problems, and here are some of them:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Process massive amounts of streaming data.&lt;br /&gt;
+For example, processing a hashtag in twitter, means we might receive thousands of tweets in a second.&lt;/li&gt;
+  &lt;li&gt;Data Loss:&lt;br /&gt;
+Data producer send record which could be lost for different reasons.&lt;/li&gt;
+  &lt;li&gt;Message Re-ordering:&lt;br /&gt;
+With lots of data coming in, it is challenging to keep track of the order of the data, when the difference could be fraction of a second.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h4 id=&quot;real-time-streaming-solution-requirements&quot;&gt;Real-time streaming solution requirements&lt;/h4&gt;
+
+&lt;p&gt;A stream processing solution has to solve different challenges:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Process millions of events per second in realtime.&lt;/li&gt;
+  &lt;li&gt;correlate data from multiple streams.&lt;/li&gt;
+  &lt;li&gt;Real-time responsiveness to events.&lt;/li&gt;
+  &lt;li&gt;Scale up/out as volumes increase in size and complexity&lt;/li&gt;
+  &lt;li&gt;Rapid integration with existing infrastructure and data sources.&lt;/li&gt;
+  &lt;li&gt;Integration with other systems that will use the data.&lt;/li&gt;
+  &lt;li&gt;End-user ad-hoc continuous query access&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;streaming-solutions-on-aws&quot;&gt;Streaming solutions on AWS&lt;/h2&gt;
+&lt;p&gt;AWS provides many streaming services for realtime data. Each has its own features. We are going to compare between them to give you and idea which one to pick for your next project.
+These services are provided directly from Amazon. There are others that available from AWS market place, which is very active community, and you can check if your preferable streaming software might be available already there.&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Amazon Kinesis&lt;/li&gt;
+  &lt;li&gt;Apache Kafka&lt;/li&gt;
+  &lt;li&gt;Amazon SQS / SNS&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;And let us start with the simplest: SQS / SNS.&lt;br /&gt;
+&lt;br /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;amazon-sqs--sns&quot;&gt;Amazon SQS / SNS&lt;/h4&gt;
+&lt;p&gt;Amazon SQS is a simple (“dump”) message queuing service. It is a simple FIFO data store (first-in first-out), and if you are coming from Windows environment it is similar to MSMQ.&lt;br /&gt;
+But you can achieve push-based messaging service if you combine it with SNS: the Amazon notification service.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;SQS/SNS Pros:&lt;/p&gt;
+
+    &lt;ol&gt;
+      &lt;li&gt;Both SQS/SNS are native AWS services, which means they are elastics and scale to the level you want them.&lt;/li&gt;
+      &lt;li&gt;They are managed by Amazon, and you don’t have to worry about them.&lt;/li&gt;
+      &lt;li&gt;Very easy to configure, and the easiest to configure between all three services.&lt;/li&gt;
+      &lt;li&gt;Duplicate data between many availability zones automatically.&lt;/li&gt;
+    &lt;/ol&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;SQS/SNS Cons:&lt;/p&gt;
+
+    &lt;ol&gt;
+      &lt;li&gt;It is very simple comparing to other solutions, and to achieve what other solutions are providing we need to do lots of customization and coding.&lt;/li&gt;
+      &lt;li&gt;It is more expensive than others in this list when it comes to big data.&lt;/li&gt;
+    &lt;/ol&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;amazon-kinesis&quot;&gt;Amazon Kinesis&lt;/h4&gt;
+&lt;p&gt;Amazon Kinesis is a platform for streaming real-time data on AWS, offering services to store, query, analyze and deliver realtime data:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;Kinesis Pros:&lt;/p&gt;
+
+    &lt;ol&gt;
+      &lt;li&gt;Stream huge data (TBs per hour).&lt;/li&gt;
+      &lt;li&gt;Managed by Amazon and you don’t have to worry about it.&lt;/li&gt;
+      &lt;li&gt;Cheapest between all three when it comes to data size.&lt;/li&gt;
+      &lt;li&gt;Duplicate data between many availability zones automatically.&lt;/li&gt;
+    &lt;/ol&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Kinesis Cons:&lt;/p&gt;
+
+    &lt;ol&gt;
+      &lt;li&gt;More complex to setup than SQS.&lt;/li&gt;
+    &lt;/ol&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;apache-kafka&quot;&gt;Apache Kafka&lt;/h4&gt;
+&lt;p&gt;Apache Kafka is publish-subscribe message broker that can handle hundreds of megabytes per seconds, and has clustering to support scaling out.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;Kafka Pros:&lt;/p&gt;
+
+    &lt;ol&gt;
+      &lt;li&gt;Huge community support.&lt;/li&gt;
+      &lt;li&gt;Relatively easier to install / configure than Kinesis.&lt;/li&gt;
+      &lt;li&gt;More stable than Kinesis.&lt;/li&gt;
+    &lt;/ol&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Kafka Cons:&lt;/p&gt;
+
+    &lt;ol&gt;
+      &lt;li&gt;You need to set it up and configure it yourself on EC2.&lt;/li&gt;
+      &lt;li&gt;If you need redundancy across many availability zones , then you have to do it your self.&lt;/li&gt;
+    &lt;/ol&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;how-to-choose&quot;&gt;How to choose&lt;/h2&gt;
+&lt;p&gt;If you want very simple requirements with small size of data, then you don’t have to use Kinesis or Kafka, because Amazon SQS/SNS is simpler to use.&lt;br /&gt;
+If you require to handle huge data, and more complex functionality then you should choose either Kafka, or Kinesis. They both are can fit many complex situation, and actually Kinesis was developed after Kafka.&lt;br /&gt;
+If you want to do less work and less learning curve, then Kinesis should be your choice. Kinesis is managed by AWS, and can be scaled automatically using AWS auto-scaling services.&lt;br /&gt;
+If you prefer to have the support of a huge community, then Kafka will be the choice, but Kafka scalability is achieved using its clustering features, which you have to configure it yourself.&lt;/p&gt;
+
+&lt;p&gt;This is a sheet that I took it from AWS documentation that shows the differences between these 3 technologies, plus a technology that I didn’t mention which is DynamoDB Stream:&lt;/p&gt;
+
+&lt;div class=&quot;column&quot;&gt;
+  &lt;p&gt;&lt;img src=&quot;/img/streaming.jpg&quot; alt=&quot;states&quot; /&gt;&lt;/p&gt;
+
+  &lt;h2 id=&quot;list-of-posts&quot;&gt;List of posts&lt;/h2&gt;
+  &lt;p&gt;This post is the second part of many posts related to bid data. The other posts are:&lt;/p&gt;
+
+  &lt;ol&gt;
+    &lt;li&gt;&lt;a href=&quot;/2016/08/Analyse-website-log-with-AWS-data-analysis-services.html&quot;&gt;Introduction to big data&lt;/a&gt;.&lt;/li&gt;
+    &lt;li&gt;Streaming real time data (this post).&lt;/li&gt;
+    &lt;li&gt;Hadoop &amp;amp; MapReduce (coming).&lt;/li&gt;
+    &lt;li&gt;HBase patterns (coming).&lt;/li&gt;
+    &lt;li&gt;Spark and data analysis with Python (coming).&lt;/li&gt;
+    &lt;li&gt;Hive and data processing (coming).&lt;/li&gt;
+    &lt;li&gt;Practical example&lt;/li&gt;
+  &lt;/ol&gt;
+
+  &lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;/div&gt;
+</description>
+        <pubDate>Sat, 03 Sep 2016 09:45:00 -0600</pubDate>
+        <link>https://blog.gisspan.com/2016/09/Stream-real-time-data.html</link>
+        <guid isPermaLink="true">https://blog.gisspan.com/2016/09/Stream-real-time-data.html</guid>
+        
+        <category>AWS</category>
+        
+        <category>big data</category>
+        
+        
+      </item>
+    
+      <item>
+        <title>Big Data at your fingertips using AWS services - Introduction.</title>
+        <description>
+&lt;p&gt;Big Data Analytics used to be an activity that require powerful computers and very high specialized skills. But with the cloud computing, you can have huge computing power installed, and configured in few button clicks.&lt;br /&gt;
+AWS as an example provide a wide veriety of different kind of data analysis services, each one will do a specific job. We can use these services as building blocks to build any application that deal with big data analysis.&lt;br /&gt;
+AWS services shine on big data, and they can handle Peta-byte size databases, with high performance.&lt;br /&gt;
+In this post and following posts, I am going to describe these services, and how to use them. At the end, I am going to show how to use different kind of services to build a monitoring and diagnostic tool for an IIS web site application. &lt;!--more--&gt;
+&lt;br /&gt;
+&lt;br /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;list-of-posts&quot;&gt;List of posts&lt;/h2&gt;
+&lt;p&gt;We are going to cover these points:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Introduction to big data (this post).&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;/2016/09/Stream-real-time-data.html&quot;&gt;Streaming real time data&lt;/a&gt;.&lt;/li&gt;
+  &lt;li&gt;Hadoop &amp;amp; MapReduce (coming).&lt;/li&gt;
+  &lt;li&gt;HBase patterns (coming).&lt;/li&gt;
+  &lt;li&gt;Spark and data analysis with Python (coming).&lt;/li&gt;
+  &lt;li&gt;Hive and data processing (coming).&lt;/li&gt;
+  &lt;li&gt;Parctical example&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&quot;components-of-a-big-data-application&quot;&gt;Components of a big data application&lt;/h2&gt;
+&lt;p&gt;We can devide the functionality of any big data application into the following 4 types:&lt;/p&gt;
+
+&lt;div class=&quot;column&quot; style=&quot;align: center&quot;&gt;
+  &lt;p&gt;&lt;img src=&quot;/img/concept1.png&quot; alt=&quot;states&quot; height=&quot;300px&quot; width=&quot;auto&quot; align=&quot;center&quot; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+
+&lt;p&gt;AWS provides applications for all these stages:
+&lt;br /&gt;
+&lt;br /&gt;&lt;/p&gt;
+&lt;div class=&quot;column&quot; style=&quot;align: center&quot;&gt;
+  &lt;p&gt;&lt;img src=&quot;/img/aws-big-data-platform.jpg&quot; alt=&quot;states&quot; height=&quot;600px&quot; width=&quot;auto&quot; align=&quot;center&quot; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;setup-the-aws-environment&quot;&gt;Setup the AWS environment&lt;/h2&gt;
+&lt;p&gt;We are going to see how AWS services are created and configured, and we are going to do some hands-on exercies. To complete these exercises you need an Amazon account, and we need to use AWS services.&lt;br /&gt;
+To use AWS, there are two ways, either through the web interface &lt;a href=&quot;console.aws.amazon.com&quot;&gt;from this site&lt;/a&gt; or from command line tools, like Python or others.
+For these exercies we are going to use &lt;a href=&quot;https://aws.amazon.com/cli/&quot;&gt;AWS Command line interface&lt;/a&gt;.&lt;br /&gt;
+To install and configure AWS commadn line interface and create an Amazon account, follow this tutrorial:  &lt;a href=&quot;http://docs.aws.amazon.com/cli/latest/userguide/cli-chap-getting-set-up.html&quot;&gt;this document to install AWS CLI and set it up&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;br /&gt;
+&lt;br /&gt;&lt;/p&gt;
+</description>
+        <pubDate>Tue, 16 Aug 2016 09:45:00 -0600</pubDate>
+        <link>https://blog.gisspan.com/2016/08/Analyse-website-log-with-AWS-data-analysis-services.html</link>
+        <guid isPermaLink="true">https://blog.gisspan.com/2016/08/Analyse-website-log-with-AWS-data-analysis-services.html</guid>
+        
+        <category>AWS</category>
+        
+        <category>big data</category>
+        
+        
+      </item>
+    
+      <item>
+        <title>Setup basic development environment for React and webpack.</title>
+        <description>&lt;p&gt;Webpack became the de-facto standard module bundling and build automation tool for React community. Webpack is robust, and more complex than other bundling packages, and it has a steep learning curve comparing to other build automation tools.&lt;br /&gt;
+This post is going to show how to setup a very basic development environment that will give you a head start for basic web Single page application that is using react and webpack.&lt;!--more--&gt;
+&lt;br /&gt;
+&lt;br /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;start-with-npm-packages&quot;&gt;Start with NPM packages&lt;/h2&gt;
+&lt;p&gt;Start with installing the essential React required packages:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;npm init
+npm install --save react react-dom react-addons-update 
+npm install --save react-router reflux reflux-promise
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The above will start the &lt;code class=&quot;language-wiki&quot;&gt;&amp;nbsp;package.json&amp;nbsp;&lt;/code&gt; file, and install the required react libraries.&lt;/p&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;install-webpack-and-its-developer-tool&quot;&gt;Install webpack and its developer tool&lt;/h4&gt;
+&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;npm install --save webpack
+npm install -g webpack-dev-server&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;webpack-configuration-file&quot;&gt;webpack configuration file&lt;/h2&gt;
+&lt;p&gt;Start writing the webpack configuration file, which by convention its default name is &lt;code class=&quot;language-wiki&quot;&gt;&amp;nbsp;webpack.config.js&amp;nbsp;&lt;/code&gt;.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;var path = require(&#39;path&#39;);
+var webpack = require(&#39;webpack&#39;);
+
+module.exports = {
+   // ..... configuration fields (e.g.: entry, output, .....etc.)
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;entry--output&quot;&gt;entry / output&lt;/h4&gt;
+&lt;p&gt;These most important fields in the config file are the entry/output. Webpack after all is a bundler tool that read JavaScript file and bundle it with all its depnedencies into one or more files (called bundles).&lt;br /&gt;
+The &lt;em&gt;&lt;strong&gt;entry&lt;/strong&gt;&lt;/em&gt; field should point to the main entry point of our application. Webpack will parse the file, and parse all dependencies expressed with the statment &lt;code class=&quot;language-wiki&quot;&gt;&amp;nbsp;require&amp;nbsp;&lt;/code&gt;. The output field is where webpack will store the result.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;module.exports = {
+    // the most important fields in the configuration
+    entry: &#39;src/app.js&#39;,
+    output: {
+       filename: &#39;output/main.js&#39;
+    }
+}&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;p&gt;Running the webpack from the command line for the above config file will read the entry javascript file: &lt;em&gt;&lt;strong&gt;src/app.js&lt;/strong&gt;&lt;/em&gt; , figure out the dependencies, bundle them all together, and generate the output file &lt;em&gt;&lt;strong&gt;output/main.js&lt;/strong&gt;&lt;/em&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;continous-watching-and-bundling&quot;&gt;Continous watching and bundling&lt;/h2&gt;
+&lt;p&gt;As other build tools like Gulp provides &lt;em&gt;&lt;strong&gt;gulp.watch&lt;/strong&gt;&lt;/em&gt;, and Browserify provides &lt;em&gt;&lt;strong&gt;watchify&lt;/strong&gt;&lt;/em&gt; to provide the ability for continous watching changes in source code, and bundle and generate the output on the fly.  &lt;br /&gt;
+Webpack provides the same functionality with running webpack while specifying the &lt;strong&gt;watch&lt;/strong&gt; switch&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;webpack --watch 
+#### or another option
+webpack -w&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;By specifying the watch option , webpack keep watching the changes and recompiles automatically.&lt;/p&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;webpack-dev-server&quot;&gt;Webpack-dev-server&lt;/h4&gt;
+&lt;p&gt;Webpack-dev-server is a solution that was built on top of the watch mode, and goes beyond that. 
+It is a simple node/express server that run our application and serve the webpack bundles. The server watch changes in the source, and emits information about the state to the client.&lt;br /&gt;
+There are two different ways that the webpack watches the changes in the source files: iframe mode, and inline mode. We are going to cover the inline mode only.&lt;br /&gt;
+To run the server in inline mode we run the command line as follows:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;webpack-dev-server --inline&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;And the bundle and the static files will be servered at:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;http://localhost:8080/&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Because we might use this command every time we do development, it is good to put it as a script in package.json.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;// in the file package.json
+...
+&quot;scripts&quot;: {
+  &quot;test&quot;: &quot;echo \&quot;Error: no test specified\&quot; &amp;amp;&amp;amp; exit 1&quot;,
+  &quot;start&quot;: &quot;webpack-dev-server --colors --inline&quot;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;On the browser side we need to open socket to the server to allow the server to communicate when change occurs. To do that we have to call this script, which we should add it to the entry point in webpack.config.js.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;entry: [
+      // WebpackDevServer host and port
+      &#39;webpack-dev-server/client?http://localhost:8080&#39;, 
+      &#39;src/app.js&#39;
+]&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;br /&gt;
+&lt;br /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;hot-module-replacement&quot;&gt;Hot Module replacement&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;Hot Module Replacement (HMR)&lt;/strong&gt; is a feature to inject updated modules into the active runtime.&lt;br /&gt;
+It help webpack-dev-server loads only the changed bundles, and not the whole code, and the the scripts will be loaded without the need to refresh.&lt;br /&gt;
+To use the HMR we need to do the following:&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;Install the hot load package: &lt;/li&gt;
+&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;npm install --save-dev react-hot-loader&lt;/code&gt;&lt;/pre&gt;
+&lt;li&gt;Use hot command line argument&lt;/li&gt;  
+Send a command line option: hot on the CLI of webpack-dev-server, so we can re-write the code to run webpack-dev-server as follows:
+&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;// in the file package.json
+...
+&quot;scripts&quot;: {
+  &quot;test&quot;: &quot;echo \&quot;Error: no test specified\&quot; &amp;amp;&amp;amp; exit 1&quot;,
+  &quot;start&quot;: &quot;webpack-dev-server --colors --inline --hot&quot;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;li&gt; Load a module on the browser side to watch for the HMR &lt;/li&gt;  
+ and we can load it similar to how we loaded the webpack-dev-server client as follows:
+&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;entry: [
+      // WebpackDevServer host and port
+      &#39;webpack-dev-server/client?http://localhost:8080&#39;, 
+      &#39;webpack/hot/dev-server&#39;,
+      &#39;src/app.js&#39;
+]&lt;/code&gt;&lt;/pre&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&quot;additional-useful-packages&quot;&gt;Additional useful packages&lt;/h2&gt;
+&lt;p&gt;There are addional useful packages that we are going to usethem in many different projects.&lt;/p&gt;
+&lt;ol&gt;
+
+&lt;li&gt;classnames&lt;/li&gt;  
+This package is the official replacement for classSet that was shipped with React.js Addons bundle before.
+It generates dynamic classnames from the model, similar to Angular&#39;s ng-class.  
+
+&lt;li&gt;Babel&#39;s packages:  &lt;/li&gt;
+Babel provides lots of features like ES6, JSX,   
+&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;npm install --save babel babel-core babel-polyfill babel-loader babel-preset-es2015
+&lt;/code&gt;&lt;/pre&gt;
+
+
+
+
+&lt;/ol&gt;
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;setup-babel-with-react&quot;&gt;Setup Babel with react&lt;/h4&gt;
+&lt;p&gt;Babel is a modular echo system, and in order Babel provides a module for react, to use it we need to install it and configure it:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;npm install --save  babel-preset-react&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;And to configure it we add a file called &lt;code class=&quot;language-wiki&quot;&gt;&amp;nbsp;.bablerc&amp;nbsp;&lt;/code&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;// .babelrc 
+{
+  &quot;presets&quot;: [&quot;react&quot;]
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;br /&gt;
+&lt;br /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;convert-scss-to-css&quot;&gt;Convert SCSS to CSS&lt;/h2&gt;
+&lt;p&gt;Webpack provides the ability to transfer the content of files through &lt;em&gt;&lt;strong&gt;loaders&lt;/strong&gt;&lt;/em&gt;. To transform SCSS to CSS, we do the following:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Install the required loader&lt;/li&gt;
+&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;npm install sass-loader node-sass webpack --save-dev&lt;/code&gt;&lt;/pre&gt;
+sass-loader is the required loader, and it require node-sass as well to work.  
+&lt;li&gt;Transform the sass files&lt;/li&gt;
+To transform the sass files, we use the module/loaders in webpack as follows:
+&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;module.exports = {
+  ...
+  module: {
+    loaders: [
+      {
+        test: /\.scss$/,
+        loaders: [&quot;style&quot;, &quot;css&quot;, &quot;sass&quot;]
+      }
+    ]
+  }
+};
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;/ol&gt;
+
+&lt;p&gt;By this you have a basic build system using webpack.&lt;/p&gt;
+</description>
+        <pubDate>Mon, 01 Aug 2016 09:45:00 -0600</pubDate>
+        <link>https://blog.gisspan.com/2016/08/setup-react-webpack-development-project.html</link>
+        <guid isPermaLink="true">https://blog.gisspan.com/2016/08/setup-react-webpack-development-project.html</guid>
+        
+        <category>react</category>
+        
+        <category>build &amp; CI</category>
+        
+        
+      </item>
+    
+  </channel>
+</rss>
