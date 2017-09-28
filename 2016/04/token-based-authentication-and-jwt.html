@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <title>Token Based Authentication and JWT</title>
-  <meta name="description" content="HTTP protocol specified only two standard&nbsp; authentication mechanisms, which are implemented in every browser, the HTTP basic authentication&nbsp; , and ...">
+  <meta name="description" content="HTTP protocol specified only two standard authentication mechanisms, which are implemented in every browser, the HTTP basic authentication, and the Digest au...">
 
 
   <!-- CSS Reset -->
@@ -120,24 +120,85 @@
         <p class="post-meta"><time datetime="2016-04-29T19:45:00-06:00" itemprop="datePublished">Apr 29, 2016</time> • <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name">Ghassan Karwchan</span></span></p>
       </header>
       <div class="post-content post-font" itemprop="articleBody">
-        HTTP protocol specified only two standard&nbsp; authentication mechanisms, which are implemented in every browser, the <a href="http://blog.gisspan.com/2016/03/web-security-basic-authentication.html" target="_blank">HTTP basic authentication</a>&nbsp; , and Digest authentication.<br />Because they only reference the user name that they pass with the calls, the development communities in every web development platform came up with their better customized solutions.<!--more--><h3>The main common idea of enhanced authentication:</h3>There is one main basic idea behind all security technologies used in all programming platforms, which is authenticate the user only once and issuing a "<b><i>ticket</i></b>" or "<b><i>token</i></b>", and the client will use that ticket for every subsequent call.<br />The token/ticket will have an expiry date and time, which will be invalid after that time. <br /><h3>How the web browser send the token:</h3>One of the early idea developed was using the cookies to save the token, but a better solution emerged, which is sending the token in the header of every request, which proved to be a better solution in many different ways. The phrase "Token Based Authentication" is mostly used in the industry to describe the later solution, even the term include the first solution as well. We will cover the cookie solution briefly and then jump to cover in more details the  <br />
+        
+<p>HTTP protocol specified only two standard authentication mechanisms, which are implemented in every browser, the <a href="/2016/03/web-security-basic-authentication.html">HTTP basic authentication</a>, and the Digest authentication which is obsolete now because it is not secure anymore.<br />
+Because they are limited and work only on user name/password idea, the development communities in every web development platform came up with their better customized solutions.<br />
+JWT is one of the most promising and smart authentication ideas that is taking famous recently.<!--more--></p>
 
-<ol><h3><li>Cookies Based Authentication:</li></h3>
-This solution was used for a long time, and the most famous implementation for it was ASP.NET Forms Authentication, and Wordpress as well.<br /> The server after authenticate the user, will respond with a response that has a <b><i>Set-Cookie</i></b> header attribute in the response header, which looks like this  <pre><code class="language-http">HTTP/1.0 200 OK
+<p><br /></p>
+
+<h2 id="token-is-the-main-idea">Token is the main idea</h2>
+<p>There is one common basic pattern among all security technologies across all programming platforms, which is authenticate the user only once and issuing a “<strong><em>ticket</em></strong>” or a “<strong><em>token</em></strong>”, and the browser will use that ticket for every subsequent call.<br />
+The token/ticket will have an expiry date and time, and will be invalid after that time.</p>
+
+<p><br /></p>
+
+<h4 id="how-the-web-browser-send-the-token">How the web browser send the token:</h4>
+<p>One of the early idea developed was using the cookies to save the token, but a better solution emerged, which is sending the token in the header of every request, which proved to be a better solution in many different ways. The phrase “Token Based Authentication” is mostly used in the industry to describe the later solution, even the cookie based solution, is a ticket-based solution as well.<br />
+Let us see an example of both solutions:</p>
+
+<p><br /></p>
+
+<h4 id="cookies-based-authentication">Cookies Based Authentication:</h4>
+<p>This solution was used for a long time, and the most famous implementation for it was ASP.NET Forms Authentication, and Wordpress.<br />
+The server after authenticate the user, will respond with a response that has a <strong>Set-Cookie</strong> header attribute in the response header, which looks like this:</p>
+<pre><code class="language-http">HTTP/1.0 200 OK
 Content-type: text/html
 Set-Cookie: theme=light
 Set-Cookie: sessionToken=abc123; Expires=Wed, 09 Jun 2021 10:18:14 GMT</code></pre>
-The browser (assuming they allow cookies), will keep the cookie until it is expired, and will submit it on every request to that web site as follows:   
+<p>The browser (assuming they allow cookies), will keep the cookie until it is expired, and will submit it on every subsequent request to that web site as follows:</p>
 <pre><code class="language-http">GET /spec.html HTTP/1.1
 Host: www.example.org
-Cookie: theme=light; sessionToken=abc123</code></pre>Earlier implementation for this approach were using sessions and saving the sessions and sending the session ID as the "ticket", but because sessions are not easy to scale, the session stopped being used long time ago.<br />Cookies had many issues (that we are going to cover in next section), which pushed the industry to find better solutions, which brought the idea of token based authentication. <h3><li>Token Based Authentication:</li></h3>Using the same approach of generating an access token when authenticating, but instead of sending the token in a cookie, it use an HTTP header attribute (usually Authorization HTTP header) to send the token.<br />This solution was developed mainly by OAuth authentication, but it doesn't have to be used only in OAuth, and it can be used by local security based solution.<br />The solution became mature with development of more robust standard like <a href="https://jwt.io/">Jason Web Token (JWT)</a>, which became the de facto standard for modern web security.<br />There are two common approach to send this access token:<br /><ol><li>Bearer token</li>Bearer token is an non encrypted token. If you want to use it, you should use it over HTTPS. <br />This is how a call with the bearer token will look like 
-<pre><code class="language-http">GET /resource/1 HTTP/1.1
-Host: example.com
-Authorization: Bearer mF_9.B5f-4.1JqM</code></pre><li>MAC token</li>MAC token is an encrypted token, and it is more complex than the bearer. <pre><code class="language-http">GET /resource/1 HTTP/1.1
-Host: example.com
-Authorization: MAC id="h480djs93hd8",
-    nonce="274312:dj83hs9s",
-    mac="kDZvddkndxvhGRXZhvuDjEWhGeE="</code></pre></ol></ol> <h3>Advantages of token based authentication over cookies</h3>The are many advantages: <ol><li>Cookies could be disabled by the user</li>In that case you have to force your users to use cookies in order for them to use your application. <li>They won't work across-domains</li>So you cannot use the same credentials with many different domains, where in token based, you can authenticate in one place, and use the same token across many different domains. <li>Cookies and mobiles are not friends together</li><li>Cookies are volunerables for <a href="https://en.wikipedia.org/wiki/Cross-site_request_forgery">CSRF attacks</a></li> </ol> <h3>JSON Web Tokens (JWT)</h3>JWT became lately the most common used authentication solution for APIs and mobile solutions. <br/> JWT is a claim based authentication. When a user authenticate itself only at the beginning, the application checks what this user have access to, and what the user will claim, and issues a token that will have all these claims, and then signed with a hash algorithm, and send it back to the client.<br/>The client will store the token either with a cookie, or with an HTML5 local data store, and upon each request the client will submit this data in the header of the request as a bearer token or a MAC token. JWT as the token based authentication is not supported by the browsers, and requires some kind of JavaScript libraries to support it. 
+Cookie: theme=light; sessionToken=abc123</code></pre>
+
+<p>Earlier implementations for this approach were using sessions and saving the sessions and sending the session ID as the “ticket”, but because sessions are not easy to scale, the session stopped being used long time ago.<br />
+Cookies had many issues (that we are going to cover in next section), which pushed the industry to find better solutions, which brought the idea of token based authentication.</p>
+
+<p><br /></p>
+
+<h4 id="token-based-authentication">Token Based Authentication:</h4>
+<p>Using the same approach of generating an access token when authenticating, but instead of sending the token in a cookie, it use an HTTP header attribute (usually Authorization HTTP header) to send the token.<br />
+This solution was developed mainly by OAuth authentication, but it doesn’t have to be used only in OAuth, and it can be used by local security based solution.<br />
+The solution became mature with development of more robust standard like <a href="https://jwt.io/">Jason Web Token (JWT)</a>, which became the de facto standard for modern web security.<br />
+There are two common approach to send this access token:</p>
+
+<ol>
+  <li><strong>Bearer token</strong>: Bearer token is an non encrypted token. If you want to use it, you should use it over HTTPS. 
+This is how a call with the bearer token will look like:
+    <pre><code class="language-http">GET /resource/1 HTTP/1.1
+    Host: example.com
+    Authorization: Bearer mF_9.B5f-4.1JqM</code></pre>
+  </li>
+  <li><strong>MAC token</strong>: MAC token is an encrypted token, and it is more complex than the bearer.
+    <pre><code class="language-http">GET /resource/1 HTTP/1.1
+      Host: example.com
+      Authorization: MAC id="h480djs93hd8",
+     nonce="274312:dj83hs9s",
+     mac="kDZvddkndxvhGRXZhvuDjEWhGeE="</code></pre>
+  </li>
+</ol>
+
+<p><br /></p>
+
+<h2 id="advantages-of-token-based-authentication">Advantages of Token Based Authentication</h2>
+<p>The are many advantages of token based authentication over cookies:</p>
+
+<ol>
+  <li>Cookies could be disabled by the user:
+In that case you have to force your users to use cookies in order for them to use your application.</li>
+  <li>They won’t work across-domains:<br />
+So you cannot use the same credentials with many different domains, where in token based, you can authenticate in one place, and use the same token across many different domains.</li>
+  <li>Cookies and mobiles are not friends together.</li>
+  <li>Cookies are volunerables for <a href="https://en.wikipedia.org/wiki/Cross-site_request_forgery">CSRF attacks</a>.</li>
+</ol>
+
+<p><br /></p>
+
+<h2 id="json-web-tokens-jwt">JSON Web Tokens (JWT)</h2>
+<p>JWT became lately the most common used authentication solution for APIs and mobile solutions.<br />
+JWT is a claim based authentication. When a user authenticate itself only at the beginning, the application checks what this user have access to, and what the user will claim, and issues a token that will have all these claims, and then signed with a hash algorithm, and send it back to the client.<br />
+The client will store the token either with a cookie, or with an HTML5 local data store, and upon each request the client will submit this data in the header of the request as a bearer token or a MAC token. JWT as the token based authentication is not supported by the browsers, and requires some kind of JavaScript libraries to support it.</p>
+
       </div>
       <div id="disqus_thread"></div>
         <script>
