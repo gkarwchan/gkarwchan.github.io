@@ -6,9 +6,157 @@
 </description>
     <link>https://blog.gisspan.com/</link>
     <atom:link href="https://blog.gisspan.com/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Wed, 27 Sep 2017 20:19:53 -0600</pubDate>
-    <lastBuildDate>Wed, 27 Sep 2017 20:19:53 -0600</lastBuildDate>
+    <pubDate>Mon, 27 Nov 2017 23:40:44 -0700</pubDate>
+    <lastBuildDate>Mon, 27 Nov 2017 23:40:44 -0700</lastBuildDate>
     <generator>Jekyll v3.1.6</generator>
+    
+      <item>
+        <title>Hadoop and Map Reduce - Part 3</title>
+        <description>
+&lt;p&gt;The chances are, the most common software you will hear about while you are navigating in the big data world, is Hadoop.&lt;br /&gt;
+Hadoop by itself, is very important and widely used, and adding to that, it is the base of other software technologies and applications that are built on top of it.&lt;br /&gt;
+Lots, and lots of different software that cover different services are built on Hadoop, which are going to cover later.&lt;br /&gt;
+Understanding the basics of Hadoop is good skill to have, that will boost your experience with those services and tools that are built on top of Hadoop.
+&lt;!--more--&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
+&lt;p&gt;Hadoop is an open source distributing computing platform, that help process huge amount of data.&lt;br /&gt;
+We can put Hadoop idea in a simple way: divide the huge amount of data into smaller pieces, and send each small piece to a different machine, and ask each machine to process that small amount of data only.  &lt;br /&gt;
+Regardless of how small the machine, Hadoop can add that machine computational power into one huge pool of computation power. Hadoop can accommodate what is called &lt;strong&gt;Commodity Hardware&lt;/strong&gt;, which means a cheap affordable hardware, and divide a huge amount of data and distribute it among these machines and demanding those machines to process the data.&lt;br /&gt;
+Hadoop provides very basic computational framework, and Hadoop is complex, and not easy to learn, or use. And it is very difficult to write programs that use its MapReduce.&lt;br /&gt;
+but the good news is, most probabely you will never need to write a program that is directly using Hadoop.&lt;br /&gt;
+Lots of open-source software that are providing lots of useful functionalities, and in different domains are built on top of Hadoop.&lt;br /&gt;
+In this article, I am just going to cover very briefly on Hadoop components, and technologies, and talking more about its echo system, and other software that are built on top of it.&lt;/p&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;hadoop-components&quot;&gt;Hadoop Components&lt;/h2&gt;
+&lt;p&gt;Hadoop borrowed from Google two important technologies, and using the Java language, introduced them to the open-source world.&lt;br /&gt;
+Those technologies are:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;HDFS: Hadoop Distributed File System.&lt;/li&gt;
+  &lt;li&gt;MapReduce Framework.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;As well, Hadoop version 2.0 introduced another part, which is:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Yarn: a framework to distribute and run data processing tasks.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;p&gt;The most two important technologies in Hadoop are: HDFS, and MapReduce.&lt;/p&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;hdfs-hadoop-distributed-file-system&quot;&gt;HDFS: Hadoop Distributed File System&lt;/h4&gt;
+&lt;p&gt;As we mentioned, Hadoop idea is simple: divide the huge amount of data, into smaller pieces, and send those pieces to other machines.&lt;br /&gt;
+HDFS is the part of Hadoop that is responsible of distributing the data among many machines.&lt;br /&gt;
+It is borrowing Google File System (GFS) idea, and implementing it in Java language.&lt;/p&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;mapreduce&quot;&gt;MapReduce&lt;/h4&gt;
+&lt;p&gt;As Hadoop divide the data, and store them into smaller parts using HDFS, then it needs to process them, and this is where MapReduce comes into the picture.&lt;br /&gt;
+MapReduce is another idea from Google, and it is a programming model, that process big data, using a parallel, distributed algorithm on a cluster of machines.&lt;br /&gt;
+It is not easy at all to think in MapReduce way, and it takes lots of practice and training, and time to have a mind shift to think in MapReduce way.&lt;br /&gt;
+But achieving a MapReduce-based algorithm is solving your processing problem, will be the solution to use Hadoop to process your large data.&lt;br /&gt;
+As I said, I am not going to dive into the details of MapReduce, because there are books and books about it, and I am going to jump to the easy part.&lt;br /&gt;
+&lt;br /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;hadoop-ecosystem&quot;&gt;Hadoop Ecosystem&lt;/h2&gt;
+&lt;p&gt;As I mentioned before, lots of open-source software, with different domains are based on top of Hadoop, and I am going to list just some of them here divided by the domain:&lt;/p&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;nosql-databases&quot;&gt;NoSQL Databases&lt;/h4&gt;
+
+&lt;hr /&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;&lt;strong&gt;Apache HBase&lt;/strong&gt;: Inspired by Google BigTable, it is a column-based database.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Apache Cassandra&lt;/strong&gt;: Another NoSql Database that combine document database, with big column-based database.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;document-based-database&quot;&gt;Document-based Database&lt;/h4&gt;
+
+&lt;hr /&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;&lt;strong&gt;MongoDB-Hadoop&lt;/strong&gt;: Even MongoDB it is a separate software from Hadoop, but with MongoDB-Hadoop connector we can integrate the two worlds together, so MongoDB can handle huge data.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;RethinkDB&lt;/strong&gt;: is a JSON-based database, that use Hadoop for storage.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;sql-based-databases&quot;&gt;SQL-based Databases&lt;/h4&gt;
+
+&lt;hr /&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;&lt;strong&gt;Apache Hive&lt;/strong&gt;: A fully SQL-based Database on Hadoop. Although its SQL is not fully SQL92 compliant, but it is very close to it.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Facebook Presto&lt;/strong&gt;: Presto from Facebook, is an open-source SQL engine. Facebook says it is 10 times faster than Hive.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;eBay Kylin&lt;/strong&gt;: Another open-source database engine with SQL interface, including OLAP support.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Apache Phoenix&lt;/strong&gt;: Is an SQL wrapper, with JDBC driver for HBASE.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;distributed-computing&quot;&gt;Distributed Computing&lt;/h4&gt;
+
+&lt;hr /&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;&lt;strong&gt;Apache Spark&lt;/strong&gt;: Huge data analytics, that is based on Hadoop’s HDFS. It provides an easier alternative for MapReduce to do distributed computing.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Apache Pig&lt;/strong&gt;: Another alternative for MapReduce, but this time using a simple scripting language called Pig, that will be translated to mapReduce.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;and-more&quot;&gt;And more&lt;/h4&gt;
+&lt;p&gt;Hadoop can be integrated with lots of other software, where it provides the ability to distribute and process huge amount of data to those software.&lt;br /&gt;
+Software like:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.elastic.co/products/hadoop&quot;&gt;ElasticSearch&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.tableau.com/solutions/hadoop&quot;&gt;Tableau&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://developer.couchbase.com/documentation/server/current/connectors/hadoop-1.2/hadoop.html&quot;&gt;Couchbase&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;And many others&lt;/p&gt;
+
+&lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h2&gt;
+&lt;p&gt;As you can see, lots of open-source software are based on Hadoop, or many other software can be integrated with Hadoop. So, it is not required to do a complex programming with MapReduce.&lt;/p&gt;
+
+&lt;h2 id=&quot;list-of-posts&quot;&gt;List of posts&lt;/h2&gt;
+&lt;p&gt;This post is the third part of many posts related to bid data. The other posts are:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;&lt;a href=&quot;/2016/08/Analyse-website-log-with-AWS-data-analysis-services.html&quot;&gt;Introduction to big data&lt;/a&gt;.&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;/2016/09/Stream-real-time-data.html&quot;&gt;Streaming real time data&lt;/a&gt;.&lt;/li&gt;
+  &lt;li&gt;Hadoop &amp;amp; MapReduce (this post).&lt;/li&gt;
+  &lt;li&gt;ElasticSearch (coming).&lt;/li&gt;
+  &lt;li&gt;Spark and data analysis with Python (coming).&lt;/li&gt;
+  &lt;li&gt;Hive and data processing (coming).&lt;/li&gt;
+  &lt;li&gt;Practical example&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+</description>
+        <pubDate>Mon, 27 Nov 2017 09:45:00 -0700</pubDate>
+        <link>https://blog.gisspan.com/2017/11/Hadoop.html</link>
+        <guid isPermaLink="true">https://blog.gisspan.com/2017/11/Hadoop.html</guid>
+        
+        <category>aws</category>
+        
+        <category>big data</category>
+        
+        
+      </item>
     
       <item>
         <title>Advanced HTTPS</title>
@@ -1752,8 +1900,8 @@ If you prefer to have the support of a huge community, then Kafka will be the ch
   &lt;ol&gt;
     &lt;li&gt;&lt;a href=&quot;/2016/08/Analyse-website-log-with-AWS-data-analysis-services.html&quot;&gt;Introduction to big data&lt;/a&gt;.&lt;/li&gt;
     &lt;li&gt;Streaming real time data (this post).&lt;/li&gt;
-    &lt;li&gt;Hadoop &amp;amp; MapReduce (coming).&lt;/li&gt;
-    &lt;li&gt;HBase patterns (coming).&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&quot;/2017/11/Hadoop.html&quot;&gt;Hadoop &amp;amp; MapReduce&lt;/a&gt;.&lt;/li&gt;
+    &lt;li&gt;ElasticSearch (coming).&lt;/li&gt;
     &lt;li&gt;Spark and data analysis with Python (coming).&lt;/li&gt;
     &lt;li&gt;Hive and data processing (coming).&lt;/li&gt;
     &lt;li&gt;Practical example&lt;/li&gt;
@@ -1789,8 +1937,8 @@ In this post and following posts, I am going to describe these services, and how
 &lt;ol&gt;
   &lt;li&gt;Introduction to big data (this post).&lt;/li&gt;
   &lt;li&gt;&lt;a href=&quot;/2016/09/Stream-real-time-data.html&quot;&gt;Streaming real time data&lt;/a&gt;.&lt;/li&gt;
-  &lt;li&gt;Hadoop &amp;amp; MapReduce (coming).&lt;/li&gt;
-  &lt;li&gt;HBase patterns (coming).&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;/2017/11/Hadoop.html&quot;&gt;Hadoop &amp;amp; MapReduce&lt;/a&gt;.&lt;/li&gt;
+  &lt;li&gt;ElasticSearch (coming).&lt;/li&gt;
   &lt;li&gt;Spark and data analysis with Python (coming).&lt;/li&gt;
   &lt;li&gt;Hive and data processing (coming).&lt;/li&gt;
   &lt;li&gt;Parctical example&lt;/li&gt;
@@ -1827,193 +1975,6 @@ To install and configure AWS commadn line interface and create an Amazon account
         <category>AWS</category>
         
         <category>big data</category>
-        
-        
-      </item>
-    
-      <item>
-        <title>Setup basic development environment for React and webpack.</title>
-        <description>&lt;p&gt;Webpack became the de-facto standard module bundling and build automation tool for React community. Webpack is robust, and more complex than other bundling packages, and it has a steep learning curve comparing to other build automation tools.&lt;br /&gt;
-This post is going to show how to setup a very basic development environment that will give you a head start for basic web Single page application that is using react and webpack.&lt;!--more--&gt;
-&lt;br /&gt;
-&lt;br /&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;start-with-npm-packages&quot;&gt;Start with NPM packages&lt;/h2&gt;
-&lt;p&gt;Start with installing the essential React required packages:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;npm init
-npm install --save react react-dom react-addons-update 
-npm install --save react-router reflux reflux-promise
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;The above will start the &lt;code class=&quot;language-wiki&quot;&gt;&amp;nbsp;package.json&amp;nbsp;&lt;/code&gt; file, and install the required react libraries.&lt;/p&gt;
-
-&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
-
-&lt;h4 id=&quot;install-webpack-and-its-developer-tool&quot;&gt;Install webpack and its developer tool&lt;/h4&gt;
-&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;npm install --save webpack
-npm install -g webpack-dev-server&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;webpack-configuration-file&quot;&gt;webpack configuration file&lt;/h2&gt;
-&lt;p&gt;Start writing the webpack configuration file, which by convention its default name is &lt;code class=&quot;language-wiki&quot;&gt;&amp;nbsp;webpack.config.js&amp;nbsp;&lt;/code&gt;.&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;var path = require(&#39;path&#39;);
-var webpack = require(&#39;webpack&#39;);
-
-module.exports = {
-   // ..... configuration fields (e.g.: entry, output, .....etc.)
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
-
-&lt;h4 id=&quot;entry--output&quot;&gt;entry / output&lt;/h4&gt;
-&lt;p&gt;These most important fields in the config file are the entry/output. Webpack after all is a bundler tool that read JavaScript file and bundle it with all its depnedencies into one or more files (called bundles).&lt;br /&gt;
-The &lt;em&gt;&lt;strong&gt;entry&lt;/strong&gt;&lt;/em&gt; field should point to the main entry point of our application. Webpack will parse the file, and parse all dependencies expressed with the statment &lt;code class=&quot;language-wiki&quot;&gt;&amp;nbsp;require&amp;nbsp;&lt;/code&gt;. The output field is where webpack will store the result.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;module.exports = {
-    // the most important fields in the configuration
-    entry: &#39;src/app.js&#39;,
-    output: {
-       filename: &#39;output/main.js&#39;
-    }
-}&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
-
-&lt;p&gt;Running the webpack from the command line for the above config file will read the entry javascript file: &lt;em&gt;&lt;strong&gt;src/app.js&lt;/strong&gt;&lt;/em&gt; , figure out the dependencies, bundle them all together, and generate the output file &lt;em&gt;&lt;strong&gt;output/main.js&lt;/strong&gt;&lt;/em&gt;.&lt;/p&gt;
-
-&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;continous-watching-and-bundling&quot;&gt;Continous watching and bundling&lt;/h2&gt;
-&lt;p&gt;As other build tools like Gulp provides &lt;em&gt;&lt;strong&gt;gulp.watch&lt;/strong&gt;&lt;/em&gt;, and Browserify provides &lt;em&gt;&lt;strong&gt;watchify&lt;/strong&gt;&lt;/em&gt; to provide the ability for continous watching changes in source code, and bundle and generate the output on the fly.  &lt;br /&gt;
-Webpack provides the same functionality with running webpack while specifying the &lt;strong&gt;watch&lt;/strong&gt; switch&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;webpack --watch 
-#### or another option
-webpack -w&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;By specifying the watch option , webpack keep watching the changes and recompiles automatically.&lt;/p&gt;
-
-&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
-
-&lt;h4 id=&quot;webpack-dev-server&quot;&gt;Webpack-dev-server&lt;/h4&gt;
-&lt;p&gt;Webpack-dev-server is a solution that was built on top of the watch mode, and goes beyond that. 
-It is a simple node/express server that run our application and serve the webpack bundles. The server watch changes in the source, and emits information about the state to the client.&lt;br /&gt;
-There are two different ways that the webpack watches the changes in the source files: iframe mode, and inline mode. We are going to cover the inline mode only.&lt;br /&gt;
-To run the server in inline mode we run the command line as follows:&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;webpack-dev-server --inline&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;And the bundle and the static files will be servered at:&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;http://localhost:8080/&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Because we might use this command every time we do development, it is good to put it as a script in package.json.&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;// in the file package.json
-...
-&quot;scripts&quot;: {
-  &quot;test&quot;: &quot;echo \&quot;Error: no test specified\&quot; &amp;amp;&amp;amp; exit 1&quot;,
-  &quot;start&quot;: &quot;webpack-dev-server --colors --inline&quot;
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;On the browser side we need to open socket to the server to allow the server to communicate when change occurs. To do that we have to call this script, which we should add it to the entry point in webpack.config.js.&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;entry: [
-      // WebpackDevServer host and port
-      &#39;webpack-dev-server/client?http://localhost:8080&#39;, 
-      &#39;src/app.js&#39;
-]&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;br /&gt;
-&lt;br /&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;hot-module-replacement&quot;&gt;Hot Module replacement&lt;/h2&gt;
-&lt;p&gt;&lt;strong&gt;Hot Module Replacement (HMR)&lt;/strong&gt; is a feature to inject updated modules into the active runtime.&lt;br /&gt;
-It help webpack-dev-server loads only the changed bundles, and not the whole code, and the the scripts will be loaded without the need to refresh.&lt;br /&gt;
-To use the HMR we need to do the following:&lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;Install the hot load package: &lt;/li&gt;
-&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;npm install --save-dev react-hot-loader&lt;/code&gt;&lt;/pre&gt;
-&lt;li&gt;Use hot command line argument&lt;/li&gt;  
-Send a command line option: hot on the CLI of webpack-dev-server, so we can re-write the code to run webpack-dev-server as follows:
-&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;// in the file package.json
-...
-&quot;scripts&quot;: {
-  &quot;test&quot;: &quot;echo \&quot;Error: no test specified\&quot; &amp;amp;&amp;amp; exit 1&quot;,
-  &quot;start&quot;: &quot;webpack-dev-server --colors --inline --hot&quot;
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;li&gt; Load a module on the browser side to watch for the HMR &lt;/li&gt;  
- and we can load it similar to how we loaded the webpack-dev-server client as follows:
-&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;entry: [
-      // WebpackDevServer host and port
-      &#39;webpack-dev-server/client?http://localhost:8080&#39;, 
-      &#39;webpack/hot/dev-server&#39;,
-      &#39;src/app.js&#39;
-]&lt;/code&gt;&lt;/pre&gt;
-&lt;/ol&gt;
-
-&lt;h2 id=&quot;additional-useful-packages&quot;&gt;Additional useful packages&lt;/h2&gt;
-&lt;p&gt;There are addional useful packages that we are going to usethem in many different projects.&lt;/p&gt;
-&lt;ol&gt;
-
-&lt;li&gt;classnames&lt;/li&gt;  
-This package is the official replacement for classSet that was shipped with React.js Addons bundle before.
-It generates dynamic classnames from the model, similar to Angular&#39;s ng-class.  
-
-&lt;li&gt;Babel&#39;s packages:  &lt;/li&gt;
-Babel provides lots of features like ES6, JSX,   
-&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;npm install --save babel babel-core babel-polyfill babel-loader babel-preset-es2015
-&lt;/code&gt;&lt;/pre&gt;
-
-
-
-
-&lt;/ol&gt;
-&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
-
-&lt;h4 id=&quot;setup-babel-with-react&quot;&gt;Setup Babel with react&lt;/h4&gt;
-&lt;p&gt;Babel is a modular echo system, and in order Babel provides a module for react, to use it we need to install it and configure it:&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;npm install --save  babel-preset-react&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;And to configure it we add a file called &lt;code class=&quot;language-wiki&quot;&gt;&amp;nbsp;.bablerc&amp;nbsp;&lt;/code&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;// .babelrc 
-{
-  &quot;presets&quot;: [&quot;react&quot;]
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;br /&gt;
-&lt;br /&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;convert-scss-to-css&quot;&gt;Convert SCSS to CSS&lt;/h2&gt;
-&lt;p&gt;Webpack provides the ability to transfer the content of files through &lt;em&gt;&lt;strong&gt;loaders&lt;/strong&gt;&lt;/em&gt;. To transform SCSS to CSS, we do the following:&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;Install the required loader&lt;/li&gt;
-&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;npm install sass-loader node-sass webpack --save-dev&lt;/code&gt;&lt;/pre&gt;
-sass-loader is the required loader, and it require node-sass as well to work.  
-&lt;li&gt;Transform the sass files&lt;/li&gt;
-To transform the sass files, we use the module/loaders in webpack as follows:
-&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;module.exports = {
-  ...
-  module: {
-    loaders: [
-      {
-        test: /\.scss$/,
-        loaders: [&quot;style&quot;, &quot;css&quot;, &quot;sass&quot;]
-      }
-    ]
-  }
-};
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;/ol&gt;
-
-&lt;p&gt;By this you have a basic build system using webpack.&lt;/p&gt;
-</description>
-        <pubDate>Mon, 01 Aug 2016 09:45:00 -0600</pubDate>
-        <link>https://blog.gisspan.com/2016/08/setup-react-webpack-development-project.html</link>
-        <guid isPermaLink="true">https://blog.gisspan.com/2016/08/setup-react-webpack-development-project.html</guid>
-        
-        <category>react</category>
-        
-        <category>build &amp; CI</category>
         
         
       </item>
