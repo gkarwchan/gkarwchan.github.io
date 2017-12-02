@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <title>Hadoop and Map Reduce - Part 3</title>
-  <meta name="description" content="The chances are, the most common software you will hear about while you are navigating in the big data world, is Hadoop.Hadoop by itself, is very important a...">
+  <meta name="description" content="The chances are, the most common software you will hear about while you are navigating the Big Data World, is Hadoop.Hadoop by itself, is very important and ...">
 
 
   <!-- CSS Reset -->
@@ -121,22 +121,20 @@
       </header>
       <div class="post-content post-font" itemprop="articleBody">
         
-<p>The chances are, the most common software you will hear about while you are navigating in the big data world, is Hadoop.<br />
-Hadoop by itself, is very important and widely used, and adding to that, it is the base of other software technologies and applications that are built on top of it.<br />
-Lots, and lots of different software that cover different services are built on Hadoop, which are going to cover later.<br />
-Understanding the basics of Hadoop is good skill to have, that will boost your experience with those services and tools that are built on top of Hadoop.
+<p>The chances are, the most common software you will hear about while you are navigating the Big Data World, is Hadoop.<br />
+Hadoop by itself, is very important and widely used computational platform, and adding to that, it is the base of other software, technologies and applications that are built on top of it.<br />
+Lots, and lots of important technologies, and software in different domains and business are built on Hadoop.<br />
+Hadoop is complex and its computational framework MapReduce is complex, but the good news is there is a good chance that you can use all of the technologies that are built on Hadoop without the need to learn or deal with Hadoop at all.<br />
+In spite of that, still understanding the basic concepts of Hadoop will give you a boost in the Big Data World, becuase you will encounter its concepts in other technologies and software.
 <!--more--></p>
 
 <h2 id="introduction">Introduction</h2>
-<p>Hadoop is an open source distributing computing platform, that help process huge amount of data.<br />
-We can put Hadoop idea in a simple way: divide the huge amount of data into smaller pieces, and send each small piece to a different machine, and ask each machine to process that small amount of data only.  <br />
+<p>Hadoop is an open source distributed computing platform, that help process huge amount of data (that might reach trillions of bytes in size).<br />
+To put the concept of Hadoop in simple way, Hadoop divides the huge data into smaller pieces, called <code class="highlighter-rouge">Shards</code>, and distribute these pieces into different machines, and instruct those machines to process the data, so each machine will process a small amount of data.<br />
 Regardless of how small the machine, Hadoop can add that machine computational power into one huge pool of computation power. Hadoop can accommodate what is called <strong>Commodity Hardware</strong>, which means a cheap affordable hardware, and divide a huge amount of data and distribute it among these machines and demanding those machines to process the data.<br />
-Hadoop provides very basic computational framework, and Hadoop is complex, and not easy to learn, or use. And it is very difficult to write programs that use its MapReduce.<br />
-but the good news is, most probabely you will never need to write a program that is directly using Hadoop.<br />
-Lots of open-source software that are providing lots of useful functionalities, and in different domains are built on top of Hadoop.<br />
-In this article, I am just going to cover very briefly on Hadoop components, and technologies, and talking more about its echo system, and other software that are built on top of it.</p>
-
-<p><br /></p>
+This is why Hadoop is described as “Distributed Computing Platform”, because it distribute data among many machines and distribute the computing of the data into different machine.<br />
+In this post I am going to describe the two basic concepts that make up Hadoop, how Hadoop distribute data, and how divide the computing and processing of data among different machines. 
+<br /></p>
 
 <h2 id="hadoop-components">Hadoop Components</h2>
 <p>Hadoop borrowed from Google two important technologies, and using the Java language, introduced them to the open-source world.<br />
@@ -197,6 +195,17 @@ As I said, I am not going to dive into the details of MapReduce, because there a
 <ol>
   <li><strong>MongoDB-Hadoop</strong>: Even MongoDB it is a separate software from Hadoop, but with MongoDB-Hadoop connector we can integrate the two worlds together, so MongoDB can handle huge data.</li>
   <li><strong>RethinkDB</strong>: is a JSON-based database, that use Hadoop for storage.</li>
+</ol>
+
+<p><br /></p>
+
+<h4 id="newsql-databases">NewSQL Databases</h4>
+
+<hr />
+
+<ol>
+  <li><strong>Akiban Server</strong>: A NewSQL database that combines SQL and Non-SQL, written in Java and can be distributed on top of Hadoop.</li>
+  <li><strong>Haeinsa</strong>: Haeinsa add SQL capabilites on top of HBase, which we mentioned above.</li>
 </ol>
 
 <p><br /></p>
