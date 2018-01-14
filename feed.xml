@@ -6,9 +6,189 @@
 </description>
     <link>https://blog.gisspan.com/</link>
     <atom:link href="https://blog.gisspan.com/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sun, 14 Jan 2018 01:32:53 -0700</pubDate>
-    <lastBuildDate>Sun, 14 Jan 2018 01:32:53 -0700</lastBuildDate>
+    <pubDate>Sun, 14 Jan 2018 04:08:58 -0700</pubDate>
+    <lastBuildDate>Sun, 14 Jan 2018 04:08:58 -0700</lastBuildDate>
     <generator>Jekyll v3.1.6</generator>
+    
+      <item>
+        <title>Build Progressive Web App from Scratch - Part 2</title>
+        <description>
+&lt;p&gt;In this part we will introduce React and its ecosystem.&lt;br /&gt;
+&lt;!--more--&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;introducing-react&quot;&gt;Introducing React&lt;/h3&gt;
+
+&lt;h1 id=&quot;add-react&quot;&gt;add react&lt;/h1&gt;
+&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;npm i react react-dom babel-polyfill 
+npm i --save-dev babel-preset-react
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;add a subfolder src/client
+add two files: index.jsx and app.jsx
+add the following code:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt; // app.jsx
+import React from &#39;react&#39;;
+const App = () =&amp;gt; (&amp;lt;h1&amp;gt;Hello React!&amp;lt;/h1&amp;gt;);
+export default App;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt; // index.jsx
+import React from &#39;react&#39;;
+import { render } from &#39;react-dom&#39;;
+import App from &#39;./app&#39;;
+
+render(&amp;lt;App /&amp;gt;, document.querySelector(&#39;#app&#39;));
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Add the following to &lt;code class=&quot;highlighter-rouge&quot;&gt;.babelrc&lt;/code&gt;: “react”&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;// .babelrc
+{
+  &quot;presets&quot;: [
+    &quot;env&quot;, &quot;react&quot;
+  ]
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Let us be more fancy:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;npm i --save-dev rimraf html-webpack-plugin
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Add &lt;code class=&quot;highlighter-rouge&quot;&gt;index.html&lt;/code&gt; into &lt;code class=&quot;highlighter-rouge&quot;&gt;src/&lt;/code&gt; directory, and add the following:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-html&quot;&gt;&amp;lt;!doctype html&amp;gt;
+&amp;lt;html&amp;gt;
+  &amp;lt;head&amp;gt;
+  &amp;lt;/head&amp;gt;
+  &amp;lt;body&amp;gt;
+    &amp;lt;div id=&quot;app&quot;&amp;gt;&amp;lt;/div&amp;gt;
+  &amp;lt;/body&amp;gt;
+&amp;lt;/html&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Change webpack.config.babel as this:&lt;/p&gt;
+
+&lt;p&gt;change webpack.config.babel.js for the entry point:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;// webpack.config.babel.js
+import path from &#39;path&#39;;
+import HtmlWebpackPlugin from &#39;html-webpack-plugin&#39;;
+
+export default {
+  entry: [
+    &#39;./src/client&#39;,
+  ],
+  output: {
+    filename: &#39;js/bundle.js&#39;,
+    path: path.resolve(__dirname, &#39;dist&#39;),
+    publicPath: &#39;/&#39;,
+  },
+  module: {
+    rules: [
+      { test: /\.(js|jsx)$/, use: &#39;babel-loader&#39;, exclude: /node_modules/ },
+    ],
+  },
+  devtool: process.env.NODE_ENV === &#39;production&#39; ? false : &#39;source-map&#39;,
+  resolve: {
+    extensions: [&#39;.js&#39;, &#39;.jsx&#39;],
+  },
+  devServer: {
+    contentBase: path.join(__dirname, &#39;dist&#39;),
+    headers: {
+      &#39;Access-Control-Allow-Origin&#39;: &#39;*&#39;,
+    },
+  },
+  plugins: [new HtmlWebpackPlugin({ template: &#39;./src/index.html&#39; })],
+};
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Add the following in &lt;code class=&quot;highlighter-rouge&quot;&gt;package.json&lt;/code&gt;:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;// package.json
+&quot;scripts&quot;: {
+  &quot;prebuild&quot;: &quot;rimraf dist&quot;
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Delete the old &lt;code class=&quot;highlighter-rouge&quot;&gt;index.html&lt;/code&gt; and delete all old js files.&lt;/p&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;introduce-react-router&quot;&gt;Introduce react-router&lt;/h3&gt;
+&lt;p&gt;Let us add react-router:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;npm i react-router-dom
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Change app.jsx:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;// app.jsx
+&quot;scripts&quot;: {
+  &quot;prebuild&quot;: &quot;rimraf dist&quot;
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Add two more files:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;home.jsx&lt;/li&gt;
+  &lt;li&gt;login.jsx&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;// home.jsx
+import React from &#39;react&#39;;
+const Home = () =&amp;gt; (
+  &amp;lt;div&amp;gt;
+    &amp;lt;h2&amp;gt;Home&amp;lt;/h2&amp;gt;
+  &amp;lt;/div&amp;gt;
+);
+export default Home;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;// login.jsx
+import React from &#39;react&#39;;
+const Login = () =&amp;gt; (
+  &amp;lt;div&amp;gt;
+    &amp;lt;h2&amp;gt;Login&amp;lt;/h2&amp;gt;
+  &amp;lt;/div&amp;gt;
+);
+export default Login;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Modify app.jsx&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;// app.jsx
+import React from &#39;react&#39;;
+import { BrowserRouter as Router, Route, Link } from &#39;react-router-dom&#39;;
+import Home from &#39;./home&#39;;
+import Login from &#39;./login&#39;;
+
+
+const App = () =&amp;gt; (
+  &amp;lt;Router&amp;gt;
+    &amp;lt;div&amp;gt;
+      &amp;lt;ul&amp;gt;
+        &amp;lt;li&amp;gt;&amp;lt;Link to=&quot;/&quot;&amp;gt;Home&amp;lt;/Link&amp;gt;&amp;lt;/li&amp;gt;
+        &amp;lt;li&amp;gt;&amp;lt;Link to=&quot;/login&quot;&amp;gt;Login&amp;lt;/Link&amp;gt;&amp;lt;/li&amp;gt;
+      &amp;lt;/ul&amp;gt;
+      &amp;lt;hr /&amp;gt;
+      &amp;lt;Route exact path=&quot;/&quot; component={Home} /&amp;gt;
+      &amp;lt;Route path=&quot;/login&quot; component={Login} /&amp;gt;
+    &amp;lt;/div&amp;gt;
+  &amp;lt;/Router&amp;gt;
+);
+export default App;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;To get the code so far &lt;a href=&quot;https://github.com/gkarwchan/progressive_web_app_from_scratch/tree/part2&quot;&gt;git branch “part2”&lt;/a&gt;&lt;/p&gt;
+</description>
+        <pubDate>Sat, 13 Jan 2018 09:45:00 -0700</pubDate>
+        <link>https://blog.gisspan.com/2018/01/Build-Progressive-web-app-from-scratch-2.html</link>
+        <guid isPermaLink="true">https://blog.gisspan.com/2018/01/Build-Progressive-web-app-from-scratch-2.html</guid>
+        
+        <category>react</category>
+        
+        <category>javascript</category>
+        
+        
+      </item>
     
       <item>
         <title>Build Progressive Web App from Scratch - Part 1</title>
@@ -2043,166 +2223,6 @@ var cachedResult = new CachedResult&amp;lt;System.Web.Http.OkResult&amp;gt;(resp
         <guid isPermaLink="true">https://blog.gisspan.com/2016/09/IHttpActionResult.html</guid>
         
         <category>asp.net</category>
-        
-        
-      </item>
-    
-      <item>
-        <title>Streaming real data with AWS - Part 2.</title>
-        <description>
-&lt;p&gt;Technology of big data is booming and moving fast, and one of the major sector of big data booming is the requirements to process and analyze real time data that is helping lots of industries using real time data, from IoT, to the analyzing social networks.&lt;br /&gt;
-But real time data has its challenges, which the industry answered with many different solutions.&lt;br /&gt;
-In this post we are going to cover the technical solutions in AWS for streaming real time data.  &lt;!--more--&gt;
-&lt;br /&gt;&lt;br /&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;problems-with-real-time-data-processing&quot;&gt;Problems with real-time data processing&lt;/h2&gt;
-&lt;p&gt;Real time data produces its unique challenges and problems, and here are some of them:&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;Process massive amounts of streaming data.&lt;br /&gt;
-For example, processing a hashtag in twitter, means we might receive thousands of tweets in a second.&lt;/li&gt;
-  &lt;li&gt;Data Loss:&lt;br /&gt;
-Data producer send record which could be lost for different reasons.&lt;/li&gt;
-  &lt;li&gt;Message Re-ordering:&lt;br /&gt;
-With lots of data coming in, it is challenging to keep track of the order of the data, when the difference could be fraction of a second.&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h4 id=&quot;real-time-streaming-solution-requirements&quot;&gt;Real-time streaming solution requirements&lt;/h4&gt;
-
-&lt;p&gt;A stream processing solution has to solve different challenges:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Process millions of events per second in realtime.&lt;/li&gt;
-  &lt;li&gt;correlate data from multiple streams.&lt;/li&gt;
-  &lt;li&gt;Real-time responsiveness to events.&lt;/li&gt;
-  &lt;li&gt;Scale up/out as volumes increase in size and complexity&lt;/li&gt;
-  &lt;li&gt;Rapid integration with existing infrastructure and data sources.&lt;/li&gt;
-  &lt;li&gt;Integration with other systems that will use the data.&lt;/li&gt;
-  &lt;li&gt;End-user ad-hoc continuous query access&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&quot;streaming-solutions-on-aws&quot;&gt;Streaming solutions on AWS&lt;/h2&gt;
-&lt;p&gt;AWS provides many streaming services for realtime data. Each has its own features. We are going to compare between them to give you and idea which one to pick for your next project.
-These services are provided directly from Amazon. There are others that available from AWS market place, which is very active community, and you can check if your preferable streaming software might be available already there.&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;Amazon Kinesis&lt;/li&gt;
-  &lt;li&gt;Apache Kafka&lt;/li&gt;
-  &lt;li&gt;Amazon SQS / SNS&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;And let us start with the simplest: SQS / SNS.&lt;br /&gt;
-&lt;br /&gt;&lt;/p&gt;
-
-&lt;h4 id=&quot;amazon-sqs--sns&quot;&gt;Amazon SQS / SNS&lt;/h4&gt;
-&lt;p&gt;Amazon SQS is a simple (“dump”) message queuing service. It is a simple FIFO data store (first-in first-out), and if you are coming from Windows environment it is similar to MSMQ.&lt;br /&gt;
-But you can achieve push-based messaging service if you combine it with SNS: the Amazon notification service.&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;
-    &lt;p&gt;SQS/SNS Pros:&lt;/p&gt;
-
-    &lt;ol&gt;
-      &lt;li&gt;Both SQS/SNS are native AWS services, which means they are elastics and scale to the level you want them.&lt;/li&gt;
-      &lt;li&gt;They are managed by Amazon, and you don’t have to worry about them.&lt;/li&gt;
-      &lt;li&gt;Very easy to configure, and the easiest to configure between all three services.&lt;/li&gt;
-      &lt;li&gt;Duplicate data between many availability zones automatically.&lt;/li&gt;
-    &lt;/ol&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;SQS/SNS Cons:&lt;/p&gt;
-
-    &lt;ol&gt;
-      &lt;li&gt;It is very simple comparing to other solutions, and to achieve what other solutions are providing we need to do lots of customization and coding.&lt;/li&gt;
-      &lt;li&gt;It is more expensive than others in this list when it comes to big data.&lt;/li&gt;
-    &lt;/ol&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
-
-&lt;h4 id=&quot;amazon-kinesis&quot;&gt;Amazon Kinesis&lt;/h4&gt;
-&lt;p&gt;Amazon Kinesis is a platform for streaming real-time data on AWS, offering services to store, query, analyze and deliver realtime data:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;
-    &lt;p&gt;Kinesis Pros:&lt;/p&gt;
-
-    &lt;ol&gt;
-      &lt;li&gt;Stream huge data (TBs per hour).&lt;/li&gt;
-      &lt;li&gt;Managed by Amazon and you don’t have to worry about it.&lt;/li&gt;
-      &lt;li&gt;Cheapest between all three when it comes to data size.&lt;/li&gt;
-      &lt;li&gt;Duplicate data between many availability zones automatically.&lt;/li&gt;
-    &lt;/ol&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Kinesis Cons:&lt;/p&gt;
-
-    &lt;ol&gt;
-      &lt;li&gt;More complex to setup than SQS.&lt;/li&gt;
-    &lt;/ol&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
-
-&lt;h4 id=&quot;apache-kafka&quot;&gt;Apache Kafka&lt;/h4&gt;
-&lt;p&gt;Apache Kafka is publish-subscribe message broker that can handle hundreds of megabytes per seconds, and has clustering to support scaling out.&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;
-    &lt;p&gt;Kafka Pros:&lt;/p&gt;
-
-    &lt;ol&gt;
-      &lt;li&gt;Huge community support.&lt;/li&gt;
-      &lt;li&gt;Relatively easier to install / configure than Kinesis.&lt;/li&gt;
-      &lt;li&gt;More stable than Kinesis.&lt;/li&gt;
-    &lt;/ol&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Kafka Cons:&lt;/p&gt;
-
-    &lt;ol&gt;
-      &lt;li&gt;You need to set it up and configure it yourself on EC2.&lt;/li&gt;
-      &lt;li&gt;If you need redundancy across many availability zones , then you have to do it your self.&lt;/li&gt;
-    &lt;/ol&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&quot;how-to-choose&quot;&gt;How to choose&lt;/h2&gt;
-&lt;p&gt;If you want very simple requirements with small size of data, then you don’t have to use Kinesis or Kafka, because Amazon SQS/SNS is simpler to use.&lt;br /&gt;
-If you require to handle huge data, and more complex functionality then you should choose either Kafka, or Kinesis. They both are can fit many complex situation, and actually Kinesis was developed after Kafka.&lt;br /&gt;
-If you want to do less work and less learning curve, then Kinesis should be your choice. Kinesis is managed by AWS, and can be scaled automatically using AWS auto-scaling services.&lt;br /&gt;
-If you prefer to have the support of a huge community, then Kafka will be the choice, but Kafka scalability is achieved using its clustering features, which you have to configure it yourself.&lt;/p&gt;
-
-&lt;p&gt;This is a sheet that I took it from AWS documentation that shows the differences between these 3 technologies, plus a technology that I didn’t mention which is DynamoDB Stream:&lt;/p&gt;
-
-&lt;div class=&quot;column&quot;&gt;
-  &lt;p&gt;&lt;img src=&quot;/img/streaming.jpg&quot; alt=&quot;states&quot; /&gt;&lt;/p&gt;
-
-  &lt;h2 id=&quot;list-of-posts&quot;&gt;List of posts&lt;/h2&gt;
-  &lt;p&gt;This post is the second part of many posts related to bid data. The other posts are:&lt;/p&gt;
-
-  &lt;ol&gt;
-    &lt;li&gt;&lt;a href=&quot;/2016/08/Analyse-website-log-with-AWS-data-analysis-services.html&quot;&gt;Introduction to big data&lt;/a&gt;.&lt;/li&gt;
-    &lt;li&gt;Streaming real time data (this post).&lt;/li&gt;
-    &lt;li&gt;&lt;a href=&quot;/2017/11/Hadoop.html&quot;&gt;Hadoop &amp;amp; MapReduce&lt;/a&gt;.&lt;/li&gt;
-    &lt;li&gt;ElasticSearch (coming).&lt;/li&gt;
-    &lt;li&gt;Spark and data analysis with Python (coming).&lt;/li&gt;
-    &lt;li&gt;Hive and data processing (coming).&lt;/li&gt;
-    &lt;li&gt;Practical example&lt;/li&gt;
-  &lt;/ol&gt;
-
-  &lt;p&gt;&lt;br /&gt;&lt;/p&gt;
-&lt;/div&gt;
-</description>
-        <pubDate>Sat, 03 Sep 2016 09:45:00 -0600</pubDate>
-        <link>https://blog.gisspan.com/2016/09/Stream-real-time-data.html</link>
-        <guid isPermaLink="true">https://blog.gisspan.com/2016/09/Stream-real-time-data.html</guid>
-        
-        <category>AWS</category>
-        
-        <category>big data</category>
         
         
       </item>
