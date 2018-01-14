@@ -6,9 +6,8 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>Web matters</title>
-  <meta name="description" content="A blog about web programming that covers the full stack. JavaScript on the client side, and on the server side, it could be .NET, Go, Python.
-">
+  <title>Build Progressive Web App from Scratch</title>
+  <meta name="description" content="With people use their smart phones to surf the web, more than they use their desktop, it becomes more and more important to make your website, mobile friendl...">
 
 
   <!-- CSS Reset -->
@@ -20,7 +19,7 @@
 
   <link rel="stylesheet" href="/css/main.css">
   <script src="/js/prism.js"></script>
-  <link rel="canonical" href="https://blog.gisspan.com/tag/react">
+  <link rel="canonical" href="https://blog.gisspan.com/2017/12/Build-Progressive-web-app-from-scratch.html">
   <link rel="alternate" type="application/rss+xml" title="Web matters" href="https://blog.gisspan.com/feed.xml">
   <script>
     (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -112,70 +111,71 @@
 </header>
 
 
-          <div class="grid content">
-    
-  <div class="page-content">
-     <ul class="post-list">
-        <li> <div class="post-excerpt">
-          <a href="/2018/01/Build-Progressive-web-app-from-scratch-2.html"  class="post-title-excerpt" >Build Progressive Web App from Scratch - Part 2</a>
-          <div class="excerpt-body post-font">
-<p>In this part we will introduce React and its ecosystem.</p>
-
-<br/><br/>
-          <a href="/2018/01/Build-Progressive-web-app-from-scratch-2.html"> read more ...</a></div>
-          
-          </div>
-            
-          <div class="post-excerpt">
-          <a href="/2017/12/Build-Progressive-web-app-from-scratch-1.html"  class="post-title-excerpt" >Build Progressive Web App from Scratch - Part 1</a>
-          <div class="excerpt-body post-font">
-<p>This post will introduce webpack, webpack-dev-server, and babel.</p>
-
-<br/><br/>
-          <a href="/2017/12/Build-Progressive-web-app-from-scratch-1.html"> read more ...</a></div>
-          
-          </div>
-            
-          <div class="post-excerpt">
-          <a href="/2017/12/Build-Progressive-web-app-from-scratch.html"  class="post-title-excerpt" >Build Progressive Web App from Scratch</a>
-          <div class="excerpt-body post-font">
+            <article class="post row" itemscope itemtype="http://schema.org/BlogPosting">
+    <div class="content">
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">Build Progressive Web App from Scratch</h1>
+        <p class="post-meta"><time datetime="2017-12-29T09:45:00-07:00" itemprop="datePublished">Dec 29, 2017</time> • <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name">Ghassan Karwchan</span></span></p>
+      </header>
+      <div class="post-content post-font" itemprop="articleBody">
+        
 <p>With people use their smart phones to surf the web, more than they use their desktop, it becomes more and more important to make your website, mobile friendly.<br />
 Make it more mobile friendly means more than build a responsive user interface, that will fit whatever screen size you have.<br />
 But as well, handle offline mobiles, and slow bandwidth on the mobile.<br />
 Progressive web app, is the answer to build a fast website, that loads fast on whatever web site, or device you have, and handle offline by loading the cached application, and save any saved data into the cache, until next time you connect to internet.<br />
-We are going to build a progressive web app from the scratch, step by step.</p>
+We are going to build a progressive web app from the scratch, step by step.<br />
+<!--more--></p>
 
-<br/><br/>
-          <a href="/2017/12/Build-Progressive-web-app-from-scratch.html"> read more ...</a></div>
-          
-          </div>
-            
-          <div class="post-excerpt">
-          <a href="/2017/08/Universal-react-app-beyong-the-basics.html"  class="post-title-excerpt" >Universal <s>(Isomorphic)</s> React Application. Beyond the basics.</a>
-          <div class="excerpt-body post-font">
-<p>I decided to write this post, because I didn’t find any blog post, article, or a tutorial that will sum up for developers what the issues they are going to face when they build a universal application.<br />
-If you googled a tutorial on how to build a universal react application, you will find a lot, but most of them are just covering the surface, hello-world examples. But as you go further, or even you decided to use one of the universal frameworks/boilerplate, you will start to face some issues and difficulties.</p>
+<p><br /></p>
 
-<br/><br/>
-          <a href="/2017/08/Universal-react-app-beyong-the-basics.html"> read more ...</a></div>
-          
-          </div>
-            
-          <div class="post-excerpt">
-          <a href="/2016/08/setup-react-webpack-development-project.html"  class="post-title-excerpt" >Setup basic development environment for React and webpack.</a>
-          <div class="excerpt-body post-font"><p>Webpack became the de-facto standard module bundling and build automation tool for React community. Webpack is robust, and more complex than other bundling packages, and it has a steep learning curve comparing to other build automation tools.<br />
-This post is going to show how to setup a very basic development environment that will give you a head start for basic web Single page application that is using react and webpack.</p>
+<h2 id="technologies-used">Technologies used</h2>
+<p>I am going to use:</p>
 
-<br/><br/>
-          <a href="/2016/08/setup-react-webpack-development-project.html"> read more ...</a></div>
-          
-          </div>
-            
-          </li>
-      </ul>
+<ul>
+  <li>Nodejs version 8.x</li>
+  <li>NPM version 5.x</li>
+  <li>React version 16.x</li>
+  <li>Webpack version 3.x</li>
+</ul>
 
-  
-</div>
+<p><br />
+<br /></p>
+
+<h2 id="lessons">Lessons</h2>
+<p>This article will be the main track of all parts of the subject. The lessons are as follows:</p>
+
+<p><br /></p>
+
+<ol>
+  <li><a href="/2017/12/Build-Progressive-web-app-from-scratch-1.html">Part One: webpack, webpack-dev-server, and babel</a>.</li>
+  <li><a href="/2018/01/Build-Progressive-web-app-from-scratch-2.html">Part Two: React, React-Router</a>.</li>
+</ol>
+
+      </div>
+      <div id="disqus_thread"></div>
+        <script>
+            /**
+             *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+             *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables
+             */
+            /*
+            var disqus_config = function () {
+                this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+                this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+            };
+            */
+            (function() {  // DON'T EDIT BELOW THIS LINE
+                var d = document, s = d.createElement('script');
+                
+                s.src = '//bloggisspancom.disqus.com/embed.js';
+                
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+        <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+     </div>
+  </article>
 
 
       <footer class="site-footer row">

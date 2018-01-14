@@ -6,8 +6,8 @@
 </description>
     <link>https://blog.gisspan.com/</link>
     <atom:link href="https://blog.gisspan.com/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sun, 14 Jan 2018 04:08:58 -0700</pubDate>
-    <lastBuildDate>Sun, 14 Jan 2018 04:08:58 -0700</lastBuildDate>
+    <pubDate>Sun, 14 Jan 2018 16:39:27 -0700</pubDate>
+    <lastBuildDate>Sun, 14 Jan 2018 16:39:27 -0700</lastBuildDate>
     <generator>Jekyll v3.1.6</generator>
     
       <item>
@@ -177,7 +177,11 @@ const App = () =&amp;gt; (
 export default App;
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;To get the code so far &lt;a href=&quot;https://github.com/gkarwchan/progressive_web_app_from_scratch/tree/part2&quot;&gt;git branch “part2”&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&quot;finding-code&quot;&gt;Finding Code&lt;/h2&gt;
+&lt;p&gt;To find the code go to the &lt;a href=&quot;https://github.com/gkarwchan/progressive_web_app_from_scratch&quot;&gt;github repo&lt;/a&gt;, and make sure you are getting the &lt;a href=&quot;https://github.com/gkarwchan/progressive_web_app_from_scratch/tree/part2&quot;&gt;Part2 branch&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;find-all-parts&quot;&gt;Find all parts&lt;/h2&gt;
+&lt;p&gt;Go to &lt;a href=&quot;/2017/12/Build-Progressive-web-app-from-scratch.html&quot;&gt;the main post&lt;/a&gt; where I track all parts.&lt;/p&gt;
 </description>
         <pubDate>Sat, 13 Jan 2018 09:45:00 -0700</pubDate>
         <link>https://blog.gisspan.com/2018/01/Build-Progressive-web-app-from-scratch-2.html</link>
@@ -193,24 +197,8 @@ export default App;
       <item>
         <title>Build Progressive Web App from Scratch - Part 1</title>
         <description>
-&lt;p&gt;With people use their smart phones to surf the web, more than they use their desktop, it becomes more and more important to make your website, mobile friendly.&lt;br /&gt;
-Make it more mobile friendly means more than build a responsive user interface, that will fit whatever screen size you have.&lt;br /&gt;
-But as well, handle offline mobiles, and slow bandwidth on the mobile.&lt;br /&gt;
-Progressive web app, is the answer to build a fast website, that loads fast on whatever web site, or device you have, and handle offline by loading the cached application, and save any saved data into the cache, until next time you connect to internet.&lt;br /&gt;
-We are going to build a progressive web app from the scratch, step by step.&lt;br /&gt;
+&lt;p&gt;This post will introduce webpack, webpack-dev-server, and babel.
 &lt;!--more--&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;technologies-used&quot;&gt;Technologies used&lt;/h2&gt;
-&lt;p&gt;I am going to use:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Nodejs version 8.x&lt;/li&gt;
-  &lt;li&gt;NPM version 5.x&lt;/li&gt;
-  &lt;li&gt;React version 16.x&lt;/li&gt;
-  &lt;li&gt;Webpack version 3.x&lt;/li&gt;
-&lt;/ul&gt;
 
 &lt;p&gt;&lt;br /&gt;&lt;/p&gt;
 
@@ -455,10 +443,62 @@ devServer: {
   },
 &lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;Run &lt;code class=&quot;highlighter-rouge&quot;&gt;npm start&lt;/code&gt;, and you should see the result of webpack build, and the web server will be available on &lt;code class=&quot;highlighter-rouge&quot;&gt;http://localhost:8080&lt;/code&gt;.&lt;/p&gt;
+
+&lt;h2 id=&quot;finding-code&quot;&gt;Finding Code&lt;/h2&gt;
+&lt;p&gt;To find the code go to the &lt;a href=&quot;https://github.com/gkarwchan/progressive_web_app_from_scratch&quot;&gt;github repo&lt;/a&gt;, and make sure you are getting the &lt;a href=&quot;https://github.com/gkarwchan/progressive_web_app_from_scratch/tree/part1&quot;&gt;Part1 branch&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;find-all-parts&quot;&gt;Find all parts&lt;/h2&gt;
+&lt;p&gt;Go to &lt;a href=&quot;/2017/12/Build-Progressive-web-app-from-scratch.html&quot;&gt;the main post&lt;/a&gt; where I track all parts.&lt;/p&gt;
 </description>
         <pubDate>Sat, 30 Dec 2017 09:45:00 -0700</pubDate>
         <link>https://blog.gisspan.com/2017/12/Build-Progressive-web-app-from-scratch-1.html</link>
         <guid isPermaLink="true">https://blog.gisspan.com/2017/12/Build-Progressive-web-app-from-scratch-1.html</guid>
+        
+        <category>react</category>
+        
+        <category>javascript</category>
+        
+        
+      </item>
+    
+      <item>
+        <title>Build Progressive Web App from Scratch</title>
+        <description>
+&lt;p&gt;With people use their smart phones to surf the web, more than they use their desktop, it becomes more and more important to make your website, mobile friendly.&lt;br /&gt;
+Make it more mobile friendly means more than build a responsive user interface, that will fit whatever screen size you have.&lt;br /&gt;
+But as well, handle offline mobiles, and slow bandwidth on the mobile.&lt;br /&gt;
+Progressive web app, is the answer to build a fast website, that loads fast on whatever web site, or device you have, and handle offline by loading the cached application, and save any saved data into the cache, until next time you connect to internet.&lt;br /&gt;
+We are going to build a progressive web app from the scratch, step by step.&lt;br /&gt;
+&lt;!--more--&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;technologies-used&quot;&gt;Technologies used&lt;/h2&gt;
+&lt;p&gt;I am going to use:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Nodejs version 8.x&lt;/li&gt;
+  &lt;li&gt;NPM version 5.x&lt;/li&gt;
+  &lt;li&gt;React version 16.x&lt;/li&gt;
+  &lt;li&gt;Webpack version 3.x&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;br /&gt;
+&lt;br /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;lessons&quot;&gt;Lessons&lt;/h2&gt;
+&lt;p&gt;This article will be the main track of all parts of the subject. The lessons are as follows:&lt;/p&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;&lt;a href=&quot;/2017/12/Build-Progressive-web-app-from-scratch-1.html&quot;&gt;Part One: webpack, webpack-dev-server, and babel&lt;/a&gt;.&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;/2018/01/Build-Progressive-web-app-from-scratch-2.html&quot;&gt;Part Two: React, React-Router&lt;/a&gt;.&lt;/li&gt;
+&lt;/ol&gt;
+</description>
+        <pubDate>Fri, 29 Dec 2017 09:45:00 -0700</pubDate>
+        <link>https://blog.gisspan.com/2017/12/Build-Progressive-web-app-from-scratch.html</link>
+        <guid isPermaLink="true">https://blog.gisspan.com/2017/12/Build-Progressive-web-app-from-scratch.html</guid>
         
         <category>react</category>
         
@@ -1978,249 +2018,6 @@ Since JSON.NET serializer was introduced, not many developers used this serializ
         <pubDate>Tue, 11 Oct 2016 09:45:00 -0600</pubDate>
         <link>https://blog.gisspan.com/2016/10/Everything-you-need-to-know-about-dates.html</link>
         <guid isPermaLink="true">https://blog.gisspan.com/2016/10/Everything-you-need-to-know-about-dates.html</guid>
-        
-        <category>asp.net</category>
-        
-        
-      </item>
-    
-      <item>
-        <title>The advantages of IHttpActionResult in Web API 2.</title>
-        <description>
-&lt;p&gt;Web API 2 introduced the new interface IHttpActionResult to return back REST responses, where Web API 1 was using the class HttpResponseMessage to represent HTTP response, and HTTPResponseException to represent HTTP response error.&lt;/p&gt;
-
-&lt;p&gt;IHttpActionResult allows developers to enhance their Web API 1 code to be :&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;More testable.&lt;/li&gt;
-  &lt;li&gt;More reusable.&lt;/li&gt;
-  &lt;li&gt;Cleaner, and more elegant.&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;We are going to unleash the potential of this interface and see some creative ideas on how to use it.&lt;!--more--&gt;
-&lt;br /&gt;
-&lt;br /&gt;&lt;/p&gt;
-
-&lt;h4 id=&quot;start-from-http-protocol&quot;&gt;Start from HTTP Protocol&lt;/h4&gt;
-&lt;p&gt;First of all, let’s see what Web API is trying to do, and let us look at the HTTP response. A usual responses coming from a web server look like:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&quot;language-http&quot;&gt;HTTP/1.1 200 OK
-Cache-Control: max-age=1200
-Content-Length: 10
-Content-Type: text/plain; charset=utf-16
-Server: Microsoft-IIS/8.0
-Date: Mon, 27 Jan 2014 08:53:35 GMT
-
-hello
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;This is a successful response, which we can know from the code &lt;code class=&quot;language-wiki&quot;&gt;200&lt;/code&gt;.&lt;br /&gt;
-Another example of a failed response:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&quot;language-http&quot;&gt;HTTP/1.1 404 Not Found
-Content-type: text/html
-Content-length: 47
-  
-Sorry, the object you requested was not found.
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;the-traditional-thinking-of-web-api-1&quot;&gt;The traditional thinking of Web API 1&lt;/h2&gt;
-&lt;p&gt;Web API 1 introduced HttpResponseMessage, and by looking at the class properties in the picture down, you can see it is a literal .NET representation of the HTTP response.&lt;/p&gt;
-
-&lt;div class=&quot;column&quot; style=&quot;align: center&quot;&gt;
-  &lt;p&gt;&lt;img src=&quot;/img/HttpResponseMessage.png&quot; alt=&quot;states&quot; height=&quot;300px&quot; width=&quot;auto&quot; align=&quot;center&quot; /&gt;&lt;/p&gt;
-&lt;/div&gt;
-
-&lt;p&gt;By using HttpResponseMessage we can craft any HTTP response we want. For example to create the HTTP response mentioned above:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&quot;language-csharp&quot;&gt;var response = new HttpResonseMessage(HttpStatusCode.OK);
-response.Content = new StringContent(&quot;hello&quot;);
-response.Content.Headers.ContentType = new MediaTypeHeaderValue(&quot;text/plain&quot;);
-response.Headers.CatcheControl = new CacheControlHeaderValue {MaxAge = TimeSpan.FromMinutes(2)};
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;One problem with the code above is that it is ignoring the request, and the request content type, and this is why most of the time we will create the response like this:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&quot;language-csharp&quot;&gt;var response = request.CreateResponse(HttpStatusCode.OK, new StringContent(&quot;hello&quot;));
-response.Headers.CatcheControl = new CacheControlHeaderValue {MaxAge = TimeSpan.FromMinutes(2)};
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;By using request.CreateResponse, Web API will create the response with content type requested by the request.&lt;br /&gt;
-&lt;br /&gt;&lt;/p&gt;
-
-&lt;h4 id=&quot;worth-mentioning-alternatives&quot;&gt;Worth mentioning alternatives&lt;/h4&gt;
-&lt;p&gt;Before we move to Web API 2, it is worth mentioned that Web API 1 provides some built-in translation from any object type to HttpResponseMessage. For example, all these are valid return types of a Controller action:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&quot;language-csharp&quot;&gt;void Post()
-IEnumeration&amp;lt;string&amp;gt; Get()
-string Get(int id);
-MyCustomClass Get(int id);&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;br /&gt;
-Web API will serialize the object returned and wrap it in a successful HttpResponseMessage with status code 200.&lt;br /&gt;
-And in the case of &lt;em&gt;void&lt;/em&gt;, the Web API return &lt;code class=&quot;language-wiki&quot;&gt;&amp;nbsp;204 No Content&amp;nbsp;&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;web-api-2-and-ihttpactionresult&quot;&gt;Web API 2 and IHttpActionResult&lt;/h2&gt;
-
-&lt;p&gt;To see the advantages of this interface, let us check an example in the version 1, and see its translation into version 2.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&quot;language-csharp&quot;&gt;public class ProductsController : ApiController
-{
-    IProductRepository _repository;
-    public ProductsController(IProductRepository repository)
-    {
-        _repository = repository;
-    }
-    public HttpResponseMessage Get(int id)
-    {
-      try {
-        Product product = _repository.GetById(id);
-        if (product == null)
-        {
-            return Request.CreateResponse(HttpStatusCode.NotFound);
-        }
-        var response = Request.CreateResponse(product);
-        // add more code for caching and other custom response headers...
-        // for example: 
-        response.Headers.CatcheControl = new CacheControlHeaderValue {MaxAge = TimeSpan.FromMinutes(1)};
-        return response;
-      }
-      catch (Exception ex) {
-        return Request.CreateResponse(HttpStatusCode.InternalServerError);
-      }
-    }
-}&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;The problems with previous code are:&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;The class is responsible of calling repository and creating the HttpResponseMessage.&lt;/li&gt;
-  &lt;li&gt;There is no easy way to re-use code that set response header, like the caching for example.&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;Let us rewrite the code using IHttpActionResult:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&quot;language-csharp&quot;&gt;public class ProductsController : ApiController
-{
-    IProductRepository _repository;
-    public ProductsController(IProductRepository repository)
-    {
-        _repository = repository;
-    }
-    public HttpResponseMessage Get(int id)
-    {
-      try {
-        Product product = _repository.GetById(id);
-        if (product == null)
-        {
-            return NotFound();
-        }
-        return Ok(product);
-      }
-      catch (Exception ex) {
-        return InternalServerError(ex);
-      }
-    }
-}&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;Where Ok, NotFound, InternalServerError are ApiController methods that are returning concrete implementation of IHttpActionResult.&lt;br /&gt;
-Web API already comes with a library of classes that implement this interface which represent the most used responses on the web like : Ok, NotFound…, and they are located in the library &lt;a href=&quot;https://msdn.microsoft.com/en-us/library/system.web.http.results.aspx&quot;&gt;system.web.http.results&lt;/a&gt;.&lt;br /&gt;
-&lt;br /&gt;
-The benefits of using the previous code are:&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;Separation of concerns.&lt;/li&gt;
-  &lt;li&gt;Better testability.&lt;/li&gt;
-  &lt;li&gt;Produce reusable code.&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
-
-&lt;h4 id=&quot;separation-of-concerns&quot;&gt;1. Separation of concerns&lt;/h4&gt;
-&lt;p&gt;The code that produce the HttpResponseMessage is separate, and we can implement our own generation of the response message, and our controller concern only on retrieving the data from the repository.&lt;/p&gt;
-
-&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
-
-&lt;h4 id=&quot;better-testability&quot;&gt;2. Better testability&lt;/h4&gt;
-&lt;p&gt;Let us write test code for the previous code:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&quot;language-csharp&quot;&gt;[TestMethod]
-public void GetReturnsProductWithSameId()
-{
-    var mockRepository = new Mock&amp;lt;IProductRepository&amp;gt;();
-    mockRepository.Setup(x =&amp;gt; x.GetById(3))
-        .Returns(new Product { Id = 3 });
-
-    var controller = new ProductsController(mockRepository.Object);
-
-    IHttpActionResult actionResult = controller.Get(3);
-    var contentResult = actionResult as OkNegotiatedContentResult&amp;lt;Product&amp;gt;;
-
-    Assert.IsNotNull(contentResult);
-    Assert.IsNotNull(contentResult.Content);
-    Assert.AreEqual(3, contentResult.Content.Id);
-}&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;Obviously, testing is easier because we are testing the business logic which is retrieving data, and not generating the Http Response.&lt;/p&gt;
-
-&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
-
-&lt;h4 id=&quot;produce-reusable-code&quot;&gt;3. Produce reusable code&lt;/h4&gt;
-
-&lt;p&gt;Let us write the code that add the cash repose header to the response.&lt;/p&gt;
-
-&lt;p&gt;In order to do that, I will borrow &lt;a href=&quot;https://gist.github.com/bradwilson/8586562&quot;&gt;this brilliant idea&lt;/a&gt; of using chaining IHttpActionResult together to write reusable Http Response Headers.&lt;br /&gt;
-Let us create a code that implement IHttpActionResult and crate a response header for cashing: &lt;br /&gt;
-(P.S: I am borrowing his code, but just make it simpler)&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&quot;language-csharp&quot;&gt;public class CachedResult&amp;lt;T&amp;gt; : IHttpActionResult where T : IHttpActionResult
-{
-    public T InnerResult { get; private set; }
-    public CachedResult(T innerResult)
-    {
-      InnerResult = innerResult;
-    }
-
-    public async Task&amp;lt;HttpResonseMessage&amp;gt; ExecuteAsync(CancellationToken cancellationToken)
-    {
-        var response = await InnerResult.ExecuteAsync(cancellationToken);
-        response.Headers.CacheControl = new CacheControlHeaderValue
-        {
-          MaxAge = TimeSpan.FromMinutes(2)
-        };
-        return response;
-    }
-}&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;The above code will take an IHttpActionResult in the construction and add a caching header to it. To use it, we can do the following code:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&quot;language-csharp&quot;&gt;var responseOk =  Ok(product);
-var cachedResult = new CachedResult&amp;lt;System.Web.Http.OkResult&amp;gt;(responseOk);
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;Or we can do better, by creating an extension method to the IHttpActionResult, like this:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&quot;language-csharp&quot;&gt;public static class HttpActionResultExtensions
-{
-  public static CachedResult&amp;lt;T&amp;gt; Cached&amp;lt;T&amp;gt;(this T actionResult) where T : IHttpActionResult
-  {
-    return new CachedResult&amp;lt;T&amp;gt;(actionResult);
-  }
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;And now we can use it as follows:&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&quot;language-csharp&quot;&gt;var responseOk =  Ok(product).Cached();&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;The Chached extension method can be reused whenever we want to add Cache response header to the HttpResponseMessage&lt;/p&gt;
-
-</description>
-        <pubDate>Wed, 14 Sep 2016 09:45:00 -0600</pubDate>
-        <link>https://blog.gisspan.com/2016/09/IHttpActionResult.html</link>
-        <guid isPermaLink="true">https://blog.gisspan.com/2016/09/IHttpActionResult.html</guid>
         
         <category>asp.net</category>
         
