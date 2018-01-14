@@ -6,9 +6,286 @@
 </description>
     <link>https://blog.gisspan.com/</link>
     <atom:link href="https://blog.gisspan.com/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Fri, 01 Dec 2017 18:18:43 -0700</pubDate>
-    <lastBuildDate>Fri, 01 Dec 2017 18:18:43 -0700</lastBuildDate>
+    <pubDate>Sun, 14 Jan 2018 01:32:53 -0700</pubDate>
+    <lastBuildDate>Sun, 14 Jan 2018 01:32:53 -0700</lastBuildDate>
     <generator>Jekyll v3.1.6</generator>
+    
+      <item>
+        <title>Build Progressive Web App from Scratch - Part 1</title>
+        <description>
+&lt;p&gt;With people use their smart phones to surf the web, more than they use their desktop, it becomes more and more important to make your website, mobile friendly.&lt;br /&gt;
+Make it more mobile friendly means more than build a responsive user interface, that will fit whatever screen size you have.&lt;br /&gt;
+But as well, handle offline mobiles, and slow bandwidth on the mobile.&lt;br /&gt;
+Progressive web app, is the answer to build a fast website, that loads fast on whatever web site, or device you have, and handle offline by loading the cached application, and save any saved data into the cache, until next time you connect to internet.&lt;br /&gt;
+We are going to build a progressive web app from the scratch, step by step.&lt;br /&gt;
+&lt;!--more--&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;technologies-used&quot;&gt;Technologies used&lt;/h2&gt;
+&lt;p&gt;I am going to use:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Nodejs version 8.x&lt;/li&gt;
+  &lt;li&gt;NPM version 5.x&lt;/li&gt;
+  &lt;li&gt;React version 16.x&lt;/li&gt;
+  &lt;li&gt;Webpack version 3.x&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;initialize-the-project&quot;&gt;Initialize the project&lt;/h3&gt;
+&lt;p&gt;Create a directory with the name of the project, inside the directory intialize the npm:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;mkdir progressive-web-app
+cd progressive-web-app
+npm init -y&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;br /&gt;
+Add &lt;code class=&quot;highlighter-rouge&quot;&gt;.gitignore&lt;/code&gt; file and the following into it.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;.DS_Store
+*.log
+node_modules/
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Before ES6’s import statement, developers had to add all used javascript files into &lt;code class=&quot;highlighter-rouge&quot;&gt;&amp;lt;script&amp;gt;&lt;/code&gt; tag.&lt;br /&gt;
+Let us start with this example, where we have code that is split into two files, and we are using one extra open-source library &lt;code class=&quot;highlighter-rouge&quot;&gt;lodash&lt;/code&gt;, and see how our code is written:&lt;/p&gt;
+
+&lt;p&gt;Add a file called &lt;code class=&quot;highlighter-rouge&quot;&gt;index.html&lt;/code&gt; with the following code:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-html&quot;&gt;&amp;lt;html&amp;gt;
+  &amp;lt;head&amp;gt;
+    &amp;lt;title&amp;gt;Getting Started&amp;lt;/title&amp;gt;
+    &amp;lt;script src=&quot;https://unpkg.com/lodash@4.16.6&quot;&amp;gt;&amp;lt;/script&amp;gt;
+  &amp;lt;/head&amp;gt;
+  &amp;lt;body&amp;gt;
+    &amp;lt;div id=&quot;abc&quot;&amp;gt;
+    &amp;lt;script src=&quot;./src/person.js&quot;&amp;gt;&amp;lt;/script&amp;gt;
+    &amp;lt;script src=&quot;./src/index.js&quot;&amp;gt;&amp;lt;/script&amp;gt;
+  &amp;lt;/body&amp;gt;
+&amp;lt;/html&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Add directory src, and add two files inside it &lt;code class=&quot;highlighter-rouge&quot;&gt;person.js and index.js&lt;/code&gt;.&lt;br /&gt;
+Add the following code:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;// person.js
+class Person {
+  constructor(name) {
+    this.name = name;
+  }
+  sayHello() {
+    return `My name is ${this.name}`;
+  }
+}
+
+module.exports = Person;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;and in &lt;code class=&quot;highlighter-rouge&quot;&gt;index.js&lt;/code&gt; add this:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;// index.js
+function component() {
+  var element = document.createElement(&#39;div&#39;);
+  var person = new Person(&#39;John&#39;);
+  // Lodash, currently included via a script, is required for this line to work
+  element.innerHTML = _.join([&#39;Hello&#39;, person.sayName()], &#39; &#39;);
+
+  return element;
+}
+
+document.body.appendChild(component());
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Open the html file in a web browser, and you should see the following:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;Hello My name is John
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&quot;introducing-webpack&quot;&gt;Introducing Webpack&lt;/h3&gt;
+&lt;p&gt;Now let us see the code using webpack.&lt;br /&gt;
+Let us install lodash and webpack.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;npm install lodash
+npm install --save-dev webpack
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;p&gt;Add a file called &lt;code class=&quot;highlighter-rouge&quot;&gt;webpack.config.js&lt;/code&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;// webpack.config.js
+const path = require(&#39;path&#39;);
+
+module.exports = {
+  entry: &#39;./src/index.js&#39;,
+  output: {
+    filename: &#39;bundle.js&#39;,
+    path: path.resolve(__dirname, &#39;dist&#39;)
+  }
+};
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Modify &lt;code class=&quot;highlighter-rouge&quot;&gt;package.json&lt;/code&gt; file, and add the following into the &lt;code class=&quot;highlighter-rouge&quot;&gt;scripts&lt;/code&gt; section:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;// package.json
+ &quot;scripts&quot;: {
+    &quot;build&quot;: &quot;webpack&quot;
+  },
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Then run the following command:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;npm run build&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;This will create a folder called &lt;code class=&quot;highlighter-rouge&quot;&gt;dist&lt;/code&gt;, with a file called &lt;code class=&quot;highlighter-rouge&quot;&gt;bundle.js&lt;/code&gt;, which webpack produces.&lt;br /&gt;
+By reading webpack.config.js, you can see that webpack started with &lt;code class=&quot;highlighter-rouge&quot;&gt;src/index.js&lt;/code&gt;, and found out all dependencies, and bundled them into one package, the final file: &lt;code class=&quot;highlighter-rouge&quot;&gt;dist/bundle.js&lt;/code&gt;.&lt;br /&gt;
+&lt;br /&gt;
+Now, modify the &lt;code class=&quot;highlighter-rouge&quot;&gt;index.html&lt;/code&gt; to be like this:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-html&quot;&gt;&amp;lt;html&amp;gt;
+  &amp;lt;head&amp;gt;
+    &amp;lt;title&amp;gt;Getting Started&amp;lt;/title&amp;gt;
+  &amp;lt;/head&amp;gt;
+  &amp;lt;body&amp;gt;
+    &amp;lt;div id=&quot;abc&quot;&amp;gt;
+    &amp;lt;script src=&quot;./dist/bundle.js&quot;&amp;gt;&amp;lt;/script&amp;gt;
+  &amp;lt;/body&amp;gt;
+&amp;lt;/html&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Change &lt;code class=&quot;highlighter-rouge&quot;&gt;index.js&lt;/code&gt; to be like this:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;// index.js
+import _ from &#39;lodash&#39;;
+import Person from &#39;./person&#39;;
+
+function component() {
+  var element = document.createElement(&#39;div&#39;);
+  var person = new Person(&#39;John&#39;);
+  // Lodash, currently included via a script, is required for this line to work
+  element.innerHTML = _.join([&#39;Hello&#39;, person.sayName()], &#39; &#39;);
+
+  return element;
+}
+
+document.body.appendChild(component());
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Add in the last line of `person.js’ the following line:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;// add on the last line of person.js
+export default Person;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Run the &lt;code class=&quot;highlighter-rouge&quot;&gt;npm run build&lt;/code&gt;, and open the web browser again with the page, and you should see the same result.&lt;/p&gt;
+
+&lt;p&gt;&lt;br /&gt;
+add the &lt;code class=&quot;highlighter-rouge&quot;&gt;dist&lt;/code&gt; folder to &lt;code class=&quot;highlighter-rouge&quot;&gt;.gitignore&lt;/code&gt;.&lt;/p&gt;
+
+&lt;h3 id=&quot;introducing-babel&quot;&gt;Introducing Babel&lt;/h3&gt;
+&lt;p&gt;Let us change the code before, and add new feature, where we have an array of names, and we check the name of the person, to find if it is in the array, and then we add the following text: &lt;code class=&quot;highlighter-rouge&quot;&gt;I am a member&lt;/code&gt;, otherwise, we add the text: &lt;code class=&quot;highlighter-rouge&quot;&gt;I am a guest&lt;/code&gt;.&lt;br /&gt;
+Change &lt;code class=&quot;highlighter-rouge&quot;&gt;person.js&lt;/code&gt; code to be like this:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;// person.js
+let memberNames = [&#39;Don&#39;, &#39;Dustin&#39;, &#39;Michael&#39;];
+
+class Person {
+  constructor(name) {
+    this.name = name;
+  }
+  sayName() {
+    const isMember = memberNames.includes(this.name);
+    const memberText = isMember ? &#39;I am a member&#39; : &#39;I am a guest&#39;;
+    return `My name is ${this.name}, and ${memberText}` ;
+  }
+}
+
+export default Person;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;If you run the previous code, then you might , or might not get a result.&lt;br /&gt;
+The reason, is we are using ES7’s &lt;a href=&quot;https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/includes&quot;&gt;Array include&lt;/a&gt;, and not all browsers support this.&lt;br /&gt;
+In order to make sure our website will run on all our browsers, let us add &lt;code class=&quot;highlighter-rouge&quot;&gt;babel&lt;/code&gt;:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;npm i --save-dev babel-cli babel-preset-env  babel-loader babel-core&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;add file &lt;code class=&quot;highlighter-rouge&quot;&gt;.babelrc&lt;/code&gt; and add this code&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;{
+  &quot;presets&quot;: [
+    &quot;env&quot;
+  ]
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Change the file &lt;code class=&quot;highlighter-rouge&quot;&gt;webpack.config.js&lt;/code&gt;, to be as follow:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;// webpack.config.js
+const path = require(&#39;path&#39;);
+
+module.exports = {
+  entry: &#39;./src&#39;,
+  output: {
+    filename: &#39;bundle.js&#39;,
+    path: path.resolve(__dirname, &#39;dist&#39;),
+    publicPath: &#39;dist/&#39;
+  },
+  module: {
+    rules: [
+      { test: /\.js$/, use: &#39;babel-loader&#39;, exclude: /node_modules/ },
+    ],
+  },
+};
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;run again:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;npm run build&lt;/li&gt;
+  &lt;li&gt;open the web browser&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;to see the new result:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;Hello My name is John, and I am a guest
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Let us try something new, by using ES6, and ES7 into webpack. &lt;br /&gt;
+&lt;br /&gt;
+Let us rename &lt;code class=&quot;highlighter-rouge&quot;&gt;webpack.config.js&lt;/code&gt; to the following: &lt;code class=&quot;highlighter-rouge&quot;&gt;webpack.config.babel.js&lt;/code&gt;, and change the content to :&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;// webpack.config.babel.js
+import path from &#39;path&#39;;
+
+export default {
+  entry: &#39;./src&#39;,
+  output: {
+    filename: &#39;bundle.js&#39;,
+    path: path.resolve(__dirname, &#39;dist&#39;),
+    publicPath: &#39;dist/&#39;
+  },
+  module: {
+    rules: [
+      { test: /\.js$/, use: &#39;babel-loader&#39;, exclude: /node_modules/ },
+    ],
+  },
+};
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The above will allow us to use ES6 and ES7 in webpack.&lt;/p&gt;
+
+&lt;h3 id=&quot;introduce-webpack-dev-server&quot;&gt;Introduce webpack-dev-server&lt;/h3&gt;
+&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;npm i --save-dev webpack-dev-server
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Add the following to &lt;code class=&quot;highlighter-rouge&quot;&gt;webpack.config.babel.js&lt;/code&gt;:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;// add the following to webpack.config.babel.js
+devServer: {
+    contentBase: __dirname,
+    headers: {
+      &#39;Access-Control-Allow-Origin&#39;: &#39;*&#39;,
+    },
+  },
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;add the following script in &lt;code class=&quot;highlighter-rouge&quot;&gt;package.json&lt;/code&gt;:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;// add the following to package.json script section
+&quot;scripts&quot;: {
+    &quot;build&quot;: &quot;webpack&quot;,
+    &quot;start&quot;: &quot;webpack-dev-server&quot;
+  },
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Run &lt;code class=&quot;highlighter-rouge&quot;&gt;npm start&lt;/code&gt;, and you should see the result of webpack build, and the web server will be available on &lt;code class=&quot;highlighter-rouge&quot;&gt;http://localhost:8080&lt;/code&gt;.&lt;/p&gt;
+</description>
+        <pubDate>Sat, 30 Dec 2017 09:45:00 -0700</pubDate>
+        <link>https://blog.gisspan.com/2017/12/Build-Progressive-web-app-from-scratch-1.html</link>
+        <guid isPermaLink="true">https://blog.gisspan.com/2017/12/Build-Progressive-web-app-from-scratch-1.html</guid>
+        
+        <category>react</category>
+        
+        <category>javascript</category>
+        
+        
+      </item>
     
       <item>
         <title>Hadoop and Map Reduce - Part 3</title>
@@ -1922,64 +2199,6 @@ If you prefer to have the support of a huge community, then Kafka will be the ch
         <pubDate>Sat, 03 Sep 2016 09:45:00 -0600</pubDate>
         <link>https://blog.gisspan.com/2016/09/Stream-real-time-data.html</link>
         <guid isPermaLink="true">https://blog.gisspan.com/2016/09/Stream-real-time-data.html</guid>
-        
-        <category>AWS</category>
-        
-        <category>big data</category>
-        
-        
-      </item>
-    
-      <item>
-        <title>Big Data at your fingertips using AWS services - Introduction.</title>
-        <description>
-&lt;p&gt;Big Data Analytics used to be an activity that require powerful computers and very high specialized skills. But with the cloud computing, you can have huge computing power installed, and configured in few button clicks.&lt;br /&gt;
-AWS as an example provide a wide veriety of different kind of data analysis services, each one will do a specific job. We can use these services as building blocks to build any application that deal with big data analysis.&lt;br /&gt;
-AWS services shine on big data, and they can handle Peta-byte size databases, with high performance.&lt;br /&gt;
-In this post and following posts, I am going to describe these services, and how to use them. At the end, I am going to show how to use different kind of services to build a monitoring and diagnostic tool for an IIS web site application. &lt;!--more--&gt;
-&lt;br /&gt;
-&lt;br /&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;list-of-posts&quot;&gt;List of posts&lt;/h2&gt;
-&lt;p&gt;We are going to cover these points:&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;Introduction to big data (this post).&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;/2016/09/Stream-real-time-data.html&quot;&gt;Streaming real time data&lt;/a&gt;.&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;/2017/11/Hadoop.html&quot;&gt;Hadoop &amp;amp; MapReduce&lt;/a&gt;.&lt;/li&gt;
-  &lt;li&gt;ElasticSearch (coming).&lt;/li&gt;
-  &lt;li&gt;Spark and data analysis with Python (coming).&lt;/li&gt;
-  &lt;li&gt;Hive and data processing (coming).&lt;/li&gt;
-  &lt;li&gt;Parctical example&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h2 id=&quot;components-of-a-big-data-application&quot;&gt;Components of a big data application&lt;/h2&gt;
-&lt;p&gt;We can devide the functionality of any big data application into the following 4 types:&lt;/p&gt;
-
-&lt;div class=&quot;column&quot; style=&quot;align: center&quot;&gt;
-  &lt;p&gt;&lt;img src=&quot;/img/concept1.png&quot; alt=&quot;states&quot; height=&quot;300px&quot; width=&quot;auto&quot; align=&quot;center&quot; /&gt;&lt;/p&gt;
-&lt;/div&gt;
-
-&lt;p&gt;AWS provides applications for all these stages:
-&lt;br /&gt;
-&lt;br /&gt;&lt;/p&gt;
-&lt;div class=&quot;column&quot; style=&quot;align: center&quot;&gt;
-  &lt;p&gt;&lt;img src=&quot;/img/aws-big-data-platform.jpg&quot; alt=&quot;states&quot; height=&quot;600px&quot; width=&quot;auto&quot; align=&quot;center&quot; /&gt;&lt;/p&gt;
-&lt;/div&gt;
-&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;setup-the-aws-environment&quot;&gt;Setup the AWS environment&lt;/h2&gt;
-&lt;p&gt;We are going to see how AWS services are created and configured, and we are going to do some hands-on exercies. To complete these exercises you need an Amazon account, and we need to use AWS services.&lt;br /&gt;
-To use AWS, there are two ways, either through the web interface &lt;a href=&quot;console.aws.amazon.com&quot;&gt;from this site&lt;/a&gt; or from command line tools, like Python or others.
-For these exercies we are going to use &lt;a href=&quot;https://aws.amazon.com/cli/&quot;&gt;AWS Command line interface&lt;/a&gt;.&lt;br /&gt;
-To install and configure AWS commadn line interface and create an Amazon account, follow this tutrorial:  &lt;a href=&quot;http://docs.aws.amazon.com/cli/latest/userguide/cli-chap-getting-set-up.html&quot;&gt;this document to install AWS CLI and set it up&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;&lt;br /&gt;
-&lt;br /&gt;&lt;/p&gt;
-</description>
-        <pubDate>Tue, 16 Aug 2016 09:45:00 -0600</pubDate>
-        <link>https://blog.gisspan.com/2016/08/Analyse-website-log-with-AWS-data-analysis-services.html</link>
-        <guid isPermaLink="true">https://blog.gisspan.com/2016/08/Analyse-website-log-with-AWS-data-analysis-services.html</guid>
         
         <category>AWS</category>
         
