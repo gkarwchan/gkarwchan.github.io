@@ -6,506 +6,9 @@
 </description>
     <link>https://blog.gisspan.com/</link>
     <atom:link href="https://blog.gisspan.com/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sun, 14 Jan 2018 16:39:27 -0700</pubDate>
-    <lastBuildDate>Sun, 14 Jan 2018 16:39:27 -0700</lastBuildDate>
+    <pubDate>Wed, 17 Jan 2018 19:37:09 -0700</pubDate>
+    <lastBuildDate>Wed, 17 Jan 2018 19:37:09 -0700</lastBuildDate>
     <generator>Jekyll v3.1.6</generator>
-    
-      <item>
-        <title>Build Progressive Web App from Scratch - Part 2</title>
-        <description>
-&lt;p&gt;In this part we will introduce React and its ecosystem.&lt;br /&gt;
-&lt;!--more--&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
-
-&lt;h3 id=&quot;introducing-react&quot;&gt;Introducing React&lt;/h3&gt;
-
-&lt;h1 id=&quot;add-react&quot;&gt;add react&lt;/h1&gt;
-&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;npm i react react-dom babel-polyfill 
-npm i --save-dev babel-preset-react
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;add a subfolder src/client
-add two files: index.jsx and app.jsx
-add the following code:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt; // app.jsx
-import React from &#39;react&#39;;
-const App = () =&amp;gt; (&amp;lt;h1&amp;gt;Hello React!&amp;lt;/h1&amp;gt;);
-export default App;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt; // index.jsx
-import React from &#39;react&#39;;
-import { render } from &#39;react-dom&#39;;
-import App from &#39;./app&#39;;
-
-render(&amp;lt;App /&amp;gt;, document.querySelector(&#39;#app&#39;));
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;Add the following to &lt;code class=&quot;highlighter-rouge&quot;&gt;.babelrc&lt;/code&gt;: “react”&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;// .babelrc
-{
-  &quot;presets&quot;: [
-    &quot;env&quot;, &quot;react&quot;
-  ]
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;Let us be more fancy:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;npm i --save-dev rimraf html-webpack-plugin
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;Add &lt;code class=&quot;highlighter-rouge&quot;&gt;index.html&lt;/code&gt; into &lt;code class=&quot;highlighter-rouge&quot;&gt;src/&lt;/code&gt; directory, and add the following:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&quot;language-html&quot;&gt;&amp;lt;!doctype html&amp;gt;
-&amp;lt;html&amp;gt;
-  &amp;lt;head&amp;gt;
-  &amp;lt;/head&amp;gt;
-  &amp;lt;body&amp;gt;
-    &amp;lt;div id=&quot;app&quot;&amp;gt;&amp;lt;/div&amp;gt;
-  &amp;lt;/body&amp;gt;
-&amp;lt;/html&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Change webpack.config.babel as this:&lt;/p&gt;
-
-&lt;p&gt;change webpack.config.babel.js for the entry point:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;// webpack.config.babel.js
-import path from &#39;path&#39;;
-import HtmlWebpackPlugin from &#39;html-webpack-plugin&#39;;
-
-export default {
-  entry: [
-    &#39;./src/client&#39;,
-  ],
-  output: {
-    filename: &#39;js/bundle.js&#39;,
-    path: path.resolve(__dirname, &#39;dist&#39;),
-    publicPath: &#39;/&#39;,
-  },
-  module: {
-    rules: [
-      { test: /\.(js|jsx)$/, use: &#39;babel-loader&#39;, exclude: /node_modules/ },
-    ],
-  },
-  devtool: process.env.NODE_ENV === &#39;production&#39; ? false : &#39;source-map&#39;,
-  resolve: {
-    extensions: [&#39;.js&#39;, &#39;.jsx&#39;],
-  },
-  devServer: {
-    contentBase: path.join(__dirname, &#39;dist&#39;),
-    headers: {
-      &#39;Access-Control-Allow-Origin&#39;: &#39;*&#39;,
-    },
-  },
-  plugins: [new HtmlWebpackPlugin({ template: &#39;./src/index.html&#39; })],
-};
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;Add the following in &lt;code class=&quot;highlighter-rouge&quot;&gt;package.json&lt;/code&gt;:&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;// package.json
-&quot;scripts&quot;: {
-  &quot;prebuild&quot;: &quot;rimraf dist&quot;
-}
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Delete the old &lt;code class=&quot;highlighter-rouge&quot;&gt;index.html&lt;/code&gt; and delete all old js files.&lt;/p&gt;
-
-&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
-
-&lt;h3 id=&quot;introduce-react-router&quot;&gt;Introduce react-router&lt;/h3&gt;
-&lt;p&gt;Let us add react-router:&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;npm i react-router-dom
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;Change app.jsx:&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;// app.jsx
-&quot;scripts&quot;: {
-  &quot;prebuild&quot;: &quot;rimraf dist&quot;
-}
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Add two more files:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;home.jsx&lt;/li&gt;
-  &lt;li&gt;login.jsx&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;// home.jsx
-import React from &#39;react&#39;;
-const Home = () =&amp;gt; (
-  &amp;lt;div&amp;gt;
-    &amp;lt;h2&amp;gt;Home&amp;lt;/h2&amp;gt;
-  &amp;lt;/div&amp;gt;
-);
-export default Home;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;// login.jsx
-import React from &#39;react&#39;;
-const Login = () =&amp;gt; (
-  &amp;lt;div&amp;gt;
-    &amp;lt;h2&amp;gt;Login&amp;lt;/h2&amp;gt;
-  &amp;lt;/div&amp;gt;
-);
-export default Login;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;Modify app.jsx&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;// app.jsx
-import React from &#39;react&#39;;
-import { BrowserRouter as Router, Route, Link } from &#39;react-router-dom&#39;;
-import Home from &#39;./home&#39;;
-import Login from &#39;./login&#39;;
-
-
-const App = () =&amp;gt; (
-  &amp;lt;Router&amp;gt;
-    &amp;lt;div&amp;gt;
-      &amp;lt;ul&amp;gt;
-        &amp;lt;li&amp;gt;&amp;lt;Link to=&quot;/&quot;&amp;gt;Home&amp;lt;/Link&amp;gt;&amp;lt;/li&amp;gt;
-        &amp;lt;li&amp;gt;&amp;lt;Link to=&quot;/login&quot;&amp;gt;Login&amp;lt;/Link&amp;gt;&amp;lt;/li&amp;gt;
-      &amp;lt;/ul&amp;gt;
-      &amp;lt;hr /&amp;gt;
-      &amp;lt;Route exact path=&quot;/&quot; component={Home} /&amp;gt;
-      &amp;lt;Route path=&quot;/login&quot; component={Login} /&amp;gt;
-    &amp;lt;/div&amp;gt;
-  &amp;lt;/Router&amp;gt;
-);
-export default App;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&quot;finding-code&quot;&gt;Finding Code&lt;/h2&gt;
-&lt;p&gt;To find the code go to the &lt;a href=&quot;https://github.com/gkarwchan/progressive_web_app_from_scratch&quot;&gt;github repo&lt;/a&gt;, and make sure you are getting the &lt;a href=&quot;https://github.com/gkarwchan/progressive_web_app_from_scratch/tree/part2&quot;&gt;Part2 branch&lt;/a&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;find-all-parts&quot;&gt;Find all parts&lt;/h2&gt;
-&lt;p&gt;Go to &lt;a href=&quot;/2017/12/Build-Progressive-web-app-from-scratch.html&quot;&gt;the main post&lt;/a&gt; where I track all parts.&lt;/p&gt;
-</description>
-        <pubDate>Sat, 13 Jan 2018 09:45:00 -0700</pubDate>
-        <link>https://blog.gisspan.com/2018/01/Build-Progressive-web-app-from-scratch-2.html</link>
-        <guid isPermaLink="true">https://blog.gisspan.com/2018/01/Build-Progressive-web-app-from-scratch-2.html</guid>
-        
-        <category>react</category>
-        
-        <category>javascript</category>
-        
-        
-      </item>
-    
-      <item>
-        <title>Build Progressive Web App from Scratch - Part 1</title>
-        <description>
-&lt;p&gt;This post will introduce webpack, webpack-dev-server, and babel.
-&lt;!--more--&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
-
-&lt;h3 id=&quot;initialize-the-project&quot;&gt;Initialize the project&lt;/h3&gt;
-&lt;p&gt;Create a directory with the name of the project, inside the directory intialize the npm:&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;mkdir progressive-web-app
-cd progressive-web-app
-npm init -y&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;br /&gt;
-Add &lt;code class=&quot;highlighter-rouge&quot;&gt;.gitignore&lt;/code&gt; file and the following into it.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;.DS_Store
-*.log
-node_modules/
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;Before ES6’s import statement, developers had to add all used javascript files into &lt;code class=&quot;highlighter-rouge&quot;&gt;&amp;lt;script&amp;gt;&lt;/code&gt; tag.&lt;br /&gt;
-Let us start with this example, where we have code that is split into two files, and we are using one extra open-source library &lt;code class=&quot;highlighter-rouge&quot;&gt;lodash&lt;/code&gt;, and see how our code is written:&lt;/p&gt;
-
-&lt;p&gt;Add a file called &lt;code class=&quot;highlighter-rouge&quot;&gt;index.html&lt;/code&gt; with the following code:&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&quot;language-html&quot;&gt;&amp;lt;html&amp;gt;
-  &amp;lt;head&amp;gt;
-    &amp;lt;title&amp;gt;Getting Started&amp;lt;/title&amp;gt;
-    &amp;lt;script src=&quot;https://unpkg.com/lodash@4.16.6&quot;&amp;gt;&amp;lt;/script&amp;gt;
-  &amp;lt;/head&amp;gt;
-  &amp;lt;body&amp;gt;
-    &amp;lt;div id=&quot;abc&quot;&amp;gt;
-    &amp;lt;script src=&quot;./src/person.js&quot;&amp;gt;&amp;lt;/script&amp;gt;
-    &amp;lt;script src=&quot;./src/index.js&quot;&amp;gt;&amp;lt;/script&amp;gt;
-  &amp;lt;/body&amp;gt;
-&amp;lt;/html&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;Add directory src, and add two files inside it &lt;code class=&quot;highlighter-rouge&quot;&gt;person.js and index.js&lt;/code&gt;.&lt;br /&gt;
-Add the following code:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;// person.js
-class Person {
-  constructor(name) {
-    this.name = name;
-  }
-  sayHello() {
-    return `My name is ${this.name}`;
-  }
-}
-
-module.exports = Person;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;and in &lt;code class=&quot;highlighter-rouge&quot;&gt;index.js&lt;/code&gt; add this:&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;// index.js
-function component() {
-  var element = document.createElement(&#39;div&#39;);
-  var person = new Person(&#39;John&#39;);
-  // Lodash, currently included via a script, is required for this line to work
-  element.innerHTML = _.join([&#39;Hello&#39;, person.sayName()], &#39; &#39;);
-
-  return element;
-}
-
-document.body.appendChild(component());
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;Open the html file in a web browser, and you should see the following:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;Hello My name is John
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h3 id=&quot;introducing-webpack&quot;&gt;Introducing Webpack&lt;/h3&gt;
-&lt;p&gt;Now let us see the code using webpack.&lt;br /&gt;
-Let us install lodash and webpack.&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;npm install lodash
-npm install --save-dev webpack
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
-
-&lt;p&gt;Add a file called &lt;code class=&quot;highlighter-rouge&quot;&gt;webpack.config.js&lt;/code&gt;&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;// webpack.config.js
-const path = require(&#39;path&#39;);
-
-module.exports = {
-  entry: &#39;./src/index.js&#39;,
-  output: {
-    filename: &#39;bundle.js&#39;,
-    path: path.resolve(__dirname, &#39;dist&#39;)
-  }
-};
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Modify &lt;code class=&quot;highlighter-rouge&quot;&gt;package.json&lt;/code&gt; file, and add the following into the &lt;code class=&quot;highlighter-rouge&quot;&gt;scripts&lt;/code&gt; section:&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;// package.json
- &quot;scripts&quot;: {
-    &quot;build&quot;: &quot;webpack&quot;
-  },
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Then run the following command:&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;npm run build&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;This will create a folder called &lt;code class=&quot;highlighter-rouge&quot;&gt;dist&lt;/code&gt;, with a file called &lt;code class=&quot;highlighter-rouge&quot;&gt;bundle.js&lt;/code&gt;, which webpack produces.&lt;br /&gt;
-By reading webpack.config.js, you can see that webpack started with &lt;code class=&quot;highlighter-rouge&quot;&gt;src/index.js&lt;/code&gt;, and found out all dependencies, and bundled them into one package, the final file: &lt;code class=&quot;highlighter-rouge&quot;&gt;dist/bundle.js&lt;/code&gt;.&lt;br /&gt;
-&lt;br /&gt;
-Now, modify the &lt;code class=&quot;highlighter-rouge&quot;&gt;index.html&lt;/code&gt; to be like this:&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&quot;language-html&quot;&gt;&amp;lt;html&amp;gt;
-  &amp;lt;head&amp;gt;
-    &amp;lt;title&amp;gt;Getting Started&amp;lt;/title&amp;gt;
-  &amp;lt;/head&amp;gt;
-  &amp;lt;body&amp;gt;
-    &amp;lt;div id=&quot;abc&quot;&amp;gt;
-    &amp;lt;script src=&quot;./dist/bundle.js&quot;&amp;gt;&amp;lt;/script&amp;gt;
-  &amp;lt;/body&amp;gt;
-&amp;lt;/html&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Change &lt;code class=&quot;highlighter-rouge&quot;&gt;index.js&lt;/code&gt; to be like this:&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;// index.js
-import _ from &#39;lodash&#39;;
-import Person from &#39;./person&#39;;
-
-function component() {
-  var element = document.createElement(&#39;div&#39;);
-  var person = new Person(&#39;John&#39;);
-  // Lodash, currently included via a script, is required for this line to work
-  element.innerHTML = _.join([&#39;Hello&#39;, person.sayName()], &#39; &#39;);
-
-  return element;
-}
-
-document.body.appendChild(component());
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Add in the last line of `person.js’ the following line:&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;// add on the last line of person.js
-export default Person;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Run the &lt;code class=&quot;highlighter-rouge&quot;&gt;npm run build&lt;/code&gt;, and open the web browser again with the page, and you should see the same result.&lt;/p&gt;
-
-&lt;p&gt;&lt;br /&gt;
-add the &lt;code class=&quot;highlighter-rouge&quot;&gt;dist&lt;/code&gt; folder to &lt;code class=&quot;highlighter-rouge&quot;&gt;.gitignore&lt;/code&gt;.&lt;/p&gt;
-
-&lt;h3 id=&quot;introducing-babel&quot;&gt;Introducing Babel&lt;/h3&gt;
-&lt;p&gt;Let us change the code before, and add new feature, where we have an array of names, and we check the name of the person, to find if it is in the array, and then we add the following text: &lt;code class=&quot;highlighter-rouge&quot;&gt;I am a member&lt;/code&gt;, otherwise, we add the text: &lt;code class=&quot;highlighter-rouge&quot;&gt;I am a guest&lt;/code&gt;.&lt;br /&gt;
-Change &lt;code class=&quot;highlighter-rouge&quot;&gt;person.js&lt;/code&gt; code to be like this:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;// person.js
-let memberNames = [&#39;Don&#39;, &#39;Dustin&#39;, &#39;Michael&#39;];
-
-class Person {
-  constructor(name) {
-    this.name = name;
-  }
-  sayName() {
-    const isMember = memberNames.includes(this.name);
-    const memberText = isMember ? &#39;I am a member&#39; : &#39;I am a guest&#39;;
-    return `My name is ${this.name}, and ${memberText}` ;
-  }
-}
-
-export default Person;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;If you run the previous code, then you might , or might not get a result.&lt;br /&gt;
-The reason, is we are using ES7’s &lt;a href=&quot;https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/includes&quot;&gt;Array include&lt;/a&gt;, and not all browsers support this.&lt;br /&gt;
-In order to make sure our website will run on all our browsers, let us add &lt;code class=&quot;highlighter-rouge&quot;&gt;babel&lt;/code&gt;:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;npm i --save-dev babel-cli babel-preset-env  babel-loader babel-core&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;add file &lt;code class=&quot;highlighter-rouge&quot;&gt;.babelrc&lt;/code&gt; and add this code&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;{
-  &quot;presets&quot;: [
-    &quot;env&quot;
-  ]
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;Change the file &lt;code class=&quot;highlighter-rouge&quot;&gt;webpack.config.js&lt;/code&gt;, to be as follow:&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;// webpack.config.js
-const path = require(&#39;path&#39;);
-
-module.exports = {
-  entry: &#39;./src&#39;,
-  output: {
-    filename: &#39;bundle.js&#39;,
-    path: path.resolve(__dirname, &#39;dist&#39;),
-    publicPath: &#39;dist/&#39;
-  },
-  module: {
-    rules: [
-      { test: /\.js$/, use: &#39;babel-loader&#39;, exclude: /node_modules/ },
-    ],
-  },
-};
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;run again:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;npm run build&lt;/li&gt;
-  &lt;li&gt;open the web browser&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;to see the new result:&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;Hello My name is John, and I am a guest
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;Let us try something new, by using ES6, and ES7 into webpack. &lt;br /&gt;
-&lt;br /&gt;
-Let us rename &lt;code class=&quot;highlighter-rouge&quot;&gt;webpack.config.js&lt;/code&gt; to the following: &lt;code class=&quot;highlighter-rouge&quot;&gt;webpack.config.babel.js&lt;/code&gt;, and change the content to :&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;// webpack.config.babel.js
-import path from &#39;path&#39;;
-
-export default {
-  entry: &#39;./src&#39;,
-  output: {
-    filename: &#39;bundle.js&#39;,
-    path: path.resolve(__dirname, &#39;dist&#39;),
-    publicPath: &#39;dist/&#39;
-  },
-  module: {
-    rules: [
-      { test: /\.js$/, use: &#39;babel-loader&#39;, exclude: /node_modules/ },
-    ],
-  },
-};
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;The above will allow us to use ES6 and ES7 in webpack.&lt;/p&gt;
-
-&lt;h3 id=&quot;introduce-webpack-dev-server&quot;&gt;Introduce webpack-dev-server&lt;/h3&gt;
-&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;npm i --save-dev webpack-dev-server
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Add the following to &lt;code class=&quot;highlighter-rouge&quot;&gt;webpack.config.babel.js&lt;/code&gt;:&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;// add the following to webpack.config.babel.js
-devServer: {
-    contentBase: __dirname,
-    headers: {
-      &#39;Access-Control-Allow-Origin&#39;: &#39;*&#39;,
-    },
-  },
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;add the following script in &lt;code class=&quot;highlighter-rouge&quot;&gt;package.json&lt;/code&gt;:&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;// add the following to package.json script section
-&quot;scripts&quot;: {
-    &quot;build&quot;: &quot;webpack&quot;,
-    &quot;start&quot;: &quot;webpack-dev-server&quot;
-  },
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Run &lt;code class=&quot;highlighter-rouge&quot;&gt;npm start&lt;/code&gt;, and you should see the result of webpack build, and the web server will be available on &lt;code class=&quot;highlighter-rouge&quot;&gt;http://localhost:8080&lt;/code&gt;.&lt;/p&gt;
-
-&lt;h2 id=&quot;finding-code&quot;&gt;Finding Code&lt;/h2&gt;
-&lt;p&gt;To find the code go to the &lt;a href=&quot;https://github.com/gkarwchan/progressive_web_app_from_scratch&quot;&gt;github repo&lt;/a&gt;, and make sure you are getting the &lt;a href=&quot;https://github.com/gkarwchan/progressive_web_app_from_scratch/tree/part1&quot;&gt;Part1 branch&lt;/a&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;find-all-parts&quot;&gt;Find all parts&lt;/h2&gt;
-&lt;p&gt;Go to &lt;a href=&quot;/2017/12/Build-Progressive-web-app-from-scratch.html&quot;&gt;the main post&lt;/a&gt; where I track all parts.&lt;/p&gt;
-</description>
-        <pubDate>Sat, 30 Dec 2017 09:45:00 -0700</pubDate>
-        <link>https://blog.gisspan.com/2017/12/Build-Progressive-web-app-from-scratch-1.html</link>
-        <guid isPermaLink="true">https://blog.gisspan.com/2017/12/Build-Progressive-web-app-from-scratch-1.html</guid>
-        
-        <category>react</category>
-        
-        <category>javascript</category>
-        
-        
-      </item>
-    
-      <item>
-        <title>Build Progressive Web App from Scratch</title>
-        <description>
-&lt;p&gt;With people use their smart phones to surf the web, more than they use their desktop, it becomes more and more important to make your website, mobile friendly.&lt;br /&gt;
-Make it more mobile friendly means more than build a responsive user interface, that will fit whatever screen size you have.&lt;br /&gt;
-But as well, handle offline mobiles, and slow bandwidth on the mobile.&lt;br /&gt;
-Progressive web app, is the answer to build a fast website, that loads fast on whatever web site, or device you have, and handle offline by loading the cached application, and save any saved data into the cache, until next time you connect to internet.&lt;br /&gt;
-We are going to build a progressive web app from the scratch, step by step.&lt;br /&gt;
-&lt;!--more--&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;technologies-used&quot;&gt;Technologies used&lt;/h2&gt;
-&lt;p&gt;I am going to use:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Nodejs version 8.x&lt;/li&gt;
-  &lt;li&gt;NPM version 5.x&lt;/li&gt;
-  &lt;li&gt;React version 16.x&lt;/li&gt;
-  &lt;li&gt;Webpack version 3.x&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;br /&gt;
-&lt;br /&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;lessons&quot;&gt;Lessons&lt;/h2&gt;
-&lt;p&gt;This article will be the main track of all parts of the subject. The lessons are as follows:&lt;/p&gt;
-
-&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;&lt;a href=&quot;/2017/12/Build-Progressive-web-app-from-scratch-1.html&quot;&gt;Part One: webpack, webpack-dev-server, and babel&lt;/a&gt;.&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;/2018/01/Build-Progressive-web-app-from-scratch-2.html&quot;&gt;Part Two: React, React-Router&lt;/a&gt;.&lt;/li&gt;
-&lt;/ol&gt;
-</description>
-        <pubDate>Fri, 29 Dec 2017 09:45:00 -0700</pubDate>
-        <link>https://blog.gisspan.com/2017/12/Build-Progressive-web-app-from-scratch.html</link>
-        <guid isPermaLink="true">https://blog.gisspan.com/2017/12/Build-Progressive-web-app-from-scratch.html</guid>
-        
-        <category>react</category>
-        
-        <category>javascript</category>
-        
-        
-      </item>
     
       <item>
         <title>Hadoop and Map Reduce - Part 3</title>
@@ -2020,6 +1523,467 @@ Since JSON.NET serializer was introduced, not many developers used this serializ
         <guid isPermaLink="true">https://blog.gisspan.com/2016/10/Everything-you-need-to-know-about-dates.html</guid>
         
         <category>asp.net</category>
+        
+        
+      </item>
+    
+      <item>
+        <title>The advantages of IHttpActionResult in Web API 2.</title>
+        <description>
+&lt;p&gt;Web API 2 introduced the new interface IHttpActionResult to return back REST responses, where Web API 1 was using the class HttpResponseMessage to represent HTTP response, and HTTPResponseException to represent HTTP response error.&lt;/p&gt;
+
+&lt;p&gt;IHttpActionResult allows developers to enhance their Web API 1 code to be :&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;More testable.&lt;/li&gt;
+  &lt;li&gt;More reusable.&lt;/li&gt;
+  &lt;li&gt;Cleaner, and more elegant.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;We are going to unleash the potential of this interface and see some creative ideas on how to use it.&lt;!--more--&gt;
+&lt;br /&gt;
+&lt;br /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;start-from-http-protocol&quot;&gt;Start from HTTP Protocol&lt;/h4&gt;
+&lt;p&gt;First of all, let’s see what Web API is trying to do, and let us look at the HTTP response. A usual responses coming from a web server look like:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-http&quot;&gt;HTTP/1.1 200 OK
+Cache-Control: max-age=1200
+Content-Length: 10
+Content-Type: text/plain; charset=utf-16
+Server: Microsoft-IIS/8.0
+Date: Mon, 27 Jan 2014 08:53:35 GMT
+
+hello
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;This is a successful response, which we can know from the code &lt;code class=&quot;language-wiki&quot;&gt;200&lt;/code&gt;.&lt;br /&gt;
+Another example of a failed response:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-http&quot;&gt;HTTP/1.1 404 Not Found
+Content-type: text/html
+Content-length: 47
+  
+Sorry, the object you requested was not found.
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;the-traditional-thinking-of-web-api-1&quot;&gt;The traditional thinking of Web API 1&lt;/h2&gt;
+&lt;p&gt;Web API 1 introduced HttpResponseMessage, and by looking at the class properties in the picture down, you can see it is a literal .NET representation of the HTTP response.&lt;/p&gt;
+
+&lt;div class=&quot;column&quot; style=&quot;align: center&quot;&gt;
+  &lt;p&gt;&lt;img src=&quot;/img/HttpResponseMessage.png&quot; alt=&quot;states&quot; height=&quot;300px&quot; width=&quot;auto&quot; align=&quot;center&quot; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+
+&lt;p&gt;By using HttpResponseMessage we can craft any HTTP response we want. For example to create the HTTP response mentioned above:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-csharp&quot;&gt;var response = new HttpResonseMessage(HttpStatusCode.OK);
+response.Content = new StringContent(&quot;hello&quot;);
+response.Content.Headers.ContentType = new MediaTypeHeaderValue(&quot;text/plain&quot;);
+response.Headers.CatcheControl = new CacheControlHeaderValue {MaxAge = TimeSpan.FromMinutes(2)};
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;One problem with the code above is that it is ignoring the request, and the request content type, and this is why most of the time we will create the response like this:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-csharp&quot;&gt;var response = request.CreateResponse(HttpStatusCode.OK, new StringContent(&quot;hello&quot;));
+response.Headers.CatcheControl = new CacheControlHeaderValue {MaxAge = TimeSpan.FromMinutes(2)};
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;By using request.CreateResponse, Web API will create the response with content type requested by the request.&lt;br /&gt;
+&lt;br /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;worth-mentioning-alternatives&quot;&gt;Worth mentioning alternatives&lt;/h4&gt;
+&lt;p&gt;Before we move to Web API 2, it is worth mentioned that Web API 1 provides some built-in translation from any object type to HttpResponseMessage. For example, all these are valid return types of a Controller action:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-csharp&quot;&gt;void Post()
+IEnumeration&amp;lt;string&amp;gt; Get()
+string Get(int id);
+MyCustomClass Get(int id);&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;br /&gt;
+Web API will serialize the object returned and wrap it in a successful HttpResponseMessage with status code 200.&lt;br /&gt;
+And in the case of &lt;em&gt;void&lt;/em&gt;, the Web API return &lt;code class=&quot;language-wiki&quot;&gt;&amp;nbsp;204 No Content&amp;nbsp;&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;web-api-2-and-ihttpactionresult&quot;&gt;Web API 2 and IHttpActionResult&lt;/h2&gt;
+
+&lt;p&gt;To see the advantages of this interface, let us check an example in the version 1, and see its translation into version 2.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-csharp&quot;&gt;public class ProductsController : ApiController
+{
+    IProductRepository _repository;
+    public ProductsController(IProductRepository repository)
+    {
+        _repository = repository;
+    }
+    public HttpResponseMessage Get(int id)
+    {
+      try {
+        Product product = _repository.GetById(id);
+        if (product == null)
+        {
+            return Request.CreateResponse(HttpStatusCode.NotFound);
+        }
+        var response = Request.CreateResponse(product);
+        // add more code for caching and other custom response headers...
+        // for example: 
+        response.Headers.CatcheControl = new CacheControlHeaderValue {MaxAge = TimeSpan.FromMinutes(1)};
+        return response;
+      }
+      catch (Exception ex) {
+        return Request.CreateResponse(HttpStatusCode.InternalServerError);
+      }
+    }
+}&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The problems with previous code are:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;The class is responsible of calling repository and creating the HttpResponseMessage.&lt;/li&gt;
+  &lt;li&gt;There is no easy way to re-use code that set response header, like the caching for example.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Let us rewrite the code using IHttpActionResult:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-csharp&quot;&gt;public class ProductsController : ApiController
+{
+    IProductRepository _repository;
+    public ProductsController(IProductRepository repository)
+    {
+        _repository = repository;
+    }
+    public HttpResponseMessage Get(int id)
+    {
+      try {
+        Product product = _repository.GetById(id);
+        if (product == null)
+        {
+            return NotFound();
+        }
+        return Ok(product);
+      }
+      catch (Exception ex) {
+        return InternalServerError(ex);
+      }
+    }
+}&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Where Ok, NotFound, InternalServerError are ApiController methods that are returning concrete implementation of IHttpActionResult.&lt;br /&gt;
+Web API already comes with a library of classes that implement this interface which represent the most used responses on the web like : Ok, NotFound…, and they are located in the library &lt;a href=&quot;https://msdn.microsoft.com/en-us/library/system.web.http.results.aspx&quot;&gt;system.web.http.results&lt;/a&gt;.&lt;br /&gt;
+&lt;br /&gt;
+The benefits of using the previous code are:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Separation of concerns.&lt;/li&gt;
+  &lt;li&gt;Better testability.&lt;/li&gt;
+  &lt;li&gt;Produce reusable code.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;separation-of-concerns&quot;&gt;1. Separation of concerns&lt;/h4&gt;
+&lt;p&gt;The code that produce the HttpResponseMessage is separate, and we can implement our own generation of the response message, and our controller concern only on retrieving the data from the repository.&lt;/p&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;better-testability&quot;&gt;2. Better testability&lt;/h4&gt;
+&lt;p&gt;Let us write test code for the previous code:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-csharp&quot;&gt;[TestMethod]
+public void GetReturnsProductWithSameId()
+{
+    var mockRepository = new Mock&amp;lt;IProductRepository&amp;gt;();
+    mockRepository.Setup(x =&amp;gt; x.GetById(3))
+        .Returns(new Product { Id = 3 });
+
+    var controller = new ProductsController(mockRepository.Object);
+
+    IHttpActionResult actionResult = controller.Get(3);
+    var contentResult = actionResult as OkNegotiatedContentResult&amp;lt;Product&amp;gt;;
+
+    Assert.IsNotNull(contentResult);
+    Assert.IsNotNull(contentResult.Content);
+    Assert.AreEqual(3, contentResult.Content.Id);
+}&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Obviously, testing is easier because we are testing the business logic which is retrieving data, and not generating the Http Response.&lt;/p&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;produce-reusable-code&quot;&gt;3. Produce reusable code&lt;/h4&gt;
+
+&lt;p&gt;Let us write the code that add the cash repose header to the response.&lt;/p&gt;
+
+&lt;p&gt;In order to do that, I will borrow &lt;a href=&quot;https://gist.github.com/bradwilson/8586562&quot;&gt;this brilliant idea&lt;/a&gt; of using chaining IHttpActionResult together to write reusable Http Response Headers.&lt;br /&gt;
+Let us create a code that implement IHttpActionResult and crate a response header for cashing: &lt;br /&gt;
+(P.S: I am borrowing his code, but just make it simpler)&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-csharp&quot;&gt;public class CachedResult&amp;lt;T&amp;gt; : IHttpActionResult where T : IHttpActionResult
+{
+    public T InnerResult { get; private set; }
+    public CachedResult(T innerResult)
+    {
+      InnerResult = innerResult;
+    }
+
+    public async Task&amp;lt;HttpResonseMessage&amp;gt; ExecuteAsync(CancellationToken cancellationToken)
+    {
+        var response = await InnerResult.ExecuteAsync(cancellationToken);
+        response.Headers.CacheControl = new CacheControlHeaderValue
+        {
+          MaxAge = TimeSpan.FromMinutes(2)
+        };
+        return response;
+    }
+}&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The above code will take an IHttpActionResult in the construction and add a caching header to it. To use it, we can do the following code:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-csharp&quot;&gt;var responseOk =  Ok(product);
+var cachedResult = new CachedResult&amp;lt;System.Web.Http.OkResult&amp;gt;(responseOk);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Or we can do better, by creating an extension method to the IHttpActionResult, like this:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-csharp&quot;&gt;public static class HttpActionResultExtensions
+{
+  public static CachedResult&amp;lt;T&amp;gt; Cached&amp;lt;T&amp;gt;(this T actionResult) where T : IHttpActionResult
+  {
+    return new CachedResult&amp;lt;T&amp;gt;(actionResult);
+  }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;And now we can use it as follows:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-csharp&quot;&gt;var responseOk =  Ok(product).Cached();&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The Chached extension method can be reused whenever we want to add Cache response header to the HttpResponseMessage&lt;/p&gt;
+
+</description>
+        <pubDate>Wed, 14 Sep 2016 09:45:00 -0600</pubDate>
+        <link>https://blog.gisspan.com/2016/09/IHttpActionResult.html</link>
+        <guid isPermaLink="true">https://blog.gisspan.com/2016/09/IHttpActionResult.html</guid>
+        
+        <category>asp.net</category>
+        
+        
+      </item>
+    
+      <item>
+        <title>Streaming real data with AWS - Part 2.</title>
+        <description>
+&lt;p&gt;Technology of big data is booming and moving fast, and one of the major sector of big data booming is the requirements to process and analyze real time data that is helping lots of industries using real time data, from IoT, to the analyzing social networks.&lt;br /&gt;
+But real time data has its challenges, which the industry answered with many different solutions.&lt;br /&gt;
+In this post we are going to cover the technical solutions in AWS for streaming real time data.  &lt;!--more--&gt;
+&lt;br /&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;problems-with-real-time-data-processing&quot;&gt;Problems with real-time data processing&lt;/h2&gt;
+&lt;p&gt;Real time data produces its unique challenges and problems, and here are some of them:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Process massive amounts of streaming data.&lt;br /&gt;
+For example, processing a hashtag in twitter, means we might receive thousands of tweets in a second.&lt;/li&gt;
+  &lt;li&gt;Data Loss:&lt;br /&gt;
+Data producer send record which could be lost for different reasons.&lt;/li&gt;
+  &lt;li&gt;Message Re-ordering:&lt;br /&gt;
+With lots of data coming in, it is challenging to keep track of the order of the data, when the difference could be fraction of a second.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h4 id=&quot;real-time-streaming-solution-requirements&quot;&gt;Real-time streaming solution requirements&lt;/h4&gt;
+
+&lt;p&gt;A stream processing solution has to solve different challenges:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Process millions of events per second in realtime.&lt;/li&gt;
+  &lt;li&gt;correlate data from multiple streams.&lt;/li&gt;
+  &lt;li&gt;Real-time responsiveness to events.&lt;/li&gt;
+  &lt;li&gt;Scale up/out as volumes increase in size and complexity&lt;/li&gt;
+  &lt;li&gt;Rapid integration with existing infrastructure and data sources.&lt;/li&gt;
+  &lt;li&gt;Integration with other systems that will use the data.&lt;/li&gt;
+  &lt;li&gt;End-user ad-hoc continuous query access&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;streaming-solutions-on-aws&quot;&gt;Streaming solutions on AWS&lt;/h2&gt;
+&lt;p&gt;AWS provides many streaming services for realtime data. Each has its own features. We are going to compare between them to give you and idea which one to pick for your next project.
+These services are provided directly from Amazon. There are others that available from AWS market place, which is very active community, and you can check if your preferable streaming software might be available already there.&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Amazon Kinesis&lt;/li&gt;
+  &lt;li&gt;Apache Kafka&lt;/li&gt;
+  &lt;li&gt;Amazon SQS / SNS&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;And let us start with the simplest: SQS / SNS.&lt;br /&gt;
+&lt;br /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;amazon-sqs--sns&quot;&gt;Amazon SQS / SNS&lt;/h4&gt;
+&lt;p&gt;Amazon SQS is a simple (“dump”) message queuing service. It is a simple FIFO data store (first-in first-out), and if you are coming from Windows environment it is similar to MSMQ.&lt;br /&gt;
+But you can achieve push-based messaging service if you combine it with SNS: the Amazon notification service.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;SQS/SNS Pros:&lt;/p&gt;
+
+    &lt;ol&gt;
+      &lt;li&gt;Both SQS/SNS are native AWS services, which means they are elastics and scale to the level you want them.&lt;/li&gt;
+      &lt;li&gt;They are managed by Amazon, and you don’t have to worry about them.&lt;/li&gt;
+      &lt;li&gt;Very easy to configure, and the easiest to configure between all three services.&lt;/li&gt;
+      &lt;li&gt;Duplicate data between many availability zones automatically.&lt;/li&gt;
+    &lt;/ol&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;SQS/SNS Cons:&lt;/p&gt;
+
+    &lt;ol&gt;
+      &lt;li&gt;It is very simple comparing to other solutions, and to achieve what other solutions are providing we need to do lots of customization and coding.&lt;/li&gt;
+      &lt;li&gt;It is more expensive than others in this list when it comes to big data.&lt;/li&gt;
+    &lt;/ol&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;amazon-kinesis&quot;&gt;Amazon Kinesis&lt;/h4&gt;
+&lt;p&gt;Amazon Kinesis is a platform for streaming real-time data on AWS, offering services to store, query, analyze and deliver realtime data:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;Kinesis Pros:&lt;/p&gt;
+
+    &lt;ol&gt;
+      &lt;li&gt;Stream huge data (TBs per hour).&lt;/li&gt;
+      &lt;li&gt;Managed by Amazon and you don’t have to worry about it.&lt;/li&gt;
+      &lt;li&gt;Cheapest between all three when it comes to data size.&lt;/li&gt;
+      &lt;li&gt;Duplicate data between many availability zones automatically.&lt;/li&gt;
+    &lt;/ol&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Kinesis Cons:&lt;/p&gt;
+
+    &lt;ol&gt;
+      &lt;li&gt;More complex to setup than SQS.&lt;/li&gt;
+    &lt;/ol&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;apache-kafka&quot;&gt;Apache Kafka&lt;/h4&gt;
+&lt;p&gt;Apache Kafka is publish-subscribe message broker that can handle hundreds of megabytes per seconds, and has clustering to support scaling out.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;Kafka Pros:&lt;/p&gt;
+
+    &lt;ol&gt;
+      &lt;li&gt;Huge community support.&lt;/li&gt;
+      &lt;li&gt;Relatively easier to install / configure than Kinesis.&lt;/li&gt;
+      &lt;li&gt;More stable than Kinesis.&lt;/li&gt;
+    &lt;/ol&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Kafka Cons:&lt;/p&gt;
+
+    &lt;ol&gt;
+      &lt;li&gt;You need to set it up and configure it yourself on EC2.&lt;/li&gt;
+      &lt;li&gt;If you need redundancy across many availability zones , then you have to do it your self.&lt;/li&gt;
+    &lt;/ol&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;how-to-choose&quot;&gt;How to choose&lt;/h2&gt;
+&lt;p&gt;If you want very simple requirements with small size of data, then you don’t have to use Kinesis or Kafka, because Amazon SQS/SNS is simpler to use.&lt;br /&gt;
+If you require to handle huge data, and more complex functionality then you should choose either Kafka, or Kinesis. They both are can fit many complex situation, and actually Kinesis was developed after Kafka.&lt;br /&gt;
+If you want to do less work and less learning curve, then Kinesis should be your choice. Kinesis is managed by AWS, and can be scaled automatically using AWS auto-scaling services.&lt;br /&gt;
+If you prefer to have the support of a huge community, then Kafka will be the choice, but Kafka scalability is achieved using its clustering features, which you have to configure it yourself.&lt;/p&gt;
+
+&lt;p&gt;This is a sheet that I took it from AWS documentation that shows the differences between these 3 technologies, plus a technology that I didn’t mention which is DynamoDB Stream:&lt;/p&gt;
+
+&lt;div class=&quot;column&quot;&gt;
+  &lt;p&gt;&lt;img src=&quot;/img/streaming.jpg&quot; alt=&quot;states&quot; /&gt;&lt;/p&gt;
+
+  &lt;h2 id=&quot;list-of-posts&quot;&gt;List of posts&lt;/h2&gt;
+  &lt;p&gt;This post is the second part of many posts related to bid data. The other posts are:&lt;/p&gt;
+
+  &lt;ol&gt;
+    &lt;li&gt;&lt;a href=&quot;/2016/08/Analyse-website-log-with-AWS-data-analysis-services.html&quot;&gt;Introduction to big data&lt;/a&gt;.&lt;/li&gt;
+    &lt;li&gt;Streaming real time data (this post).&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&quot;/2017/11/Hadoop.html&quot;&gt;Hadoop &amp;amp; MapReduce&lt;/a&gt;.&lt;/li&gt;
+    &lt;li&gt;ElasticSearch (coming).&lt;/li&gt;
+    &lt;li&gt;Spark and data analysis with Python (coming).&lt;/li&gt;
+    &lt;li&gt;Hive and data processing (coming).&lt;/li&gt;
+    &lt;li&gt;Practical example&lt;/li&gt;
+  &lt;/ol&gt;
+
+  &lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;/div&gt;
+</description>
+        <pubDate>Sat, 03 Sep 2016 09:45:00 -0600</pubDate>
+        <link>https://blog.gisspan.com/2016/09/Stream-real-time-data.html</link>
+        <guid isPermaLink="true">https://blog.gisspan.com/2016/09/Stream-real-time-data.html</guid>
+        
+        <category>AWS</category>
+        
+        <category>big data</category>
+        
+        
+      </item>
+    
+      <item>
+        <title>Big Data at your fingertips using AWS services - Introduction.</title>
+        <description>
+&lt;p&gt;Big Data Analytics used to be an activity that require powerful computers and very high specialized skills. But with the cloud computing, you can have huge computing power installed, and configured in few button clicks.&lt;br /&gt;
+AWS as an example provide a wide veriety of different kind of data analysis services, each one will do a specific job. We can use these services as building blocks to build any application that deal with big data analysis.&lt;br /&gt;
+AWS services shine on big data, and they can handle Peta-byte size databases, with high performance.&lt;br /&gt;
+In this post and following posts, I am going to describe these services, and how to use them. At the end, I am going to show how to use different kind of services to build a monitoring and diagnostic tool for an IIS web site application. &lt;!--more--&gt;
+&lt;br /&gt;
+&lt;br /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;list-of-posts&quot;&gt;List of posts&lt;/h2&gt;
+&lt;p&gt;We are going to cover these points:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Introduction to big data (this post).&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;/2016/09/Stream-real-time-data.html&quot;&gt;Streaming real time data&lt;/a&gt;.&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;/2017/11/Hadoop.html&quot;&gt;Hadoop &amp;amp; MapReduce&lt;/a&gt;.&lt;/li&gt;
+  &lt;li&gt;ElasticSearch (coming).&lt;/li&gt;
+  &lt;li&gt;Spark and data analysis with Python (coming).&lt;/li&gt;
+  &lt;li&gt;Hive and data processing (coming).&lt;/li&gt;
+  &lt;li&gt;Parctical example&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&quot;components-of-a-big-data-application&quot;&gt;Components of a big data application&lt;/h2&gt;
+&lt;p&gt;We can devide the functionality of any big data application into the following 4 types:&lt;/p&gt;
+
+&lt;div class=&quot;column&quot; style=&quot;align: center&quot;&gt;
+  &lt;p&gt;&lt;img src=&quot;/img/concept1.png&quot; alt=&quot;states&quot; height=&quot;300px&quot; width=&quot;auto&quot; align=&quot;center&quot; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+
+&lt;p&gt;AWS provides applications for all these stages:
+&lt;br /&gt;
+&lt;br /&gt;&lt;/p&gt;
+&lt;div class=&quot;column&quot; style=&quot;align: center&quot;&gt;
+  &lt;p&gt;&lt;img src=&quot;/img/aws-big-data-platform.jpg&quot; alt=&quot;states&quot; height=&quot;600px&quot; width=&quot;auto&quot; align=&quot;center&quot; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;setup-the-aws-environment&quot;&gt;Setup the AWS environment&lt;/h2&gt;
+&lt;p&gt;We are going to see how AWS services are created and configured, and we are going to do some hands-on exercies. To complete these exercises you need an Amazon account, and we need to use AWS services.&lt;br /&gt;
+To use AWS, there are two ways, either through the web interface &lt;a href=&quot;console.aws.amazon.com&quot;&gt;from this site&lt;/a&gt; or from command line tools, like Python or others.
+For these exercies we are going to use &lt;a href=&quot;https://aws.amazon.com/cli/&quot;&gt;AWS Command line interface&lt;/a&gt;.&lt;br /&gt;
+To install and configure AWS commadn line interface and create an Amazon account, follow this tutrorial:  &lt;a href=&quot;http://docs.aws.amazon.com/cli/latest/userguide/cli-chap-getting-set-up.html&quot;&gt;this document to install AWS CLI and set it up&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;br /&gt;
+&lt;br /&gt;&lt;/p&gt;
+</description>
+        <pubDate>Tue, 16 Aug 2016 09:45:00 -0600</pubDate>
+        <link>https://blog.gisspan.com/2016/08/Analyse-website-log-with-AWS-data-analysis-services.html</link>
+        <guid isPermaLink="true">https://blog.gisspan.com/2016/08/Analyse-website-log-with-AWS-data-analysis-services.html</guid>
+        
+        <category>AWS</category>
+        
+        <category>big data</category>
         
         
       </item>
