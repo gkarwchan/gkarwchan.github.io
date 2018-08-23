@@ -124,11 +124,11 @@
       <div class="post-content post-font" itemprop="articleBody">
         
 <p>Cross-Site Scripting attack (XSS), is one of the <a href="https://www.owasp.org/index.php/Category:OWASP_Top_Ten_Project">top 10 OWASP most critical web application security risks</a>.<br />
-As a developer I pay extra attention to this attack, because it is 100% caused by a volnurable code, and it is 100% developer responsibility to protect against this attack.
+As a developer I pay extra attention to this attack, because it is 100% caused by a vulnerable code, and it is 100% developer responsibility to protect against this attack.
 <!--more--></p>
 
 <h2 id="introduction">Introduction</h2>
-<p>Cross-Site Scripting (XSS) attack occured when a malicious scripts inject itself into a trusted website. For example, you are logged into your bank account, and if a malicious script find itself into this website, then it can steals all your data in memory, local or session storage, and your cookies.</p>
+<p>Cross-Site Scripting (XSS) attack occurred when a malicious scripts inject itself into a trusted website. For example, you are logged into your bank account, and if a malicious script find itself into this website, then it can steals all your data in memory, local or session storage, and your cookies.</p>
 
 <h2 id="cause-of-xss">Cause of XSS</h2>
 <p>XSS caused mainly by malicious data entered into the web application, and not being validated, and then processed by the application, either on:</p>
@@ -145,7 +145,7 @@ Any surface where the application is expecting input (request url, headrs, cooki
 The malicious content sent to the web browser often takes the form of a segment of JavaScript, but may also include HTML, Flash, or any other type of code that the browser may execute.</p>
 
 <h2 id="xss-types">XSS types</h2>
-<p>XSS attacks can be devided into two main types as follows:</p>
+<p>XSS attacks can be divided into two main types as follows:</p>
 
 <ol>
   <li>Reflected XSS attack.</li>
@@ -163,14 +163,14 @@ The malicious content sent to the web browser often takes the form of a segment 
 <p>Stored XSS is where the hacker find a way to store the XSS infected code into the server data, and then the data being reflected back to the browser.<br />
 A common scenario, is a forum, or comment list on a website, where other users share the view of all messages, or comments on the page. So, the hacker will inject the malicious code into the comment/forum post field.<br />
 When other users open the forum post, or see the comments, that malicious code will be run on their browser, getting access to all their site information.<br />
-This type is called as well Persistant XSS or Type-I XSS.</p>
+This type is called as well Persistent XSS or Type-I XSS.</p>
 
 <h4 id="reflected-xss-attacks">Reflected XSS Attacks</h4>
-<p>Injected script is using the volunerability where server-rendered html page, uses any part of input request into rendering the webpage.<br />
+<p>Injected script is using the vulnerability where server-rendered html page, uses any part of input request into rendering the webpage.<br />
 Let us discuss this example:
 Your application is handling a url that has an ID in the url as follows:</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>https://my-volnurable-app.com/products/{id}
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>https://my-vulnerable-app.com/products/{id}
 </code></pre></div></div>
 
 <p>The server-side rendering of the application is displaying the parameter on the html page as follows:</p>
@@ -180,10 +180,10 @@ Your application is handling a url that has an ID in the url as follows:</p>
 
 <p>The hacker can just submit a url as follows:</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>https://my-volnurable-app.com/products/&lt;script&gt; console.log(document.cookie); &lt;/script&gt;
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>https://my-vulnerable-app.com/products/&lt;script&gt; console.log(document.cookie); &lt;/script&gt;
 </code></pre></div></div>
 
-<p>Reflected attackes are delivered as links in emails, or from links on other websites, and when the victim click on the link to open the link in his/her browser, then will execute the code.</p>
+<p>Reflected attacks are delivered as links in emails, or from links on other websites, and when the victim click on the link to open the link in his/her browser, then will execute the code.</p>
 
 <h2 id="prevent-xss">Prevent XSS</h2>
 <p>To prevent XSS follows these rules:</p>
@@ -197,7 +197,7 @@ Your application is handling a url that has an ID in the url as follows:</p>
 <p>This process called <strong>sanitize</strong> your input data.</p>
 
 <h4 id="sanitize-data-output">Sanitize data output:</h4>
-<p>Any HTML rendering for data should be done on sanitizied data. This can be done as follows:</p>
+<p>Any HTML rendering for data should be done on sanitized data. This can be done as follows:</p>
 
 <ol>
   <li>HTML escape before insert data into HTML content.</li>
@@ -211,7 +211,7 @@ Your application is handling a url that has an ID in the url as follows:</p>
 
 <ol>
   <li>Don’t use inline JavaScript
-Inline JavaScript is when you put JS code in HTML or in an attribure, as follows</li>
+Inline JavaScript is when you put JS code in HTML or in an attribute, as follows</li>
 </ol>
 
 <div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;script&gt;</span><span class="nx">alert</span><span class="p">(</span><span class="s1">'something'</span><span class="p">);</span><span class="nt">&lt;/script&gt;</span>

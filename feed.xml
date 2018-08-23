@@ -6,19 +6,19 @@
 </description>
     <link>https://blog.gisspan.com/</link>
     <atom:link href="https://blog.gisspan.com/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Wed, 22 Aug 2018 19:42:45 -0600</pubDate>
-    <lastBuildDate>Wed, 22 Aug 2018 19:42:45 -0600</lastBuildDate>
+    <pubDate>Wed, 22 Aug 2018 20:46:41 -0600</pubDate>
+    <lastBuildDate>Wed, 22 Aug 2018 20:46:41 -0600</lastBuildDate>
     <generator>Jekyll v3.8.3</generator>
     
       <item>
         <title>Simple Explanation of XSS Attacks</title>
         <description>
 &lt;p&gt;Cross-Site Scripting attack (XSS), is one of the &lt;a href=&quot;https://www.owasp.org/index.php/Category:OWASP_Top_Ten_Project&quot;&gt;top 10 OWASP most critical web application security risks&lt;/a&gt;.&lt;br /&gt;
-As a developer I pay extra attention to this attack, because it is 100% caused by a volnurable code, and it is 100% developer responsibility to protect against this attack.
+As a developer I pay extra attention to this attack, because it is 100% caused by a vulnerable code, and it is 100% developer responsibility to protect against this attack.
 &lt;!--more--&gt;&lt;/p&gt;
 
 &lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
-&lt;p&gt;Cross-Site Scripting (XSS) attack occured when a malicious scripts inject itself into a trusted website. For example, you are logged into your bank account, and if a malicious script find itself into this website, then it can steals all your data in memory, local or session storage, and your cookies.&lt;/p&gt;
+&lt;p&gt;Cross-Site Scripting (XSS) attack occurred when a malicious scripts inject itself into a trusted website. For example, you are logged into your bank account, and if a malicious script find itself into this website, then it can steals all your data in memory, local or session storage, and your cookies.&lt;/p&gt;
 
 &lt;h2 id=&quot;cause-of-xss&quot;&gt;Cause of XSS&lt;/h2&gt;
 &lt;p&gt;XSS caused mainly by malicious data entered into the web application, and not being validated, and then processed by the application, either on:&lt;/p&gt;
@@ -35,7 +35,7 @@ Any surface where the application is expecting input (request url, headrs, cooki
 The malicious content sent to the web browser often takes the form of a segment of JavaScript, but may also include HTML, Flash, or any other type of code that the browser may execute.&lt;/p&gt;
 
 &lt;h2 id=&quot;xss-types&quot;&gt;XSS types&lt;/h2&gt;
-&lt;p&gt;XSS attacks can be devided into two main types as follows:&lt;/p&gt;
+&lt;p&gt;XSS attacks can be divided into two main types as follows:&lt;/p&gt;
 
 &lt;ol&gt;
   &lt;li&gt;Reflected XSS attack.&lt;/li&gt;
@@ -53,14 +53,14 @@ The malicious content sent to the web browser often takes the form of a segment 
 &lt;p&gt;Stored XSS is where the hacker find a way to store the XSS infected code into the server data, and then the data being reflected back to the browser.&lt;br /&gt;
 A common scenario, is a forum, or comment list on a website, where other users share the view of all messages, or comments on the page. So, the hacker will inject the malicious code into the comment/forum post field.&lt;br /&gt;
 When other users open the forum post, or see the comments, that malicious code will be run on their browser, getting access to all their site information.&lt;br /&gt;
-This type is called as well Persistant XSS or Type-I XSS.&lt;/p&gt;
+This type is called as well Persistent XSS or Type-I XSS.&lt;/p&gt;
 
 &lt;h4 id=&quot;reflected-xss-attacks&quot;&gt;Reflected XSS Attacks&lt;/h4&gt;
-&lt;p&gt;Injected script is using the volunerability where server-rendered html page, uses any part of input request into rendering the webpage.&lt;br /&gt;
+&lt;p&gt;Injected script is using the vulnerability where server-rendered html page, uses any part of input request into rendering the webpage.&lt;br /&gt;
 Let us discuss this example:
 Your application is handling a url that has an ID in the url as follows:&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;https://my-volnurable-app.com/products/{id}
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;https://my-vulnerable-app.com/products/{id}
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;The server-side rendering of the application is displaying the parameter on the html page as follows:&lt;/p&gt;
@@ -70,10 +70,10 @@ Your application is handling a url that has an ID in the url as follows:&lt;/p&g
 
 &lt;p&gt;The hacker can just submit a url as follows:&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;https://my-volnurable-app.com/products/&amp;lt;script&amp;gt; console.log(document.cookie); &amp;lt;/script&amp;gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;https://my-vulnerable-app.com/products/&amp;lt;script&amp;gt; console.log(document.cookie); &amp;lt;/script&amp;gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;Reflected attackes are delivered as links in emails, or from links on other websites, and when the victim click on the link to open the link in his/her browser, then will execute the code.&lt;/p&gt;
+&lt;p&gt;Reflected attacks are delivered as links in emails, or from links on other websites, and when the victim click on the link to open the link in his/her browser, then will execute the code.&lt;/p&gt;
 
 &lt;h2 id=&quot;prevent-xss&quot;&gt;Prevent XSS&lt;/h2&gt;
 &lt;p&gt;To prevent XSS follows these rules:&lt;/p&gt;
@@ -87,7 +87,7 @@ Your application is handling a url that has an ID in the url as follows:&lt;/p&g
 &lt;p&gt;This process called &lt;strong&gt;sanitize&lt;/strong&gt; your input data.&lt;/p&gt;
 
 &lt;h4 id=&quot;sanitize-data-output&quot;&gt;Sanitize data output:&lt;/h4&gt;
-&lt;p&gt;Any HTML rendering for data should be done on sanitizied data. This can be done as follows:&lt;/p&gt;
+&lt;p&gt;Any HTML rendering for data should be done on sanitized data. This can be done as follows:&lt;/p&gt;
 
 &lt;ol&gt;
   &lt;li&gt;HTML escape before insert data into HTML content.&lt;/li&gt;
@@ -101,7 +101,7 @@ Your application is handling a url that has an ID in the url as follows:&lt;/p&g
 
 &lt;ol&gt;
   &lt;li&gt;Don’t use inline JavaScript
-Inline JavaScript is when you put JS code in HTML or in an attribure, as follows&lt;/li&gt;
+Inline JavaScript is when you put JS code in HTML or in an attribute, as follows&lt;/li&gt;
 &lt;/ol&gt;
 
 &lt;div class=&quot;language-html highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;script&amp;gt;&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;alert&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'something'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;/script&amp;gt;&lt;/span&gt;
