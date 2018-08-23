@@ -6,9 +6,116 @@
 </description>
     <link>https://blog.gisspan.com/</link>
     <atom:link href="https://blog.gisspan.com/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Wed, 17 Jan 2018 19:37:09 -0700</pubDate>
-    <lastBuildDate>Wed, 17 Jan 2018 19:37:09 -0700</lastBuildDate>
-    <generator>Jekyll v3.1.6</generator>
+    <pubDate>Wed, 22 Aug 2018 19:42:45 -0600</pubDate>
+    <lastBuildDate>Wed, 22 Aug 2018 19:42:45 -0600</lastBuildDate>
+    <generator>Jekyll v3.8.3</generator>
+    
+      <item>
+        <title>Simple Explanation of XSS Attacks</title>
+        <description>
+&lt;p&gt;Cross-Site Scripting attack (XSS), is one of the &lt;a href=&quot;https://www.owasp.org/index.php/Category:OWASP_Top_Ten_Project&quot;&gt;top 10 OWASP most critical web application security risks&lt;/a&gt;.&lt;br /&gt;
+As a developer I pay extra attention to this attack, because it is 100% caused by a volnurable code, and it is 100% developer responsibility to protect against this attack.
+&lt;!--more--&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
+&lt;p&gt;Cross-Site Scripting (XSS) attack occured when a malicious scripts inject itself into a trusted website. For example, you are logged into your bank account, and if a malicious script find itself into this website, then it can steals all your data in memory, local or session storage, and your cookies.&lt;/p&gt;
+
+&lt;h2 id=&quot;cause-of-xss&quot;&gt;Cause of XSS&lt;/h2&gt;
+&lt;p&gt;XSS caused mainly by malicious data entered into the web application, and not being validated, and then processed by the application, either on:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Server side.&lt;/li&gt;
+  &lt;li&gt;Web client side.&lt;/li&gt;
+  &lt;li&gt;Plugins (ActiveX, Java, VBScript, Flash or HTML Scripts).&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;This malicious data can then be reflected back to the browser without encoding or escaping, and maybe saved into the database, to be persistent.&lt;br /&gt;
+It doesn’t stop on data entered using form data, or html input data only, but include anything communicating to the web application, including URL, Headers, and Cookies.&lt;br /&gt;
+Any surface where the application is expecting input (request url, headrs, cookies, post body…), can be a place where someone inject a malicious JavaScript code, that can steal all session information (local storages, cookies, …), or performing other malicious operations on the user’s machine under the guise of the vulnerable site.
+The malicious content sent to the web browser often takes the form of a segment of JavaScript, but may also include HTML, Flash, or any other type of code that the browser may execute.&lt;/p&gt;
+
+&lt;h2 id=&quot;xss-types&quot;&gt;XSS types&lt;/h2&gt;
+&lt;p&gt;XSS attacks can be devided into two main types as follows:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Reflected XSS attack.&lt;/li&gt;
+  &lt;li&gt;Stored XSS attack.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;We can divid them as well, into:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;server-side code flaws&lt;/li&gt;
+  &lt;li&gt;DOM-based code flaws.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h4 id=&quot;stored-xss-attacks&quot;&gt;Stored XSS Attacks&lt;/h4&gt;
+&lt;p&gt;Stored XSS is where the hacker find a way to store the XSS infected code into the server data, and then the data being reflected back to the browser.&lt;br /&gt;
+A common scenario, is a forum, or comment list on a website, where other users share the view of all messages, or comments on the page. So, the hacker will inject the malicious code into the comment/forum post field.&lt;br /&gt;
+When other users open the forum post, or see the comments, that malicious code will be run on their browser, getting access to all their site information.&lt;br /&gt;
+This type is called as well Persistant XSS or Type-I XSS.&lt;/p&gt;
+
+&lt;h4 id=&quot;reflected-xss-attacks&quot;&gt;Reflected XSS Attacks&lt;/h4&gt;
+&lt;p&gt;Injected script is using the volunerability where server-rendered html page, uses any part of input request into rendering the webpage.&lt;br /&gt;
+Let us discuss this example:
+Your application is handling a url that has an ID in the url as follows:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;https://my-volnurable-app.com/products/{id}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;The server-side rendering of the application is displaying the parameter on the html page as follows:&lt;/p&gt;
+
+&lt;div class=&quot;language-html highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;div&amp;gt;&lt;/span&gt;Product ID: {id}&lt;span class=&quot;nt&quot;&gt;&amp;lt;/div&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;The hacker can just submit a url as follows:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;https://my-volnurable-app.com/products/&amp;lt;script&amp;gt; console.log(document.cookie); &amp;lt;/script&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Reflected attackes are delivered as links in emails, or from links on other websites, and when the victim click on the link to open the link in his/her browser, then will execute the code.&lt;/p&gt;
+
+&lt;h2 id=&quot;prevent-xss&quot;&gt;Prevent XSS&lt;/h2&gt;
+&lt;p&gt;To prevent XSS follows these rules:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Sanitize data input.&lt;/li&gt;
+  &lt;li&gt;Sanitize data output.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h4 id=&quot;sanitize-data-input&quot;&gt;Sanitize data input:&lt;/h4&gt;
+&lt;p&gt;This process called &lt;strong&gt;sanitize&lt;/strong&gt; your input data.&lt;/p&gt;
+
+&lt;h4 id=&quot;sanitize-data-output&quot;&gt;Sanitize data output:&lt;/h4&gt;
+&lt;p&gt;Any HTML rendering for data should be done on sanitizied data. This can be done as follows:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;HTML escape before insert data into HTML content.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Whenever you do something like this, do HTML escape on the content:&lt;/p&gt;
+
+&lt;div class=&quot;language-html highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;body&amp;gt;&lt;/span&gt;...ESCAPE UNTRUSTED DATA BEFORE PUTTING HERE...&lt;span class=&quot;nt&quot;&gt;&amp;lt;/body&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;div&amp;gt;&lt;/span&gt;...ESCAPE UNTRUSTED DATA BEFORE PUTTING HERE...&lt;span class=&quot;nt&quot;&gt;&amp;lt;/div&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Don’t use inline JavaScript
+Inline JavaScript is when you put JS code in HTML or in an attribure, as follows&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;div class=&quot;language-html highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;script&amp;gt;&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;alert&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'something'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;/script&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;button&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;onclick=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;alert('anything')&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;push me&lt;span class=&quot;nt&quot;&gt;&amp;lt;/button&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+</description>
+        <pubDate>Mon, 20 Aug 2018 09:45:00 -0600</pubDate>
+        <link>https://blog.gisspan.com/2018/08/XSS-Attack.html</link>
+        <guid isPermaLink="true">https://blog.gisspan.com/2018/08/XSS-Attack.html</guid>
+        
+        <category>security</category>
+        
+        
+      </item>
     
       <item>
         <title>Hadoop and Map Reduce - Part 3</title>
@@ -145,7 +252,7 @@ Software like:&lt;/p&gt;
 &lt;p&gt;This post is the third part of many posts related to bid data. The other posts are:&lt;/p&gt;
 
 &lt;ol&gt;
-  &lt;li&gt;&lt;a href=&quot;/2016/08/Analyse-website-log-with-AWS-data-analysis-services.html&quot;&gt;Introduction to big data&lt;/a&gt;.&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;/2016/08/Big-data.html&quot;&gt;Introduction to big data&lt;/a&gt;.&lt;/li&gt;
   &lt;li&gt;&lt;a href=&quot;/2016/09/Stream-real-time-data.html&quot;&gt;Streaming real time data&lt;/a&gt;.&lt;/li&gt;
   &lt;li&gt;Hadoop &amp;amp; MapReduce (this post).&lt;/li&gt;
   &lt;li&gt;ElasticSearch (coming).&lt;/li&gt;
@@ -381,21 +488,21 @@ So, in the previous example: &lt;strong&gt;“ECDHE-RSA-AES128-SHA256”&lt;/str
 
 &lt;p&gt;This is a list that will let you pass &lt;a href=&quot;https://www.ssllabs.com/ssltest/&quot;&gt;SSL labs test&lt;/a&gt; with A+:&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;[ &#39;ECDHE-RSA-AES128-GCM-SHA256&#39;,
-  &#39;ECDHE-ECDSA-AES128-GCM-SHA256&#39;,
-  &#39;ECDHE-RSA-AES256-GCM-SHA384&#39;,
-  &#39;ECDHE-ECDSA-AES256-GCM-SHA384&#39;,
-  &#39;DHE-RSA-AES128-GCM-SHA256&#39;,
-  &#39;ECDHE-RSA-AES128-SHA256&#39;,
-  &#39;DHE-RSA-AES128-SHA256&#39;,
-  &#39;ECDHE-RSA-AES256-SHA384&#39;,
-  &#39;DHE-RSA-AES256-SHA384&#39;,
-  &#39;ECDHE-RSA-AES256-SHA256&#39;,
-  &#39;DHE-RSA-AES256-SHA256&#39;,
-  &#39;HIGH&#39;, &#39;!aNULL&#39;, &#39;!eNULL&#39;,
-  &#39;!EXPORT&#39;, &#39;!DES&#39;, &#39;!RC4&#39;,
-  &#39;!MD5&#39;, &#39;!PSK&#39;, &#39;!SRP&#39;, &#39;!CAMELLIA&#39;, &#39;!3DES&#39;
-  ].join(&#39;:&#39;)
+&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;[ 'ECDHE-RSA-AES128-GCM-SHA256',
+  'ECDHE-ECDSA-AES128-GCM-SHA256',
+  'ECDHE-RSA-AES256-GCM-SHA384',
+  'ECDHE-ECDSA-AES256-GCM-SHA384',
+  'DHE-RSA-AES128-GCM-SHA256',
+  'ECDHE-RSA-AES128-SHA256',
+  'DHE-RSA-AES128-SHA256',
+  'ECDHE-RSA-AES256-SHA384',
+  'DHE-RSA-AES256-SHA384',
+  'ECDHE-RSA-AES256-SHA256',
+  'DHE-RSA-AES256-SHA256',
+  'HIGH', '!aNULL', '!eNULL',
+  '!EXPORT', '!DES', '!RC4',
+  '!MD5', '!PSK', '!SRP', '!CAMELLIA', '!3DES'
+  ].join(':')
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;&lt;br /&gt;
@@ -451,17 +558,17 @@ P.S: This post is not a tutorial on building a universal application, and in fac
 A typical React application will run on the client side (on the browser) and does its rendering of the web pages on the client side. A typical React application consists of many components, and in a “sane” React application, there will be only one root component that will contains all other components as its children.&lt;br /&gt;
 The entry point for a React app, will be rendering that root component when loading the page, and the code will be similar to this:&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;import ReactDOM from &#39;react-dom&#39;;
-import RootApp from &#39;./components/RootApp&#39;;
-ReactDOM.render(&amp;lt;RootApp /&amp;gt;, document.getElementById(&#39;root_placeholder&#39;));&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;import ReactDOM from 'react-dom';
+import RootApp from './components/RootApp';
+ReactDOM.render(&amp;lt;RootApp /&amp;gt;, document.getElementById('root_placeholder'));&lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;In a universal application, everything on the client stays the same, and we add another rendering of the application on the server.&lt;br /&gt;
 &lt;strong&gt;How to do that?&lt;/strong&gt;: Using React’s &lt;code class=&quot;language-wiki&quot;&gt;&amp;nbsp;&amp;nbsp; renderToString&amp;nbsp;&amp;nbsp;&lt;/code&gt;&lt;br /&gt;
 React is universal-friendly library, and has the ability to render on the server using its function: renderToString.&lt;br /&gt;
 The code in NodeJs application will be similar to this:&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;import { renderToString } from &#39;react-dom/server&#39;;
-import RootApp from &#39;./components/RootApp&#39;;
+&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;import { renderToString } from 'react-dom/server';
+import RootApp from './components/RootApp';
 export default function serverRenderer() {
     return (req, res, next) =&amp;gt; {
         res.status(200).send(`
@@ -491,7 +598,7 @@ Which lead us to some interesting fact: It is easy to switch off Server renderin
 
 &lt;p&gt;So, by just having a small &lt;strong&gt;“if”&lt;/strong&gt; statement before doing server rendering, we can switch off totally the server rendering and switch back to client rendering as a normal non-universal React application.&lt;/p&gt;
 &lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;....
-var htmlBody = isItUniversal ? renderToString(&amp;lt;RootApp/&amp;gt;) : &#39;&#39;;
+var htmlBody = isItUniversal ? renderToString(&amp;lt;RootApp/&amp;gt;) : '';
 function serverRenderer() {
     return (req, res, next) =&amp;gt; {
         res.status(200).send(`
@@ -521,9 +628,9 @@ React on the client side will know that the component is already rendered, so it
 &lt;p&gt;But, because redux and react-redux needs the redux store to sync with components states, so there is a trick that has to be done.
 We have to pass to the redux on the client side, the whole redux state after populating the store.&lt;br /&gt;
 Applications will do that by passing the state into the client javascript code through the &amp;amp;ltscript&amp;gt; html tag, and they pass it as a global javascript variable like this:&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;import { Provider }              from &#39;react-redux&#39;;
+&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;import { Provider }              from 'react-redux';
 //import routes;
-import { routes } from &#39;./routes&#39;;
+import { routes } from './routes';
 function renderFullPage(html, preloadedState) {
   // Create redux store
   const store = myReduxStore();
@@ -543,7 +650,7 @@ function renderFullPage(html, preloadedState) {
       &amp;lt;script&amp;gt;
         // WARNING: See the following for security issues around embedding JSON in HTML:
         // http://redux.js.org/docs/recipes/ServerRendering.html#security-considerations
-        window.__PRELOADED_STATE__ = ${JSON.stringify(preloadedState).replace(/&amp;lt;/g, &#39;\\u003c&#39;)}
+        window.__PRELOADED_STATE__ = ${JSON.stringify(preloadedState).replace(/&amp;lt;/g, '\\u003c')}
       &amp;lt;/script&amp;gt;
       &amp;lt;script src=&quot;/client.js&quot;&amp;gt;&amp;lt;/script&amp;gt;
     &amp;lt;/body&amp;gt;
@@ -568,7 +675,7 @@ Again, with the help of React-Router which is a universal-friendly library we ca
 On the server (Speaking of NodeJs application), We can achieve this, by delegating the routing to the routes defined on the client using react-router format.&lt;br /&gt;
 Keep in mind that in a “sane” react application, the root component is the routing component, which define a wrapper around the routes that match React components.&lt;br /&gt;
 So, it is usual in universal application, that the server routing code will have only one and only one general routing handler like this:&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;app.get(&#39;*&#39;, (req, res) =&amp;gt; {
+&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;app.get('*', (req, res) =&amp;gt; {
 …..
 ….
 renderToString(
@@ -586,17 +693,17 @@ renderToString(
 &lt;p&gt;If in ideal universal application, we have only one general route handler, then how to run server side code that is depending on which current route?&lt;br /&gt;
 react-router has a function called &lt;code class=&quot;language-wiki&quot;&gt;&amp;nbsp;&amp;nbsp; match&amp;nbsp;&amp;nbsp;&lt;/code&gt;  which will help us detecting the current route on the server side, and then we can run the related server code. The code will be similar to this:&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;import React from &#39;react&#39;;
-import { renderToString } from &#39;react-dom/server&#39;;
+&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;import React from 'react';
+import { renderToString } from 'react-dom/server';
 // and these to match the url to routes and then render
-import { match, RouterContext } from &#39;react-router&#39;;
+import { match, RouterContext } from 'react-router';
 
 // we define our routes into the following module, and we import it on both server and client
-import routes from &#39;./modules/routes&#39;;
+import routes from './modules/routes';
 
 // One and only one route handler on the sersverworks
 
-app.get(&#39;*&#39;, (req, res) =&amp;gt; {
+app.get('*', (req, res) =&amp;gt; {
   // match is a react-router function that will help us detect current route
   match({ routes: routes, location: req.url }, (err, redirect, props) =&amp;gt; {
     // here where we detect the routes and location, to find out the current location
@@ -616,11 +723,11 @@ app.get(&#39;*&#39;, (req, res) =&amp;gt; {
 For universal application, there is another library: &lt;a href=&quot;https://www.npmjs.com/package/webpack-hot-server-middleware&quot;&gt;“webpack-hot-server-middleware”&lt;/a&gt; that is universal-friendly.&lt;/p&gt;
 
 &lt;p&gt;How to use it?&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;const express = require(&#39;express&#39;);
-const webpack = require(&#39;webpack&#39;);
-const webpackDevMiddleware = require(&#39;webpack-dev-middleware&#39;);
-const webpackHotServerMiddleware = require(&#39;webpack-hot-server-middleware&#39;);
-const config = require(&#39;./webpack.config.js&#39;);
+&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;const express = require('express');
+const webpack = require('webpack');
+const webpackDevMiddleware = require('webpack-dev-middleware');
+const webpackHotServerMiddleware = require('webpack-hot-server-middleware');
+const config = require('./webpack.config.js');
 const app = express();
 const compiler = webpack(config);
 
@@ -635,8 +742,8 @@ app.listen(6060);
 Webpack Hot Server Middleware expects your Webpack config to export an array of configurations, one for your client bundle and one for your server bundle, e.g.&lt;/p&gt;
 &lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;// webpack.config.js 
 module.exports = [ 
-  { name: &#39;client&#39;, target: &#39;web&#39;, entry: &#39;./client.js&#39; ... }, 
-  { name: &#39;server&#39;, target: &#39;node&#39;, entry: &#39;./server.js&#39; ... } 
+  { name: 'client', target: 'web', entry: './client.js' ... }, 
+  { name: 'server', target: 'node', entry: './server.js' ... } 
 ];
 &lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;&lt;br /&gt;&lt;/p&gt;
@@ -1023,7 +1130,7 @@ HttpGet get = new HttpGet(&quot;https://my-token-service?code=xxxxx&quot;);
       </item>
     
       <item>
-        <title>Sending emails with attachments or embedded image using Amazon&#39;s AWS SES API &amp; .NET.</title>
+        <title>Sending emails with attachments or embedded image using Amazon's AWS SES API &amp; .NET.</title>
         <description>
 &lt;p&gt;To send an email with AWS services, there are two options, either connecting directly to the AWS SMTP server with SMTP protocols, but then you have to open SMTP ports (587 or 25 usually).
 Otherwise you can use the AWS API which are bunch of REST API services that you can call them over HTTPS.&lt;br /&gt;
@@ -1487,7 +1594,7 @@ Where ticks are the number of milliseconds since 1-Jan-1970 00:00:00 UTC (Unix E
 To consume this value in JavaScript, we have to do more tricks on the client side, by tacking away the &lt;strong&gt;Date()&lt;/strong&gt; and return the number inside and create from the number the date.&lt;br /&gt;
 The following code will do that:&lt;/p&gt;
 &lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;var parsed = JSON.parse(data, function(key, value) { 
-  if (typeof value === &#39;string&#39;) { 
+  if (typeof value === 'string') { 
     var d = /\/Date\((\d*)\)\//.exec(value); 
     return (d) ? new Date(+d[1]) : value; 
   } 
@@ -1496,7 +1603,7 @@ return value; });
 
 &lt;p&gt;Or a simpler version, but less robust:&lt;/p&gt;
 &lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;var parsed = JSON.parse(data, function(key, value) { 
-  if (typeof value === &#39;string&#39;) { 
+  if (typeof value === 'string') { 
     var d = /\/Date\(/.exec(value); 
     return (d) ? new Date(parseInt(value.substr(6))) : value; 
   } 
@@ -1682,12 +1789,12 @@ The benefits of using the previous code are:&lt;/p&gt;
 
 &lt;p&gt;&lt;br /&gt;&lt;/p&gt;
 
-&lt;h4 id=&quot;separation-of-concerns&quot;&gt;1. Separation of concerns&lt;/h4&gt;
+&lt;h4 id=&quot;1-separation-of-concerns&quot;&gt;1. Separation of concerns&lt;/h4&gt;
 &lt;p&gt;The code that produce the HttpResponseMessage is separate, and we can implement our own generation of the response message, and our controller concern only on retrieving the data from the repository.&lt;/p&gt;
 
 &lt;p&gt;&lt;br /&gt;&lt;/p&gt;
 
-&lt;h4 id=&quot;better-testability&quot;&gt;2. Better testability&lt;/h4&gt;
+&lt;h4 id=&quot;2-better-testability&quot;&gt;2. Better testability&lt;/h4&gt;
 &lt;p&gt;Let us write test code for the previous code:&lt;/p&gt;
 
 &lt;pre&gt;&lt;code class=&quot;language-csharp&quot;&gt;[TestMethod]
@@ -1711,7 +1818,7 @@ public void GetReturnsProductWithSameId()
 
 &lt;p&gt;&lt;br /&gt;&lt;/p&gt;
 
-&lt;h4 id=&quot;produce-reusable-code&quot;&gt;3. Produce reusable code&lt;/h4&gt;
+&lt;h4 id=&quot;3-produce-reusable-code&quot;&gt;3. Produce reusable code&lt;/h4&gt;
 
 &lt;p&gt;Let us write the code that add the cash repose header to the response.&lt;/p&gt;
 
@@ -1907,7 +2014,7 @@ If you prefer to have the support of a huge community, then Kafka will be the ch
   &lt;p&gt;This post is the second part of many posts related to bid data. The other posts are:&lt;/p&gt;
 
   &lt;ol&gt;
-    &lt;li&gt;&lt;a href=&quot;/2016/08/Analyse-website-log-with-AWS-data-analysis-services.html&quot;&gt;Introduction to big data&lt;/a&gt;.&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&quot;/2016/08/Big-data.html&quot;&gt;Introduction to big data&lt;/a&gt;.&lt;/li&gt;
     &lt;li&gt;Streaming real time data (this post).&lt;/li&gt;
     &lt;li&gt;&lt;a href=&quot;/2017/11/Hadoop.html&quot;&gt;Hadoop &amp;amp; MapReduce&lt;/a&gt;.&lt;/li&gt;
     &lt;li&gt;ElasticSearch (coming).&lt;/li&gt;
@@ -1922,64 +2029,6 @@ If you prefer to have the support of a huge community, then Kafka will be the ch
         <pubDate>Sat, 03 Sep 2016 09:45:00 -0600</pubDate>
         <link>https://blog.gisspan.com/2016/09/Stream-real-time-data.html</link>
         <guid isPermaLink="true">https://blog.gisspan.com/2016/09/Stream-real-time-data.html</guid>
-        
-        <category>AWS</category>
-        
-        <category>big data</category>
-        
-        
-      </item>
-    
-      <item>
-        <title>Big Data at your fingertips using AWS services - Introduction.</title>
-        <description>
-&lt;p&gt;Big Data Analytics used to be an activity that require powerful computers and very high specialized skills. But with the cloud computing, you can have huge computing power installed, and configured in few button clicks.&lt;br /&gt;
-AWS as an example provide a wide veriety of different kind of data analysis services, each one will do a specific job. We can use these services as building blocks to build any application that deal with big data analysis.&lt;br /&gt;
-AWS services shine on big data, and they can handle Peta-byte size databases, with high performance.&lt;br /&gt;
-In this post and following posts, I am going to describe these services, and how to use them. At the end, I am going to show how to use different kind of services to build a monitoring and diagnostic tool for an IIS web site application. &lt;!--more--&gt;
-&lt;br /&gt;
-&lt;br /&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;list-of-posts&quot;&gt;List of posts&lt;/h2&gt;
-&lt;p&gt;We are going to cover these points:&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;Introduction to big data (this post).&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;/2016/09/Stream-real-time-data.html&quot;&gt;Streaming real time data&lt;/a&gt;.&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;/2017/11/Hadoop.html&quot;&gt;Hadoop &amp;amp; MapReduce&lt;/a&gt;.&lt;/li&gt;
-  &lt;li&gt;ElasticSearch (coming).&lt;/li&gt;
-  &lt;li&gt;Spark and data analysis with Python (coming).&lt;/li&gt;
-  &lt;li&gt;Hive and data processing (coming).&lt;/li&gt;
-  &lt;li&gt;Parctical example&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h2 id=&quot;components-of-a-big-data-application&quot;&gt;Components of a big data application&lt;/h2&gt;
-&lt;p&gt;We can devide the functionality of any big data application into the following 4 types:&lt;/p&gt;
-
-&lt;div class=&quot;column&quot; style=&quot;align: center&quot;&gt;
-  &lt;p&gt;&lt;img src=&quot;/img/concept1.png&quot; alt=&quot;states&quot; height=&quot;300px&quot; width=&quot;auto&quot; align=&quot;center&quot; /&gt;&lt;/p&gt;
-&lt;/div&gt;
-
-&lt;p&gt;AWS provides applications for all these stages:
-&lt;br /&gt;
-&lt;br /&gt;&lt;/p&gt;
-&lt;div class=&quot;column&quot; style=&quot;align: center&quot;&gt;
-  &lt;p&gt;&lt;img src=&quot;/img/aws-big-data-platform.jpg&quot; alt=&quot;states&quot; height=&quot;600px&quot; width=&quot;auto&quot; align=&quot;center&quot; /&gt;&lt;/p&gt;
-&lt;/div&gt;
-&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;setup-the-aws-environment&quot;&gt;Setup the AWS environment&lt;/h2&gt;
-&lt;p&gt;We are going to see how AWS services are created and configured, and we are going to do some hands-on exercies. To complete these exercises you need an Amazon account, and we need to use AWS services.&lt;br /&gt;
-To use AWS, there are two ways, either through the web interface &lt;a href=&quot;console.aws.amazon.com&quot;&gt;from this site&lt;/a&gt; or from command line tools, like Python or others.
-For these exercies we are going to use &lt;a href=&quot;https://aws.amazon.com/cli/&quot;&gt;AWS Command line interface&lt;/a&gt;.&lt;br /&gt;
-To install and configure AWS commadn line interface and create an Amazon account, follow this tutrorial:  &lt;a href=&quot;http://docs.aws.amazon.com/cli/latest/userguide/cli-chap-getting-set-up.html&quot;&gt;this document to install AWS CLI and set it up&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;&lt;br /&gt;
-&lt;br /&gt;&lt;/p&gt;
-</description>
-        <pubDate>Tue, 16 Aug 2016 09:45:00 -0600</pubDate>
-        <link>https://blog.gisspan.com/2016/08/Analyse-website-log-with-AWS-data-analysis-services.html</link>
-        <guid isPermaLink="true">https://blog.gisspan.com/2016/08/Analyse-website-log-with-AWS-data-analysis-services.html</guid>
         
         <category>AWS</category>
         

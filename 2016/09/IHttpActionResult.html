@@ -105,6 +105,10 @@
         
           
         
+          
+        
+          
+        
         <a class="page-link" href="/feed.xml"><img src="/img/feed.png" ></img></a>
     </nav>
   </div>
@@ -271,12 +275,12 @@ The benefits of using the previous code are:</p>
 
 <p><br /></p>
 
-<h4 id="separation-of-concerns">1. Separation of concerns</h4>
+<h4 id="1-separation-of-concerns">1. Separation of concerns</h4>
 <p>The code that produce the HttpResponseMessage is separate, and we can implement our own generation of the response message, and our controller concern only on retrieving the data from the repository.</p>
 
 <p><br /></p>
 
-<h4 id="better-testability">2. Better testability</h4>
+<h4 id="2-better-testability">2. Better testability</h4>
 <p>Let us write test code for the previous code:</p>
 
 <pre><code class="language-csharp">[TestMethod]
@@ -300,7 +304,7 @@ public void GetReturnsProductWithSameId()
 
 <p><br /></p>
 
-<h4 id="produce-reusable-code">3. Produce reusable code</h4>
+<h4 id="3-produce-reusable-code">3. Produce reusable code</h4>
 
 <p>Let us write the code that add the cash repose header to the response.</p>
 

@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Simple Explanation of XSS Attacks</title>
+  <meta name="description" content="Cross-Site Scripting attack (XSS), is one of the top 10 OWASP most critical web application security risks.As a developer I pay extra attention to this attac...">
+
+
+  <!-- CSS Reset -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/3.0.3/normalize.css">
+
+  <!-- utilities -->
+  <link rel="stylesheet" href="/css/milligram.min.css" >
+  <link rel="stylesheet" href="/css/prism.css">
+
+  <link rel="stylesheet" href="/css/main.css">
+  <script src="/js/prism.js"></script>
+  <link rel="canonical" href="https://blog.gisspan.com/2018/08/XSS-Attack.html">
+  <link rel="alternate" type="application/rss+xml" title="Web matters" href="https://blog.gisspan.com/feed.xml">
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-79713706-1', 'auto');
+    ga('send', 'pageview');
+
+  </script>
+</head>
+
+
+  <body>
+    <div class="container">
+      <header class="site-header row">
+  <div class="column column-25">
+    <a class="site-title" href="/">Web matters</a>
+  </div>
+  <div class="column">
+    <nav class="site-nav">
+        
+          
+          <a class="page-link" href="/about/">About Me</a>
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        <a class="page-link" href="/feed.xml"><img src="/img/feed.png" ></img></a>
+    </nav>
+  </div>
+</header>
+
+
+            <article class="post row" itemscope itemtype="http://schema.org/BlogPosting">
+    <div class="content">
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">Simple Explanation of XSS Attacks</h1>
+        <p class="post-meta"><time datetime="2018-08-20T09:45:00-06:00" itemprop="datePublished">Aug 20, 2018</time> • <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name">Ghassan Karwchan</span></span></p>
+      </header>
+      <div class="post-content post-font" itemprop="articleBody">
+        
+<p>Cross-Site Scripting attack (XSS), is one of the <a href="https://www.owasp.org/index.php/Category:OWASP_Top_Ten_Project">top 10 OWASP most critical web application security risks</a>.<br />
+As a developer I pay extra attention to this attack, because it is 100% caused by a volnurable code, and it is 100% developer responsibility to protect against this attack.
+<!--more--></p>
+
+<h2 id="introduction">Introduction</h2>
+<p>Cross-Site Scripting (XSS) attack occured when a malicious scripts inject itself into a trusted website. For example, you are logged into your bank account, and if a malicious script find itself into this website, then it can steals all your data in memory, local or session storage, and your cookies.</p>
+
+<h2 id="cause-of-xss">Cause of XSS</h2>
+<p>XSS caused mainly by malicious data entered into the web application, and not being validated, and then processed by the application, either on:</p>
+
+<ul>
+  <li>Server side.</li>
+  <li>Web client side.</li>
+  <li>Plugins (ActiveX, Java, VBScript, Flash or HTML Scripts).</li>
+</ul>
+
+<p>This malicious data can then be reflected back to the browser without encoding or escaping, and maybe saved into the database, to be persistent.<br />
+It doesn’t stop on data entered using form data, or html input data only, but include anything communicating to the web application, including URL, Headers, and Cookies.<br />
+Any surface where the application is expecting input (request url, headrs, cookies, post body…), can be a place where someone inject a malicious JavaScript code, that can steal all session information (local storages, cookies, …), or performing other malicious operations on the user’s machine under the guise of the vulnerable site.
+The malicious content sent to the web browser often takes the form of a segment of JavaScript, but may also include HTML, Flash, or any other type of code that the browser may execute.</p>
+
+<h2 id="xss-types">XSS types</h2>
+<p>XSS attacks can be devided into two main types as follows:</p>
+
+<ol>
+  <li>Reflected XSS attack.</li>
+  <li>Stored XSS attack.</li>
+</ol>
+
+<p>We can divid them as well, into:</p>
+
+<ol>
+  <li>server-side code flaws</li>
+  <li>DOM-based code flaws.</li>
+</ol>
+
+<h4 id="stored-xss-attacks">Stored XSS Attacks</h4>
+<p>Stored XSS is where the hacker find a way to store the XSS infected code into the server data, and then the data being reflected back to the browser.<br />
+A common scenario, is a forum, or comment list on a website, where other users share the view of all messages, or comments on the page. So, the hacker will inject the malicious code into the comment/forum post field.<br />
+When other users open the forum post, or see the comments, that malicious code will be run on their browser, getting access to all their site information.<br />
+This type is called as well Persistant XSS or Type-I XSS.</p>
+
+<h4 id="reflected-xss-attacks">Reflected XSS Attacks</h4>
+<p>Injected script is using the volunerability where server-rendered html page, uses any part of input request into rendering the webpage.<br />
+Let us discuss this example:
+Your application is handling a url that has an ID in the url as follows:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>https://my-volnurable-app.com/products/{id}
+</code></pre></div></div>
+
+<p>The server-side rendering of the application is displaying the parameter on the html page as follows:</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;div&gt;</span>Product ID: {id}<span class="nt">&lt;/div&gt;</span>
+</code></pre></div></div>
+
+<p>The hacker can just submit a url as follows:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>https://my-volnurable-app.com/products/&lt;script&gt; console.log(document.cookie); &lt;/script&gt;
+</code></pre></div></div>
+
+<p>Reflected attackes are delivered as links in emails, or from links on other websites, and when the victim click on the link to open the link in his/her browser, then will execute the code.</p>
+
+<h2 id="prevent-xss">Prevent XSS</h2>
+<p>To prevent XSS follows these rules:</p>
+
+<ol>
+  <li>Sanitize data input.</li>
+  <li>Sanitize data output.</li>
+</ol>
+
+<h4 id="sanitize-data-input">Sanitize data input:</h4>
+<p>This process called <strong>sanitize</strong> your input data.</p>
+
+<h4 id="sanitize-data-output">Sanitize data output:</h4>
+<p>Any HTML rendering for data should be done on sanitizied data. This can be done as follows:</p>
+
+<ol>
+  <li>HTML escape before insert data into HTML content.</li>
+</ol>
+
+<p>Whenever you do something like this, do HTML escape on the content:</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;body&gt;</span>...ESCAPE UNTRUSTED DATA BEFORE PUTTING HERE...<span class="nt">&lt;/body&gt;</span>
+<span class="nt">&lt;div&gt;</span>...ESCAPE UNTRUSTED DATA BEFORE PUTTING HERE...<span class="nt">&lt;/div&gt;</span>
+</code></pre></div></div>
+
+<ol>
+  <li>Don’t use inline JavaScript
+Inline JavaScript is when you put JS code in HTML or in an attribure, as follows</li>
+</ol>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;script&gt;</span><span class="nx">alert</span><span class="p">(</span><span class="s1">'something'</span><span class="p">);</span><span class="nt">&lt;/script&gt;</span>
+<span class="nt">&lt;button</span> <span class="na">onclick=</span><span class="s">"alert('anything')"</span><span class="nt">&gt;</span>push me<span class="nt">&lt;/button&gt;</span>
+</code></pre></div></div>
+
+      </div>
+      <div id="disqus_thread"></div>
+        <script>
+            /**
+             *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+             *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables
+             */
+            /*
+            var disqus_config = function () {
+                this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+                this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+            };
+            */
+            (function() {  // DON'T EDIT BELOW THIS LINE
+                var d = document, s = d.createElement('script');
+                
+                s.src = '//bloggisspancom.disqus.com/embed.js';
+                
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+        <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+     </div>
+  </article>
+
+
+      <footer class="site-footer row">
+<div class="column column-30">
+  <ul class="contact-list">
+          <li>Web matters</li>
+          <li><a href="mailto:ghassan.karwchan@gmail.com">ghassan.karwchan@gmail.com</a></li>
+  </ul>
+</div>
+<div class="column column-25">
+  <ul class="social-media-list">
+          
+          <li>
+            <a href="https://github.com/gkarwchan"><span class="icon icon--github"><svg viewBox="0 0 16 16"><path fill="#828282" d="M7.999,0.431c-4.285,0-7.76,3.474-7.76,7.761 c0,3.428,2.223,6.337,5.307,7.363c0.388,0.071,0.53-0.168,0.53-0.374c0-0.184-0.007-0.672-0.01-1.32 c-2.159,0.469-2.614-1.04-2.614-1.04c-0.353-0.896-0.862-1.135-0.862-1.135c-0.705-0.481,0.053-0.472,0.053-0.472 c0.779,0.055,1.189,0.8,1.189,0.8c0.692,1.186,1.816,0.843,2.258,0.645c0.071-0.502,0.271-0.843,0.493-1.037 C4.86,11.425,3.049,10.76,3.049,7.786c0-0.847,0.302-1.54,0.799-2.082C3.768,5.507,3.501,4.718,3.924,3.65 c0,0,0.652-0.209,2.134,0.796C6.677,4.273,7.34,4.187,8,4.184c0.659,0.003,1.323,0.089,1.943,0.261 c1.482-1.004,2.132-0.796,2.132-0.796c0.423,1.068,0.157,1.857,0.077,2.054c0.497,0.542,0.798,1.235,0.798,2.082 c0,2.981-1.814,3.637-3.543,3.829c0.279,0.24,0.527,0.713,0.527,1.437c0,1.037-0.01,1.874-0.01,2.129 c0,0.208,0.14,0.449,0.534,0.373c3.081-1.028,5.302-3.935,5.302-7.362C15.76,3.906,12.285,0.431,7.999,0.431z"/></svg>
+</span><span class="username">gkarwchan</span></a>
+
+          </li>
+          
+
+          
+          <li>
+            <a href="https://twitter.com/ghassankarwchan"><span class="icon icon--twitter"><svg viewBox="0 0 16 16"><path fill="#828282" d="M15.969,3.058c-0.586,0.26-1.217,0.436-1.878,0.515c0.675-0.405,1.194-1.045,1.438-1.809c-0.632,0.375-1.332,0.647-2.076,0.793c-0.596-0.636-1.446-1.033-2.387-1.033c-1.806,0-3.27,1.464-3.27,3.27 c0,0.256,0.029,0.506,0.085,0.745C5.163,5.404,2.753,4.102,1.14,2.124C0.859,2.607,0.698,3.168,0.698,3.767 c0,1.134,0.577,2.135,1.455,2.722C1.616,6.472,1.112,6.325,0.671,6.08c0,0.014,0,0.027,0,0.041c0,1.584,1.127,2.906,2.623,3.206 C3.02,9.402,2.731,9.442,2.433,9.442c-0.211,0-0.416-0.021-0.615-0.059c0.416,1.299,1.624,2.245,3.055,2.271 c-1.119,0.877-2.529,1.4-4.061,1.4c-0.264,0-0.524-0.015-0.78-0.046c1.447,0.928,3.166,1.469,5.013,1.469 c6.015,0,9.304-4.983,9.304-9.304c0-0.142-0.003-0.283-0.009-0.423C14.976,4.29,15.531,3.714,15.969,3.058z"/></svg>
+</span><span class="username">ghassankarwchan</span></a>
+
+          </li>
+          
+        </ul>
+</div>
+<div class="column">
+  This web site was built using <a href="https://jekyllrb.com/">Jekyll</a>.<br />
+  If you are interest in the code <a href="https://github.com/gkarwchan/BlogWebsite">you can find it here</a>.
+</div>
+
+</footer>
+
+    </div>
+  </body>
+
+</html>
