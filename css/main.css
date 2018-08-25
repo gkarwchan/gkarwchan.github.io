@@ -201,9 +201,6 @@ pre[class*="language-"] {
 .azure {
   background-color: #004de6; }
 
-.operation {
-  background-color: #9999ff; }
-
 .linux {
   background-color: #ac3939; }
 
@@ -222,7 +219,7 @@ pre[class*="language-"] {
 .unit.test {
   background-color: #ac3939; }
 
-.wpf {
+.others {
   background-color: #9999ff; }
 
 .react {

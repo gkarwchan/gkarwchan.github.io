@@ -6,9 +6,173 @@
 </description>
     <link>https://blog.gisspan.com/</link>
     <atom:link href="https://blog.gisspan.com/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Wed, 22 Aug 2018 20:46:41 -0600</pubDate>
-    <lastBuildDate>Wed, 22 Aug 2018 20:46:41 -0600</lastBuildDate>
+    <pubDate>Fri, 24 Aug 2018 18:23:00 -0600</pubDate>
+    <lastBuildDate>Fri, 24 Aug 2018 18:23:00 -0600</lastBuildDate>
     <generator>Jekyll v3.8.3</generator>
+    
+      <item>
+        <title>Python Virtual Environment, and Package Management</title>
+        <description>
+&lt;p&gt;Python virtual environments, and as well package management,  has a shaky history, and it has been changing a lot for last few years.&lt;br /&gt;
+Even currently, (early 2018), it is confusing because there are many tools for virtual environments (venv, virtualenv, pyvenv, pyenv).&lt;br /&gt;
+I couldn’t find one tutorial that describe everything in just one place, so I thought, I will write it down.&lt;br /&gt;
+This post is a combination of many official documentation, answers of StackOverflow, and different blog posts that I think will give you comprehensive picture, not only for the virtual environment, but for the package management as well.
+&lt;!--more--&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
+&lt;p&gt;I’ve been doing Python on and off, and every time I came back to Python after a long time off, I had to learn again, what is the best virtual environment tool, and as well their package management.&lt;br /&gt;
+So, I thought I will put this tutorial, that gives a comprehensive description of the Python working environment.&lt;br /&gt;
+I will start the post with the practical side, by describing the virtual environment tools, and differences between them, and then I will go to deeper description of pip and pip ancestor, and the background of virtual environments.
+&lt;br /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;pip-installation-folder&quot;&gt;Pip installation folder&lt;/h2&gt;
+&lt;p&gt;Unlike NPM, which stores Node packages in the &lt;strong&gt;node_modules&lt;/strong&gt; folder, in one of two possible level:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;project-level node_modules folder, which is the default option.&lt;/li&gt;
+  &lt;li&gt;user-level (global) node_modules folder.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Python’s pip will install the packages in a &lt;strong&gt;site-packages&lt;/strong&gt; folder, which can be one of two levels:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Machine level shared folder.&lt;/li&gt;
+  &lt;li&gt;User level shared folder, which is the default.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Python’s packaging tools also contains two other pip-based tools that will do installation in two other levels:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Virtual environment level shared folder.&lt;/li&gt;
+  &lt;li&gt;Project level installation folder.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&quot;user-level-shared-folder&quot;&gt;User level shared folder&lt;/h4&gt;
+&lt;p&gt;Without activating a virtual environment, Pip by default will install the downloaded packages either on a folder that belong to the user folder.&lt;br /&gt;
+Installation on a user folder became the default, and you can control it by this command line:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;bash&quot;&gt;python setup.py install --user
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;This is called &lt;strong&gt;user scheme&lt;/strong&gt; installation mode.&lt;br /&gt;
+The folder is located:&lt;/p&gt;
+&lt;div style=&quot;width:70%; align:center; margin:auto&quot;&gt;
+
+  &lt;table&gt;
+    &lt;thead&gt;
+      &lt;tr&gt;
+        &lt;th&gt;OS&lt;/th&gt;
+        &lt;th&gt;Folder&lt;/th&gt;
+      &lt;/tr&gt;
+    &lt;/thead&gt;
+    &lt;tbody&gt;
+      &lt;tr&gt;
+        &lt;td&gt;Linux&lt;/td&gt;
+        &lt;td&gt;~/.local/lib/python{version: x.y}/site-packages&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;Mac&lt;/td&gt;
+        &lt;td&gt;~/Library/Python/{version: x.y}/lib/python/site-packages&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;Windows&lt;/td&gt;
+        &lt;td&gt;%APPDATA%\Python{version: x.y}\site-packages&lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/tbody&gt;
+  &lt;/table&gt;
+
+&lt;/div&gt;
+
+&lt;p&gt;You can check if this mode is enabled by this command line&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;bash&quot;&gt;python -m site 
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The command will display the environment variable &lt;code class=&quot;highlighter-rouge&quot;&gt;ENABLE_USER_SITE&lt;/code&gt; value, which by default is &lt;code class=&quot;highlighter-rouge&quot;&gt;true&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;h4 id=&quot;machine-level-shared-folder&quot;&gt;Machine level shared folder&lt;/h4&gt;
+&lt;p&gt;If the environment variable &lt;code class=&quot;highlighter-rouge&quot;&gt;ENABLE_USER_SITE&lt;/code&gt; is false, then the installation will be stored on the machine folder:&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;OS&lt;/th&gt;
+      &lt;th&gt;Folder&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Linux&lt;/td&gt;
+      &lt;td&gt;/usr/local/lib/python{version: x.y}/site-packages&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Mac&lt;/td&gt;
+      &lt;td&gt;/usr/local/lib/python{version: x.y}/site-packages&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Windows&lt;/td&gt;
+      &lt;td&gt;c:\Python{version: x.y}\Lib\site-packages&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h4 id=&quot;virtual-environment-shared-folder&quot;&gt;Virtual environment shared folder&lt;/h4&gt;
+&lt;p&gt;We can create an isolated virtual environment that can be shared between many users, where running pip install, will install inside that virtual environment without polluting the user level or machine level.
+To create a virtual environment, we use another tool called &lt;a href=&quot;https://pypi.org/project/virtualenv/&quot;&gt;virtualenv&lt;/a&gt;, which can be installed with pip itself.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;pip3 &lt;span class=&quot;nb&quot;&gt;install &lt;/span&gt;virtualenv
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Then on a directory where you want to create the virtual environment, run the following command:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;virtualenv my_virtualenv
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;The above command will create a folder in the current directory which contain the Python executable files, and a copy of &lt;code class=&quot;highlighter-rouge&quot;&gt;pip&lt;/code&gt; library, which will be used to install other packages.&lt;br /&gt;
+To begin using the virtual environment, you need to activated using&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;source &lt;/span&gt;my_virtualenv/bin/activate
+
+&lt;span class=&quot;c&quot;&gt;# Or alternative &lt;/span&gt;
+
+&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt; my_virtualenv/bin/activate
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;The left prompt will be changed to add the name of the virtual environment.&lt;br /&gt;
+Now, any pip install, will install the packages inside the virtual environment folder.&lt;/p&gt;
+
+&lt;p&gt;To deactivate the virtual environment run this command&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;deactivate
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;project-level-installation-folder&quot;&gt;Project level installation folder&lt;/h4&gt;
+&lt;p&gt;Similar to NPM, Python packaging tools has a tool called &lt;a href=&quot;https://pipenv.readthedocs.io/en/latest/&quot;&gt;Pipenv&lt;/a&gt;.&lt;br /&gt;
+As virtualenv, you need to install pipenv separately.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;pip &lt;span class=&quot;nb&quot;&gt;install&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--user&lt;/span&gt; pipenv
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Then you can start using pipenv instead of pip&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;pipenv &lt;span class=&quot;nb&quot;&gt;install &lt;/span&gt;requests
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Pipenv will install the package inside site_packages folder inside the current folder, and will create a &lt;strong&gt;Pipfile&lt;/strong&gt; in the current folder (similar to package.json).&lt;br /&gt;
+To run the application that is using the current installation folder, you need to run python through pipenv itself.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;pipenv run python your-program.py
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+</description>
+        <pubDate>Wed, 22 Aug 2018 09:45:00 -0600</pubDate>
+        <link>https://blog.gisspan.com/2018/08/Python-package-management.html</link>
+        <guid isPermaLink="true">https://blog.gisspan.com/2018/08/Python-package-management.html</guid>
+        
+        <category>python</category>
+        
+        
+      </item>
     
       <item>
         <title>Simple Explanation of XSS Attacks</title>
@@ -1873,166 +2037,6 @@ var cachedResult = new CachedResult&amp;lt;System.Web.Http.OkResult&amp;gt;(resp
         <guid isPermaLink="true">https://blog.gisspan.com/2016/09/IHttpActionResult.html</guid>
         
         <category>asp.net</category>
-        
-        
-      </item>
-    
-      <item>
-        <title>Streaming real data with AWS - Part 2.</title>
-        <description>
-&lt;p&gt;Technology of big data is booming and moving fast, and one of the major sector of big data booming is the requirements to process and analyze real time data that is helping lots of industries using real time data, from IoT, to the analyzing social networks.&lt;br /&gt;
-But real time data has its challenges, which the industry answered with many different solutions.&lt;br /&gt;
-In this post we are going to cover the technical solutions in AWS for streaming real time data.  &lt;!--more--&gt;
-&lt;br /&gt;&lt;br /&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;problems-with-real-time-data-processing&quot;&gt;Problems with real-time data processing&lt;/h2&gt;
-&lt;p&gt;Real time data produces its unique challenges and problems, and here are some of them:&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;Process massive amounts of streaming data.&lt;br /&gt;
-For example, processing a hashtag in twitter, means we might receive thousands of tweets in a second.&lt;/li&gt;
-  &lt;li&gt;Data Loss:&lt;br /&gt;
-Data producer send record which could be lost for different reasons.&lt;/li&gt;
-  &lt;li&gt;Message Re-ordering:&lt;br /&gt;
-With lots of data coming in, it is challenging to keep track of the order of the data, when the difference could be fraction of a second.&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h4 id=&quot;real-time-streaming-solution-requirements&quot;&gt;Real-time streaming solution requirements&lt;/h4&gt;
-
-&lt;p&gt;A stream processing solution has to solve different challenges:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Process millions of events per second in realtime.&lt;/li&gt;
-  &lt;li&gt;correlate data from multiple streams.&lt;/li&gt;
-  &lt;li&gt;Real-time responsiveness to events.&lt;/li&gt;
-  &lt;li&gt;Scale up/out as volumes increase in size and complexity&lt;/li&gt;
-  &lt;li&gt;Rapid integration with existing infrastructure and data sources.&lt;/li&gt;
-  &lt;li&gt;Integration with other systems that will use the data.&lt;/li&gt;
-  &lt;li&gt;End-user ad-hoc continuous query access&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&quot;streaming-solutions-on-aws&quot;&gt;Streaming solutions on AWS&lt;/h2&gt;
-&lt;p&gt;AWS provides many streaming services for realtime data. Each has its own features. We are going to compare between them to give you and idea which one to pick for your next project.
-These services are provided directly from Amazon. There are others that available from AWS market place, which is very active community, and you can check if your preferable streaming software might be available already there.&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;Amazon Kinesis&lt;/li&gt;
-  &lt;li&gt;Apache Kafka&lt;/li&gt;
-  &lt;li&gt;Amazon SQS / SNS&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;And let us start with the simplest: SQS / SNS.&lt;br /&gt;
-&lt;br /&gt;&lt;/p&gt;
-
-&lt;h4 id=&quot;amazon-sqs--sns&quot;&gt;Amazon SQS / SNS&lt;/h4&gt;
-&lt;p&gt;Amazon SQS is a simple (“dump”) message queuing service. It is a simple FIFO data store (first-in first-out), and if you are coming from Windows environment it is similar to MSMQ.&lt;br /&gt;
-But you can achieve push-based messaging service if you combine it with SNS: the Amazon notification service.&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;
-    &lt;p&gt;SQS/SNS Pros:&lt;/p&gt;
-
-    &lt;ol&gt;
-      &lt;li&gt;Both SQS/SNS are native AWS services, which means they are elastics and scale to the level you want them.&lt;/li&gt;
-      &lt;li&gt;They are managed by Amazon, and you don’t have to worry about them.&lt;/li&gt;
-      &lt;li&gt;Very easy to configure, and the easiest to configure between all three services.&lt;/li&gt;
-      &lt;li&gt;Duplicate data between many availability zones automatically.&lt;/li&gt;
-    &lt;/ol&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;SQS/SNS Cons:&lt;/p&gt;
-
-    &lt;ol&gt;
-      &lt;li&gt;It is very simple comparing to other solutions, and to achieve what other solutions are providing we need to do lots of customization and coding.&lt;/li&gt;
-      &lt;li&gt;It is more expensive than others in this list when it comes to big data.&lt;/li&gt;
-    &lt;/ol&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
-
-&lt;h4 id=&quot;amazon-kinesis&quot;&gt;Amazon Kinesis&lt;/h4&gt;
-&lt;p&gt;Amazon Kinesis is a platform for streaming real-time data on AWS, offering services to store, query, analyze and deliver realtime data:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;
-    &lt;p&gt;Kinesis Pros:&lt;/p&gt;
-
-    &lt;ol&gt;
-      &lt;li&gt;Stream huge data (TBs per hour).&lt;/li&gt;
-      &lt;li&gt;Managed by Amazon and you don’t have to worry about it.&lt;/li&gt;
-      &lt;li&gt;Cheapest between all three when it comes to data size.&lt;/li&gt;
-      &lt;li&gt;Duplicate data between many availability zones automatically.&lt;/li&gt;
-    &lt;/ol&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Kinesis Cons:&lt;/p&gt;
-
-    &lt;ol&gt;
-      &lt;li&gt;More complex to setup than SQS.&lt;/li&gt;
-    &lt;/ol&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
-
-&lt;h4 id=&quot;apache-kafka&quot;&gt;Apache Kafka&lt;/h4&gt;
-&lt;p&gt;Apache Kafka is publish-subscribe message broker that can handle hundreds of megabytes per seconds, and has clustering to support scaling out.&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;
-    &lt;p&gt;Kafka Pros:&lt;/p&gt;
-
-    &lt;ol&gt;
-      &lt;li&gt;Huge community support.&lt;/li&gt;
-      &lt;li&gt;Relatively easier to install / configure than Kinesis.&lt;/li&gt;
-      &lt;li&gt;More stable than Kinesis.&lt;/li&gt;
-    &lt;/ol&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Kafka Cons:&lt;/p&gt;
-
-    &lt;ol&gt;
-      &lt;li&gt;You need to set it up and configure it yourself on EC2.&lt;/li&gt;
-      &lt;li&gt;If you need redundancy across many availability zones , then you have to do it your self.&lt;/li&gt;
-    &lt;/ol&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&quot;how-to-choose&quot;&gt;How to choose&lt;/h2&gt;
-&lt;p&gt;If you want very simple requirements with small size of data, then you don’t have to use Kinesis or Kafka, because Amazon SQS/SNS is simpler to use.&lt;br /&gt;
-If you require to handle huge data, and more complex functionality then you should choose either Kafka, or Kinesis. They both are can fit many complex situation, and actually Kinesis was developed after Kafka.&lt;br /&gt;
-If you want to do less work and less learning curve, then Kinesis should be your choice. Kinesis is managed by AWS, and can be scaled automatically using AWS auto-scaling services.&lt;br /&gt;
-If you prefer to have the support of a huge community, then Kafka will be the choice, but Kafka scalability is achieved using its clustering features, which you have to configure it yourself.&lt;/p&gt;
-
-&lt;p&gt;This is a sheet that I took it from AWS documentation that shows the differences between these 3 technologies, plus a technology that I didn’t mention which is DynamoDB Stream:&lt;/p&gt;
-
-&lt;div class=&quot;column&quot;&gt;
-  &lt;p&gt;&lt;img src=&quot;/img/streaming.jpg&quot; alt=&quot;states&quot; /&gt;&lt;/p&gt;
-
-  &lt;h2 id=&quot;list-of-posts&quot;&gt;List of posts&lt;/h2&gt;
-  &lt;p&gt;This post is the second part of many posts related to bid data. The other posts are:&lt;/p&gt;
-
-  &lt;ol&gt;
-    &lt;li&gt;&lt;a href=&quot;/2016/08/Big-data.html&quot;&gt;Introduction to big data&lt;/a&gt;.&lt;/li&gt;
-    &lt;li&gt;Streaming real time data (this post).&lt;/li&gt;
-    &lt;li&gt;&lt;a href=&quot;/2017/11/Hadoop.html&quot;&gt;Hadoop &amp;amp; MapReduce&lt;/a&gt;.&lt;/li&gt;
-    &lt;li&gt;ElasticSearch (coming).&lt;/li&gt;
-    &lt;li&gt;Spark and data analysis with Python (coming).&lt;/li&gt;
-    &lt;li&gt;Hive and data processing (coming).&lt;/li&gt;
-    &lt;li&gt;Practical example&lt;/li&gt;
-  &lt;/ol&gt;
-
-  &lt;p&gt;&lt;br /&gt;&lt;/p&gt;
-&lt;/div&gt;
-</description>
-        <pubDate>Sat, 03 Sep 2016 09:45:00 -0600</pubDate>
-        <link>https://blog.gisspan.com/2016/09/Stream-real-time-data.html</link>
-        <guid isPermaLink="true">https://blog.gisspan.com/2016/09/Stream-real-time-data.html</guid>
-        
-        <category>AWS</category>
-        
-        <category>big data</category>
         
         
       </item>
