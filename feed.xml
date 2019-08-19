@@ -6,9 +6,173 @@
 </description>
     <link>https://blog.gisspan.com/</link>
     <atom:link href="https://blog.gisspan.com/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Fri, 24 Aug 2018 18:23:00 -0600</pubDate>
-    <lastBuildDate>Fri, 24 Aug 2018 18:23:00 -0600</lastBuildDate>
-    <generator>Jekyll v3.8.3</generator>
+    <pubDate>Sun, 18 Aug 2019 23:45:59 -0600</pubDate>
+    <lastBuildDate>Sun, 18 Aug 2019 23:45:59 -0600</lastBuildDate>
+    <generator>Jekyll v4.0.0.pre.beta1</generator>
+    
+      <item>
+        <title>Basic Data Science&amp;#58 Correlation analysis.</title>
+        <description>
+&lt;p&gt;One of the pillars of Data Science is the correlation. This post is to describe the correlation and the terms related to it, and how it is essential for the data science.&lt;/p&gt;
+
+&lt;!--more--&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
+&lt;p&gt;One of the major functionality of data science is find the relationship and associations between data variables, and it is safe to say, if you don’t know how to measure correlation then it is impossible to get much done in the data science.&lt;br /&gt;
+Let us clarify some terms in that field:&lt;/p&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;terms&quot;&gt;Terms&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Correlation analysis:&lt;br /&gt;
+  explores the association between two or more variables and makes inferences about the strength of the relationship.&lt;/li&gt;
+  &lt;li&gt;Correlation coefficient:&lt;br /&gt;
+  measures the association between two variables.&lt;/li&gt;
+  &lt;li&gt;Correlation matrix:  &lt;br /&gt;
+  A correlation matrix measures the correlation between many pairs of variables.&lt;/li&gt;
+  &lt;li&gt;Association:&lt;br /&gt;
+  It is common to use the terms correlation and association interchangeably. Technically, association refers to any relationship between two variables, whereas correlation is often used to refer only to a linear relationship between two variables.&lt;/li&gt;
+  &lt;li&gt;Inferences about association:&lt;br /&gt;
+  Inferences about the strength of association between variables are made using a random bivariate sample of data drawn from the population of interest.&lt;/li&gt;
+  &lt;li&gt;Linear relationships:&lt;br /&gt;
+  if values of two variables change at a constant rate with respect to each other.&lt;/li&gt;
+  &lt;li&gt;Nonlinear relationships:&lt;br /&gt;
+  if the values of correlated variables do not change at a constant rate with respect to each other&lt;/li&gt;
+  &lt;li&gt;Positive correlation:&lt;br /&gt;
+  for two correlated variables, when one variable’s value increases (or decreases), and the other variable’s value also increase (or decrease), then the two variables are positively correlated.&lt;/li&gt;
+  &lt;li&gt;Negative correlation:&lt;br /&gt;
+  Opposite to positive when one value increases (or decreases), and the second value decrease (or increase), then they are negatively correlated.&lt;/li&gt;
+  &lt;li&gt;Covariance:&lt;br /&gt;
+  is a measure of how much two variables change together.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;how-to-measure-correlation&quot;&gt;How to measure correlation&lt;/h2&gt;
+
+&lt;h4 id=&quot;1---correlation-coefficient-intuition&quot;&gt;1 - Correlation coefficient intuition:&lt;/h4&gt;
+&lt;p&gt;The first step is to draw a scatter plots between the two variables. Scatter plot will shows the relationship that can be discovered intuitively.&lt;/p&gt;
+</description>
+        <pubDate>Sun, 18 Aug 2019 09:45:00 -0600</pubDate>
+        <link>https://blog.gisspan.com/2019/08/Correlation-analysis.html</link>
+        <guid isPermaLink="true">https://blog.gisspan.com/2019/08/Correlation-analysis.html</guid>
+        
+        <category>ML &amp; data science</category>
+        
+        
+      </item>
+    
+      <item>
+        <title>A developer introdution to cloud netowrking.</title>
+        <description>
+&lt;p&gt;As a developer who delat with the cloud, either to create a virtual machine, or to deploy a website that connect to a database, then most probabely you had to deal even in short with a private network.&lt;br /&gt;
+And most of us developers don’t know a lot about networking, because it is either the job of dev-ops or system administrator. But on the cloud you find that you have to take some decisions related to the networking.&lt;br /&gt;
+This post is an introduction for developers who know very little about the cloud, and will cover enough information to help you understand how to take better decisions.
+&lt;!--more--&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;introduction-to-private-networks&quot;&gt;Introduction to private networks&lt;/h2&gt;
+&lt;p&gt;Amazon has the &lt;em&gt;Virtual Private Cloud&lt;/em&gt; (VPC), and Azure has its equivalent the &lt;em&gt;Virtual Network&lt;/em&gt; (VN). Both let you isolate many resources (databases, file storage, API servers….) into their own private network that is protected (not accessible) from the outside, and they can securely communicate with each others, even they can communicate securely with on-promises networks. As well, you can create a segment of that network to communicate to the outside world.
+Both VPC, and VN are using the networking idea of &lt;a href=&quot;https://en.wikipedia.org/wiki/Private_network&quot;&gt;Private Network&lt;/a&gt; such as LAN (https://en.wikipedia.org/wiki/Local_area_network).&lt;/p&gt;
+
+&lt;h4 id=&quot;what-is-a-private-network&quot;&gt;What is a private network?&lt;/h4&gt;
+&lt;p&gt;Private Network, is a network that uses private IP address space, which provides two essential functionalities to the network:
+Help in the shortage of IP addresses on IPV4, by re-using the same address range of other private networks.
+Isolate and protect your resources from outside. For example, you want your cloud database to be isolated, and accessible only from your web server.
+Segment your own virtual network, into one or more subnets, so you can isolate your own resources to not communicate with each others.&lt;/p&gt;
+
+&lt;h4 id=&quot;how-private-network-works&quot;&gt;How Private Network works?&lt;/h4&gt;
+&lt;p&gt;When we build a private network, we choose a range of private network addresses, and we should select one of the available address ranges available for private networks.
+Internet Assigned Numbers Authority (IANA) reserved the following IPv4 address ranges for private networks under the protocol &lt;a href=&quot;https://tools.ietf.org/html/rfc1918&quot;&gt;RFC1918&lt;/a&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;192.168.0.0 - 192.168.255.255 (65,536 IP addresses)&lt;/li&gt;
+  &lt;li&gt;172.16.0.0 - 172.31.255.255 (1,048,576 IP addresses)&lt;/li&gt;
+  &lt;li&gt;10.0.0.0 - 10.255.255.255 (16,777,216 IP addresses)
+We can do a better representation of these addresses with &lt;a href=&quot;https://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing&quot;&gt;CIDR format&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;RFC1918 name&lt;/th&gt;
+      &lt;th&gt;IP address range&lt;/th&gt;
+      &lt;th&gt;number of addresses&lt;/th&gt;
+      &lt;th&gt;largest CIDR block (subnet mask)&lt;/th&gt;
+      &lt;th&gt;host id size&lt;/th&gt;
+      &lt;th&gt;mask bits&lt;/th&gt;
+      &lt;th&gt;classful description[Note 1]&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;24-bit block&lt;/td&gt;
+      &lt;td&gt;10.0.0.0 – 10.255.255.255&lt;/td&gt;
+      &lt;td&gt;16777216&lt;/td&gt;
+      &lt;td&gt;10.0.0.0/8 (255.0.0.0)&lt;/td&gt;
+      &lt;td&gt;24 bits&lt;/td&gt;
+      &lt;td&gt;8 bits&lt;/td&gt;
+      &lt;td&gt;single class A network&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;20-bit block&lt;/td&gt;
+      &lt;td&gt;172.16.0.0 – 172.31.255.255&lt;/td&gt;
+      &lt;td&gt;1048576&lt;/td&gt;
+      &lt;td&gt;172.16.0.0/12 (255.240.0.0)&lt;/td&gt;
+      &lt;td&gt;20 bits&lt;/td&gt;
+      &lt;td&gt;12 bits&lt;/td&gt;
+      &lt;td&gt;16 contiguous class  B networks&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;16-bit block&lt;/td&gt;
+      &lt;td&gt;192.168.0.0 – 192.168.255.255&lt;/td&gt;
+      &lt;td&gt;65536&lt;/td&gt;
+      &lt;td&gt;192.168.0.0/16 (255.255.0.0)&lt;/td&gt;
+      &lt;td&gt;16 bits&lt;/td&gt;
+      &lt;td&gt;16 bits&lt;/td&gt;
+      &lt;td&gt;256 contiguous class C networks&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;To learn more about CIDR please read &lt;a href=&quot;https://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing&quot;&gt;its wikipedia page&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;This is why when you try to find your local IP address through Windows’s &lt;em&gt;ipconfig&lt;/em&gt;, or Linux’s &lt;em&gt;ifconfig&lt;/em&gt;, you will get an address from the ranges above.&lt;/p&gt;
+
+&lt;h4 id=&quot;private-network-and-nat&quot;&gt;Private Network and NAT&lt;/h4&gt;
+&lt;p&gt;In order to allow resources (such as computers) on a private network communicate to the external internet, there is a method called Network Address Translation 
+(NAT), or Port Address Translation (PAT), which is based on a “routing device”  (like your home router) that will translate a large number of these private IP addresses to a single public IP address. It does so by mapping each internal/private IP address to the public IP address and a specific port (as usually defined in the TCP or UDP protocols). This way, you can have a network containing multiple devices (e.g. 10.0.0.1, 10.0.0.2, 10.0.0.3, etc), and they will all be represented by the single router with a public IP address (e.g. 11.32.123.4).&lt;/p&gt;
+
+&lt;h6 id=&quot;exercise-on-nat-in-action&quot;&gt;Exercise on NAT in action&lt;/h6&gt;
+&lt;p&gt;To see the NAT or PAT in action, you can test it on your local home router.
+If you have more than one device in your own home (Laptop, mobile, tablet..), then try find your local private IP address by either using of the these commands:
+Windows’s ipconfig
+POSIX’s ifconfig&lt;/p&gt;
+
+&lt;p&gt;Or on the mobile, you can go to the settings and check your ip address.
+You will find an address from the range mentioned above.&lt;/p&gt;
+
+&lt;p&gt;To find your external IP address, go to the website &lt;a href=&quot;https://www.whatismyip.com/&quot;&gt;https://www.whatismyip.com&lt;/a&gt;.
+You will find a different IP address, which is the IP address that your ISP assigned to you.&lt;/p&gt;
+
+&lt;p&gt;Creating VPC with public and private subnet in AWS
+Create VPC
+Create 2 subnets, one for public and one for private&lt;/p&gt;
+
+&lt;p&gt;Exercise: Create a VPC with a public and Private Subnets
+AWS
+Create an Elastic IP Address for the NAT Gateway
+aws ec2 allocate-address –domain “vpc” –region us-west-2&lt;/p&gt;
+
+</description>
+        <pubDate>Mon, 01 Oct 2018 09:45:00 -0600</pubDate>
+        <link>https://blog.gisspan.com/2018/10/developer-introduction-to-cloud-networking.html</link>
+        <guid isPermaLink="true">https://blog.gisspan.com/2018/10/developer-introduction-to-cloud-networking.html</guid>
+        
+        <category>cloud</category>
+        
+        
+      </item>
     
       <item>
         <title>Python Virtual Environment, and Package Management</title>
@@ -268,7 +432,7 @@ Your application is handling a url that has an ID in the url as follows:&lt;/p&g
 Inline JavaScript is when you put JS code in HTML or in an attribute, as follows&lt;/li&gt;
 &lt;/ol&gt;
 
-&lt;div class=&quot;language-html highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;script&amp;gt;&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;alert&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'something'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;/script&amp;gt;&lt;/span&gt;
+&lt;div class=&quot;language-html highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;script&amp;gt;&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;alert&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;something&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;/script&amp;gt;&lt;/span&gt;
 &lt;span class=&quot;nt&quot;&gt;&amp;lt;button&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;onclick=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;alert('anything')&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;push me&lt;span class=&quot;nt&quot;&gt;&amp;lt;/button&amp;gt;&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 </description>
@@ -431,7 +595,7 @@ Software like:&lt;/p&gt;
         <link>https://blog.gisspan.com/2017/11/Hadoop.html</link>
         <guid isPermaLink="true">https://blog.gisspan.com/2017/11/Hadoop.html</guid>
         
-        <category>AWS</category>
+        <category>cloud</category>
         
         <category>big data</category>
         
@@ -1573,470 +1737,7 @@ The above libraries will generate and parse MIME based raw messages.&lt;/p&gt;
         
         <category>asp.net</category>
         
-        <category>AWS</category>
-        
-        
-      </item>
-    
-      <item>
-        <title>Everything you need to know about Date-Time in Asp.NET &amp; JSON.</title>
-        <description>
-&lt;p&gt;Date-Time data type is a complex issue. Complex enough to make you confuse overtime you are writing code that return dates from the web server to the browser.&lt;br /&gt;
-ASP.NET MVC 5 and Web API 2 serialize dates differently, which might create more confusion for developers who are using both serializations in one web application.&lt;br /&gt;
-I am trying to cover everything you need to know about Date and Date serialization to JSON, in ASP.NET, and what issues are related to them.&lt;br /&gt;
-I wanted to cover as well the issues with JavaScript date data type, but I will leave that to another post, because there are tons of issues that can be covered when it comes to JavaScript and date.
-&lt;!--more--&gt;
-&lt;br /&gt;
-&lt;br /&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;ambiguity-of-datetime-values&quot;&gt;Ambiguity of Date/Time values&lt;/h2&gt;
-&lt;p&gt;The main problem with date/time is its ambiguity. For example when I have a datetime as : 2016/05/05 10:00:00 AM, 
-I have to know to which timezone this value belong in order to clear any abmiguity.&lt;br /&gt;
-If we add to the timezone, that the value can be from a different calendar than the GregorianCalendar, then we add more complexity to that abmiguity.&lt;br /&gt;
-In this post, I am going to avoid talking about different calendars, assuming that all dates are from the default us-en calendar (the Gregorain canlendar).&lt;br /&gt;
-How to clear the ambiguity of date/time values?&lt;br /&gt;
-&lt;br /&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;unambiguous-representation-of-datetime&quot;&gt;Unambiguous representation of Date/Time&lt;/h2&gt;
-&lt;p&gt;There are different formats that the industry came up with to Unamiguously represent a single point of time. The web development industry came up with different solutions to have an Unambiguous representation of time values:&lt;/p&gt;
-
-&lt;h5 id=&quot;utc-time&quot;&gt;UTC Time&lt;/h5&gt;
-&lt;p&gt;UTC stands for Coordinated Universal Time, which is the time in Timezone zero, disregarding the daylight saving time.&lt;br /&gt;
-UTC is an Unambiguous representation of a single point of a time values, and a UTC time is the same for someone live in California to someone live in China.&lt;br /&gt;
-A possible solution that web developers do, is to store date/times in their UTC values, and do all the server manipulation, calculation with the UTC value, and send it to the browsers as UTC values, and the JavaScript on the browsers will converted to local time to show it on the web pages.&lt;/p&gt;
-
-&lt;h5 id=&quot;iso-8601&quot;&gt;ISO 8601&lt;/h5&gt;
-&lt;p&gt;There are plenty of date representation in the web, but the most famous and the one that was adopted by JavaScript on a large scale was the ISO-8601. This is an example of how ISO 8601 works&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&quot;language-markup&quot;&gt;Date: 2016-10-12 10:18:42 Pacific time
-ISO 8601: 2016-10-11T10:18:42-06:00
-
-Date: 2016-10-12 10:18:42 UTC time
-ISO 8601: 2016-10-11T10:18:42z
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;date-representation-in-net&quot;&gt;Date representation in .NET&lt;/h2&gt;
-&lt;p&gt;.NET specially with version 4 and later has full support for dates, time zones, and converting between timezone, which help developers achieve all the date challenges they face. 
-In .NET the following classes are involved or related to Date:&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;System.DateTime&lt;/li&gt;
-  &lt;li&gt;System.DateTimeOffset&lt;/li&gt;
-  &lt;li&gt;System.TimeSpan&lt;/li&gt;
-  &lt;li&gt;System.TimeZoneInfo&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h4 id=&quot;datetime-structure&quot;&gt;DateTime structure&lt;/h4&gt;
-
-&lt;p&gt;The DateTime class was the first introduced by .NET since version 1.0 and it doesn’t offer so much to represent timezones.
-The only timezone that DateTime allow is Local time zone, and UTC time zone. It provides is a property 
-&lt;code class=&quot;language-wiki&quot;&gt;Kind&lt;/code&gt; of type : &lt;code class=&quot;language-wiki&quot;&gt;DateTimeKind&lt;/code&gt; which is an enumeration that provides three kinds of date/time:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&quot;language-csharp&quot;&gt;//DateTimeKind Enumeration 
-Local
-Utc
-Unspecified&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;You can specify the kind when you create the DateTime object, which is an optional parameter,  like this:&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&quot;language-csharp&quot;&gt;// DateTime constructor: DateTime(year, month, day, hour, minute, second, kind)
-var localTime = new DateTime(2016, 10, 10, 10, 10, 10, DateTimeKind.Local);
-var utcTime = new DateTime(2016, 10, 10, 10, 10, 10, DateTimeKind.Utc);
-var localCurrentTime = DateTime.Now; // this is local time
-
-//when omitted then it is Unspecified:
-var localTime = new DateTime(year, month, day, hour, minute, second); // this is Unspecified
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
-
-&lt;h5 id=&quot;when-to-use-datetime&quot;&gt;When to use DateTime?&lt;/h5&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;You deal with only local time, and you don’t have cross-timezone calculation.&lt;/li&gt;
-  &lt;li&gt;You deal only with UTC date time.&lt;/li&gt;
-  &lt;li&gt;You deal with abstract date/time (using Unspecified). For example to represent multi-national stores where all stores open at 8:00 AM.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h4 id=&quot;datetimeoffset-timezoneinfo&quot;&gt;DateTimeOffset TimeZoneInfo&lt;/h4&gt;
-&lt;p&gt;The new structure  &lt;em&gt;DateTimeOffset&lt;/em&gt; structure was introduce to support dates with different timezones.&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&quot;language-csharp&quot;&gt;DateTimeOffset = DateTime + Offset from UTC
-
-// The constructor of DateTimeOffset has both component:
-// DateTimeOffset(DateTime, TimeOffset);
-var pacificTime = new DateTimeOffset(new DateTime(2016, 10, 10), new TimeOffset(-7, 0, 0));
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;It is not a good practice to hard code the time offset (-7) above, beside we could make mistakes because of daylight saving, and this is where we use the class &lt;strong&gt;&lt;em&gt;TimeZoneInfo&lt;/em&gt;&lt;/strong&gt;.&lt;br /&gt;
-TimeZoneInfo has all the timezones of the world, and we can search a specific time zone by its name using the method FindSystemTimeZoneById.&lt;br /&gt;
-For example we can rewrite the above code:&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&quot;language-csharp&quot;&gt;var pacificTime = new DateTimeOffset(new DateTime(2016, 10, 10), 
-    TimeZoneInfo.FindSystemTimeZoneById(&quot;Pacific Standard Time&quot;).BaseUtcOffset
-);
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;To check all the time zones ID(s), &lt;a href=&quot;https://msdn.microsoft.com/en-us/library/ms912391(v=winembedded.11).aspx&quot;&gt;you can find it here&lt;/a&gt;&lt;br /&gt;
-&lt;br /&gt;&lt;/p&gt;
-
-&lt;h5 id=&quot;when-to-use-datetimeoffset&quot;&gt;When to use DateTimeOffset?&lt;/h5&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Your code deals with different time values belong to different timezones.&lt;/li&gt;
-  &lt;li&gt;You need to convert between different timezones.&lt;/li&gt;
-  &lt;li&gt;You need to do date time calculation for dates that don’t belong to your local server timezone or UTC timezone.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;datetime-in-json--javascipt&quot;&gt;Date/Time in JSON &amp;amp; JavaScipt&lt;/h2&gt;
-&lt;p&gt;JSON lacks the definition of date/time, and that is because JavaScipt lacks the definition of date/time literals. JavaScript support the date/time through the &lt;em&gt;&lt;strong&gt;Date&lt;/strong&gt;&lt;/em&gt; object, and its methods and constructors.&lt;br /&gt;
-To create a Date object in JavaScript there are these options:&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;&lt;strong&gt;new Date()&lt;/strong&gt;: To create the current date.&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;new Date(integer_value)&lt;/strong&gt;: the number of milliseconds since 1-Jan-1970 00:00:00 UTC (Unix Epoch).&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;new Date(string_value)&lt;/strong&gt;: the ISO-8601 format of date/time or any recognizable date string.&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;new Date(year, month, day[, hour, minute, seconds, milliseconds])&lt;/strong&gt;&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;Date/time in Javascript is a huge subject, but for this post, I am going to cover only what is related to ASP.NET and how Asp.NET serialize dates to JSON.&lt;br /&gt;
-&lt;br /&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;aspnet-serialization-of-datetime-to-json&quot;&gt;Asp.NET Serialization of Date/Time to JSON&lt;/h2&gt;
-
-&lt;p&gt;ASP.NET has three different JSON Serializers, each serialize datetime differently:&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;Web API 2 serializer: (JSON.NET).&lt;/li&gt;
-  &lt;li&gt;ASP.NET MVC Serializer.&lt;/li&gt;
-  &lt;li&gt;DataContractJsonSerializer&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;Let us start from WEB API 2 serializer:&lt;br /&gt;
-&lt;br /&gt;&lt;/p&gt;
-
-&lt;h4 id=&quot;web-api-2-json-serializer&quot;&gt;Web API 2 JSON Serializer&lt;/h4&gt;
-&lt;p&gt;The default JSON serializer in Web API 2 is not from Microsoft, but it is a third party library &lt;a href=&quot;http://www.newtonsoft.com&quot;&gt;(JSON.NET) from NewtonSoft&lt;/a&gt;.&lt;br /&gt;
-It is available through System.Net.Http.Formatting.JsonMediaTypeFormatter. to return JSON date in Web API 2 we do the following in the APP_Start/WebApiConfig.cs:&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&quot;language-csharp&quot;&gt;// in the file APP_Start/WebApiConfig.cs
-config.Formatters.JsonFormatter.SupportedMediaTypes.Add(new MediaTypeHeaderValue(&quot;text/html&quot;) );&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;JSON.NET serializes the datetime to ISO-8601 format, and the following examples show how it serialize the date, assuming the local time is Pacific time (-7 hours):&lt;/p&gt;
-
-&lt;table&gt;
-  &lt;thead&gt;
-    &lt;tr&gt;
-      &lt;th&gt;Date value&lt;/th&gt;
-      &lt;th&gt;serialized value&lt;/th&gt;
-    &lt;/tr&gt;
-  &lt;/thead&gt;
-  &lt;tbody&gt;
-    &lt;tr&gt;
-      &lt;td&gt;DateTime.Now (Pacific time)&lt;/td&gt;
-      &lt;td&gt;2016-10-11T19:25:34.8346658-07:00&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;DateTime.UtcNow&lt;/td&gt;
-      &lt;td&gt;2016-10-12T01:25:34.8346658Z&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;New DateTime(2016, 6, 6, 4, 5,5 )&lt;/td&gt;
-      &lt;td&gt;2016-06-06T04:05:05&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;New DateTimeOffset(New DateTime(2016, 6, 6, 4, 5,5 ), new TimeSpan(-2, 0,0))&lt;/td&gt;
-      &lt;td&gt;2016-06-06T04:05:05-02:00&lt;/td&gt;
-    &lt;/tr&gt;
-  &lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
-
-&lt;h4 id=&quot;aspnet-mvc-serializer&quot;&gt;ASP.NET MVC Serializer&lt;/h4&gt;
-&lt;p&gt;ASP.NET Controller (System.Web.Mvc.Controller) has a built in method &lt;strong&gt;Json&lt;/strong&gt; that return JsonResult.&lt;br /&gt;
-This method uses JavaScriptSerializer (System.Web.Script.Serialization.JavaScriptSerializer). 
-This serializer serializes the date differently, and it return back in the format: “\/Date(ticks)\/”.&lt;br /&gt;
-Where ticks are the number of milliseconds since 1-Jan-1970 00:00:00 UTC (Unix Epoch). An example:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;&quot;\&quot;\/Date(1335205592410)\/\&quot;&quot; &lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;The rational behind this format you can find it &lt;a href=&quot;https://msdn.microsoft.com/en-us/library/bb299886.aspx#intro_to_json_sidebarb&quot;&gt;here&lt;/a&gt;.&lt;br /&gt;
-To consume this value in JavaScript, we have to do more tricks on the client side, by tacking away the &lt;strong&gt;Date()&lt;/strong&gt; and return the number inside and create from the number the date.&lt;br /&gt;
-The following code will do that:&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;var parsed = JSON.parse(data, function(key, value) { 
-  if (typeof value === 'string') { 
-    var d = /\/Date\((\d*)\)\//.exec(value); 
-    return (d) ? new Date(+d[1]) : value; 
-  } 
-return value; });
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;Or a simpler version, but less robust:&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;var parsed = JSON.parse(data, function(key, value) { 
-  if (typeof value === 'string') { 
-    var d = /\/Date\(/.exec(value); 
-    return (d) ? new Date(parseInt(value.substr(6))) : value; 
-  } 
-return value; });
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;Obviously, JavaScriptSerializer doesn’t tell the timezone of the value, and it is not a good choise if we are dealing with different time zones.&lt;/p&gt;
-&lt;blockquote&gt;
-  &lt;p&gt;Beside the date/time problems JavaScriptSerializer has more distadvantages comparing to JSON.NET serializer, which encouraged lots of developers in the community to abandon it and use JSON.NET serializer instead.&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
-
-&lt;h4 id=&quot;datacontractjsonserializer-serializer&quot;&gt;DataContractJsonSerializer Serializer&lt;/h4&gt;
-&lt;p&gt;DataContractJsonSerializer (System.Runtime.Serialization.Json.DataContractJsonSerializer) is a third serializer that comes with .NET framework. It is not the default serializer, so you need to use it explicitaley.&lt;br /&gt;
-In case you want to spend the effort to write code to change the default serializer, then it is better to use JSON.NET serializer instead because it is better on different aspects.&lt;br /&gt;
-Since JSON.NET serializer was introduced, not many developers used this serializer, so I am really goint to ignore it.&lt;/p&gt;
-
-&lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h2&gt;
-&lt;p&gt;I hope that was a good coverage of all the issues related to date/time in ASP.NET, and that you now understand why JSON.NET serializer was officially adopted by Web API team over JavaScriptSerializer.&lt;/p&gt;
-
-</description>
-        <pubDate>Tue, 11 Oct 2016 09:45:00 -0600</pubDate>
-        <link>https://blog.gisspan.com/2016/10/Everything-you-need-to-know-about-dates.html</link>
-        <guid isPermaLink="true">https://blog.gisspan.com/2016/10/Everything-you-need-to-know-about-dates.html</guid>
-        
-        <category>asp.net</category>
-        
-        
-      </item>
-    
-      <item>
-        <title>The advantages of IHttpActionResult in Web API 2.</title>
-        <description>
-&lt;p&gt;Web API 2 introduced the new interface IHttpActionResult to return back REST responses, where Web API 1 was using the class HttpResponseMessage to represent HTTP response, and HTTPResponseException to represent HTTP response error.&lt;/p&gt;
-
-&lt;p&gt;IHttpActionResult allows developers to enhance their Web API 1 code to be :&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;More testable.&lt;/li&gt;
-  &lt;li&gt;More reusable.&lt;/li&gt;
-  &lt;li&gt;Cleaner, and more elegant.&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;We are going to unleash the potential of this interface and see some creative ideas on how to use it.&lt;!--more--&gt;
-&lt;br /&gt;
-&lt;br /&gt;&lt;/p&gt;
-
-&lt;h4 id=&quot;start-from-http-protocol&quot;&gt;Start from HTTP Protocol&lt;/h4&gt;
-&lt;p&gt;First of all, let’s see what Web API is trying to do, and let us look at the HTTP response. A usual responses coming from a web server look like:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&quot;language-http&quot;&gt;HTTP/1.1 200 OK
-Cache-Control: max-age=1200
-Content-Length: 10
-Content-Type: text/plain; charset=utf-16
-Server: Microsoft-IIS/8.0
-Date: Mon, 27 Jan 2014 08:53:35 GMT
-
-hello
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;This is a successful response, which we can know from the code &lt;code class=&quot;language-wiki&quot;&gt;200&lt;/code&gt;.&lt;br /&gt;
-Another example of a failed response:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&quot;language-http&quot;&gt;HTTP/1.1 404 Not Found
-Content-type: text/html
-Content-length: 47
-  
-Sorry, the object you requested was not found.
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;the-traditional-thinking-of-web-api-1&quot;&gt;The traditional thinking of Web API 1&lt;/h2&gt;
-&lt;p&gt;Web API 1 introduced HttpResponseMessage, and by looking at the class properties in the picture down, you can see it is a literal .NET representation of the HTTP response.&lt;/p&gt;
-
-&lt;div class=&quot;column&quot; style=&quot;align: center&quot;&gt;
-  &lt;p&gt;&lt;img src=&quot;/img/HttpResponseMessage.png&quot; alt=&quot;states&quot; height=&quot;300px&quot; width=&quot;auto&quot; align=&quot;center&quot; /&gt;&lt;/p&gt;
-&lt;/div&gt;
-
-&lt;p&gt;By using HttpResponseMessage we can craft any HTTP response we want. For example to create the HTTP response mentioned above:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&quot;language-csharp&quot;&gt;var response = new HttpResonseMessage(HttpStatusCode.OK);
-response.Content = new StringContent(&quot;hello&quot;);
-response.Content.Headers.ContentType = new MediaTypeHeaderValue(&quot;text/plain&quot;);
-response.Headers.CatcheControl = new CacheControlHeaderValue {MaxAge = TimeSpan.FromMinutes(2)};
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;One problem with the code above is that it is ignoring the request, and the request content type, and this is why most of the time we will create the response like this:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&quot;language-csharp&quot;&gt;var response = request.CreateResponse(HttpStatusCode.OK, new StringContent(&quot;hello&quot;));
-response.Headers.CatcheControl = new CacheControlHeaderValue {MaxAge = TimeSpan.FromMinutes(2)};
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;By using request.CreateResponse, Web API will create the response with content type requested by the request.&lt;br /&gt;
-&lt;br /&gt;&lt;/p&gt;
-
-&lt;h4 id=&quot;worth-mentioning-alternatives&quot;&gt;Worth mentioning alternatives&lt;/h4&gt;
-&lt;p&gt;Before we move to Web API 2, it is worth mentioned that Web API 1 provides some built-in translation from any object type to HttpResponseMessage. For example, all these are valid return types of a Controller action:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&quot;language-csharp&quot;&gt;void Post()
-IEnumeration&amp;lt;string&amp;gt; Get()
-string Get(int id);
-MyCustomClass Get(int id);&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;br /&gt;
-Web API will serialize the object returned and wrap it in a successful HttpResponseMessage with status code 200.&lt;br /&gt;
-And in the case of &lt;em&gt;void&lt;/em&gt;, the Web API return &lt;code class=&quot;language-wiki&quot;&gt;&amp;nbsp;204 No Content&amp;nbsp;&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;web-api-2-and-ihttpactionresult&quot;&gt;Web API 2 and IHttpActionResult&lt;/h2&gt;
-
-&lt;p&gt;To see the advantages of this interface, let us check an example in the version 1, and see its translation into version 2.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&quot;language-csharp&quot;&gt;public class ProductsController : ApiController
-{
-    IProductRepository _repository;
-    public ProductsController(IProductRepository repository)
-    {
-        _repository = repository;
-    }
-    public HttpResponseMessage Get(int id)
-    {
-      try {
-        Product product = _repository.GetById(id);
-        if (product == null)
-        {
-            return Request.CreateResponse(HttpStatusCode.NotFound);
-        }
-        var response = Request.CreateResponse(product);
-        // add more code for caching and other custom response headers...
-        // for example: 
-        response.Headers.CatcheControl = new CacheControlHeaderValue {MaxAge = TimeSpan.FromMinutes(1)};
-        return response;
-      }
-      catch (Exception ex) {
-        return Request.CreateResponse(HttpStatusCode.InternalServerError);
-      }
-    }
-}&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;The problems with previous code are:&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;The class is responsible of calling repository and creating the HttpResponseMessage.&lt;/li&gt;
-  &lt;li&gt;There is no easy way to re-use code that set response header, like the caching for example.&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;Let us rewrite the code using IHttpActionResult:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&quot;language-csharp&quot;&gt;public class ProductsController : ApiController
-{
-    IProductRepository _repository;
-    public ProductsController(IProductRepository repository)
-    {
-        _repository = repository;
-    }
-    public HttpResponseMessage Get(int id)
-    {
-      try {
-        Product product = _repository.GetById(id);
-        if (product == null)
-        {
-            return NotFound();
-        }
-        return Ok(product);
-      }
-      catch (Exception ex) {
-        return InternalServerError(ex);
-      }
-    }
-}&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;Where Ok, NotFound, InternalServerError are ApiController methods that are returning concrete implementation of IHttpActionResult.&lt;br /&gt;
-Web API already comes with a library of classes that implement this interface which represent the most used responses on the web like : Ok, NotFound…, and they are located in the library &lt;a href=&quot;https://msdn.microsoft.com/en-us/library/system.web.http.results.aspx&quot;&gt;system.web.http.results&lt;/a&gt;.&lt;br /&gt;
-&lt;br /&gt;
-The benefits of using the previous code are:&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;Separation of concerns.&lt;/li&gt;
-  &lt;li&gt;Better testability.&lt;/li&gt;
-  &lt;li&gt;Produce reusable code.&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
-
-&lt;h4 id=&quot;1-separation-of-concerns&quot;&gt;1. Separation of concerns&lt;/h4&gt;
-&lt;p&gt;The code that produce the HttpResponseMessage is separate, and we can implement our own generation of the response message, and our controller concern only on retrieving the data from the repository.&lt;/p&gt;
-
-&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
-
-&lt;h4 id=&quot;2-better-testability&quot;&gt;2. Better testability&lt;/h4&gt;
-&lt;p&gt;Let us write test code for the previous code:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&quot;language-csharp&quot;&gt;[TestMethod]
-public void GetReturnsProductWithSameId()
-{
-    var mockRepository = new Mock&amp;lt;IProductRepository&amp;gt;();
-    mockRepository.Setup(x =&amp;gt; x.GetById(3))
-        .Returns(new Product { Id = 3 });
-
-    var controller = new ProductsController(mockRepository.Object);
-
-    IHttpActionResult actionResult = controller.Get(3);
-    var contentResult = actionResult as OkNegotiatedContentResult&amp;lt;Product&amp;gt;;
-
-    Assert.IsNotNull(contentResult);
-    Assert.IsNotNull(contentResult.Content);
-    Assert.AreEqual(3, contentResult.Content.Id);
-}&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;Obviously, testing is easier because we are testing the business logic which is retrieving data, and not generating the Http Response.&lt;/p&gt;
-
-&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
-
-&lt;h4 id=&quot;3-produce-reusable-code&quot;&gt;3. Produce reusable code&lt;/h4&gt;
-
-&lt;p&gt;Let us write the code that add the cash repose header to the response.&lt;/p&gt;
-
-&lt;p&gt;In order to do that, I will borrow &lt;a href=&quot;https://gist.github.com/bradwilson/8586562&quot;&gt;this brilliant idea&lt;/a&gt; of using chaining IHttpActionResult together to write reusable Http Response Headers.&lt;br /&gt;
-Let us create a code that implement IHttpActionResult and crate a response header for cashing: &lt;br /&gt;
-(P.S: I am borrowing his code, but just make it simpler)&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&quot;language-csharp&quot;&gt;public class CachedResult&amp;lt;T&amp;gt; : IHttpActionResult where T : IHttpActionResult
-{
-    public T InnerResult { get; private set; }
-    public CachedResult(T innerResult)
-    {
-      InnerResult = innerResult;
-    }
-
-    public async Task&amp;lt;HttpResonseMessage&amp;gt; ExecuteAsync(CancellationToken cancellationToken)
-    {
-        var response = await InnerResult.ExecuteAsync(cancellationToken);
-        response.Headers.CacheControl = new CacheControlHeaderValue
-        {
-          MaxAge = TimeSpan.FromMinutes(2)
-        };
-        return response;
-    }
-}&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;The above code will take an IHttpActionResult in the construction and add a caching header to it. To use it, we can do the following code:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&quot;language-csharp&quot;&gt;var responseOk =  Ok(product);
-var cachedResult = new CachedResult&amp;lt;System.Web.Http.OkResult&amp;gt;(responseOk);
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;Or we can do better, by creating an extension method to the IHttpActionResult, like this:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&quot;language-csharp&quot;&gt;public static class HttpActionResultExtensions
-{
-  public static CachedResult&amp;lt;T&amp;gt; Cached&amp;lt;T&amp;gt;(this T actionResult) where T : IHttpActionResult
-  {
-    return new CachedResult&amp;lt;T&amp;gt;(actionResult);
-  }
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;And now we can use it as follows:&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&quot;language-csharp&quot;&gt;var responseOk =  Ok(product).Cached();&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;The Chached extension method can be reused whenever we want to add Cache response header to the HttpResponseMessage&lt;/p&gt;
-
-</description>
-        <pubDate>Wed, 14 Sep 2016 09:45:00 -0600</pubDate>
-        <link>https://blog.gisspan.com/2016/09/IHttpActionResult.html</link>
-        <guid isPermaLink="true">https://blog.gisspan.com/2016/09/IHttpActionResult.html</guid>
-        
-        <category>asp.net</category>
+        <category>cloud</category>
         
         
       </item>

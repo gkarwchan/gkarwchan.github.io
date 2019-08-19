@@ -109,13 +109,16 @@
         
           
         
+          
+        
         <a class="page-link" href="/feed.xml"><img src="/img/feed.png" ></img></a>
     </nav>
   </div>
 </header>
 
 
-            <article class="post row" itemscope itemtype="http://schema.org/BlogPosting">
+          
+  <article class="post row" itemscope itemtype="http://schema.org/BlogPosting">
     <div class="content">
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">Simple Explanation of XSS Attacks</h1>
@@ -214,7 +217,7 @@ Your application is handling a url that has an ID in the url as follows:</p>
 Inline JavaScript is when you put JS code in HTML or in an attribute, as follows</li>
 </ol>
 
-<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;script&gt;</span><span class="nx">alert</span><span class="p">(</span><span class="s1">'something'</span><span class="p">);</span><span class="nt">&lt;/script&gt;</span>
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;script&gt;</span><span class="nx">alert</span><span class="p">(</span><span class="dl">'</span><span class="s1">something</span><span class="dl">'</span><span class="p">);</span><span class="nt">&lt;/script&gt;</span>
 <span class="nt">&lt;button</span> <span class="na">onclick=</span><span class="s">"alert('anything')"</span><span class="nt">&gt;</span>push me<span class="nt">&lt;/button&gt;</span>
 </code></pre></div></div>
 

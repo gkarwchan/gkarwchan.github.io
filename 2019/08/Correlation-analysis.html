@@ -6,8 +6,8 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>CSS Reset</title>
-  <meta name="description" content="Every web developer had an experience where he test his web site on Chrome, IE and FireFox, to find out that the experience is a little bit different, becaus...">
+  <title>Basic Data Science&#58 Correlation analysis.</title>
+  <meta name="description" content="One of the pillars of Data Science is the correlation. This post is to describe the correlation and the terms related to it, and how it is essential for the ...">
 
 
   <!-- CSS Reset -->
@@ -19,7 +19,7 @@
 
   <link rel="stylesheet" href="/css/main.css">
   <script src="/js/prism.js"></script>
-  <link rel="canonical" href="https://blog.gisspan.com/2015/11/useful-css-tips-tip-1-css-reset.html">
+  <link rel="canonical" href="https://blog.gisspan.com/2019/08/Correlation-analysis.html">
   <link rel="alternate" type="application/rss+xml" title="Web matters" href="https://blog.gisspan.com/feed.xml">
   <script>
     (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -118,14 +118,76 @@
 
 
           
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+<script
+  type="text/javascript"
+  charset="utf-8"
+  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"
+>
+</script>
+<script
+  type="text/javascript"
+  charset="utf-8"
+  src="https://vincenttam.github.io/javascripts/MathJaxLocal.js"
+>
+</script>
+
   <article class="post row" itemscope itemtype="http://schema.org/BlogPosting">
     <div class="content">
       <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">CSS Reset</h1>
-        <p class="post-meta"><time datetime="2015-11-18T13:38:00-07:00" itemprop="datePublished">Nov 18, 2015</time> • <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name">Ghassan Karwchan</span></span></p>
+        <h1 class="post-title" itemprop="name headline">Basic Data Science&#58 Correlation analysis.</h1>
+        <p class="post-meta"><time datetime="2019-08-18T09:45:00-06:00" itemprop="datePublished">Aug 18, 2019</time> • <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name">Ghassan Karwchan</span></span></p>
       </header>
       <div class="post-content post-font" itemprop="articleBody">
-        Every web developer had an experience where he test his web site on Chrome, IE and FireFox, to find out that the experience is a little bit different, because browsers have their own default implementation and rendering for the HTML elements. <!--more--><br />Which means if you don't overwrite the default implementation with your own CSS rules, then the browser will use its own implementation. <br />If you are very keen on making the exact same user experience between all browsers even with the smallest details, then the community came up with a technique called "CSS Reset". <br />And even created a web site for that which you can find it on : <a href="http://cssreset.com/">CSS Reset Web Site</a> Before you jump to add it into your code, we should mention some issues about it. <br />Many developers won't implement CSS Reset, because in most cases you are going to have your own rules for most of the HTML elements. <br />So, if you implement CSS Reset, or the ones the come by default, then you will be doing double work, because you are implementing a rule, then you override it, which means double processing time. <br />Adding to that, it might end up that the reset rules will override your desired rule, if the selectors for the reset rules where more specific than your desired rules. <br /><br />But, in-spite of all these issues, it is an effort that worth doing. <br />In order to add CSS Reset, then you download the proper package that fits you from the <a href="http://cssreset.com/">CSS Reset Web Site</a> and add it as the first link in your page. <br />Most probably, nowadays you are building HTML5 web sites, so make sure to download the <a href="http://html5doctor.com/html-5-reset-stylesheet/">HTML5 version of CSS Reset from HTML5 Doctor</a>, or <a href="https://necolas.github.io/normalize.css/">normalize CSS</a> which is another implementation for HTML5. <br /><br />If you are using a CSS framework, then most probably that framework has its own built-in CSS reset tool. For example bootstrap framework has its own CSS reset, which is called Reboot, which is based on normalize.
+        
+<p>One of the pillars of Data Science is the correlation. This post is to describe the correlation and the terms related to it, and how it is essential for the data science.</p>
+
+<!--more-->
+
+<p><br /></p>
+<h2 id="introduction">Introduction</h2>
+<p>One of the major functionality of data science is find the relationship and associations between data variables, and it is safe to say, if you don’t know how to measure correlation then it is impossible to get much done in the data science.<br />
+Let us clarify some terms in that field:</p>
+
+<p><br /></p>
+
+<h2 id="terms">Terms</h2>
+
+<ul>
+  <li>Correlation analysis:<br />
+  explores the association between two or more variables and makes inferences about the strength of the relationship.</li>
+  <li>Correlation coefficient:<br />
+  measures the association between two variables.</li>
+  <li>Correlation matrix:  <br />
+  A correlation matrix measures the correlation between many pairs of variables.</li>
+  <li>Association:<br />
+  It is common to use the terms correlation and association interchangeably. Technically, association refers to any relationship between two variables, whereas correlation is often used to refer only to a linear relationship between two variables.</li>
+  <li>Inferences about association:<br />
+  Inferences about the strength of association between variables are made using a random bivariate sample of data drawn from the population of interest.</li>
+  <li>Linear relationships:<br />
+  if values of two variables change at a constant rate with respect to each other.</li>
+  <li>Nonlinear relationships:<br />
+  if the values of correlated variables do not change at a constant rate with respect to each other</li>
+  <li>Positive correlation:<br />
+  for two correlated variables, when one variable’s value increases (or decreases), and the other variable’s value also increase (or decrease), then the two variables are positively correlated.</li>
+  <li>Negative correlation:<br />
+  Opposite to positive when one value increases (or decreases), and the second value decrease (or increase), then they are negatively correlated.</li>
+  <li>Covariance:<br />
+  is a measure of how much two variables change together.</li>
+</ul>
+
+<h2 id="how-to-measure-correlation">How to measure correlation</h2>
+
+<h4 id="1---correlation-coefficient-intuition">1 - Correlation coefficient intuition:</h4>
+<p>The first step is to draw a scatter plots between the two variables. Scatter plot will shows the relationship that can be discovered intuitively.</p>
+
       </div>
       <div id="disqus_thread"></div>
         <script>

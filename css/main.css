@@ -216,6 +216,9 @@ pre[class*="language-"] {
 .build.\&.CI {
   background-color: #ac3939; }
 
+.ML.\&.data.science {
+  background-color: #ac3939; }
+
 .unit.test {
   background-color: #ac3939; }
 
@@ -228,7 +231,7 @@ pre[class*="language-"] {
 .webpack {
   background-color: rgba(16, 58, 177, 0.5); }
 
-.AWS {
+.cloud {
   background-color: #eeba37; }
 
 .big.data {
