@@ -6,9 +6,76 @@
 </description>
     <link>https://blog.gisspan.com/</link>
     <atom:link href="https://blog.gisspan.com/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Mon, 19 Aug 2019 20:44:42 -0600</pubDate>
-    <lastBuildDate>Mon, 19 Aug 2019 20:44:42 -0600</lastBuildDate>
+    <pubDate>Sun, 25 Aug 2019 13:00:49 -0600</pubDate>
+    <lastBuildDate>Sun, 25 Aug 2019 13:00:49 -0600</lastBuildDate>
     <generator>Jekyll v4.0.0.pre.beta1</generator>
+    
+      <item>
+        <title>Descriptive statistics with Python Numpy.</title>
+        <description>
+&lt;p&gt;Python libraries SciPy and Pandas already have out-of-shelfe tools to calculate descriptive statistics, but behind the scene they are calling Numpy functionalities.&lt;br /&gt;
+This post just to learn more Numpy, and its great arsenal of dealing with data.&lt;/p&gt;
+
+&lt;!--more--&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
+&lt;p&gt;Descriptive statistics is to calculate a summary of the data that describe the data, which include:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Mean&lt;/li&gt;
+  &lt;li&gt;Median&lt;/li&gt;
+  &lt;li&gt;Mode&lt;/li&gt;
+  &lt;li&gt;Variance, which can be describe using:
+    &lt;ul&gt;
+      &lt;li&gt;Kurtosis&lt;/li&gt;
+      &lt;li&gt;Skewness&lt;/li&gt;
+      &lt;li&gt;Standard Deviation&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;python-code&quot;&gt;Python Code&lt;/h2&gt;
+
+&lt;p&gt;Let us jump to the code.&lt;br /&gt;
+First let us load the data we will do calcuation on, which is the iris dataset that is already loaded as part of &lt;code class=&quot;highlighter-rouge&quot;&gt;Scikit-learn&lt;/code&gt; library.&lt;/p&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;sklearn&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;datasets&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;iris&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;datasets&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;load_iris&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;sepal_length&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;iris&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[:,[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]]&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;flatten&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;sepal_width&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;iris&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[:,[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]]&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;flatten&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;petal_length&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;iris&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[:,[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]]&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;flatten&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;petal_width&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;iris&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[:,[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]]&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;flatten&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;# Find the mean
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sepal_length&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;mean&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; 
+&lt;span class=&quot;c1&quot;&gt;# Find the Standard deviation
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sepal_length&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;# find the median
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;np&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;median&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sepal_length&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;# find the max
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sepal_length&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;max&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;# find the min
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sepal_length&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;min&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;# find the range
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;np&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ptp&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sepal_length&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;# find the variance
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;np&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;var&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sepal_length&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;# percentile of 50%
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sepal_length&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;percentile&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sepal_length&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;50&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+</description>
+        <pubDate>Sun, 25 Aug 2019 09:45:00 -0600</pubDate>
+        <link>https://blog.gisspan.com/2019/08/Descriptive-statistics-with-numpy.html</link>
+        <guid isPermaLink="true">https://blog.gisspan.com/2019/08/Descriptive-statistics-with-numpy.html</guid>
+        
+        <category>ML &amp; data science</category>
+        
+        
+      </item>
     
       <item>
         <title>Basic Data Science&amp;#58 Correlation analysis.</title>
@@ -1469,291 +1536,6 @@ HttpGet get = new HttpGet(&quot;https://my-token-service?code=xxxxx&quot;);
         <category>mobile</category>
         
         <category>security</category>
-        
-        
-      </item>
-    
-      <item>
-        <title>Sending emails with attachments or embedded image using Amazon's AWS SES API &amp; .NET.</title>
-        <description>
-&lt;p&gt;To send an email with AWS services, there are two options, either connecting directly to the AWS SMTP server with SMTP protocols, but then you have to open SMTP ports (587 or 25 usually).
-Otherwise you can use the AWS API which are bunch of REST API services that you can call them over HTTPS.&lt;br /&gt;
-AWS SES API has two options to send emails &lt;a href=&quot;http://docs.aws.amazon.com/ses/latest/DeveloperGuide/send-email-api.html&quot;&gt;as described in the documentation&lt;/a&gt;:&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;Send simple formatted email:&lt;br /&gt;
-which will make your life easy, but you are limited to send only text messages.&lt;/li&gt;
-  &lt;li&gt;Send raw email in order to send an embedded image or more complicated content.&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;In order to send raw email with embedded images, you can just find some code on stackoverflow, but I will try in this post to describe what is going on, and how raw email works, so you can understand the process in details.
-&lt;!--more--&gt;
-&lt;br /&gt;
-&lt;br /&gt;&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;PS: If you just want a code that works, you can just skip to the end of the article and get the code.&lt;br /&gt;
-I am trying here to describe the details of the solution, and give deeper understanding of the email protocols.&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;h2 id=&quot;what-is-an-email-message&quot;&gt;What is an email message?&lt;/h2&gt;
-&lt;p&gt;As the following diagram shows, the client sends email messages to an email serves using SMTP protocols over port 587, and email servers communicate with the same SMTP protocol over port 25.&lt;/p&gt;
-
-&lt;div class=&quot;column&quot; style=&quot;align: center&quot;&gt;
-  &lt;p&gt;&lt;img src=&quot;/img/smtp.jpg&quot; alt=&quot;smtp&quot; height=&quot;400px&quot; width=&quot;auto&quot; align=&quot;center&quot; /&gt;&lt;/p&gt;
-&lt;/div&gt;
-&lt;p&gt;An email message that is transferred from end to end consists of three parts:&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;&lt;strong&gt;Envelope&lt;/strong&gt;:&lt;br /&gt;
-The envelope contains the actual routing information that is communicated between the email client and the mail server during the SMTP session. It is constructed by the SMTP protocol, and it is analogous to the information on a postal envelope.
-&lt;br /&gt;&lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;&lt;strong&gt;Header&lt;/strong&gt;:
-Contains metadata of the message, examples are the sender’s address, the recipient’s address, the subject, and the date.
-&lt;br /&gt;&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;Body&lt;/strong&gt;:
-Contains the text message.&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;message-format&quot;&gt;Message format&lt;/h2&gt;
-&lt;p&gt;SMTP covers only the envelope part, and the rest of the message is covered by another protocol the &lt;a href=&quot;https://tools.ietf.org/search/rfc5322&quot;&gt;Internet Message Format (RFC 5322)&lt;/a&gt;.&lt;br /&gt;
-Internet Message Format defines the format of the &lt;strong&gt;Header&lt;/strong&gt; and the &lt;strong&gt;Body&lt;/strong&gt; that consists the message.&lt;br /&gt;
-&lt;br /&gt;&lt;/p&gt;
-
-&lt;h4 id=&quot;simple-message-format&quot;&gt;Simple message format&lt;/h4&gt;
-&lt;p&gt;This is an example a simple message:&lt;br /&gt;
-&lt;br /&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&quot;language-markup&quot;&gt;From: &quot;Andrew&quot; &amp;lt;andrew@example.com&amp;gt;
-To: &quot;Bob&quot; &amp;lt;bob@example.com&amp;gt;
-Date: Fri, 17 Dec 2010 14:26:21 -0800
-Subject: Hello
-Message-ID: &amp;lt;61967230-7A45-4A9D-BEC9-87CBCF2211C9@example.com&amp;gt;
-Accept-Language: en-US
-Content-Language: en-US
-Content-Type: text/plain; charset=&quot;us-ascii&quot;
-Content-Transfer-Encoding: quoted-printable
-
-Hello, I hope you are having a good day.
-
--Andrew&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;br /&gt;
-From the following example we can extract the following:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;The header and body are separated by a blank line.&lt;/li&gt;
-  &lt;li&gt;The header consists of multi lines, each line represent a header field with its value separated by a colon.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;using-mime&quot;&gt;Using MIME&lt;/h2&gt;
-&lt;p&gt;The SMTP protocol was designed to send data composed of 7-bit ASCII characters. And Internet Message Format was design with that restriction in mind. But email spread out and there was requirements to send more complicated data format as attachments or Unicode characters, and the industry came up with a new protocol called Multipurpose Internet Mail Extensions (MIME).&lt;br /&gt;
-MIME still send data as 7-bit ASCII, but it encode the non-ASCII data to do that, and the most used encoding is &lt;strong&gt;base64&lt;/strong&gt; encoding.&lt;br /&gt;
-The MIME standard works by breaking the message body into pultiple parts and then specifying what is to be done with each part.&lt;br /&gt;
-&lt;br /&gt;&lt;/p&gt;
-
-&lt;h4 id=&quot;email-with-an-attachment&quot;&gt;Email with an attachment&lt;/h4&gt;
-&lt;p&gt;Let’s see an example of an attachment:&lt;br /&gt;
-&lt;br /&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&quot;language-markup&quot;&gt;From: &quot;Bob&quot; &amp;lt;bob@example.com&amp;gt;
-To: &quot;Andrew&quot; &amp;lt;andrew@example.com&amp;gt;
-Date: Wed, 2 Mar 2011 11:39:34 -0800
-Subject: Customer service contact info
-Message-ID: &amp;lt;97DCB304-C529-4779-BEBC-FC8357FCC4D2@example.com&amp;gt;
-Accept-Language: en-US
-Content-Language: en-US
-Content-Type: multipart/mixed;
-  boundary=&quot;_003_97DCB304C5294779BEBCFC8357FCC4D2&quot;
-MIME-Version: 1.0
-
---_003_97DCB304C5294779BEBCFC8357FCC4D2
-Content-Type: text/plain; charset=&quot;us-ascii&quot;
-Content-Transfer-Encoding: quoted-printable
-
-Hi Andrew.  Here are the customer service names and telephone numbers I promised you. 
-
-See attached.
-
--Bob
-
---_003_97DCB304C5294779BEBCFC8357FCC4D2
-Content-Type: text/plain; name=&quot;cust-serv.txt&quot;
-Content-Description: cust-serv.txt
-Content-Disposition: attachment; filename=&quot;cust-serv.txt&quot;; size=1180;
-  creation-date=&quot;Wed, 02 Mar 2011 11:39:39 GMT&quot;;
-  modification-date=&quot;Wed, 02 Mar 2011 11:39:39 GMT&quot;
-Content-Transfer-Encoding: base64
-
-TWFyeSBEYXZpcyAtICgzMjEpIDU1NS03NDY1DQpDYXJsIFRob21hcyAtICgzMjEpIDU1NS01MjM1
-DQpTYW0gRmFycmlzIC0gKDMyMSkgNTU1LTIxMzQ=
-
---_003_97DCB304C5294779BEBCFC8357FCC4D2
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
-
-&lt;p&gt;We should notice the following:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;A blank line still separate the body from the header&lt;/li&gt;
-  &lt;li&gt;The content type is “&lt;strong&gt;mulitpart/mixed&lt;/strong&gt;”&lt;/li&gt;
-  &lt;li&gt;A “boundary” parameter specifies where each part begin and ends&lt;/li&gt;
-  &lt;li&gt;The “&lt;strong&gt;Content-Disposition&lt;/strong&gt;” header field specifies how the client should handle the attachment.&lt;/li&gt;
-  &lt;li&gt;The “&lt;strong&gt;Content-Transfer-Encoding&lt;/strong&gt;” is base64, and this is the standard way that the Mime types are stored in 7-bit Ascii based text, because the SMTP still transfer the message as 7-bit Ascii.&lt;br /&gt;
-&lt;br /&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h4 id=&quot;email-with-embedded-image&quot;&gt;Email with embedded image&lt;/h4&gt;
-&lt;p&gt;Let’s see how an email with an embedded image is represented:&lt;br /&gt;
-&lt;br /&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&quot;language-markup&quot;&gt;From: Bob &amp;lt;bob@example.com&amp;gt;
-To: &amp;lt;john@example.com&amp;gt;
-Subject: The deal you want.
-Content-Type: multipart/related;
-	boundary=&quot;--boundary_1_16494d19-57aa-4462-a4c8-c8e5abefb2aa&quot;;
-	type=&quot;text/html&quot;
-
-----boundary_1_16494d19-57aa-4462-a4c8-c8e5abefb2aa
-Content-Type: text/html; charset=&quot;us-ascii&quot;
-Content-Transfer-Encoding: quoted-printable
-
-&amp;lt;html&amp;gt;
-&amp;lt;head&amp;gt;&amp;lt;/head&amp;gt;
-&amp;lt;body&amp;gt;
-&amp;lt;img src=&quot;cid:BannerId&quot;&amp;gt;&amp;lt;br&amp;gt;
-The deal you want
-&amp;lt;/body&amp;gt;
-&amp;lt;/html&amp;gt;
-
-----boundary_1_16494d19-57aa-4462-a4c8-c8e5abefb2aa
-Content-Type: image/jpeg
-Content-Transfer-Encoding: base64
-Content-ID: &amp;lt;BannerId&amp;gt;
-
-
-iVBORw0KGgoAAAANSUhEUgAAAykAAABXCAYAAAAAqgpGAAAAAXNSR0IArs4c6QAAAARnQU1B
-.......
-paVF/g8NZOLQHqTPpAAAAABJRU5ErkJggg==
-----boundary_1_16494d19-57aa-4462-a4c8-c8e5abefb2aa--
-
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
-
-&lt;p&gt;We should notice the following:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;A blank line still separate the body from the header, and boundary parameter still used to separate parts.&lt;/li&gt;
-  &lt;li&gt;the content of the body must be HTML.&lt;/li&gt;
-  &lt;li&gt;The content type is “&lt;strong&gt;mulitpart/related&lt;/strong&gt;” : and this type is used for compound documents, those messages in which the separate body parts are intended to work together to provide the full meaning of the message&lt;/li&gt;
-  &lt;li&gt;The image part has a header field called “&lt;strong&gt;Content-ID&lt;/strong&gt;” which has value &lt;strong&gt;BannerId&lt;/strong&gt; equal to an “ID” in the html document that specify where the image will be embedded, which is defined in the pattern &lt;strong&gt;“cid:BannerId”&lt;/strong&gt;.&lt;/li&gt;
-  &lt;li&gt;The binary of the image is represented as base64&lt;br /&gt;
-&lt;br /&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&quot;calling-aws-ses-api-using-c&quot;&gt;Calling AWS SES API using C#&lt;/h2&gt;
-&lt;p&gt;Let us now jump to programming, and see how we can call AWS SES API.&lt;br /&gt;
-&lt;br /&gt;&lt;/p&gt;
-
-&lt;h4 id=&quot;the-shortage-of-net-framework&quot;&gt;The shortage of .NET framework&lt;/h4&gt;
-&lt;p&gt;.NET provides the namespace &lt;strong&gt;System.Net.Mail&lt;/strong&gt; that helps interact with a SMTP server and send emails with complicated contents (attachments, embedded images, …etc). It abstracts the low level of generating these raw data of the email message.&lt;br /&gt;
-But, when we use AWS SES API, we want to see and use these raw messages generated by .NET classes. Unfortunately, .NET doesn’t provide an easy way to generate these raw messages.&lt;br /&gt;
-But there are three solutions:&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;We build the raw message ourselves, which is going to be a nightmare and a magnet for bugs.&lt;/li&gt;
-  &lt;li&gt;Using un undocumented hack in .NET assemblies.&lt;/li&gt;
-  &lt;li&gt;Using third party libraries that does generate the raw message.
-&lt;br /&gt;&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;Of course, I am not interested in building the raw message by myself, so let’s ignore that and describe the two other solutions:&lt;br /&gt;
-&lt;br /&gt;&lt;/p&gt;
-
-&lt;h4 id=&quot;using-a-hack-in-net-framework&quot;&gt;Using a hack in .NET Framework&lt;/h4&gt;
-&lt;p&gt;There is an undocumented way to generate the raw message from Microsoft .NET assemblies, but with a small hack.
-The namespace System.Net.Mail provides &lt;a href=&quot;https://msdn.microsoft.com/en-us/library/7c5ka91b.aspx&quot;&gt;internal&lt;/a&gt; classes and members that cannot be called directly, but can be accessed using reflection.
-There are these two useful entities:
-System.Net.Mail.MailMessage has an internal method called “Send”, which will generate the “Raw” message and write it into a stream.
-System.Net.Mail.MailWriter is an internal class that is used by the above method to write the “Raw” message.
-I used this approach, and I will show a sample code of it:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&quot;language-csharp&quot;&gt;public void SendMessage()
-{
-    // Here we construct the System.Net.Mail.MailMessage 
-    // using all the tools in the System.Net.Mail namespace 
-    // that help us build a complicated message.
-    // for examples: Attachment, LinedResource (for embedded resources)...
-    System.Net.Mail.MailMessage message = ConstructMessage();
-
-    // Here where we generate the raw message
-    var rawASCII_message = ConvertMessageToAscii(message);
-    
-}
-
-private string ConvertMessageToAscii(MailMessage message)
-{
-    Assembly assembly = typeof(SmtpClient).Assembly;
-    Type mailWriterType = assembly.GetType(&quot;System.Net.Mail.MailWriter&quot;);
-    MemoryStream fileStream = new MemoryStream();
-
-    // Create an instance of the internal class MailWriter
-    ConstructorInfo mailWriterContructor = mailWriterType.GetConstructor
-        (BindingFlags.Instance | BindingFlags.NonPublic, null, new[] { typeof(Stream) }, null);
-    object mailWriter = mailWriterContructor.Invoke(new object[] { fileStream });
-
-    // Call the internal method &quot;Send&quot; of the MailMessage
-    MethodInfo sendMethod = typeof(MailMessage).GetMethod(&quot;Send&quot;, 
-        BindingFlags.Instance | BindingFlags.NonPublic);
-    sendMethod.Invoke(message, BindingFlags.Instance 
-        | BindingFlags.NonPublic, null, new[] { mailWriter, true }, null);
-
-    // Now mailWriter has the raw data
-    // Read the stream as ASCII
-    var reader = new StreamReader(mailWriter, Encoding.ASCII);
-    var rawMessage = reader.ReadToEnd();
-    MethodInfo closeMethod = mailWriter.GetType().GetMethod
-        (&quot;Close&quot;, BindingFlags.Instance | BindingFlags.NonPublic);
-    
-    closeMethod.Invoke(mailWriter, BindingFlags.Instance 
-        | BindingFlags.NonPublic, null, new object[] { }, null);
-    return rawMessage;
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;br /&gt;
-&lt;br /&gt;&lt;/p&gt;
-
-&lt;h4 id=&quot;third-party-solutions&quot;&gt;Third-party solutions&lt;/h4&gt;
-&lt;p&gt;The .NET community came up with third-party libraries that help parse/generate all MIME types that are even not supported by .NET framework:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;a href=&quot;http://nugetmusthaves.com/Package/MimeKit&quot;&gt;MimeKit&lt;/a&gt;.&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;http://nugetmusthaves.com/Package/MimeKitLite&quot;&gt;MimeKitLite&lt;/a&gt;.&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;http://anmar.eu.org/projects/sharpmimetools/&quot;&gt;SharpMimeTools&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;http://hpop.sourceforge.net/&quot;&gt;OpenPop.NET&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;and there are others.&lt;br /&gt;
-The above libraries will generate and parse MIME based raw messages.&lt;/p&gt;
-
-&lt;p&gt;To see a solution that uses MimeKitLite, &lt;a href=&quot;https://www.youtube.com/watch?v=PQdt-tZxkEA&quot;&gt;see this video&lt;/a&gt;.&lt;br /&gt;
-&lt;br /&gt;&lt;/p&gt;
-
-</description>
-        <pubDate>Thu, 08 Dec 2016 09:45:00 -0700</pubDate>
-        <link>https://blog.gisspan.com/2016/12/Sending-Email-with-embedded-image-with-aws.html</link>
-        <guid isPermaLink="true">https://blog.gisspan.com/2016/12/Sending-Email-with-embedded-image-with-aws.html</guid>
-        
-        <category>asp.net</category>
-        
-        <category>cloud</category>
         
         
       </item>

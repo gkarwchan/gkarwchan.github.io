@@ -112,6 +112,8 @@
         
           
         
+          
+        
         <a class="page-link" href="/feed.xml"><img src="/img/feed.png" ></img></a>
     </nav>
   </div>
@@ -123,6 +125,32 @@
     <div class="column column-80">
       <ul class="post-list">
         <li> <div class="post-excerpt">
+          <a href="/2016/12/Sending-Email-with-embedded-image-with-aws.html"  class="post-title-excerpt" >Sending emails with attachments or embedded image using Amazon's AWS SES API & .NET.</a>
+          <div class="tags">
+            
+              <a href="/tag/asp.net.html" class="tag asp.net" >asp.net</a>
+            
+              <a href="/tag/cloud.html" class="tag cloud" >cloud</a>
+            
+            </div>
+          <div class="excerpt-body post-font">
+<p>To send an email with AWS services, there are two options, either connecting directly to the AWS SMTP server with SMTP protocols, but then you have to open SMTP ports (587 or 25 usually).
+Otherwise you can use the AWS API which are bunch of REST API services that you can call them over HTTPS.<br />
+AWS SES API has two options to send emails <a href="http://docs.aws.amazon.com/ses/latest/DeveloperGuide/send-email-api.html">as described in the documentation</a>:</p>
+
+<ol>
+  <li>Send simple formatted email:<br />
+which will make your life easy, but you are limited to send only text messages.</li>
+  <li>Send raw email in order to send an embedded image or more complicated content.</li>
+</ol>
+
+<p>In order to send raw email with embedded images, you can just find some code on stackoverflow, but I will try in this post to describe what is going on, and how raw email works, so you can understand the process in details.</p>
+<br/><br/>
+          <a href="/2016/12/Sending-Email-with-embedded-image-with-aws.html"> read more ...</a></div>
+          
+          </div>
+            
+          <div class="post-excerpt">
           <a href="/2016/10/Everything-you-need-to-know-about-dates.html"  class="post-title-excerpt" >Everything you need to know about Date-Time in Asp.NET & JSON.</a>
           <div class="tags">
             
@@ -200,22 +228,6 @@ In this post and following posts, I am going to describe these services, and how
           
           </div>
             
-          <div class="post-excerpt">
-          <a href="/2016/08/setup-react-webpack-development-project.html"  class="post-title-excerpt" >Setup basic development environment for React and webpack.</a>
-          <div class="tags">
-            
-              <a href="/tag/react.html" class="tag react" >react</a>
-            
-              <a href="/tag/build & CI.html" class="tag build & CI" >build & CI</a>
-            
-            </div>
-          <div class="excerpt-body post-font"><p>Webpack became the de-facto standard module bundling and build automation tool for React community. Webpack is robust, and more complex than other bundling packages, and it has a steep learning curve comparing to other build automation tools.<br />
-This post is going to show how to setup a very basic development environment that will give you a head start for basic web Single page application that is using react and webpack.</p>
-<br/><br/>
-          <a href="/2016/08/setup-react-webpack-development-project.html"> read more ...</a></div>
-          
-          </div>
-            
           </li>
       </ul>
       <!-- Pagination links -->
@@ -224,7 +236,7 @@ This post is going to show how to setup a very basic development environment tha
         <a href="/page2" class="previous">&lt;&lt; Previous</a>
       
       
-      <span class="page_number ">Page: 3 of 11</span>
+      <span class="page_number ">Page: 3 of 12</span>
       
         <a href="/page4" class="next">Next &gt;&gt;</a>
      
