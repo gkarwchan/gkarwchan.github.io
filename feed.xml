@@ -6,8 +6,8 @@
 </description>
     <link>https://blog.gisspan.com/</link>
     <atom:link href="https://blog.gisspan.com/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sun, 25 Aug 2019 13:00:49 -0600</pubDate>
-    <lastBuildDate>Sun, 25 Aug 2019 13:00:49 -0600</lastBuildDate>
+    <pubDate>Thu, 29 Aug 2019 19:34:44 -0600</pubDate>
+    <lastBuildDate>Thu, 29 Aug 2019 19:34:44 -0600</lastBuildDate>
     <generator>Jekyll v4.0.0.pre.beta1</generator>
     
       <item>
@@ -20,7 +20,8 @@ This post just to learn more Numpy, and its great arsenal of dealing with data.&
 
 &lt;p&gt;&lt;br /&gt;&lt;/p&gt;
 &lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
-&lt;p&gt;Descriptive statistics is to calculate a summary of the data that describe the data, which include:&lt;/p&gt;
+&lt;p&gt;Descriptive statistics is to calculate a summary of the data that describe the data, in order to explore it and get some intuition about what we have in our hands. It is part of a bigger process called &lt;strong&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;Exploratory Data Analysis (EDA)&lt;/code&gt;&lt;/strong&gt;.&lt;br /&gt;
+Descriptive statistics includes:&lt;/p&gt;
 
 &lt;ul&gt;
   &lt;li&gt;Mean&lt;/li&gt;
