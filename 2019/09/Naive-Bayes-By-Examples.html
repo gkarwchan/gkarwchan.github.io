@@ -6,8 +6,8 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>Descriptive statistics with Python Numpy.</title>
-  <meta name="description" content="Python libraries SciPy and Pandas already have out-of-shelfe tools to calculate descriptive statistics, but behind the scene they are calling Numpy functiona...">
+  <title>Naive Bayes by examples</title>
+  <meta name="description" content="Bayes and Naive Bayes are very important techniques in machine learning. I am going to cover the Naive Bayes Classifier which is widley used in machine learn...">
 
 
   <!-- CSS Reset -->
@@ -19,7 +19,7 @@
 
   <link rel="stylesheet" href="/css/main.css">
   <script src="/js/prism.js"></script>
-  <link rel="canonical" href="https://blog.gisspan.com/2019/08/Descriptive-statistics-with-numpy.html">
+  <link rel="canonical" href="https://blog.gisspan.com/2019/09/Naive-Bayes-By-Examples.html">
   <link rel="alternate" type="application/rss+xml" title="Web matters" href="https://blog.gisspan.com/feed.xml">
   <script>
     (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -120,69 +120,116 @@
 
 
           
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+<script
+  type="text/javascript"
+  charset="utf-8"
+  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"
+>
+</script>
+<script
+  type="text/javascript"
+  charset="utf-8"
+  src="https://vincenttam.github.io/javascripts/MathJaxLocal.js"
+>
+</script>
+
   <article class="post row" itemscope itemtype="http://schema.org/BlogPosting">
     <div class="content">
       <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">Descriptive statistics with Python Numpy.</h1>
-        <p class="post-meta"><time datetime="2019-08-25T09:45:00-06:00" itemprop="datePublished">Aug 25, 2019</time> • <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name">Ghassan Karwchan</span></span></p>
+        <h1 class="post-title" itemprop="name headline">Naive Bayes by examples</h1>
+        <p class="post-meta"><time datetime="2019-09-01T09:45:00-06:00" itemprop="datePublished">Sep 1, 2019</time> • <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name">Ghassan Karwchan</span></span></p>
       </header>
       <div class="post-content post-font" itemprop="articleBody">
         
-<p>Python libraries SciPy and Pandas already have out-of-shelfe tools to calculate descriptive statistics, but behind the scene they are calling Numpy functionalities.<br />
-This post just to learn more Numpy, and its great arsenal of dealing with data.</p>
+<p>Bayes and Naive Bayes are very important techniques in machine learning. I am going to cover the Naive Bayes Classifier which is widley used in machine learning, but before that I will explain in this post the Bayes’ theorm by examples</p>
 
 <!--more-->
 
 <p><br /></p>
-<h2 id="introduction">Introduction</h2>
-<p>Descriptive statistics is to calculate a summary of the data that describe the data, in order to explore it and get some intuition about what we have in our hands. It is part of a bigger process called <strong><code class="highlighter-rouge">Exploratory Data Analysis (EDA)</code></strong>.<br />
-Descriptive statistics includes:</p>
 
-<ul>
-  <li>Mean</li>
-  <li>Median</li>
-  <li>Mode</li>
-  <li>Variance, which can be describe using:
-    <ul>
-      <li>Kurtosis</li>
-      <li>Skewness</li>
-      <li>Standard Deviation</li>
-    </ul>
-  </li>
-</ul>
+<h2 id="a-brief-introduction-for-bayes-theorem">A brief introduction for Bayes’ theorem:</h2>
+<p>Let <strong><em>A</em></strong> and <strong><em>B</em></strong> denote two events. In Bayes’ theorem, <strong><em>P(A|B)</em></strong> the probability that <strong><em>A</em></strong> occurs given <strong><em>B</em></strong> already occured can be computed by:</p>
 
-<h2 id="python-code">Python Code</h2>
+<script type="math/tex; mode=display">P(A|B) = \frac{P(B|A)P(A)}{P(B)}</script>
 
-<p>Let us jump to the code.<br />
-First let us load the data we will do calcuation on, which is the iris dataset that is already loaded as part of <code class="highlighter-rouge">Scikit-learn</code> library.</p>
+<p>Where <strong><em>P(B|A)</em></strong> is the probability of observing <strong><em>B</em></strong> given <strong><em>A</em></strong> occurs, and <strong><em>P(A)</em></strong>, <strong><em>P(B)</em></strong> the probability of <strong><em>A</em></strong> and <strong><em>B</em></strong> occurs repectively.</p>
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">datasets</span>
+<p><br /></p>
 
-<span class="n">iris</span> <span class="o">=</span> <span class="n">datasets</span><span class="o">.</span><span class="n">load_iris</span><span class="p">()</span>
+<h2 id="examples">Examples:</h2>
+<p>I am copying these examples from many books and tutorial sites, and I am listing these references here:</p>
 
-<span class="n">sepal_length</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">data</span><span class="p">[:,[</span><span class="mi">0</span><span class="p">]]</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
-<span class="n">sepal_width</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">data</span><span class="p">[:,[</span><span class="mi">1</span><span class="p">]]</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
-<span class="n">petal_length</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">data</span><span class="p">[:,[</span><span class="mi">2</span><span class="p">]]</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
-<span class="n">petal_width</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">data</span><span class="p">[:,[</span><span class="mi">3</span><span class="p">]]</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+<p><br /></p>
 
-<span class="c1"># Find the mean
-</span><span class="n">sepal_length</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span> 
-<span class="c1"># Find the Standard deviation
-</span><span class="n">sepal_length</span><span class="o">.</span><span class="n">std</span><span class="p">()</span>
-<span class="c1"># find the median
-</span><span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">sepal_length</span><span class="p">)</span>
-<span class="c1"># find the max
-</span><span class="n">sepal_length</span><span class="o">.</span><span class="nb">max</span><span class="p">()</span>
-<span class="c1"># find the min
-</span><span class="n">sepal_length</span><span class="o">.</span><span class="nb">min</span><span class="p">()</span>
-<span class="c1"># find the range
-</span><span class="n">np</span><span class="o">.</span><span class="n">ptp</span><span class="p">(</span><span class="n">sepal_length</span><span class="p">)</span>
-<span class="c1"># find the variance
-</span><span class="n">np</span><span class="o">.</span><span class="n">var</span><span class="p">(</span><span class="n">sepal_length</span><span class="p">)</span>
-<span class="c1"># percentile of 50%
-</span><span class="n">sepal_length</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">sepal_length</span><span class="p">,</span> <span class="mi">50</span><span class="p">)</span>
+<h3 id="example-1-coin-flip">Example 1: Coin flip</h3>
+<p>Given two coins, one is unfair with 90% of flips getting a head and 10% getting a tail, another one is fair. Randomly pick one coin and flip it. What is the probability that this coin is the unfair one, if we get a head?</p>
 
-</code></pre></div></div>
+<p>Let’s denote <strong><em>U</em></strong>, the event of picking the unfair coin and <strong><em>H</em></strong> the event of getting a head. so the probability of unfair coin given a head is already observed is ***P(U|H) can be calculated as:<br />
+<script type="math/tex">P(U|H)=\frac{P(H|U)P(U)}{P(H)}</script></p>
+
+<p><strong><em>P(H|U)</em></strong> = 90%</p>
+
+<p><strong><em>P(U)</em></strong> = 50% as we randomly pick a coin out of two.</p>
+
+<p><strong><em>P(H)</em></strong> can be observed by two paths, the fair coin is picked <strong><em>P(F)</em></strong> and the unfair coin is picked <strong><em>P(U)</em></strong>.<br />
+<strong><em>P(H)</em></strong> = P(H|U)P(U) + P(H|F)P(F)<br />
+<script type="math/tex">P(U|H)=\frac{P(H|U)P(U)}{P(H|U)P(U)+P(H|F)P(F)}=\frac{0.9 * 0.5}{0.9 * 0.5 + 0.5 * 0.5}=0.64</script></p>
+
+<p><br /></p>
+
+<h3 id="example-2-cancer-screening">Example 2: Cancer screening</h3>
+<p>Suppose a physician reported the following cancer screening test scenario:</p>
+
+<div style="width:70%; align:center; margin:auto">
+
+  <table>
+    <thead>
+      <tr>
+        <th> </th>
+        <th>Cancer</th>
+        <th>No Cancer</th>
+        <th>Total</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Text Positive</td>
+        <td>80</td>
+        <td>900</td>
+        <td>980</td>
+      </tr>
+      <tr>
+        <td>Text Negative</td>
+        <td>20</td>
+        <td>9000</td>
+        <td>9020</td>
+      </tr>
+      <tr>
+        <td>Total</td>
+        <td>100</td>
+        <td>9900</td>
+        <td>10000</td>
+      </tr>
+    </tbody>
+  </table>
+
+</div>
+
+<p>The problem: if the result of this screening test on a person is positive, what is the probability that they actually have cancer?</p>
+
+<p>Let’s assign the event of having a cancer as <strong><em>C</em></strong> and positive testing as <strong><em>Pos</em></strong>. let’s calculate <strong><em>P(C|Pos)</em></strong>:</p>
+
+<script type="math/tex; mode=display">P(C|Pos) = \frac{P(Pos|C)P(C)}{P(Pos)} = \frac{\frac{80}{100} \frac{100}{10000}}{\frac{980}{10000}} = 8.16\%</script>
+
+<p><br /></p>
 
       </div>
       <div id="disqus_thread"></div>

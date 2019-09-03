@@ -6,9 +6,103 @@
 </description>
     <link>https://blog.gisspan.com/</link>
     <atom:link href="https://blog.gisspan.com/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 29 Aug 2019 19:34:44 -0600</pubDate>
-    <lastBuildDate>Thu, 29 Aug 2019 19:34:44 -0600</lastBuildDate>
+    <pubDate>Mon, 02 Sep 2019 18:34:31 -0600</pubDate>
+    <lastBuildDate>Mon, 02 Sep 2019 18:34:31 -0600</lastBuildDate>
     <generator>Jekyll v4.0.0.pre.beta1</generator>
+    
+      <item>
+        <title>Naive Bayes by examples</title>
+        <description>
+&lt;p&gt;Bayes and Naive Bayes are very important techniques in machine learning. I am going to cover the Naive Bayes Classifier which is widley used in machine learning, but before that I will explain in this post the Bayes’ theorm by examples&lt;/p&gt;
+
+&lt;!--more--&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;a-brief-introduction-for-bayes-theorem&quot;&gt;A brief introduction for Bayes’ theorem:&lt;/h2&gt;
+&lt;p&gt;Let &lt;strong&gt;&lt;em&gt;A&lt;/em&gt;&lt;/strong&gt; and &lt;strong&gt;&lt;em&gt;B&lt;/em&gt;&lt;/strong&gt; denote two events. In Bayes’ theorem, &lt;strong&gt;&lt;em&gt;P(A|B)&lt;/em&gt;&lt;/strong&gt; the probability that &lt;strong&gt;&lt;em&gt;A&lt;/em&gt;&lt;/strong&gt; occurs given &lt;strong&gt;&lt;em&gt;B&lt;/em&gt;&lt;/strong&gt; already occured can be computed by:&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;P(A|B) = \frac{P(B|A)P(A)}{P(B)}&lt;/script&gt;
+
+&lt;p&gt;Where &lt;strong&gt;&lt;em&gt;P(B|A)&lt;/em&gt;&lt;/strong&gt; is the probability of observing &lt;strong&gt;&lt;em&gt;B&lt;/em&gt;&lt;/strong&gt; given &lt;strong&gt;&lt;em&gt;A&lt;/em&gt;&lt;/strong&gt; occurs, and &lt;strong&gt;&lt;em&gt;P(A)&lt;/em&gt;&lt;/strong&gt;, &lt;strong&gt;&lt;em&gt;P(B)&lt;/em&gt;&lt;/strong&gt; the probability of &lt;strong&gt;&lt;em&gt;A&lt;/em&gt;&lt;/strong&gt; and &lt;strong&gt;&lt;em&gt;B&lt;/em&gt;&lt;/strong&gt; occurs repectively.&lt;/p&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;examples&quot;&gt;Examples:&lt;/h2&gt;
+&lt;p&gt;I am copying these examples from many books and tutorial sites, and I am listing these references here:&lt;/p&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;example-1-coin-flip&quot;&gt;Example 1: Coin flip&lt;/h3&gt;
+&lt;p&gt;Given two coins, one is unfair with 90% of flips getting a head and 10% getting a tail, another one is fair. Randomly pick one coin and flip it. What is the probability that this coin is the unfair one, if we get a head?&lt;/p&gt;
+
+&lt;p&gt;Let’s denote &lt;strong&gt;&lt;em&gt;U&lt;/em&gt;&lt;/strong&gt;, the event of picking the unfair coin and &lt;strong&gt;&lt;em&gt;H&lt;/em&gt;&lt;/strong&gt; the event of getting a head. so the probability of unfair coin given a head is already observed is ***P(U|H) can be calculated as:&lt;br /&gt;
+&lt;script type=&quot;math/tex&quot;&gt;P(U|H)=\frac{P(H|U)P(U)}{P(H)}&lt;/script&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;&lt;em&gt;P(H|U)&lt;/em&gt;&lt;/strong&gt; = 90%&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;&lt;em&gt;P(U)&lt;/em&gt;&lt;/strong&gt; = 50% as we randomly pick a coin out of two.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;&lt;em&gt;P(H)&lt;/em&gt;&lt;/strong&gt; can be observed by two paths, the fair coin is picked &lt;strong&gt;&lt;em&gt;P(F)&lt;/em&gt;&lt;/strong&gt; and the unfair coin is picked &lt;strong&gt;&lt;em&gt;P(U)&lt;/em&gt;&lt;/strong&gt;.&lt;br /&gt;
+&lt;strong&gt;&lt;em&gt;P(H)&lt;/em&gt;&lt;/strong&gt; = P(H|U)P(U) + P(H|F)P(F)&lt;br /&gt;
+&lt;script type=&quot;math/tex&quot;&gt;P(U|H)=\frac{P(H|U)P(U)}{P(H|U)P(U)+P(H|F)P(F)}=\frac{0.9 * 0.5}{0.9 * 0.5 + 0.5 * 0.5}=0.64&lt;/script&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;example-2-cancer-screening&quot;&gt;Example 2: Cancer screening&lt;/h3&gt;
+&lt;p&gt;Suppose a physician reported the following cancer screening test scenario:&lt;/p&gt;
+
+&lt;div style=&quot;width:70%; align:center; margin:auto&quot;&gt;
+
+  &lt;table&gt;
+    &lt;thead&gt;
+      &lt;tr&gt;
+        &lt;th&gt; &lt;/th&gt;
+        &lt;th&gt;Cancer&lt;/th&gt;
+        &lt;th&gt;No Cancer&lt;/th&gt;
+        &lt;th&gt;Total&lt;/th&gt;
+      &lt;/tr&gt;
+    &lt;/thead&gt;
+    &lt;tbody&gt;
+      &lt;tr&gt;
+        &lt;td&gt;Text Positive&lt;/td&gt;
+        &lt;td&gt;80&lt;/td&gt;
+        &lt;td&gt;900&lt;/td&gt;
+        &lt;td&gt;980&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;Text Negative&lt;/td&gt;
+        &lt;td&gt;20&lt;/td&gt;
+        &lt;td&gt;9000&lt;/td&gt;
+        &lt;td&gt;9020&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;Total&lt;/td&gt;
+        &lt;td&gt;100&lt;/td&gt;
+        &lt;td&gt;9900&lt;/td&gt;
+        &lt;td&gt;10000&lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/tbody&gt;
+  &lt;/table&gt;
+
+&lt;/div&gt;
+
+&lt;p&gt;The problem: if the result of this screening test on a person is positive, what is the probability that they actually have cancer?&lt;/p&gt;
+
+&lt;p&gt;Let’s assign the event of having a cancer as &lt;strong&gt;&lt;em&gt;C&lt;/em&gt;&lt;/strong&gt; and positive testing as &lt;strong&gt;&lt;em&gt;Pos&lt;/em&gt;&lt;/strong&gt;. let’s calculate &lt;strong&gt;&lt;em&gt;P(C|Pos)&lt;/em&gt;&lt;/strong&gt;:&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;P(C|Pos) = \frac{P(Pos|C)P(C)}{P(Pos)} = \frac{\frac{80}{100} \frac{100}{10000}}{\frac{980}{10000}} = 8.16\%&lt;/script&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+</description>
+        <pubDate>Sun, 01 Sep 2019 09:45:00 -0600</pubDate>
+        <link>https://blog.gisspan.com/2019/09/Naive-Bayes-By-Examples.html</link>
+        <guid isPermaLink="true">https://blog.gisspan.com/2019/09/Naive-Bayes-By-Examples.html</guid>
+        
+        <category>ML &amp; data science</category>
+        
+        
+      </item>
     
       <item>
         <title>Descriptive statistics with Python Numpy.</title>
@@ -1327,216 +1421,6 @@ Redux communication can be achieved directly through javaScript only by using th
         <guid isPermaLink="true">https://blog.gisspan.com/2017/02/Redux-Vs-MVC,-Why-and-How.html</guid>
         
         <category>javascript</category>
-        
-        
-      </item>
-    
-      <item>
-        <title>The proper way to use OAuth in a native app.</title>
-        <description>
-&lt;p&gt;&lt;a href=&quot;https://www.ietf.org/&quot;&gt;IETF&lt;/a&gt; submitted &lt;a href=&quot;https://tools.ietf.org/html/draft-ietf-oauth-native-apps-07&quot;&gt;a draft&lt;/a&gt; on the best approach to implement OAuth in a mobile native app. They recommended a specific flow and some security considerations.&lt;br /&gt;
-I am going to show how to implement these in the code on both mobile platforms iOS, and Android using Facebook authentication service as an example of OAuth provider, and then show how Facebook and Google SDK for those platforms are implementing this apporaches.&lt;br /&gt;
-This is not an OAuth tutorial, so I am assuming that you are familiar with OAuth terminologies and workflows. &lt;!--more--&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;the-security-considertations-for-native-app&quot;&gt;The security considertations for native app&lt;/h2&gt;
-&lt;p&gt;&lt;a href=&quot;https://www.ietf.org/&quot;&gt;IETF&lt;/a&gt; submitted &lt;a href=&quot;https://tools.ietf.org/html/draft-ietf-oauth-native-apps-07&quot;&gt;a draft&lt;/a&gt; on the best approach to implement OAuth in a mobile native app, and in that draft IETF made the statement that:&lt;/p&gt;
-&lt;blockquote&gt;
-  &lt;p&gt;OAuth 2.0 authorization requests from native apps should only be made through external user-agents, primarily the user’s browser.&lt;br /&gt;
-This practice is also known as the AppAuth pattern, in reference to open source libraries that implement it.&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;p&gt;In order to statisfy the previous statement and to provide more solid, security solution for OAuth on native app, IETF provide the following security considertations:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Don’t use embeded user agent like web-view, because the native app can capture user credentials when entered on OAuth website.&lt;/li&gt;
-  &lt;li&gt;Register your application with the OAuth provider and specify it is a native app.&lt;/li&gt;
-  &lt;li&gt;It is not recommended to use OAuth implicit flow with a native app.&lt;/li&gt;
-  &lt;li&gt;Don’t store your application secret (which you obtain upon registering your application) in the code. There is a work around to use your secret when required which we are giong to see later.&lt;/li&gt;
-  &lt;li&gt;Most OAuth providers provide the parameter &lt;code class=&quot;language-wiki&quot;&gt;state&lt;/code&gt; in their service to protect against CSRF attacks.&lt;/li&gt;
-  &lt;li&gt;If you are building your own OAuth authentication services, then make sure the HTTP redirect address will have the application identifier as schema of the URL, which we are going to show it later.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&quot;appauth-or-authorization-code-flow&quot;&gt;AppAuth or Authorization Code Flow&lt;/h2&gt;
-&lt;p&gt;&lt;a href=&quot;https://tools.ietf.org/html/draft-ietf-oauth-native-apps-07#section-4.1&quot;&gt;Section 4.1&lt;/a&gt; in that draft shows the authorization flow of the AppAuth approach and it is very similar to Authorization Code Flow. Don’t worry about getting its details, because I am going to describe them later:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&quot;language-css&quot;&gt;+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~+
-|          User Device           |
-| +---------------------------+  |                     +-----------+
-| |                           |  | (5) Authz Code      |           |
-| |        Client App         |-----------------------&amp;gt;|  Token    |
-| |                           |&amp;lt;-----------------------|  Endpoint |
-| +---------------------------+  | (6) Access Token,   |           |
-|    |              ^            |     Refresh Token   +-----------+
-|    | (1)          | (4)        |
-|    | Authz        | Authz      |
-|    | Request      | Code       |
-|    v              |            |
-| +---------------------------+  |                   +---------------+
-| |                           |  | (2) Authz Request |               |
-| |          Browser          |---------------------&amp;gt;| Authorization |
-| |                           |&amp;lt;---------------------| Endpoint      |
-| +---------------------------+  | (3) Authz Code    |               |
-|                                |                   +---------------+
-+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~+
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
-
-&lt;p&gt;I am going to re-represent the same flow in the previous diagram with a more graphics in a simpler diagram that anyone can understand (including me).&lt;/p&gt;
-
-&lt;div class=&quot;column&quot; style=&quot;align: center&quot;&gt;
-  &lt;p&gt;&lt;img src=&quot;/img/oauth.png&quot; alt=&quot;smtp&quot; height=&quot;600px&quot; width=&quot;auto&quot; align=&quot;center&quot; /&gt;&lt;/p&gt;
-&lt;/div&gt;
-
-&lt;p&gt;&lt;br /&gt;
-I am going to implement that using the Facebook Authorization service as an example of the OAuth provider. But, I am just showing this as an example, becuase in real life if you want to connect using Facebook, then I recommend using Facebook SDK for iOS and Android, and not using my code.
-Anyway, my code is going to be conceptual steps that show only the exact step implementations, and not a whole application.&lt;br /&gt;
-&lt;br /&gt;
-&lt;br /&gt;&lt;/p&gt;
-
-&lt;h4 id=&quot;step-1--2-request-auhorization&quot;&gt;step 1 &amp;amp; 2: Request Auhorization&lt;/h4&gt;
-&lt;p&gt;In this step we are going to launch the external web browser with URL of the Facebook Authorization EndPoint:&lt;br /&gt;
-The Facebook Authorization EndPoint is:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&quot;language-http&quot;&gt;https://www.facebook.com/v2.8/dialog/oauth?
-  client_id={app-id}
-  &amp;amp;redirect_uri={redirect-uri}
-  &amp;amp;state={state}
-  &amp;amp;response_type=code
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;The parameters are as follows:&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;redirect_uri is the URL that you want to redirect the process back to. For a native app, the redirect url should be special which we should see how later.&lt;/li&gt;
-  &lt;li&gt;state: is an arbitrary unique string that is used to protect against CSRF.&lt;/li&gt;
-  &lt;li&gt;response_type: has many options, but for our AppAuth it is proper to use “code”.&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;Launching the browser from the native code.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&quot;language-java&quot;&gt; // For Android:
-// ---------------------------------
-
-AppUri authzUrl =Uri.parse(&quot;https://www.facebook.com/v2.8/dialog/oauth?client_id=xxxx&amp;amp;state=abcd&amp;amp;response_type=code&quot;);
-Intent launchBrowser = new Intent(Intent.ACTION_VIEW, authzUrl);
-startActivity(launchBrowser);
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;br /&gt;
-And for iOS:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&quot;language-objectivec&quot;&gt; // For iOS:
-// ---------------------------------
-
-NSString* launchUrl =@&quot;https://www.facebook.com/v2.8/dialog/oauth?client_id=xxxx&amp;amp;state=abcd&amp;amp;response_type=code&quot;;
-[[UIApplication sharedApplication] openURL:[NSURL URLWithString: launchUrl]];
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Facebook will direct you to enter your credentials, and then ask you to allow the application to access your token.&lt;br /&gt;
-When the user confirm the authorization server will respond with HTTP redirect like the following:&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&quot;language-http&quot;&gt;HTTP/1.1 302 Found
-Location: my-app-id://oauth.callback?code=the-code-returned-by-service
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;pay attention to the shceme in the URL: &lt;code class=&quot;language-wiki&quot;&gt; my-app-id:// &lt;/code&gt; which we are going to talk about in the next step.&lt;br /&gt;
-Let’s move to step 3 &amp;amp; 4.
-&lt;br /&gt;
-&lt;br /&gt;&lt;/p&gt;
-
-&lt;h4 id=&quot;step-3--4-authorization-endpoint-response&quot;&gt;step 3 &amp;amp; 4: Authorization endpoint response&lt;/h4&gt;
-
-&lt;p&gt;In Step 4 we should return back to the App from the external browser. The most common way is to use &lt;strong&gt;Custom URI Scheme&lt;/strong&gt;.&lt;br /&gt;
-Custom URI Scheme is a technique used in both iOS and Android to support inter-app communication, so app1 can communicate with app2 by launching a request like this:&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&quot;language-http&quot;&gt;app2://some-page-and-parameters&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;So, now let’s see how to define custom URI scheme in both platforms.&lt;br /&gt;
-&lt;br /&gt;&lt;/p&gt;
-
-&lt;p&gt;In Android we create an activity that will handle the redirect by defining its intent-filter to respond to BROWSABLE activites. the code will be similar to this:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&quot;language-markup&quot;&gt;&amp;lt;!-- android --&amp;gt;
-&amp;lt;activity android:name=&quot;.my-activity-handler&quot;&amp;gt;
-  &amp;lt;intent-filter&amp;gt;
-    &amp;lt;action android:name=&quot;android.intent.action.VIEW&quot; /&amp;gt;
-    &amp;lt;category android:name=&quot;android.intent.category.DEFAULT&quot; /&amp;gt;
-    &amp;lt;category android:name=&quot;android.intent.category.BROWSABLE&quot; /&amp;gt;
-    &amp;lt;data android:scheme=&quot;my-app-id&quot; /&amp;gt;
-  &amp;lt;/intent-filter&amp;gt;
-&amp;lt;/activity&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;br /&gt;
-&lt;br /&gt;
-In iOS we define the custom URI Scheme in the plist file:&lt;/p&gt;
-&lt;div class=&quot;column&quot; style=&quot;align: center&quot;&gt;
-  &lt;p&gt;&lt;img src=&quot;/img/plist.png&quot; alt=&quot;smtp&quot; /&gt;&lt;/p&gt;
-&lt;/div&gt;
-
-&lt;p&gt;and in the application delegate file we write a handler for application:openUrl&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&quot;language-objectivec&quot;&gt; // For iOS:
-// in AppDelegate.m
-// --------------------------------
-
-- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url
-{ 
-  NSString *queryString = [url query]; 
-  for (NSString *param in [queryString componentsSeparatedByString:@&quot;&amp;amp;&quot;]) { 
-    NSArray *keyValuePair = [param componentsSeparatedByString:@&quot;=&quot;]; 
-    if([keyValuePair objectAtIndex:0] isEqualToString:@&quot;code&quot;)
-    {
-      // continue with authorization code in [keyValuePair objectAtIndex:1]  //
-    }
-  }; 
-}
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;br /&gt;
-&lt;br /&gt;&lt;/p&gt;
-
-&lt;h4 id=&quot;step-5--6-trading-authorization-code-with-the-token&quot;&gt;step 5 &amp;amp; 6: Trading authorization code with the token&lt;/h4&gt;
-
-&lt;p&gt;The final step is to communicate with the Token Endpoint and send the authorization code received from the previous step.&lt;br /&gt;
-To do that in Facebook, we call Facebook Token Endpoint as follows:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&quot;language-http&quot;&gt;GET https://graph.facebook.com/v2.8/oauth/access_token?
-   client_id={app-id}
-   &amp;amp;redirect_uri={redirect-uri}
-   &amp;amp;client_secret={app-secret}
-   &amp;amp;code={code-parameter}
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Now there is a huge problem with this, because it requires the client secret, which is something that you should never use from your native code, becaues someone can hack it and get it.&lt;br /&gt;
-It is highly recommended to call this service from a back-end server, so you might have to have a back-end server.&lt;br /&gt;
-P.S: You can build a simple server component with a &lt;a href=&quot;https://github.com/ParsePlatform/parse-server&quot;&gt;perse-server&lt;/a&gt; and host it on Redhat openshift free cloud servers.&lt;br /&gt;
-So, we will assume that we have a back-end server that will call this for us, and we have to call it passing our authorization code we received from previous step, like this.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&quot;language-http&quot;&gt;GET https://my-token-service?code={code-parameter}&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;To call this service in iOS:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&quot;language-objectivec&quot;&gt; // For iOS:
-// --------------------------------
-NSMutableURLRequest *request= [[[NSMutableURLRequest alloc] init] autorelease];
-[request setURL: [NSURL URLWithString:@&quot;https://my-token-service?code=xxxx&quot;]];
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;For Android&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&quot;language-java&quot;&gt; // For Android:
-// ---------------------------------
-DefualtHttpClient httpClient = new DefaultHttpClient();
-HttpGet get = new HttpGet(&quot;https://my-token-service?code=xxxxx&quot;);
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;br /&gt;
-&lt;br /&gt;&lt;/p&gt;
-
-&lt;h4 id=&quot;final-statment&quot;&gt;Final statment&lt;/h4&gt;
-&lt;p&gt;Just reminder that the code above was conceptual to describe the process in more practical way. If you are going to use Facebook OAuth, then it is way easier and better to use Facebook SDK.&lt;/p&gt;
-
-</description>
-        <pubDate>Wed, 01 Feb 2017 09:45:00 -0700</pubDate>
-        <link>https://blog.gisspan.com/2017/02/Implementing-OAuth-on-mobile-Facebook-login-as-example.html</link>
-        <guid isPermaLink="true">https://blog.gisspan.com/2017/02/Implementing-OAuth-on-mobile-Facebook-login-as-example.html</guid>
-        
-        <category>mobile</category>
-        
-        <category>security</category>
         
         
       </item>
