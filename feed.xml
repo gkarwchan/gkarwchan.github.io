@@ -6,8 +6,8 @@
 </description>
     <link>https://blog.gisspan.com/</link>
     <atom:link href="https://blog.gisspan.com/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Mon, 02 Sep 2019 18:34:31 -0600</pubDate>
-    <lastBuildDate>Mon, 02 Sep 2019 18:34:31 -0600</lastBuildDate>
+    <pubDate>Mon, 02 Sep 2019 20:11:11 -0600</pubDate>
+    <lastBuildDate>Mon, 02 Sep 2019 20:11:11 -0600</lastBuildDate>
     <generator>Jekyll v4.0.0.pre.beta1</generator>
     
       <item>
@@ -94,6 +94,71 @@
 &lt;script type=&quot;math/tex; mode=display&quot;&gt;P(C|Pos) = \frac{P(Pos|C)P(C)}{P(Pos)} = \frac{\frac{80}{100} \frac{100}{10000}}{\frac{980}{10000}} = 8.16\%&lt;/script&gt;
 
 &lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;example-3-email-spam-detector&quot;&gt;Example 3: Email Spam detector:&lt;/h3&gt;
+&lt;p&gt;Let us start with this training data&lt;/p&gt;
+
+&lt;table&gt;
+    &lt;thead&gt;
+        &lt;tr&gt;
+            &lt;th&gt;&lt;/th&gt;
+            &lt;th&gt;ID&lt;/th&gt;
+            &lt;th&gt;Terms in email&lt;/th&gt;
+            &lt;th&gt;Is spam&lt;/th&gt;
+        &lt;/tr&gt;
+    &lt;/thead&gt;
+    &lt;tbody&gt;
+        &lt;tr&gt;
+            &lt;td rowspan=&quot;4&quot;&gt;Training Data&lt;/td&gt;
+            &lt;td style=&quot;padding-left: 0&quot;&gt;1&lt;/td&gt;
+            &lt;td&gt;Click win prize&lt;/td&gt;
+            &lt;td&gt;Yes&lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+            &lt;td&gt;2&lt;/td&gt;
+            &lt;td&gt;Click meeting setup meeting&lt;/td&gt;
+            &lt;td&gt;No&lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+            &lt;td&gt;3&lt;/td&gt;
+            &lt;td&gt;Prize free prize&lt;/td&gt;
+            &lt;td&gt;Yes&lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+            &lt;td&gt;4&lt;/td&gt;
+            &lt;td&gt;Click prize free&lt;/td&gt;
+            &lt;td&gt;Yes&lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+            &lt;td&gt;Testing Case&lt;/td&gt;
+            &lt;td style=&quot;padding-left: 0&quot;&gt;5&lt;/td&gt;
+            &lt;td&gt;Free setup meeting free&lt;/td&gt;
+            &lt;td&gt;?&lt;/td&gt;
+        &lt;/tr&gt;
+    &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;First we define two events: spam and not spam $S$ and $NS$ respectively.&lt;br /&gt;
+From the training set:&lt;br /&gt;
+$P(S) = \frac{3}{4}$&lt;br /&gt;
+$P(NS) = \frac{1}{4}$&lt;/p&gt;
+
+&lt;p&gt;Or we can &lt;strong&gt;impose&lt;/strong&gt; an assumption of prior to be $P(s) = 1\%$.&lt;/p&gt;
+
+&lt;p&gt;To calculate $P(S|x)$ where $x = (free, setup, meeting, click)$, we start by calculate $P(x_i|S)$.&lt;br /&gt;
+$P(free|S) = \frac{2+1}{9+6} = \frac{3}{15}$&lt;br /&gt;
+$P(free|NS) = \frac{0+1}{4+6} = \frac{1}{10}$&lt;/p&gt;
+
+&lt;p&gt;&lt;br /&gt;
+$P(setup|S) = \frac{0+1}{9+6} = \frac{1}{15}$&lt;br /&gt;
+$P(setup|NS) = \frac{1+1}{4+6} = \frac{2}{10}$&lt;/p&gt;
+
+&lt;p&gt;&lt;br /&gt;
+$P(meeting|S) = \frac{0+1}{9+6} = \frac{1}{15}$&lt;br /&gt;
+$P(meeting|NS) = \frac{2+1}{4+6} = \frac{3}{10}$&lt;/p&gt;
+
+&lt;p&gt;So, the solution:&lt;br /&gt;
+&lt;script type=&quot;math/tex&quot;&gt;\frac{P(S|x)}{P(NS|x)}=\frac{P(free|S)*P(setup|S)*P(meeting|S)*P(free|S)*P(S)}{P(free|NS)*P(setup|NS)*P(meeting|NS)*P(free|NS)*P(NS)} = \frac{8}{9}&lt;/script&gt;&lt;/p&gt;
 </description>
         <pubDate>Sun, 01 Sep 2019 09:45:00 -0600</pubDate>
         <link>https://blog.gisspan.com/2019/09/Naive-Bayes-By-Examples.html</link>

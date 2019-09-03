@@ -231,6 +231,71 @@
 
 <p><br /></p>
 
+<h3 id="example-3-email-spam-detector">Example 3: Email Spam detector:</h3>
+<p>Let us start with this training data</p>
+
+<table>
+    <thead>
+        <tr>
+            <th></th>
+            <th>ID</th>
+            <th>Terms in email</th>
+            <th>Is spam</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td rowspan="4">Training Data</td>
+            <td style="padding-left: 0">1</td>
+            <td>Click win prize</td>
+            <td>Yes</td>
+        </tr>
+        <tr>
+            <td>2</td>
+            <td>Click meeting setup meeting</td>
+            <td>No</td>
+        </tr>
+        <tr>
+            <td>3</td>
+            <td>Prize free prize</td>
+            <td>Yes</td>
+        </tr>
+        <tr>
+            <td>4</td>
+            <td>Click prize free</td>
+            <td>Yes</td>
+        </tr>
+        <tr>
+            <td>Testing Case</td>
+            <td style="padding-left: 0">5</td>
+            <td>Free setup meeting free</td>
+            <td>?</td>
+        </tr>
+    </tbody>
+</table>
+
+<p>First we define two events: spam and not spam $S$ and $NS$ respectively.<br />
+From the training set:<br />
+$P(S) = \frac{3}{4}$<br />
+$P(NS) = \frac{1}{4}$</p>
+
+<p>Or we can <strong>impose</strong> an assumption of prior to be $P(s) = 1\%$.</p>
+
+<p>To calculate $P(S|x)$ where $x = (free, setup, meeting, click)$, we start by calculate $P(x_i|S)$.<br />
+$P(free|S) = \frac{2+1}{9+6} = \frac{3}{15}$<br />
+$P(free|NS) = \frac{0+1}{4+6} = \frac{1}{10}$</p>
+
+<p><br />
+$P(setup|S) = \frac{0+1}{9+6} = \frac{1}{15}$<br />
+$P(setup|NS) = \frac{1+1}{4+6} = \frac{2}{10}$</p>
+
+<p><br />
+$P(meeting|S) = \frac{0+1}{9+6} = \frac{1}{15}$<br />
+$P(meeting|NS) = \frac{2+1}{4+6} = \frac{3}{10}$</p>
+
+<p>So, the solution:<br />
+<script type="math/tex">\frac{P(S|x)}{P(NS|x)}=\frac{P(free|S)*P(setup|S)*P(meeting|S)*P(free|S)*P(S)}{P(free|NS)*P(setup|NS)*P(meeting|NS)*P(free|NS)*P(NS)} = \frac{8}{9}</script></p>
+
       </div>
       <div id="disqus_thread"></div>
         <script>
