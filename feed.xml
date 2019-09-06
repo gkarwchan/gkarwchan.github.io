@@ -6,9 +6,135 @@
 </description>
     <link>https://blog.gisspan.com/</link>
     <atom:link href="https://blog.gisspan.com/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Mon, 02 Sep 2019 20:11:11 -0600</pubDate>
-    <lastBuildDate>Mon, 02 Sep 2019 20:11:11 -0600</lastBuildDate>
+    <pubDate>Thu, 05 Sep 2019 23:03:16 -0600</pubDate>
+    <lastBuildDate>Thu, 05 Sep 2019 23:03:16 -0600</lastBuildDate>
     <generator>Jekyll v4.0.0.pre.beta1</generator>
+    
+      <item>
+        <title>Scrubbing Natural Language Text Data</title>
+        <description>
+&lt;p&gt;Scrubbing a natural language text data is a widely used process that has well defined steps which you will find it in many places. From Lucene which is the Full text search engine that is used in Elastic Search and Azure Search, to any data science project that is processing Natural Language, including different ML projects, and general search projects.&lt;/p&gt;
+
+&lt;!--more--&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;introduction&quot;&gt;Introduction:&lt;/h2&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;a-brief-introduction-to-the-data-scrubbing&quot;&gt;A brief introduction to the Data Scrubbing:&lt;/h4&gt;
+&lt;p&gt;I am going to cover data scrubbing in more details in comming posts, but just to briefly explain why it is an important step.&lt;br /&gt;
+Any data science project, or machine learning project, should start from clean data, which means data that is vallid and doesn’t corrupt the model, or the training process.&lt;br /&gt;
+It is the second step to do in any data science project after the first step which is Gathering the data.&lt;br /&gt;
+This step is called &lt;code class=&quot;highlighter-rouge&quot;&gt;Data Scribbing&lt;/code&gt; or &lt;code class=&quot;highlighter-rouge&quot;&gt;Data Cleansing&lt;/code&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;cleaning-natural-language-text&quot;&gt;Cleaning Natural Language Text&lt;/h4&gt;
+&lt;p&gt;Scrubbing Natural Language text data has common and well defined steps that are the same and repeated in different kind of projects, either being Full Text Search like Lucene engine, or any machine learning that is using Natural language Processing (NLP).&lt;br /&gt;
+In this post we are going to describe these steps, and see how we can do them using Python’s nltk library.&lt;/p&gt;
+
+&lt;h2 id=&quot;scrubbing-natural-language-text&quot;&gt;Scrubbing Natural Language Text&lt;/h2&gt;
+&lt;p&gt;In order to process and get useful data from a natural language text, you need to do the following:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Remove numbers and punctuations.&lt;/li&gt;
+  &lt;li&gt;Remove &lt;code class=&quot;highlighter-rouge&quot;&gt;Stop Words&lt;/code&gt;.&lt;/li&gt;
+  &lt;li&gt;Remove human names if neccessary.&lt;/li&gt;
+  &lt;li&gt;Stemming and Lemmatization.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3 id=&quot;1-remove-numbers-and-punctuations&quot;&gt;1. Remove numbers and punctuations&lt;/h3&gt;
+&lt;p&gt;We don’t need nltk to do this step, because python already provides for us with a constant &lt;code class=&quot;highlighter-rouge&quot;&gt;string.punctuation&lt;/code&gt; which contains all punctuations.&lt;br /&gt;
+And we can remove numbers using a regular expression.&lt;br /&gt;
+To remove numbers we can as well use python’s &lt;code class=&quot;highlighter-rouge&quot;&gt;isalpha&lt;/code&gt; which is a method on a string instance, which check if the word is only alphabetic.&lt;/p&gt;
+
+&lt;h4 id=&quot;code&quot;&gt;Code&lt;/h4&gt;
+&lt;p&gt;You can remove punctuations using this code:&lt;/p&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;simple_text&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'this. is. a test, for removing: punctuation words, and to show! the result? something.'&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;clean_text&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;simple_text&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;translate&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;str&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;maketrans&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;''&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;''&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;string&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;punctuation&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;and to remove the numbers we can use:&lt;/p&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;simple_text&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'this string has 2 numbers to 1: detect the numbers and 2 to remove them something.'&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;clean_text&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;word&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;word&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;simple_text&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;split&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;word&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;isalpha&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()]&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;clean_text&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;2-remove-stop-words&quot;&gt;2. Remove Stop Words&lt;/h3&gt;
+&lt;p&gt;Stop Words are the most common used words in any language and they don’t give any value to the text context or the text specific subject.  Like for example: &lt;code class=&quot;highlighter-rouge&quot;&gt;the, a, who, what, at, which...&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;code-1&quot;&gt;Code&lt;/h4&gt;
+&lt;p&gt;ntlk library has the stop words in different languages. In order to see those words in English as an exmple, try this code:&lt;/p&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;nltk&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;nltk.corpus&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;stopwords&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;set&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;stopwords&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;words&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'english'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Let us now remove the stop words from the text.&lt;/p&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;nltk.corpus&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;stopwords&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;nltk.tokenize&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;word_tokenize&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;remove_stop_words&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sampleText&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;stop_words&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;set&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;stopwords&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;words&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'english'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;word_tokens&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;word_tokenize&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sample_text&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;filtered_words&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;w&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;w&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;word_tokens&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;not&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;w&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;stop_words&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;filtered_words&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;sample_text&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'this is an example text, in order to show the stop word removal'&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;remove_stop_words&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sample_text&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;3-remove-human-names&quot;&gt;3. Remove human names&lt;/h3&gt;
+&lt;p&gt;Unless you are doing search on human names, these human names could be a problem when trying to classify a text, or search text.&lt;/p&gt;
+
+&lt;h4 id=&quot;code-2&quot;&gt;Code&lt;/h4&gt;
+&lt;p&gt;Same as stop words, nltk has all names, which you can see using the following:&lt;/p&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;nltk.corpus&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;names&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;set&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;names&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;words&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;())&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;In order to clean the text from the names, use the following code:&lt;/p&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;nltk.corpus&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;names&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;remove_human_names&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sampleText&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;all_names&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;set&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;names&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;words&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;())&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;word_tokens&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;word_tokenize&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sample_text&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;filtered_words&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;w&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;w&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;word_tokens&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;not&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;w&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;all_names&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;filtered_words&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;sample_text&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'this is an example text, in order to remove names like: Michael, George, Dexter from the text'&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;remove_human_names&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sample_text&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;h3 id=&quot;4-stemming-and-lemmatization&quot;&gt;4. Stemming and Lemmatization&lt;/h3&gt;
+&lt;p&gt;Stemming and Lemmatization are &lt;code class=&quot;highlighter-rouge&quot;&gt;Text Normalization&lt;/code&gt; or &lt;code class=&quot;highlighter-rouge&quot;&gt;Word Normalization&lt;/code&gt; techniques, to relate words with similar meanings.&lt;br /&gt;
+Python’s nltk has the &lt;a href=&quot;https://wordnet.princeton.edu/&quot;&gt;Wordnet&lt;/a&gt; which is a large lexical database for English language. It offers lemmatization capabilities as well.&lt;/p&gt;
+
+&lt;h4 id=&quot;code-3&quot;&gt;Code&lt;/h4&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;nltk&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;nltk&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;download&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'wordnet'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;nltk.stem&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;WordNetLemmatizer&lt;/span&gt; 
+&lt;span class=&quot;n&quot;&gt;lemmatizer&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;WordNetLemmatizer&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;sample_text&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'this is some text string include strings variables where each variable has different word and have something in common'&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;result&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;lemmatizer&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;lemmatize&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;word&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;lower&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;())&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;word&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sample_text&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;split&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()]&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;result&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+</description>
+        <pubDate>Thu, 05 Sep 2019 09:45:00 -0600</pubDate>
+        <link>https://blog.gisspan.com/2019/09/Scrubbing-natural-language-text-data.html</link>
+        <guid isPermaLink="true">https://blog.gisspan.com/2019/09/Scrubbing-natural-language-text-data.html</guid>
+        
+        <category>ML &amp; data science</category>
+        
+        
+      </item>
     
       <item>
         <title>Naive Bayes by examples</title>
@@ -1358,134 +1484,6 @@ Or you might use a better webpack, called &lt;a href=&quot;https://www.npmjs.com
         <category>javascript</category>
         
         <category>react</category>
-        
-        
-      </item>
-    
-      <item>
-        <title>Redux Vs. MVC, Why and How?</title>
-        <description>
-&lt;p&gt;In last two or three years, we started to see the rise of Redux-based (or Unidirectional data flow architecture in general) in the user interface side of the applications, and the slowly decline of MVC based architecture in the UI side.&lt;br /&gt;
-What Redux has of advantages over MVC, and what problems it solves?  I am going to show what the benefits of Redux over MVC.&lt;br /&gt;
-Redux library by itself is not enough to build a whole system, and this is why there is an ecosystem developed around Redux.
-I am going to show the basic ecosystem needed to build a Redux application, or the essential building blocks of a any redux-based application. &lt;!--more--&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;first-the-problem-with-mvc&quot;&gt;First, The Problem with MVC&lt;/h2&gt;
-&lt;p&gt;To explain why Redux became so popular, let us see the problems with the existing MVC or MVC alike UI applications.&lt;br /&gt;
-Let us see how MVC works?&lt;br /&gt;
-The following diagram show the data flow and control flow for the strict MVC pattern.&lt;/p&gt;
-
-&lt;div class=&quot;column&quot; style=&quot;align: center&quot;&gt;
-  &lt;p&gt;&lt;img src=&quot;/img/MVC-basic.svg.png&quot; alt=&quot;smtp&quot; height=&quot;300px&quot; width=&quot;auto&quot; align=&quot;center&quot; /&gt;&lt;/p&gt;
-&lt;/div&gt;
-
-&lt;p&gt;There are other variations of MVC, specifically Model-View-ViewModel (MVVM) which was created specifically to represent the UI in a thick UI environment to help unit test the UI.&lt;br /&gt;
-The following diagram shows the control flow in MVVM and MVP (Model-View-Presenter).&lt;/p&gt;
-
-&lt;div class=&quot;column&quot; style=&quot;align: center&quot;&gt;
-  &lt;p&gt;&lt;img src=&quot;/img/mvc-mvp-mvvm.png&quot; alt=&quot;smtp&quot; height=&quot;300px&quot; width=&quot;auto&quot; align=&quot;center&quot; /&gt;&lt;/p&gt;
-&lt;/div&gt;
-&lt;p&gt;We can refer to all above patterns as MVW (Model-View-Whatever).&lt;br /&gt;
-&lt;br /&gt;&lt;/p&gt;
-
-&lt;h4 id=&quot;what-the-problem-with-mvw&quot;&gt;What the problem with MVW?&lt;/h4&gt;
-
-&lt;p&gt;MVW is easy to manage in a simple application, with few models/controllers.
-But we can easily start to witness problems as we grow in size with the following problems:&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;There is need when models/controllers communicate with each others (through a service layer probably), and these modules changes the states of each others, and the more controllers, the more easy to lose control of who changed the state of a controller.&lt;/li&gt;
-  &lt;li&gt;Asynchronous network calls to retrieve data add uncertainty of when the model will be changed or modified, and imagine the user changing the UI while a callback from asynchronous call comeback, then we will have “nondeterministic” status of the UI.&lt;/li&gt;
-  &lt;li&gt;Change state/model has another layer of complexity which is the mutation. When to consider the state or model is changed and how to build tools to help recognize the mutation.&lt;/li&gt;
-  &lt;li&gt;Adding to that if the application is a collaborative applications, (like google docs for examples) where lots of data changes happening in real-time.&lt;/li&gt;
-  &lt;li&gt;No way to do undo (travel back in time) easily without adding so much extra code.&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;We can summarize the above as : “There is no single source of truth of the applications at any given time.”, and at any give time we cannot know how the UI will be,  and this create &lt;strong&gt;non-determinism&lt;/strong&gt; UI.&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;“Nondeterminism = parallel processing + shared state”
-~ Martin Odersky (Scala designer)&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;h2 id=&quot;redux-solution&quot;&gt;Redux Solution&lt;/h2&gt;
-&lt;p&gt;Redux is just one variation of a whole trend in UI architecture called : &lt;code class=&quot;language-wiki&quot;&gt;&amp;nbsp;Unidirectional User Interface Architecture&amp;nbsp;&lt;/code&gt;.&lt;br /&gt;
-For example there is &lt;a href=&quot;https://facebook.github.io/flux/&quot;&gt;Flux&lt;/a&gt; (Redux is just a variation of Flux),  &lt;a href=&quot;https://cycle.js.org/&quot;&gt;Cycle.js&lt;/a&gt;, &lt;a href=&quot;https://github.com/mobxjs/mobx&quot;&gt;MobX&lt;/a&gt;, and &lt;a href=&quot;http://elm-lang.org/&quot;&gt;Elm&lt;/a&gt; has its own implementation of that architecture.&lt;br /&gt;
-&lt;br /&gt;&lt;/p&gt;
-
-&lt;p&gt;As stated from the &lt;a href=&quot;http://redux.js.org/docs/introduction/Motivation.html&quot;&gt;Redux motivation&lt;/a&gt;, Redux tries to make: &lt;strong&gt;“state mutation predictable”&lt;/strong&gt;, and it tries to achieve that by the following:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Have one single source of truth (from the state)&lt;/li&gt;
-  &lt;li&gt;States are read only and immutable.&lt;/li&gt;
-  &lt;li&gt;Changes are made with &lt;a href=&quot;https://en.wikipedia.org/wiki/Pure_function&quot;&gt;pure functions&lt;/a&gt;.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
-
-&lt;p&gt;We will explain all these points in details, when we see how Redux works.&lt;/p&gt;
-
-&lt;h4 id=&quot;how-redux-works&quot;&gt;How Redux works?&lt;/h4&gt;
-&lt;p&gt;There is a wornderful diagram that describe the flow in Redux. &lt;a href=&quot;http://slides.com/jenyaterpil/redux-from-twitter-hype-to-production#/&quot;&gt;I got this diagram from this presentation&lt;/a&gt;.&lt;/p&gt;
-&lt;div class=&quot;column&quot; style=&quot;align: center&quot;&gt;
-  &lt;p&gt;&lt;img src=&quot;/img/redux.gif&quot; alt=&quot;smtp&quot; height=&quot;600px&quot; width=&quot;auto&quot; align=&quot;center&quot; /&gt;&lt;/p&gt;
-&lt;/div&gt;
-&lt;p&gt;This is the data flow:&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;Models/states in the application should reside in a container called “Store”. Even we can have many stores in an application, but Redux differs from others (like Flux) by leaning toward one store.&lt;/li&gt;
-  &lt;li&gt;Communication to the store should happen through one gate, which is a function called “dispatch”.&lt;/li&gt;
-  &lt;li&gt;Anything wants to modify the state should dispatch “Actions” which are a simple javaScript objects that describe what we want to modify and the new data.&lt;/li&gt;
-  &lt;li&gt;The Store receives the actions, and pass it to “Reducers” which are pure functions that modify the store’s state and produce a new state.&lt;/li&gt;
-  &lt;li&gt;Store’s state is immutable, and any modification will generate always a new state.&lt;/li&gt;
-  &lt;li&gt;The Store will notify any subscribers about new changes.&lt;/li&gt;
-  &lt;li&gt;UI render itself, using  pure functions taking the store’s state as input parameter.&lt;/li&gt;
-  &lt;li&gt;Asynchrounous network calls will modify the store through actions as everything else.&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h4 id=&quot;why-redux-is-better-&quot;&gt;Why Redux is better ?&lt;/h4&gt;
-&lt;p&gt;Redux solves many problems:&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;Because we use pure functions everywhere, so alwas the output is deterministic, and we have deterministic UI.&lt;/li&gt;
-  &lt;li&gt;Time Travelling: Because we change the state through actions which are pure JavaScript objects, which means we can at any moment re-create the state from scratch if we keep a log of those actions, so time-travelling will be a breath.&lt;/li&gt;
-  &lt;li&gt;Logging actions, we can know who modify the state, and when exactly.&lt;/li&gt;
-  &lt;li&gt;Collaborative programs like (google docs) can be acheived easily by sending Actions on the wire and recreate them there.&lt;/li&gt;
-  &lt;li&gt;Easy debugging, by logging all actions on production we can re-create the whole situation.&lt;/li&gt;
-  &lt;li&gt;Deterministic UI, because UI rendering using pure function, and the same input will always generate the same output.&lt;/li&gt;
-  &lt;li&gt;Unit test is so easy, because we are testing pure functions for UI and state mutation.&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;setup-redux-application&quot;&gt;Setup Redux application&lt;/h2&gt;
-&lt;p&gt;I am going to speak here theoretically, and not writing any code.&lt;br /&gt;
-To use Redux in an application, there are few libraries that you Must have and you cannot work without them (in my opinion):&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;Redux itself:&lt;br /&gt;
- First you need Redux itself, which is available through npm.&lt;/li&gt;
-  &lt;li&gt;integration with other libraries:&lt;br /&gt;
-  As we mentioned above, Redux’s store has one method called &lt;code class=&quot;language-wiki&quot;&gt;&amp;nbsp;&amp;nbsp;dispatch&amp;nbsp;&amp;nbsp;&lt;/code&gt; and it has another method to subscribe to state changes called &lt;code class=&quot;language-wiki&quot;&gt;&amp;nbsp;&amp;nbsp;subscribe&amp;nbsp;&amp;nbsp;&lt;/code&gt;. We can simply use these methods to communicate to the store. But most probably we are using another library for UI, and Redux community created an easy way to integrate with lots of libraries, for example angular has &lt;a href=&quot;https://github.com/angular-redux/store&quot;&gt;ng-redux&lt;/a&gt;, and React has &lt;a href=&quot;https://github.com/reactjs/react-redux&quot;&gt;react-redux&lt;/a&gt;. Even Backbone, and Elmer.&lt;/li&gt;
-  &lt;li&gt;middle-ware to handle asynchronous calls:&lt;br /&gt;
-  Preferably use middle-ware to handle asynchronous calls, so you will have a unified way to send actions regardless if you sending simple objects, or actions that do async calls. There are plenty of options, the simplest is &lt;a href=&quot;https://github.com/gaearon/redux-thunk&quot;&gt;redux-thunk&lt;/a&gt;. But more advanced will be &lt;a href=&quot;https://github.com/redux-saga/redux-saga&quot;&gt;redux-saga&lt;/a&gt; or &lt;a href=&quot;https://github.com/redux-observable/redux-observable/&quot;&gt;redux-observable&lt;/a&gt;.&lt;/li&gt;
-  &lt;li&gt;Logger:&lt;br /&gt;
-  don’t do development without having a logger. It is a life-saving. &lt;a href=&quot;https://github.com/evgenyrodionov/redux-logger&quot;&gt;redux-logger&lt;/a&gt;. It logs every actions with the state before and after the action.&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://facebook.github.io/immutable-js/&quot;&gt;Immutable.js&lt;/a&gt; or &lt;a href=&quot;https://github.com/rtfeldman/seamless-immutable&quot;&gt;Seamless-immutable&lt;/a&gt;:&lt;br /&gt;
-  Don’t do complex modification for the state without using immutable library
-Redux communication can be achieved directly through javaScript only by using the “&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h4 id=&quot;there-is-more-to-the-ecosystem&quot;&gt;There is more to the ecosystem&lt;/h4&gt;
-&lt;p&gt;There is more to the ecosystem, but I only put the minimun that you must have to work. Although you don’t have to use them, and you can go away using Redux by itself, but expect some trouble when your application become more complex.&lt;/p&gt;
-</description>
-        <pubDate>Wed, 22 Feb 2017 09:45:00 -0700</pubDate>
-        <link>https://blog.gisspan.com/2017/02/Redux-Vs-MVC,-Why-and-How.html</link>
-        <guid isPermaLink="true">https://blog.gisspan.com/2017/02/Redux-Vs-MVC,-Why-and-How.html</guid>
-        
-        <category>javascript</category>
         
         
       </item>
