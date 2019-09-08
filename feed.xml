@@ -6,8 +6,8 @@
 </description>
     <link>https://blog.gisspan.com/</link>
     <atom:link href="https://blog.gisspan.com/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sat, 07 Sep 2019 21:13:34 -0600</pubDate>
-    <lastBuildDate>Sat, 07 Sep 2019 21:13:34 -0600</lastBuildDate>
+    <pubDate>Sat, 07 Sep 2019 21:16:45 -0600</pubDate>
+    <lastBuildDate>Sat, 07 Sep 2019 21:16:45 -0600</lastBuildDate>
     <generator>Jekyll v4.0.0.pre.beta1</generator>
     
       <item>
@@ -198,34 +198,6 @@ Python’s nltk has the &lt;a href=&quot;https://wordnet.princeton.edu/&quot;&gt
       </item>
     
       <item>
-        <title>Detect Spam with Naive Bayes</title>
-        <description>
-&lt;p&gt;Bayes and Naive Bayes are very important techniques in machine learning. I am going to cover and dig into Naive Bayes in machine learning, and practice that using Python to detect email span. I am going to split this into many posts, because I am going to cover theory and practice.&lt;/p&gt;
-
-&lt;!--more--&gt;
-
-&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;list-of-posts&quot;&gt;List of posts&lt;/h2&gt;
-&lt;p&gt;We are going to cover these points:&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;&lt;a href=&quot;/2019/09/Naive-Bayes-By-Examples.html&quot;&gt;Naive Bayes by example&lt;/a&gt;.&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;/2019/09/Scrubbing-natural-language-text-data.html&quot;&gt;Scrubbing natural language text&lt;/a&gt;.&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;/2019/09/naive-bayes-classifier-by-example.html&quot;&gt;Naive Bayes’ Classifire&lt;/a&gt;.&lt;/li&gt;
-  &lt;li&gt;Putting together the final code (coming)&lt;/li&gt;
-&lt;/ol&gt;
-</description>
-        <pubDate>Sun, 01 Sep 2019 09:45:00 -0600</pubDate>
-        <link>https://blog.gisspan.com/2019/09/Naive-bayes-detect-email-spam.html</link>
-        <guid isPermaLink="true">https://blog.gisspan.com/2019/09/Naive-bayes-detect-email-spam.html</guid>
-        
-        <category>ML &amp; data science</category>
-        
-        
-      </item>
-    
-      <item>
         <title>Naive Bayes by examples</title>
         <description>
 &lt;p&gt;Bayes and Naive Bayes are very important techniques in machine learning. I am going to cover the Naive Bayes Classifier which is widley used in machine learning, but before that I will explain in this post the Bayes’ theorm by examples&lt;/p&gt;
@@ -378,6 +350,34 @@ $P(meeting|NS) = \frac{2+1}{4+6} = \frac{3}{10}$&lt;/p&gt;
         <pubDate>Sun, 01 Sep 2019 09:45:00 -0600</pubDate>
         <link>https://blog.gisspan.com/2019/09/Naive-Bayes-By-Examples.html</link>
         <guid isPermaLink="true">https://blog.gisspan.com/2019/09/Naive-Bayes-By-Examples.html</guid>
+        
+        <category>ML &amp; data science</category>
+        
+        
+      </item>
+    
+      <item>
+        <title>Detect Spam with Naive Bayes</title>
+        <description>
+&lt;p&gt;Bayes and Naive Bayes are very important techniques in machine learning. I am going to cover and dig into Naive Bayes in machine learning, and practice that using Python to detect email span. I am going to split this into many posts, because I am going to cover theory and practice.&lt;/p&gt;
+
+&lt;!--more--&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;list-of-posts&quot;&gt;List of posts&lt;/h2&gt;
+&lt;p&gt;We are going to cover these points:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;&lt;a href=&quot;/2019/09/Naive-Bayes-By-Examples.html&quot;&gt;Naive Bayes by example&lt;/a&gt;.&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;/2019/09/Scrubbing-natural-language-text-data.html&quot;&gt;Scrubbing natural language text&lt;/a&gt;.&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;/2019/09/naive-bayes-classifier-by-example.html&quot;&gt;Naive Bayes’ Classifire&lt;/a&gt;.&lt;/li&gt;
+  &lt;li&gt;Putting together the final code (coming)&lt;/li&gt;
+&lt;/ol&gt;
+</description>
+        <pubDate>Sun, 01 Sep 2019 09:45:00 -0600</pubDate>
+        <link>https://blog.gisspan.com/2019/09/Naive-bayes-detect-email-spam.html</link>
+        <guid isPermaLink="true">https://blog.gisspan.com/2019/09/Naive-bayes-detect-email-spam.html</guid>
         
         <category>ML &amp; data science</category>
         
