@@ -6,9 +6,70 @@
 </description>
     <link>https://blog.gisspan.com/</link>
     <atom:link href="https://blog.gisspan.com/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 05 Sep 2019 23:03:16 -0600</pubDate>
-    <lastBuildDate>Thu, 05 Sep 2019 23:03:16 -0600</lastBuildDate>
+    <pubDate>Sat, 07 Sep 2019 20:22:17 -0600</pubDate>
+    <lastBuildDate>Sat, 07 Sep 2019 20:22:17 -0600</lastBuildDate>
     <generator>Jekyll v4.0.0.pre.beta1</generator>
+    
+      <item>
+        <title>Naive Bayes Classifier by example</title>
+        <description>
+&lt;p&gt;Naive Bayes Classifier is one of the well known classifiers in supervised learning. I am going to show how it is calculated from a training data.&lt;/p&gt;
+
+&lt;!--more--&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;how-does-naive-bayes-classifier-work&quot;&gt;How does Naive Bayes Classifier work?&lt;/h2&gt;
+&lt;p&gt;I talked before about &lt;a href=&quot;/2019/09/Naive-Bayes-By-Examples.html&quot;&gt;Naive Bayes’ theorem&lt;/a&gt;, and how to calculate the probability mathematically. How this is going to be applied in machine learning and supervised learning?&lt;br /&gt;
+It is not different from how Naive Bayes work on statistics.&lt;br /&gt;
+Given a sample $x$ with $n$ features $x_1, x_2, …x_n$, the goal of naive bayes is to determine the possibility of $x$ belong to $k$ possible classes: $y_1, y_2…y_k$.&lt;br /&gt;
+Let us see how we represent Naive Bayes mathematically, and explain the Bayes terminologies used in supervised learning.&lt;/p&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;naive-bayes-calculation-and-terminologies&quot;&gt;Naive Bayes Calculation and Terminologies&lt;/h2&gt;
+&lt;p&gt;As we learned before in &lt;a href=&quot;/2019/09/Naive-Bayes-By-Examples.html&quot;&gt;my previous article&lt;/a&gt;, we can calculate $x$ belonging to $y_k$ as follows:&lt;br /&gt;
+&lt;script type=&quot;math/tex&quot;&gt;P(y_k|x) = \frac{P(x|y_k)P(y_k)}{P(x)}&lt;/script&gt;&lt;/p&gt;
+
+&lt;p&gt;$P(y_k)$ represents how the classes are distributed, and in Bayes’ theorem terms it is called: &lt;strong&gt;&lt;em&gt;prior&lt;/em&gt;&lt;/strong&gt;.&lt;br /&gt;
+$P(x|y_k)$ represents how likely a sample $x$ that belong to a class $y_k$, how likely its $n$ features $x_1, x_2, …x_n$ with such values co-occur. $P(y_k|x)$ in Bayes terminologies is called &lt;strong&gt;&lt;em&gt;likelihood&lt;/em&gt;&lt;/strong&gt;&lt;br /&gt;
+$P(x)$ is the overall distribution of features that are not specific to certain classes, and it is called &lt;strong&gt;&lt;em&gt;evidence&lt;/em&gt;&lt;/strong&gt;.&lt;br /&gt;
+The prediction result in Bayes terminologies is called &lt;strong&gt;&lt;em&gt;posterior&lt;/em&gt;&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;calculate-prior-py_k&quot;&gt;Calculate Prior: $p(y_k)$:&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;&lt;em&gt;prior&lt;/em&gt;&lt;/strong&gt; can be defined by one of two ways:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Predetermined (for example each class has an equal chance of occurrence).&lt;/li&gt;
+  &lt;li&gt;Calculated from the training samples.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;calculate-likelihood-pxy_k&quot;&gt;Calculate Likelihood: $p(x|y_k)$&lt;/h3&gt;
+&lt;p&gt;It is very difficult to calculate the joint distribution with lots of features $n$, and this is why we assume that there is no relationship among them and they are totally independent, and this is why it is called &lt;strong&gt;Naive&lt;/strong&gt;.
+The joint conditional distribution of &lt;strong&gt;n&lt;/strong&gt; features can be calculated as the joint product of individual feature conditional distribution:&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;P(x|y_k) = P(x_1|y_k) * P(x_2|y_k) * ... * P(x_|y_k)&lt;/script&gt;
+
+&lt;p&gt;And it can be calculated from the training data.&lt;/p&gt;
+
+&lt;h3 id=&quot;calculate-evidence-px&quot;&gt;Calculate Evidence: $p(x)$&lt;/h3&gt;
+&lt;p&gt;Because the evidence is not related to classes, then it can be calculated to a constant.&lt;/p&gt;
+
+&lt;h3 id=&quot;the-final-formula&quot;&gt;The final formula&lt;/h3&gt;
+&lt;p&gt;Because the evidence of $P(x)$ can be calculated as constant, so we can say that the posterior is proportional to likelihood and prior:&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;P(y_k|x)\text{  }α\text{  }P(x|y_k) * P(y_k) = P(x_1|y_k) * P(x_2|y_k) *... * P(y_k)&lt;/script&gt;
+</description>
+        <pubDate>Sat, 07 Sep 2019 09:45:00 -0600</pubDate>
+        <link>https://blog.gisspan.com/2019/09/naive-bayes-classifier-by-example.html</link>
+        <guid isPermaLink="true">https://blog.gisspan.com/2019/09/naive-bayes-classifier-by-example.html</guid>
+        
+        <category>ML &amp; data science</category>
+        
+        
+      </item>
     
       <item>
         <title>Scrubbing Natural Language Text Data</title>
@@ -1224,266 +1285,6 @@ When an agent visit an http address, it respond with a result with a header fiel
         <guid isPermaLink="true">https://blog.gisspan.com/2017/09/Advanced-https.html</guid>
         
         <category>security</category>
-        
-        
-      </item>
-    
-      <item>
-        <title>Universal &lt;s&gt;(Isomorphic)&lt;/s&gt; React Application. Beyond the basics.</title>
-        <description>
-&lt;p&gt;I decided to write this post, because I didn’t find any blog post, article, or a tutorial that will sum up for developers what the issues they are going to face when they build a universal application.&lt;br /&gt;
-If you googled a tutorial on how to build a universal react application, you will find a lot, but most of them are just covering the surface, hello-world examples. But as you go further, or even you decided to use one of the universal frameworks/boilerplate, you will start to face some issues and difficulties.&lt;!--more--&gt;&lt;br /&gt;
-&lt;br /&gt;
-P.S: This post is not a tutorial on building a universal application, and in fact, it is assuming that you already know what universal app is, or what are its benefits, and why people use it, and neither it is a React tutorial, and I assume you already know React, and webpack.&lt;/p&gt;
-
-&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;universal-challenges&quot;&gt;Universal challenges&lt;/h2&gt;
-&lt;p&gt;All challenges related to universal application can be categorised in one of these categories:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Universal rendering.&lt;/li&gt;
-  &lt;li&gt;Universal routing.&lt;/li&gt;
-  &lt;li&gt;Universal data retrieval.&lt;/li&gt;
-  &lt;li&gt;Build and development process.&lt;/li&gt;
-  &lt;li&gt;Sharing libraries between server and client.
-&lt;br /&gt;&lt;br /&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&quot;universal-rendering&quot;&gt;Universal Rendering&lt;/h2&gt;
-&lt;p&gt;Let us start with the basic of a React application and describe the rendering process in React and in Single Page Application in general.&lt;br /&gt;
-A typical React application will run on the client side (on the browser) and does its rendering of the web pages on the client side. A typical React application consists of many components, and in a “sane” React application, there will be only one root component that will contains all other components as its children.&lt;br /&gt;
-The entry point for a React app, will be rendering that root component when loading the page, and the code will be similar to this:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;import ReactDOM from 'react-dom';
-import RootApp from './components/RootApp';
-ReactDOM.render(&amp;lt;RootApp /&amp;gt;, document.getElementById('root_placeholder'));&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;In a universal application, everything on the client stays the same, and we add another rendering of the application on the server.&lt;br /&gt;
-&lt;strong&gt;How to do that?&lt;/strong&gt;: Using React’s &lt;code class=&quot;language-wiki&quot;&gt;&amp;nbsp;&amp;nbsp; renderToString&amp;nbsp;&amp;nbsp;&lt;/code&gt;&lt;br /&gt;
-React is universal-friendly library, and has the ability to render on the server using its function: renderToString.&lt;br /&gt;
-The code in NodeJs application will be similar to this:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;import { renderToString } from 'react-dom/server';
-import RootApp from './components/RootApp';
-export default function serverRenderer() {
-    return (req, res, next) =&amp;gt; {
-        res.status(200).send(`
-            &amp;lt;!doctype html&amp;gt;
-            &amp;lt;html&amp;gt; 
-              &amp;lt;head&amp;gt; &amp;lt;title&amp;gt;App&amp;lt;/title&amp;gt; &amp;lt;/head&amp;gt;  
-              &amp;lt;body&amp;gt;
-                &amp;lt;div id=&quot;root_placeholder&quot;&amp;gt;
-                    ${renderToString(&amp;lt;RootApp /&amp;gt;)}
-                &amp;lt;/div&amp;gt;
-                &amp;lt;script src=&quot;/client.js&quot;&amp;gt;&amp;lt;/script&amp;gt;
-              &amp;lt;/body&amp;gt;
-            &amp;lt;/html&amp;gt;
-        `); 
-    };
-}&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
-
-&lt;h4 id=&quot;so-does-client-rendering-work-as-well&quot;&gt;So, does client rendering work as well?&lt;/h4&gt;
-&lt;p&gt;After we added the server rendering, the client code stays the same, which means the client code stills has the code to do rendering when the page loaded.&lt;br /&gt;
-But, because React is universal-aware, React on the client will checkes if the rendering did happen already, and in case it happened then it will skip it.&lt;br /&gt;
-So, the rendering process will happen only once.&lt;br /&gt;
-Which lead us to some interesting fact: It is easy to switch off Server rendering.&lt;br /&gt;
-&lt;br /&gt;&lt;/p&gt;
-
-&lt;h4 id=&quot;switch-off-server-side-rendering&quot;&gt;Switch off Server Side Rendering?&lt;/h4&gt;
-
-&lt;p&gt;So, by just having a small &lt;strong&gt;“if”&lt;/strong&gt; statement before doing server rendering, we can switch off totally the server rendering and switch back to client rendering as a normal non-universal React application.&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;....
-var htmlBody = isItUniversal ? renderToString(&amp;lt;RootApp/&amp;gt;) : '';
-function serverRenderer() {
-    return (req, res, next) =&amp;gt; {
-        res.status(200).send(`
-            &amp;lt;!doctype html&amp;gt;
-            &amp;lt;html&amp;gt; 
-              &amp;lt;head&amp;gt; &amp;lt;title&amp;gt;App&amp;lt;/title&amp;gt; &amp;lt;/head&amp;gt;  
-              &amp;lt;body&amp;gt;
-                &amp;lt;div id=&quot;root_placeholder&quot;&amp;gt;
-                    ${htmlBody}
-                &amp;lt;/div&amp;gt;
-                &amp;lt;script src=&quot;/client.js&quot;&amp;gt;&amp;lt;/script&amp;gt;
-              &amp;lt;/body&amp;gt;
-            &amp;lt;/html&amp;gt;
-        `); 
-    };
-}&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;br /&gt;
-It is common practice in universal boilerplate/frameworks to see they provide a way for developers to switch that server-side rendering.&lt;br /&gt;
-&lt;br /&gt;&lt;/p&gt;
-
-&lt;h4 id=&quot;rendering-with-redux&quot;&gt;Rendering with Redux&lt;/h4&gt;
-&lt;p&gt;As we know in a typical Redux-enabled React application, rendering is happening by populating the Redux store, and React components will subscribe to that redux store, and render as HTML.&lt;br /&gt;
-Redux is like React a universal-friendly library.&lt;br /&gt;
-The scenario is to populate the redux store on the server, and do the rendering on the server.&lt;br /&gt;
-React on the client side will know that the component is already rendered, so it will skip rendering.&lt;/p&gt;
-
-&lt;p&gt;But, because redux and react-redux needs the redux store to sync with components states, so there is a trick that has to be done.
-We have to pass to the redux on the client side, the whole redux state after populating the store.&lt;br /&gt;
-Applications will do that by passing the state into the client javascript code through the &amp;amp;ltscript&amp;gt; html tag, and they pass it as a global javascript variable like this:&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;import { Provider }              from 'react-redux';
-//import routes;
-import { routes } from './routes';
-function renderFullPage(html, preloadedState) {
-  // Create redux store
-  const store = myReduxStore();
-  const InitialView = (
-        &amp;lt;Provider store={store}&amp;gt;
-          &amp;lt;RoutingContext routes={routes} /&amp;gt;
-        &amp;lt;/Provider&amp;gt;
-  );
-  const htmlBody = renderToString(InitialView);
-  const initialState = store.getState();
-  return `
-  &amp;lt;!doctype html&amp;gt;
-  &amp;lt;html&amp;gt;
-    &amp;lt;head&amp;gt;  &amp;lt;title&amp;gt;Redux Universal Example&amp;lt;/title&amp;gt;  &amp;lt;/head&amp;gt;
-    &amp;lt;body&amp;gt;
-      &amp;lt;div id=&quot;root_placeholder&quot;&amp;gt;${htmlBody}&amp;lt;/div&amp;gt;
-      &amp;lt;script&amp;gt;
-        // WARNING: See the following for security issues around embedding JSON in HTML:
-        // http://redux.js.org/docs/recipes/ServerRendering.html#security-considerations
-        window.__PRELOADED_STATE__ = ${JSON.stringify(preloadedState).replace(/&amp;lt;/g, '\\u003c')}
-      &amp;lt;/script&amp;gt;
-      &amp;lt;script src=&quot;/client.js&quot;&amp;gt;&amp;lt;/script&amp;gt;
-    &amp;lt;/body&amp;gt;
-  &amp;lt;/html&amp;gt;
-  `
-}&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;br /&gt;
-And on the client side, we get that global windows variable, and load it into the redux:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;const initialState = window.__PRELOADED_STATE__;
-  const store = createStore(rootReducer, initialState);
-  render(
-    &amp;lt;Provider store={store}&amp;gt;
-      &amp;lt;Router history={browserHistory}&amp;gt;{routes}&amp;lt;/Router&amp;gt;
-    &amp;lt;/Provider&amp;gt;,
-    document.querySelector(&quot;#root_placeholder&quot;)
-  );&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&quot;universal-routing&quot;&gt;Universal Routing&lt;/h2&gt;
-&lt;p&gt;Ideally, we should define routes and routing in one place only, and both client and server read them from the same place.&lt;br /&gt;
-Again, with the help of React-Router which is a universal-friendly library we can achieve a universal (client/server) routing.&lt;br /&gt;
-On the server (Speaking of NodeJs application), We can achieve this, by delegating the routing to the routes defined on the client using react-router format.&lt;br /&gt;
-Keep in mind that in a “sane” react application, the root component is the routing component, which define a wrapper around the routes that match React components.&lt;br /&gt;
-So, it is usual in universal application, that the server routing code will have only one and only one general routing handler like this:&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;app.get('*', (req, res) =&amp;gt; {
-…..
-….
-renderToString(
-  &amp;lt;Router location={req.url} context={context}&amp;gt;
-    &amp;lt;Route&amp;gt;
-    ....
-  &amp;lt;/Router&amp;gt;
-);
-…
-}
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
-
-&lt;h4 id=&quot;handling-server-side-code-with-one-routing-handler&quot;&gt;Handling server side code with one routing handler&lt;/h4&gt;
-&lt;p&gt;If in ideal universal application, we have only one general route handler, then how to run server side code that is depending on which current route?&lt;br /&gt;
-react-router has a function called &lt;code class=&quot;language-wiki&quot;&gt;&amp;nbsp;&amp;nbsp; match&amp;nbsp;&amp;nbsp;&lt;/code&gt;  which will help us detecting the current route on the server side, and then we can run the related server code. The code will be similar to this:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;import React from 'react';
-import { renderToString } from 'react-dom/server';
-// and these to match the url to routes and then render
-import { match, RouterContext } from 'react-router';
-
-// we define our routes into the following module, and we import it on both server and client
-import routes from './modules/routes';
-
-// One and only one route handler on the sersverworks
-
-app.get('*', (req, res) =&amp;gt; {
-  // match is a react-router function that will help us detect current route
-  match({ routes: routes, location: req.url }, (err, redirect, props) =&amp;gt; {
-    // here where we detect the routes and location, to find out the current location
-    // and run the server code accordingly:
-  })
-})
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;development-challenges&quot;&gt;Development Challenges&lt;/h2&gt;
-&lt;p&gt;Development environment and developer setup is effected by the universal application, and we are going to list here what the issues are:&lt;/p&gt;
-
-&lt;h4 id=&quot;hot-module-replacement&quot;&gt;Hot Module Replacement&lt;/h4&gt;
-&lt;p&gt;In a typical client side application, React developers usually use Webpack-dev-server with HMR (Hot module replacement), to give a smooth development experience with on-the-fly build/refresh to test the application as they write code.&lt;/p&gt;
-
-&lt;p&gt;In a full-stack application, it is not usual to use webpack-dev-server, because webpack-dev-server is an express-based web server by itself, so developers switch to use a library called “webpack-dev-middleware”, with “webpack-hot-middleware”.&lt;br /&gt;
-For universal application, there is another library: &lt;a href=&quot;https://www.npmjs.com/package/webpack-hot-server-middleware&quot;&gt;“webpack-hot-server-middleware”&lt;/a&gt; that is universal-friendly.&lt;/p&gt;
-
-&lt;p&gt;How to use it?&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;const express = require('express');
-const webpack = require('webpack');
-const webpackDevMiddleware = require('webpack-dev-middleware');
-const webpackHotServerMiddleware = require('webpack-hot-server-middleware');
-const config = require('./webpack.config.js');
-const app = express();
-const compiler = webpack(config);
-
-app.use(webpackDevMiddleware(compiler, {
-  serverSideRender: true
-}));
-app.use(webpackHotServerMiddleware(compiler));
-
-app.listen(6060);
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;br /&gt;
-Webpack Hot Server Middleware expects your Webpack config to export an array of configurations, one for your client bundle and one for your server bundle, e.g.&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;// webpack.config.js 
-module.exports = [ 
-  { name: 'client', target: 'web', entry: './client.js' ... }, 
-  { name: 'server', target: 'node', entry: './server.js' ... } 
-];
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
-
-&lt;h4 id=&quot;css--css-modules&quot;&gt;CSS &amp;amp; CSS Modules:&lt;/h4&gt;
-&lt;p&gt;&lt;a href=&quot;https://github.com/css-modules/css-modules&quot;&gt;CSS Modules&lt;/a&gt; are commonly used css library in react applications, because it fits the react components architecture.&lt;br /&gt;
-in css-module we import css file into the javascript file as follows:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;// this code inside javascript file
-import styles from ‘xxx.css’&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;There is no problem for production, because the build process (usually a webpack process) will recognize those css files, and build a final css file if using extract-text-webpack-plugin, or inject it into the final html if using style-loader.&lt;br /&gt;
-But during active development (and with HMR), it is the server that is doing the css rendering stuff (remember it is the server that is rendering the page).&lt;br /&gt;
-Node has to learn about css, and this where the library &lt;a href=&quot;https://github.com/css-modules/css-modules-require-hook&quot;&gt;css-modules-require-hook&lt;/a&gt; plays a role.&lt;br /&gt;
-it is a &lt;a href=&quot;https://www.npmjs.com/package/require-hook&quot;&gt;Node require hook&lt;/a&gt; that allows Node to require and deal with css file. And you can configure it to deal files with SASS and SCSS extensions as well.&lt;/p&gt;
-
-&lt;h4 id=&quot;redux-dev-tools&quot;&gt;Redux Dev Tools:&lt;/h4&gt;
-&lt;p&gt;If you are using &lt;a href=&quot;https://github.com/gaearon/redux-devtools&quot;&gt;Redux Devtools&lt;/a&gt;, and &lt;a href=&quot;http://extension.remotedev.io/&quot;&gt;redux devtools extensions&lt;/a&gt;, then you need to do extra work to make it works with redux server side rendering.
-You need to use &lt;a href=&quot;https://github.com/zalmoxisus/remote-redux-devtools&quot;&gt;remote-redux-dev-tools&lt;/a&gt;. It is more complex to describe it in this post, so just read it how to use it in the website, and I might write a future blog about it.&lt;br /&gt;
-&lt;br /&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;build-process-and-code-sharing-between-server-and-client&quot;&gt;Build process, and code sharing between server and client&lt;/h2&gt;
-&lt;p&gt;The build process for a universal application, will generate a final client side javascript code, that is compressed and maybe uglified, and generates css code, that either embedded into one HTML page, or in a separate files download, depending if we use webpack’s style-loader, or extract-text-webpack-plugin.&lt;br /&gt;
-On the server side, the build process won’t usually compress the final code, but it might transpile it from babel (if we used babel on the code).&lt;/p&gt;
-
-&lt;p&gt;There is a big trick about universal applications that you should be aware of:&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;If , for any reason, a nodejs related code was called from the client, or if any of the client side code required some nodejs or node-based library, then the webpack will package that library , and many other node-related stuff into the final browser code, generating a huge compressed javascript file.&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;I am not going to describe how that happen, but I will point you to &lt;a href=&quot;https://medium.com/walmartlabs/webpack-optimization-a-case-study-92b130334b6c&quot;&gt;this interesting article&lt;/a&gt; that describes this problem in details.
-To avoid this problem, it is better have two separate build config, one for the server, and one for the client, as we saw an example before (refer to the code above).&lt;br /&gt;
-Or you might use a better webpack, called &lt;a href=&quot;https://www.npmjs.com/package/universal-webpack&quot;&gt;universal webpack&lt;/a&gt;&lt;/p&gt;
-
-</description>
-        <pubDate>Thu, 24 Aug 2017 09:45:00 -0600</pubDate>
-        <link>https://blog.gisspan.com/2017/08/Universal-react-app-beyong-the-basics.html</link>
-        <guid isPermaLink="true">https://blog.gisspan.com/2017/08/Universal-react-app-beyong-the-basics.html</guid>
-        
-        <category>javascript</category>
-        
-        <category>react</category>
         
         
       </item>
