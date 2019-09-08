@@ -6,9 +6,8 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>Web matters</title>
-  <meta name="description" content="A blog about web programming that covers the full stack. JavaScript on the client side, and on the server side, it could be .NET, Go, Python.
-">
+  <title>Detect Spam with Naive Bayes</title>
+  <meta name="description" content="Bayes and Naive Bayes are very important techniques in machine learning. I am going to cover and dig into Naive Bayes in machine learning, and practice that ...">
 
 
   <!-- CSS Reset -->
@@ -20,7 +19,7 @@
 
   <link rel="stylesheet" href="/css/main.css">
   <script src="/js/prism.js"></script>
-  <link rel="canonical" href="https://blog.gisspan.com/tag/ml-&-data-science">
+  <link rel="canonical" href="https://blog.gisspan.com/2019/09/Naive-bayes-detect-email-spam.html">
   <link rel="alternate" type="application/rss+xml" title="Web matters" href="https://blog.gisspan.com/feed.xml">
   <script>
     (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -120,76 +119,56 @@
 </header>
 
 
-          <div class="grid content">
-    
-  <div class="page-content">
-     <ul class="post-list">
-        <li> <div class="post-excerpt">
-          <a href="/2019/09/naive-bayes-classifier-by-example.html"  class="post-title-excerpt" >Naive Bayes Classifier by example</a>
-          <div class="excerpt-body post-font">
-<p>Naive Bayes Classifier is one of the well known classifiers in supervised learning. I am going to show how it is calculated from a training data.</p>
-
-<br/><br/>
-          <a href="/2019/09/naive-bayes-classifier-by-example.html"> read more ...</a></div>
           
-          </div>
-            
-          <div class="post-excerpt">
-          <a href="/2019/09/Scrubbing-natural-language-text-data.html"  class="post-title-excerpt" >Scrubbing Natural Language Text Data</a>
-          <div class="excerpt-body post-font">
-<p>Scrubbing a natural language text data is a widely used process that has well defined steps which you will find it in many places. From Lucene which is the Full text search engine that is used in Elastic Search and Azure Search, to any data science project that is processing Natural Language, including different ML projects, and general search projects.</p>
-
-<br/><br/>
-          <a href="/2019/09/Scrubbing-natural-language-text-data.html"> read more ...</a></div>
-          
-          </div>
-            
-          <div class="post-excerpt">
-          <a href="/2019/09/Naive-bayes-detect-email-spam.html"  class="post-title-excerpt" >Detect Spam with Naive Bayes</a>
-          <div class="excerpt-body post-font">
+  <article class="post row" itemscope itemtype="http://schema.org/BlogPosting">
+    <div class="content">
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">Detect Spam with Naive Bayes</h1>
+        <p class="post-meta"><time datetime="2019-09-01T09:45:00-06:00" itemprop="datePublished">Sep 1, 2019</time> • <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name">Ghassan Karwchan</span></span></p>
+      </header>
+      <div class="post-content post-font" itemprop="articleBody">
+        
 <p>Bayes and Naive Bayes are very important techniques in machine learning. I am going to cover and dig into Naive Bayes in machine learning, and practice that using Python to detect email span. I am going to split this into many posts, because I am going to cover theory and practice.</p>
 
-<br/><br/>
-          <a href="/2019/09/Naive-bayes-detect-email-spam.html"> read more ...</a></div>
-          
-          </div>
-            
-          <div class="post-excerpt">
-          <a href="/2019/09/Naive-Bayes-By-Examples.html"  class="post-title-excerpt" >Naive Bayes by examples</a>
-          <div class="excerpt-body post-font">
-<p>Bayes and Naive Bayes are very important techniques in machine learning. I am going to cover the Naive Bayes Classifier which is widley used in machine learning, but before that I will explain in this post the Bayes’ theorm by examples</p>
+<!--more-->
 
-<br/><br/>
-          <a href="/2019/09/Naive-Bayes-By-Examples.html"> read more ...</a></div>
-          
-          </div>
-            
-          <div class="post-excerpt">
-          <a href="/2019/08/Descriptive-statistics-with-numpy.html"  class="post-title-excerpt" >Descriptive statistics with Python Numpy.</a>
-          <div class="excerpt-body post-font">
-<p>Python libraries SciPy and Pandas already have out-of-shelfe tools to calculate descriptive statistics, but behind the scene they are calling Numpy functionalities.<br />
-This post just to learn more Numpy, and its great arsenal of dealing with data.</p>
+<p><br /></p>
 
-<br/><br/>
-          <a href="/2019/08/Descriptive-statistics-with-numpy.html"> read more ...</a></div>
-          
-          </div>
-            
-          <div class="post-excerpt">
-          <a href="/2019/08/Correlation-analysis.html"  class="post-title-excerpt" >Basic Data Science&#58 Correlation analysis.</a>
-          <div class="excerpt-body post-font">
-<p>One of the pillars of Data Science is the correlation. This post is to describe the correlation and the terms related to it, and how it is essential for the data science.</p>
+<h2 id="list-of-posts">List of posts</h2>
+<p>We are going to cover these points:</p>
 
-<br/><br/>
-          <a href="/2019/08/Correlation-analysis.html"> read more ...</a></div>
-          
-          </div>
-            
-          </li>
-      </ul>
+<ol>
+  <li><a href="/2019/09/Naive-Bayes-By-Examples.html">Naive Bayes by example</a>.</li>
+  <li><a href="/2019/09/Scrubbing-natural-language-text-data.html">Scrubbing natural language text</a>.</li>
+  <li><a href="/2019/09/naive-bayes-classifier-by-example.html">Naive Bayes’ Classifire</a>.</li>
+  <li>Putting together the final code (coming)</li>
+</ol>
 
-  
-</div>
+      </div>
+      <div id="disqus_thread"></div>
+        <script>
+            /**
+             *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+             *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables
+             */
+            /*
+            var disqus_config = function () {
+                this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+                this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+            };
+            */
+            (function() {  // DON'T EDIT BELOW THIS LINE
+                var d = document, s = d.createElement('script');
+                
+                s.src = '//bloggisspancom.disqus.com/embed.js';
+                
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+        <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+     </div>
+  </article>
 
 
       <footer class="site-footer row">
