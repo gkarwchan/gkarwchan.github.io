@@ -6,8 +6,8 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>Naive Bayes Classifier by example</title>
-  <meta name="description" content="Naive Bayes Classifier is one of the well known classifiers in supervised learning. I am going to show how it is calculated from a training data.">
+  <title>Detect Spam with Naive Bayes</title>
+  <meta name="description" content="Bayes and Naive Bayes are very important techniques in machine learning. I am going to cover and dig into Naive Bayes in machine learning, and practice that ...">
 
 
   <!-- CSS Reset -->
@@ -19,7 +19,7 @@
 
   <link rel="stylesheet" href="/css/main.css">
   <script src="/js/prism.js"></script>
-  <link rel="canonical" href="https://blog.gisspan.com/2019/09/naive-bayes-classifier-by-example.html">
+  <link rel="canonical" href="https://blog.gisspan.com/2019/09/Naive-bayes-detect-email-spam.html">
   <link rel="alternate" type="application/rss+xml" title="Web matters" href="https://blog.gisspan.com/feed.xml">
   <script>
     (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -120,83 +120,29 @@
 
 
           
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Config({
-    tex2jax: {
-      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
-      processEscapes: true
-    }
-  });
-</script>
-<script
-  type="text/javascript"
-  charset="utf-8"
-  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"
->
-</script>
-<script
-  type="text/javascript"
-  charset="utf-8"
-  src="https://vincenttam.github.io/javascripts/MathJaxLocal.js"
->
-</script>
-
   <article class="post row" itemscope itemtype="http://schema.org/BlogPosting">
     <div class="content">
       <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">Naive Bayes Classifier by example</h1>
-        <p class="post-meta"><time datetime="2019-09-07T09:45:00-06:00" itemprop="datePublished">Sep 7, 2019</time> • <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name">Ghassan Karwchan</span></span></p>
+        <h1 class="post-title" itemprop="name headline">Detect Spam with Naive Bayes</h1>
+        <p class="post-meta"><time datetime="2019-09-01T09:45:00-06:00" itemprop="datePublished">Sep 1, 2019</time> • <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name">Ghassan Karwchan</span></span></p>
       </header>
       <div class="post-content post-font" itemprop="articleBody">
         
-<p>Naive Bayes Classifier is one of the well known classifiers in supervised learning. I am going to show how it is calculated from a training data.</p>
+<p>Bayes and Naive Bayes are very important techniques in machine learning. I am going to cover and dig into Naive Bayes in machine learning, and practice that using Python to detect email span. I am going to split this into many posts, because I am going to cover theory and practice.</p>
 
 <!--more-->
 
 <p><br /></p>
 
-<h2 id="how-does-naive-bayes-classifier-work">How does Naive Bayes Classifier work?</h2>
-<p>I talked before about <a href="/2019/09/Naive-Bayes-By-Examples.html">Naive Bayes’ theorem</a>, and how to calculate the probability mathematically. How this is going to be applied in machine learning and supervised learning?<br />
-It is not different from how Naive Bayes work on statistics.<br />
-Given a sample $x$ with $n$ features $x_1, x_2, …x_n$, the goal of naive bayes is to determine the possibility of $x$ belong to $k$ possible classes: $y_1, y_2…y_k$.<br />
-Let us see how we represent Naive Bayes mathematically, and explain the Bayes terminologies used in supervised learning.</p>
+<h2 id="list-of-posts">List of posts</h2>
+<p>We are going to cover these points:</p>
 
-<p><br /></p>
-
-<h2 id="naive-bayes-calculation-and-terminologies">Naive Bayes Calculation and Terminologies</h2>
-<p>As we learned before in <a href="/2019/09/Naive-Bayes-By-Examples.html">my previous article</a>, we can calculate $x$ belonging to $y_k$ as follows:<br />
-<script type="math/tex">P(y_k|x) = \frac{P(x|y_k)P(y_k)}{P(x)}</script></p>
-
-<p>$P(y_k)$ represents how the classes are distributed, and in Bayes’ theorem terms it is called: <strong><em>prior</em></strong>.<br />
-$P(x|y_k)$ represents how likely a sample $x$ that belong to a class $y_k$, how likely its $n$ features $x_1, x_2, …x_n$ with such values co-occur. $P(y_k|x)$ in Bayes terminologies is called <strong><em>likelihood</em></strong><br />
-$P(x)$ is the overall distribution of features that are not specific to certain classes, and it is called <strong><em>evidence</em></strong>.<br />
-The prediction result in Bayes terminologies is called <strong><em>posterior</em></strong>.</p>
-
-<p><br /></p>
-
-<h3 id="calculate-prior-py_k">Calculate Prior: $p(y_k)$:</h3>
-<p><strong><em>prior</em></strong> can be defined by one of two ways:</p>
-
-<ul>
-  <li>Predetermined (for example each class has an equal chance of occurrence).</li>
-  <li>Calculated from the training samples.</li>
-</ul>
-
-<h3 id="calculate-likelihood-pxy_k">Calculate Likelihood: $p(x|y_k)$</h3>
-<p>It is very difficult to calculate the joint distribution with lots of features $n$, and this is why we assume that there is no relationship among them and they are totally independent, and this is why it is called <strong>Naive</strong>.
-The joint conditional distribution of <strong>n</strong> features can be calculated as the joint product of individual feature conditional distribution:</p>
-
-<script type="math/tex; mode=display">P(x|y_k) = P(x_1|y_k) * P(x_2|y_k) * ... * P(x_|y_k)</script>
-
-<p>And it can be calculated from the training data.</p>
-
-<h3 id="calculate-evidence-px">Calculate Evidence: $p(x)$</h3>
-<p>Because the evidence is not related to classes, then it can be calculated to a constant.</p>
-
-<h3 id="the-final-formula">The final formula</h3>
-<p>Because the evidence of $P(x)$ can be calculated as constant, so we can say that the posterior is proportional to likelihood and prior:</p>
-
-<script type="math/tex; mode=display">P(y_k|x)\text{  }α\text{  }P(x|y_k) * P(y_k) = P(x_1|y_k) * P(x_2|y_k) *... * P(y_k)</script>
+<ol>
+  <li><a href="/2019/09/Naive-Bayes-By-Examples.html">Naive Bayes by example</a>.</li>
+  <li><a href="/2019/09/Scrubbing-natural-language-text-data.html">Scrubbing natural language text</a>.</li>
+  <li><a href="/2019/09/naive-bayes-classifier.html">Naive Bayes’ Classifire</a>.</li>
+  <li>Putting together the final code (coming)</li>
+</ol>
 
       </div>
       <div id="disqus_thread"></div>

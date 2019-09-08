@@ -6,12 +6,12 @@
 </description>
     <link>https://blog.gisspan.com/</link>
     <atom:link href="https://blog.gisspan.com/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sat, 07 Sep 2019 21:16:45 -0600</pubDate>
-    <lastBuildDate>Sat, 07 Sep 2019 21:16:45 -0600</lastBuildDate>
+    <pubDate>Sat, 07 Sep 2019 21:20:40 -0600</pubDate>
+    <lastBuildDate>Sat, 07 Sep 2019 21:20:40 -0600</lastBuildDate>
     <generator>Jekyll v4.0.0.pre.beta1</generator>
     
       <item>
-        <title>Naive Bayes Classifier by example</title>
+        <title>Naive Bayes Classifier</title>
         <description>
 &lt;p&gt;Naive Bayes Classifier is one of the well known classifiers in supervised learning. I am going to show how it is calculated from a training data.&lt;/p&gt;
 
@@ -63,8 +63,8 @@ The joint conditional distribution of &lt;strong&gt;n&lt;/strong&gt; features ca
 &lt;script type=&quot;math/tex; mode=display&quot;&gt;P(y_k|x)\text{  }α\text{  }P(x|y_k) * P(y_k) = P(x_1|y_k) * P(x_2|y_k) *... * P(y_k)&lt;/script&gt;
 </description>
         <pubDate>Sat, 07 Sep 2019 09:45:00 -0600</pubDate>
-        <link>https://blog.gisspan.com/2019/09/naive-bayes-classifier-by-example.html</link>
-        <guid isPermaLink="true">https://blog.gisspan.com/2019/09/naive-bayes-classifier-by-example.html</guid>
+        <link>https://blog.gisspan.com/2019/09/naive-bayes-classifier.html</link>
+        <guid isPermaLink="true">https://blog.gisspan.com/2019/09/naive-bayes-classifier.html</guid>
         
         <category>ML &amp; data science</category>
         
@@ -371,7 +371,7 @@ $P(meeting|NS) = \frac{2+1}{4+6} = \frac{3}{10}$&lt;/p&gt;
 &lt;ol&gt;
   &lt;li&gt;&lt;a href=&quot;/2019/09/Naive-Bayes-By-Examples.html&quot;&gt;Naive Bayes by example&lt;/a&gt;.&lt;/li&gt;
   &lt;li&gt;&lt;a href=&quot;/2019/09/Scrubbing-natural-language-text-data.html&quot;&gt;Scrubbing natural language text&lt;/a&gt;.&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;/2019/09/naive-bayes-classifier-by-example.html&quot;&gt;Naive Bayes’ Classifire&lt;/a&gt;.&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;/2019/09/naive-bayes-classifier.html&quot;&gt;Naive Bayes’ Classifire&lt;/a&gt;.&lt;/li&gt;
   &lt;li&gt;Putting together the final code (coming)&lt;/li&gt;
 &lt;/ol&gt;
 </description>
