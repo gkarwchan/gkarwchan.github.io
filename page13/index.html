@@ -6,8 +6,9 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>Linq NHibernate 4.0 and paging in Sql Server 2008 Vs. Sql Server 2012</title>
-  <meta name="description" content="Sql Server 2012 changed the way doing the paging to make it faster and better, but it changed the syntax as well.Adding to that NHibernate's Linq implementat...">
+  <title>Web matters</title>
+  <meta name="description" content="A blog about web programming that covers the full stack. JavaScript on the client side, and on the server side, it could be .NET, Go, Python.
+">
 
 
   <!-- CSS Reset -->
@@ -19,7 +20,7 @@
 
   <link rel="stylesheet" href="/css/main.css">
   <script src="/js/prism.js"></script>
-  <link rel="canonical" href="https://blog.gisspan.com/2015/10/linq-nhibernate-40-iqueryable-and.html">
+  <link rel="canonical" href="https://blog.gisspan.com/page13/">
   <link rel="alternate" type="application/rss+xml" title="Web matters" href="https://blog.gisspan.com/feed.xml">
   <script>
     (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -121,54 +122,44 @@
 </header>
 
 
+          <div class="row content">
+  <!--<div class="">-->
+    <div class="column column-80">
+      <ul class="post-list">
+        <li> <div class="post-excerpt">
+          <a href="/2010/08/problems-with-unit-testing.html"  class="post-title-excerpt" >Problems with unit testing BackgroundWorker</a>
+          <div class="tags">
+            
+              <a href="/tag/others.html" class="tag others" >others</a>
+            
+              <a href="/tag/unit test.html" class="tag unit test" >unit test</a>
+            
+            </div>
+          <div class="excerpt-body post-font">I am using BackgroundWorker in a WPF application, in order to run long process in the background.<br />And I was trying to write unit tests for the class that use the BackgroundWorker.<br/><br/>
+          <a href="/2010/08/problems-with-unit-testing.html"> read more ...</a></div>
           
-  <article class="post row" itemscope itemtype="http://schema.org/BlogPosting">
-    <div class="content">
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">Linq NHibernate 4.0 and paging in Sql Server 2008 Vs. Sql Server 2012</h1>
-        <p class="post-meta"><time datetime="2015-10-13T20:07:00-06:00" itemprop="datePublished">Oct 13, 2015</time> • <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name">Ghassan Karwchan</span></span></p>
-      </header>
-      <div class="post-content post-font" itemprop="articleBody">
-        Sql Server 2012 changed the way doing the paging to make it faster and better, but it changed the syntax as well.<br />Adding to that NHibernate's Linq implementation for <b><i>Take</i></b> and <b><i>Skip</i></b> before version 4.0 didn't optimize the generation of sql paging, specially if you are using IQueryable to build the sql statement.<!--more--><br /><h3>Sql Server 2012 &amp; NHibernate 4.0 </h3>Sql Server 2012 enhanced the way to do paging query, and NHibernate 4.0 embraced these changes.<br /><h3>Implementing the new changes</h3>Without going into details, if you are using Linq's Take and Skip, then you can optimized the generated Sql Statement by using Sql Server 2012 dialect.<br />So, all what you have to do is to change the line of dialect in the config file to be like this.<br /><pre><code class="language-xml">&lt;property name="dialect"&gt;NHibernate.Dialect.MsSql2012Dialect&lt;/property&gt;</code></pre><br /><h3>Do you want to know the details?</h3>Now, let's dive into the details, in case you want to know what is going on. On Sql Server 2008, the way to do paging was to use <b><i>Row_Number</i></b> function with <b><i>Over Clause</i></b>. If you use Linq to NHibernate to create your queries, and return IQuaryable, and at the end you use Linq's <i><b>Take</b></i> and <i><b>Skip</b></i>, then NHibernate will wrap your sql with an external query to do the paging.<br /><br />So the output sql will be something like this   <br />
-<pre><code class="language-sql">Select Top(10) ..............
-From (
-    Select ......................,
-    Row_Number() Over(Order by ....) as _hibernate_sort_row
-    from .....
-    where ....
-) as query
-Where query._hibernate_sort_row &gt; 20 Order by query._hibernate_sort_row</code></pre>but with Sql Server 2012, the syntax to do paging is simplified, so now you can use the <i><b>Offset</b></i> and <i><b>Fetch First </b></i>Clauses.<br />And NHibernate 4.0 will uses these to generate the sql statement.<br />So with NHibernate 4.0, using sql 2012 dialect, the new sql statement will be<br /><br />
-<pre><code class="language-sql">Select Top(10) ..............
-Select ......................
-    from .....
-    where ....
-    order by ....
-    OFFSET 20 ROWS FETCH FIRST 10 ROWS ONLY</code></pre> 
-      </div>
-      <div id="disqus_thread"></div>
-        <script>
-            /**
-             *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
-             *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables
-             */
-            /*
-            var disqus_config = function () {
-                this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
-                this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
-            };
-            */
-            (function() {  // DON'T EDIT BELOW THIS LINE
-                var d = document, s = d.createElement('script');
-                
-                s.src = '//bloggisspancom.disqus.com/embed.js';
-                
-                s.setAttribute('data-timestamp', +new Date());
-                (d.head || d.body).appendChild(s);
-            })();
-        </script>
-        <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
-     </div>
-  </article>
+          </div>
+            
+          </li>
+      </ul>
+      <!-- Pagination links -->
+    <div class="pagination">
+      
+        <a href="/page12" class="previous">&lt;&lt; Previous</a>
+      
+      
+      <span class="page_number ">Page: 13 of 13</span>
+      
+    </div>
+  </div>
+
+  <div class="column">
+    <span class="post-title-excerpt" style="margin: 10px 0">Categories</span>
+    <div id="tag-cloud" class="tag-cloud"><a href="/tag/ml-%26-data-science.html" class="set-4">ML & data science</a> <a href="/tag/angular.html" class="set-3">angular</a> <a href="/tag/asp.net.html" class="set-3">asp.net</a> <a href="/tag/big-data.html" class="set-2">big data</a> <a href="/tag/build-%26-ci.html" class="set-1">build & CI</a> <a href="/tag/cloud.html" class="set-3">cloud</a> <a href="/tag/css.html" class="set-2">css</a> <a href="/tag/javascript.html" class="set-5">javascript</a> <a href="/tag/mobile.html" class="set-1">mobile</a> <a href="/tag/nhibernate.html" class="set-5">nhibernate</a> <a href="/tag/others.html" class="set-3">others</a> <a href="/tag/performance.html" class="set-1">performance</a> <a href="/tag/python.html" class="set-1">python</a> <a href="/tag/react.html" class="set-1">react</a> <a href="/tag/security.html" class="set-4">security</a> <a href="/tag/tools.html" class="set-2">tools</a> <a href="/tag/unit-test.html" class="set-2">unit test</a> </div>
+    
+  </div>
+<!--</div>-->
+</div>
 
 
       <footer class="site-footer row">

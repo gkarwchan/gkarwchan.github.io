@@ -113,6 +113,8 @@
         
           
         
+          
+        
         <a class="page-link" href="/feed.xml"><img src="/img/feed.png" ></img></a>
     </nav>
   </div>
@@ -138,11 +140,29 @@
 <p>We are going to cover these points:</p>
 
 <ol>
+  <li>Preperation and introduction (this post)</li>
   <li><a href="/2019/09/Naive-Bayes-By-Examples.html">Naive Bayes by example</a>.</li>
   <li><a href="/2019/09/Scrubbing-natural-language-text-data.html">Scrubbing natural language text</a>.</li>
   <li><a href="/2019/09/naive-bayes-classifier.html">Naive Bayes’ Classifire</a>.</li>
-  <li>Putting together the final code (coming)</li>
+  <li><a href="/2019/09/python-spam-detector.html">Putting together the final code</a></li>
 </ol>
+
+<h2 id="preparation">Preparation</h2>
+
+<h4 id="1-downloan-the-training-data">1. Downloan the training data</h4>
+<p>We are going to work on a sample database as a training samples. You can download it from <a href="http://www.aueb.gr/users/ion/data/enron-spam/preprocessed/enron1.tar.gz">here</a>.</p>
+
+<p>After you download the package file, uncompress it. It contains two folders one called <code class="highlighter-rouge">spam</code> and the second is <code class="highlighter-rouge">ham</code>.<br />
+We will assume in the next posts that you uncompressed the file under the folder called <code class="highlighter-rouge">data</code>.</p>
+
+<h4 id="2-download-the-required-packages">2. Download the required packages</h4>
+<p>We are going to use Python, and more specifically natural language library to clean the data.<br />
+Make sure you install the library <strong>*nltk</strong>, and will download its accessories that will help our work.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">nltk</span>
+<span class="n">nltk</span><span class="o">.</span><span class="n">download</span><span class="p">(</span><span class="s">'names'</span><span class="p">)</span>
+<span class="n">nltk</span><span class="o">.</span><span class="n">download</span><span class="p">(</span><span class="s">'wordnet'</span><span class="p">)</span>
+</code></pre></div></div>
 
       </div>
       <div id="disqus_thread"></div>
