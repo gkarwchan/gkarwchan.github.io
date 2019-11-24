@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <title>Descriptive statistics with Python Numpy.</title>
-  <meta name="description" content="Python libraries SciPy and Pandas already have out-of-shelfe tools to calculate descriptive statistics, but behind the scene they are calling Numpy functiona...">
+  <meta name="description" content="Python libraries SciPy and Pandas already have off-the-shelf tools to calculate descriptive statistics, but behind the scene they are calling Numpy functiona...">
 
 
   <!-- CSS Reset -->
@@ -130,61 +130,734 @@
       </header>
       <div class="post-content post-font" itemprop="articleBody">
         
-<p>Python libraries SciPy and Pandas already have out-of-shelfe tools to calculate descriptive statistics, but behind the scene they are calling Numpy functionalities.<br />
+<p>Python libraries SciPy and Pandas already have off-the-shelf tools to calculate descriptive statistics, but behind the scene they are calling Numpy functionalities.<br />
 This post just to learn more Numpy, and its great arsenal of dealing with data.</p>
 
 <!--more-->
 
 <p><br /></p>
-<h2 id="introduction">Introduction</h2>
-<p>Descriptive statistics is to calculate a summary of the data that describe the data, in order to explore it and get some intuition about what we have in our hands. It is part of a bigger process called <strong><code class="highlighter-rouge">Exploratory Data Analysis (EDA)</code></strong>.<br />
-Descriptive statistics includes:</p>
+<h1 id="descriptive-statistics">Descriptive Statistics:</h1>
 
-<ul>
-  <li>Mean</li>
-  <li>Median</li>
-  <li>Mode</li>
-  <li>Variance, which can be describe using:
+<p>Descriptive statistics is the summary of the data, which include the following:</p>
+
+<ol>
+  <li>Average: the arithmatic mean, which is the sum of all devided by how many.</li>
+  <li>Median: the middle number after the soft of the numbers.</li>
+  <li>Mode: the most common number in the dataset.</li>
+  <li>Interquartile: the median of the whole, median of the first half (Q1), and the second half (Q2).</li>
+  <li>Measure of the spread or distribution of the data, which includes:
     <ul>
-      <li>Kurtosis</li>
-      <li>Skewness</li>
+      <li>range</li>
+      <li>Variance</li>
       <li>Standard Deviation</li>
+      <li>Skewness</li>
+      <li>Kurtosis</li>
+      <li>Interquartile range</li>
     </ul>
   </li>
+</ol>
+
+<h1 id="descriptive-statistics-with-numpy">Descriptive Statistics with Numpy</h1>
+<p><code class="highlighter-rouge">numpy</code> provides the basic of descriptive statistics.<br />
+Although <code class="highlighter-rouge">pandas</code> has statistical functions, but they are from <code class="highlighter-rouge">numpy</code>.<br />
+In this tutorial we will work mainly on numpy.</p>
+
+<hr />
+
+<h1 id="datasets">Datasets</h1>
+<p>We are going to work on two datasets.</p>
+
+<ol>
+  <li>Iris dataset.</li>
+  <li>KNMI dataset (Weather data from Netherlands).</li>
+</ol>
+
+<p><a href="https://en.wikipedia.org/wiki/Iris_flower_data_set">Iris dataset</a> is a dataset that describes flowers and their attributes, and it is used a lot in the data science and machine learning.
+We can get it from one of these two sources:</p>
+<ol>
+  <li>from scikit-learn.</li>
+  <li>download it from <a href="https://archive.ics.uci.edu/ml/datasets/iris">iris website</a></li>
+</ol>
+
+<p><a href="https://www.knmi.nl/climatology/daily_data/download.html">KNMI dataset</a>. a daily measure of weather info from plants across Netherlands.</p>
+
+<hr />
+
+<h3 id="load-iris-from-csv">Load iris from csv:</h3>
+<p>We are going to work out of CSV file.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="n">pd</span>
+<span class="n">iris</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s">'data/iris.data.csv'</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> 
+    <span class="n">names</span><span class="o">=</span><span class="p">[</span><span class="s">'sepal_length'</span><span class="p">,</span> <span class="s">'sepal_width'</span><span class="p">,</span> <span class="s">'petal_length'</span><span class="p">,</span> <span class="s">'petal_width'</span><span class="p">,</span> <span class="s">'species'</span><span class="p">])</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">iris</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</code></pre></div></div>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>sepal_length</th>
+      <th>sepal_width</th>
+      <th>petal_length</th>
+      <th>petal_width</th>
+      <th>species</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>0</td>
+      <td>5.1</td>
+      <td>3.5</td>
+      <td>1.4</td>
+      <td>0.2</td>
+      <td>Iris-setosa</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>4.9</td>
+      <td>3.0</td>
+      <td>1.4</td>
+      <td>0.2</td>
+      <td>Iris-setosa</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>4.7</td>
+      <td>3.2</td>
+      <td>1.3</td>
+      <td>0.2</td>
+      <td>Iris-setosa</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>4.6</td>
+      <td>3.1</td>
+      <td>1.5</td>
+      <td>0.2</td>
+      <td>Iris-setosa</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>5.0</td>
+      <td>3.6</td>
+      <td>1.4</td>
+      <td>0.2</td>
+      <td>Iris-setosa</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="get-numpy-arrays-from-pandass-dataframe">Get Numpy arrays from Pandas’s dataframe:</h2>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># if pandas version &gt;= 0.24 you can use .to_numpy()
+</span><span class="n">sepal_widths</span> <span class="o">=</span> <span class="n">iris</span><span class="p">[</span><span class="s">'sepal_width'</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+<span class="n">petal_widths</span> <span class="o">=</span> <span class="n">iris</span><span class="p">[</span><span class="s">'petal_width'</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+<span class="n">petal_lengths</span> <span class="o">=</span> <span class="n">iris</span><span class="p">[</span><span class="s">'petal_length'</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+<span class="n">sepal_lengths</span> <span class="o">=</span> <span class="n">iris</span><span class="p">[</span><span class="s">'sepal_length'</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+</code></pre></div></div>
+
+<h2 id="basic-descriptive-statistics">Basic Descriptive Statistics:</h2>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="n">np</span>
+<span class="k">print</span> <span class="p">(</span><span class="s">'The max of sepal length: '</span><span class="p">,</span> <span class="n">sepal_lengths</span><span class="o">.</span><span class="nb">max</span><span class="p">(),</span> <span class="s">' -- '</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="nb">max</span><span class="p">(</span><span class="n">sepal_lengths</span><span class="p">))</span>
+<span class="k">print</span> <span class="p">(</span><span class="s">'The min of sepal length: '</span><span class="p">,</span> <span class="n">sepal_lengths</span><span class="o">.</span><span class="nb">min</span><span class="p">(),</span>  <span class="s">' -- '</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="nb">min</span><span class="p">(</span><span class="n">sepal_lengths</span><span class="p">))</span>
+<span class="k">print</span> <span class="p">(</span><span class="s">'The mean of sepal length: '</span><span class="p">,</span> <span class="n">sepal_lengths</span><span class="o">.</span><span class="n">mean</span><span class="p">(),</span> <span class="s">' -- '</span><span class="p">,</span>  <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">sepal_lengths</span><span class="p">))</span>
+<span class="k">print</span> <span class="p">(</span><span class="s">'The STD of sepal length: '</span><span class="p">,</span> <span class="n">sepal_lengths</span><span class="o">.</span><span class="n">std</span><span class="p">(),</span>  <span class="s">' -- '</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">sepal_lengths</span><span class="p">))</span>
+<span class="k">print</span> <span class="p">(</span><span class="s">'The variance of sepal length'</span><span class="p">,</span> <span class="n">sepal_lengths</span><span class="o">.</span><span class="n">var</span><span class="p">(),</span>  <span class="s">' -- '</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">var</span><span class="p">(</span><span class="n">sepal_lengths</span><span class="p">))</span>
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>The max of sepal length:  7.9  --  7.9
+The min of sepal length:  4.3  --  4.3
+The mean of sepal length:  5.843333333333334  --  5.843333333333334
+The STD of sepal length:  0.8253012917851409  --  0.8253012917851409
+The variance of sepal length 0.6811222222222223  --  0.6811222222222223
+</code></pre></div></div>
+
+<h3 id="median-and-percentile">Median and Percentile:</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">scipy.stats</span> <span class="kn">import</span> <span class="n">scoreatpercentile</span>
+<span class="k">print</span> <span class="p">(</span><span class="s">'The median of sepal length: '</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">sepal_lengths</span><span class="p">))</span>
+<span class="k">print</span> <span class="p">(</span><span class="s">'Percentile or quartile 50</span><span class="si">%</span><span class="s">: '</span><span class="p">,</span> <span class="n">scoreatpercentile</span><span class="p">(</span><span class="n">sepal_lengths</span><span class="p">,</span> <span class="mi">50</span><span class="p">))</span>
+<span class="k">print</span> <span class="p">(</span><span class="s">'Percentile or quartile 75</span><span class="si">%</span><span class="s">: '</span><span class="p">,</span> <span class="n">scoreatpercentile</span><span class="p">(</span><span class="n">sepal_lengths</span><span class="p">,</span> <span class="mi">75</span><span class="p">))</span>
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>The median of sepal length:  5.8
+Percentile or quartile 50%:  5.8
+Percentile or quartile 75%:  6.4
+</code></pre></div></div>
+
+<h2 id="pandas-statistics">Pandas statistics:</h2>
+
+<p><code class="highlighter-rouge">pandas</code> builts on top of <code class="highlighter-rouge">numpy</code> and provides more convenient approach.</p>
+
+<h3 id="dataframes-describe">Dataframe’s describe:</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">iris</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span>
+</code></pre></div></div>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>sepal_length</th>
+      <th>sepal_width</th>
+      <th>petal_length</th>
+      <th>petal_width</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>count</td>
+      <td>150.000000</td>
+      <td>150.000000</td>
+      <td>150.000000</td>
+      <td>150.000000</td>
+    </tr>
+    <tr>
+      <td>mean</td>
+      <td>5.843333</td>
+      <td>3.054000</td>
+      <td>3.758667</td>
+      <td>1.198667</td>
+    </tr>
+    <tr>
+      <td>std</td>
+      <td>0.828066</td>
+      <td>0.433594</td>
+      <td>1.764420</td>
+      <td>0.763161</td>
+    </tr>
+    <tr>
+      <td>min</td>
+      <td>4.300000</td>
+      <td>2.000000</td>
+      <td>1.000000</td>
+      <td>0.100000</td>
+    </tr>
+    <tr>
+      <td>25%</td>
+      <td>5.100000</td>
+      <td>2.800000</td>
+      <td>1.600000</td>
+      <td>0.300000</td>
+    </tr>
+    <tr>
+      <td>50%</td>
+      <td>5.800000</td>
+      <td>3.000000</td>
+      <td>4.350000</td>
+      <td>1.300000</td>
+    </tr>
+    <tr>
+      <td>75%</td>
+      <td>6.400000</td>
+      <td>3.300000</td>
+      <td>5.100000</td>
+      <td>1.800000</td>
+    </tr>
+    <tr>
+      <td>max</td>
+      <td>7.900000</td>
+      <td>4.400000</td>
+      <td>6.900000</td>
+      <td>2.500000</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="more-statistical-functions">more statistical functions:</h3>
+<p>Pandas add more statistical functions:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Method</th>
+      <th style="text-align: left">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>describe</td>
+      <td style="text-align: left">a general descriptive statistics</td>
+    </tr>
+    <tr>
+      <td>count</td>
+      <td style="text-align: left">the number of non-NaN values</td>
+    </tr>
+    <tr>
+      <td>mad</td>
+      <td style="text-align: left">the mean absolute deviation (similar to STD)</td>
+    </tr>
+    <tr>
+      <td>median</td>
+      <td style="text-align: left">the median (50th percentile)</td>
+    </tr>
+    <tr>
+      <td>min, max, mode, std, var</td>
+      <td style="text-align: left">….</td>
+    </tr>
+    <tr>
+      <td>skew</td>
+      <td style="text-align: left">Skewness is a measure of the asymmetry of the probability distribution</td>
+    </tr>
+    <tr>
+      <td>kurt</td>
+      <td style="text-align: left">Kurtosis (distribution shape)</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">iris</span><span class="o">.</span><span class="n">skew</span><span class="p">()</span>
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sepal_length    0.314911
+sepal_width     0.334053
+petal_length   -0.274464
+petal_width    -0.104997
+dtype: float64
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">iris</span><span class="o">.</span><span class="n">kurt</span><span class="p">()</span>
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sepal_length   -0.552064
+sepal_width     0.290781
+petal_length   -1.401921
+petal_width    -1.339754
+dtype: float64
+</code></pre></div></div>
+
+<p><strong>AND MORE AND MORE</strong></p>
+
+<p>scipy</p>
+
+<p><a href="https://docs.scipy.org/doc/scipy/reference/stats.html">scipy statistical module</a></p>
+
+<h3 id="dataframes-plot">Dataframe’s plot:</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">#ipython magic function
+</span><span class="o">%</span><span class="n">matplotlib</span> <span class="n">inline</span>
+<span class="n">iris</span><span class="o">.</span><span class="n">boxplot</span><span class="p">(</span><span class="n">return_type</span><span class="o">=</span><span class="s">'axes'</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;matplotlib.axes._subplots.AxesSubplot at 0x2257ea92898&gt;
+</code></pre></div></div>
+
+<p><img src="/img/output_17_1.png" alt="png" /></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">iris</span><span class="o">.</span><span class="n">quantile</span><span class="p">([</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">])</span>
+</code></pre></div></div>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>sepal_length</th>
+      <th>sepal_width</th>
+      <th>petal_length</th>
+      <th>petal_width</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>0.1</td>
+      <td>4.8</td>
+      <td>2.50</td>
+      <td>1.4</td>
+      <td>0.2</td>
+    </tr>
+    <tr>
+      <td>0.9</td>
+      <td>6.9</td>
+      <td>3.61</td>
+      <td>5.8</td>
+      <td>2.2</td>
+    </tr>
+  </tbody>
+</table>
+
+<h1 id="dealing-with-empty--invalid-data">Dealing with empty / invalid data:</h1>
+
+<p>many times the data that we got is not ideal, and we could find empty or invalid data.<br />
+We are going to explore Netherlands weather data as example.</p>
+
+<p>Let us read weather data, and replace empty values with <code class="highlighter-rouge">nan</code></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">to_float</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="ow">or</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span>
+<span class="n">min_temp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">loadtxt</span><span class="p">(</span><span class="s">'./data/KNMI.txt'</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s">','</span><span class="p">,</span> <span class="n">usecols</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">),</span> <span class="n">unpack</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> 
+                                <span class="n">converters</span><span class="o">=</span><span class="p">{</span><span class="mi">12</span><span class="p">:</span> <span class="n">to_float</span><span class="p">},</span> 
+                                                 <span class="n">skiprows</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="mf">.1</span>
+
+<span class="k">print</span> <span class="p">(</span><span class="s">'min including nan: '</span><span class="p">,</span> <span class="n">min_temp</span><span class="o">.</span><span class="nb">min</span><span class="p">())</span>
+<span class="k">print</span> <span class="p">(</span><span class="s">'max including nan: '</span><span class="p">,</span> <span class="n">min_temp</span><span class="o">.</span><span class="nb">max</span><span class="p">())</span>
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>min including nan:  nan
+max including nan:  nan
+</code></pre></div></div>
+
+<h3 id="exclude-nan-in-statistics">exclude NaN in statistics:</h3>
+
+<ul>
+  <li>nanmin</li>
+  <li>nanmax</li>
+  <li>nanmean</li>
+  <li>nanmedian</li>
+  <li>…</li>
 </ul>
 
-<h2 id="python-code">Python Code</h2>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">print</span> <span class="p">(</span><span class="s">'excluding nan: '</span><span class="p">)</span>
+<span class="k">print</span> <span class="p">(</span><span class="s">'min'</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nanmin</span><span class="p">(</span><span class="n">min_temp</span><span class="p">))</span>
+<span class="k">print</span> <span class="p">(</span><span class="s">'max'</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nanmax</span><span class="p">(</span><span class="n">min_temp</span><span class="p">))</span>
+<span class="k">print</span> <span class="p">(</span><span class="s">'mean'</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nanmean</span><span class="p">(</span><span class="n">min_temp</span><span class="p">))</span>
+<span class="k">print</span> <span class="p">(</span><span class="s">'median'</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nanmedian</span><span class="p">(</span><span class="n">min_temp</span><span class="p">))</span>
+</code></pre></div></div>
 
-<p>Let us jump to the code.<br />
-First let us load the data we will do calcuation on, which is the iris dataset that is already loaded as part of <code class="highlighter-rouge">Scikit-learn</code> library.</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>excluding nan: 
+min -19.700000000000003
+max 23.6
+mean 6.627724838066767
+median 6.800000000000001
+</code></pre></div></div>
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">datasets</span>
+<h2 id="more-robust-approach-to-exclude-invalid-data-masked-arrays">More robust approach to exclude invalid data: Masked Arrays:</h2>
 
-<span class="n">iris</span> <span class="o">=</span> <span class="n">datasets</span><span class="o">.</span><span class="n">load_iris</span><span class="p">()</span>
+<p>nanmin is just a simpler and shorter approach to a more robust way to deal with invalid data.<br />
+It is called <code class="highlighter-rouge">Masked Arrays</code>.<br />
+It is part of sub-module <code class="highlighter-rouge">numpy.ma</code>.</p>
 
-<span class="n">sepal_length</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">data</span><span class="p">[:,[</span><span class="mi">0</span><span class="p">]]</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
-<span class="n">sepal_width</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">data</span><span class="p">[:,[</span><span class="mi">1</span><span class="p">]]</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
-<span class="n">petal_length</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">data</span><span class="p">[:,[</span><span class="mi">2</span><span class="p">]]</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
-<span class="n">petal_width</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">data</span><span class="p">[:,[</span><span class="mi">3</span><span class="p">]]</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">numpy.ma</span> <span class="k">as</span> <span class="n">ma</span>
+<span class="n">inp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="o">-</span><span class="mi">100</span><span class="p">,</span><span class="mi">5</span><span class="p">])</span>
+<span class="n">negative</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="mi">0</span>
+<span class="k">print</span> <span class="p">(</span><span class="s">'negative of the input array : '</span><span class="p">,</span> <span class="n">negative</span><span class="p">(</span><span class="n">inp</span><span class="p">))</span>
+<span class="n">mask_inp</span><span class="o">=</span> <span class="n">ma</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">inp</span><span class="p">,</span> <span class="n">mask</span> <span class="o">=</span> <span class="n">negative</span><span class="p">(</span><span class="n">inp</span><span class="p">))</span>
+<span class="k">print</span> <span class="p">(</span><span class="s">'mean of positive numbers: '</span><span class="p">,</span> <span class="n">mask_inp</span><span class="o">.</span><span class="n">mean</span><span class="p">())</span>
+</code></pre></div></div>
 
-<span class="c1"># Find the mean
-</span><span class="n">sepal_length</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span> 
-<span class="c1"># Find the Standard deviation
-</span><span class="n">sepal_length</span><span class="o">.</span><span class="n">std</span><span class="p">()</span>
-<span class="c1"># find the median
-</span><span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">sepal_length</span><span class="p">)</span>
-<span class="c1"># find the max
-</span><span class="n">sepal_length</span><span class="o">.</span><span class="nb">max</span><span class="p">()</span>
-<span class="c1"># find the min
-</span><span class="n">sepal_length</span><span class="o">.</span><span class="nb">min</span><span class="p">()</span>
-<span class="c1"># find the range
-</span><span class="n">np</span><span class="o">.</span><span class="n">ptp</span><span class="p">(</span><span class="n">sepal_length</span><span class="p">)</span>
-<span class="c1"># find the variance
-</span><span class="n">np</span><span class="o">.</span><span class="n">var</span><span class="p">(</span><span class="n">sepal_length</span><span class="p">)</span>
-<span class="c1"># percentile of 50%
-</span><span class="n">sepal_length</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">sepal_length</span><span class="p">,</span> <span class="mi">50</span><span class="p">)</span>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>negative of the input array :  [False False False  True False]
+mean of positive numbers:  2.75
+</code></pre></div></div>
+
+<h3 id="more-features-of-masked-arrays">More features of masked arrays:</h3>
+
+<ol>
+  <li>By using masked arrays then we don’t need to use nanmin, ….<br />
+We can use min, max, mean, …etc</li>
+</ol>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">numpy.ma</span> <span class="k">as</span> <span class="n">ma</span>
+
+<span class="n">masked_min</span> <span class="o">=</span> <span class="n">ma</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">min_temp</span><span class="p">,</span> <span class="n">mask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">min_temp</span><span class="p">))</span>
+<span class="k">print</span> <span class="p">(</span><span class="s">'min without using nanmin'</span><span class="p">,</span> <span class="n">masked_min</span><span class="o">.</span><span class="nb">min</span><span class="p">())</span>
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>min without using nanmin -19.700000000000003
+</code></pre></div></div>
+
+<ol>
+  <li>we can get the valid only value:</li>
+</ol>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">print</span> <span class="p">(</span><span class="s">'length all : '</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">masked_min</span><span class="p">))</span>
+<span class="k">print</span> <span class="p">(</span><span class="s">'length of valid: '</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">masked_min</span><span class="o">.</span><span class="n">compressed</span><span class="p">()))</span>
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>length all :  93272
+length of valid:  64224
+</code></pre></div></div>
+
+<p>another way is to use: <code class="highlighter-rouge">masked_invalid</code>, which will include <code class="highlighter-rouge">NaN</code> and <code class="highlighter-rouge">Infinite</code></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">maxs</span> <span class="o">=</span> <span class="n">ma</span><span class="o">.</span><span class="n">masked_invalid</span><span class="p">(</span><span class="n">min_temp</span><span class="p">)</span>
+<span class="n">maxs</span><span class="o">.</span><span class="nb">min</span><span class="p">()</span>
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>-19.700000000000003
+</code></pre></div></div>
+
+<h3 id="pandas-features-to-deal-with-invalid-data">Pandas features to deal with invalid data:</h3>
+
+<p>Panda is <code class="highlighter-rouge">NaN</code> friendly.<br />
+All its statistical functions are by default ignoring NaN.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">weather</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s">'data/KNMI.txt'</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">usecols</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span><span class="mi">14</span><span class="p">),</span> <span class="n">names</span><span class="o">=</span><span class="p">[</span><span class="s">"min"</span><span class="p">,</span> <span class="s">"max"</span><span class="p">],</span> <span class="n">converters</span><span class="o">=</span><span class="p">{</span><span class="mi">12</span><span class="p">:</span> <span class="n">to_float</span><span class="p">,</span> <span class="mi">14</span><span class="p">:</span> <span class="n">to_float</span><span class="p">})</span>
+<span class="n">weather</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</code></pre></div></div>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>min</th>
+      <th>max</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">weather</span><span class="p">[</span><span class="s">'min'</span><span class="p">]</span><span class="o">.</span><span class="nb">min</span><span class="p">()</span>
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>-197.0
+</code></pre></div></div>
+
+<p>Pandas has more features to deal with invalid data.<br />
+A robust function <code class="highlighter-rouge">fillna</code>.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">test_weather</span> <span class="o">=</span> <span class="n">weather</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">test_weather</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</code></pre></div></div>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>min</th>
+      <th>max</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="exercise-check-for-global-warming">Exercise: Check for global warming:</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">avg_temp</span><span class="p">,</span> <span class="n">min_temp</span><span class="p">,</span> <span class="n">max_temp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">loadtxt</span><span class="p">(</span><span class="s">'./data/KNMI.txt'</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s">','</span><span class="p">,</span> <span class="n">usecols</span><span class="o">=</span><span class="p">(</span><span class="mi">11</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span><span class="mi">14</span><span class="p">),</span> <span class="n">unpack</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> 
+                                <span class="n">converters</span><span class="o">=</span><span class="p">{</span><span class="mi">11</span><span class="p">:</span> <span class="n">to_float</span><span class="p">,</span> <span class="mi">12</span><span class="p">:</span> <span class="n">to_float</span><span class="p">,</span> <span class="mi">14</span><span class="p">:</span> <span class="n">to_float</span><span class="p">},</span> 
+                                                 <span class="n">encoding</span><span class="o">=</span><span class="s">'latin1'</span><span class="p">,</span> <span class="n">skiprows</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="mf">.1</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">avg_temp</span> <span class="o">=</span> <span class="n">ma</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">avg_temp</span><span class="p">,</span> <span class="n">mask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">avg_temp</span><span class="p">))</span>
+<span class="n">min_temp</span> <span class="o">=</span> <span class="n">ma</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">min_temp</span><span class="p">,</span> <span class="n">mask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">min_temp</span><span class="p">))</span>
+<span class="n">max_temp</span> <span class="o">=</span> <span class="n">ma</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">avg_temp</span><span class="p">,</span> <span class="n">mask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">max_temp</span><span class="p">))</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span> <span class="k">as</span> <span class="n">dt</span>
+<span class="n">to_year</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">dt</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="s">"</span><span class="si">%</span><span class="s">Y</span><span class="si">%</span><span class="s">m</span><span class="si">%</span><span class="s">d"</span><span class="p">)</span><span class="o">.</span><span class="n">year</span>
+
+<span class="n">years</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">loadtxt</span><span class="p">(</span><span class="s">'./data/KNMI.txt'</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s">','</span><span class="p">,</span> <span class="n">usecols</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="n">unpack</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
+                  <span class="n">converters</span><span class="o">=</span><span class="p">{</span><span class="mi">1</span><span class="p">:</span> <span class="n">to_year</span><span class="p">},</span> <span class="n">encoding</span><span class="o">=</span><span class="s">'latin1'</span><span class="p">,</span> <span class="n">skiprows</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="k">print</span> <span class="p">(</span><span class="s">'first year: '</span><span class="p">,</span> <span class="n">years</span><span class="o">.</span><span class="nb">min</span><span class="p">(),</span> <span class="s">' and last year: '</span><span class="p">,</span> <span class="n">years</span><span class="o">.</span><span class="nb">max</span><span class="p">())</span>
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>first year:  1951.0  and last year:  2019.0
+</code></pre></div></div>
+
+<p>and we will draw a graph of mean tempreture by year</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">year_range</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">years</span><span class="o">.</span><span class="nb">min</span><span class="p">()),</span> <span class="nb">int</span><span class="p">(</span><span class="n">years</span><span class="o">.</span><span class="nb">max</span><span class="p">()))</span>
+
+<span class="k">print</span> <span class="p">(</span><span class="s">'range of years: '</span><span class="p">,</span> <span class="n">year_range</span><span class="p">)</span>
+<span class="n">avg_of_avg_temp_by_year</span> <span class="o">=</span> <span class="p">[</span><span class="n">avg_temp</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">where</span> <span class="p">(</span><span class="n">years</span> <span class="o">==</span> <span class="n">year</span><span class="p">)]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span> <span class="k">for</span> <span class="n">year</span> <span class="ow">in</span> <span class="n">year_range</span><span class="p">]</span>
 
 </code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>range of years:  range(1951, 2019)
+</code></pre></div></div>
+
+<h4 id="alternative-way-of-the-above-comprehension-list">alternative way of the above comprehension list:</h4>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">avg_of_avg_temp_by_year</span><span class="o">=</span><span class="p">[]</span>
+<span class="k">for</span> <span class="n">year</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">years</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="nb">int</span><span class="p">(</span><span class="n">years</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+    <span class="n">indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span> <span class="p">(</span><span class="n">years</span><span class="o">==</span><span class="n">year</span><span class="p">)</span>
+    <span class="n">avgs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">avg_temp</span><span class="p">[</span><span class="n">indices</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">())</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">year_range</span><span class="p">,</span> <span class="n">avg_of_avg_temp_by_year</span><span class="p">,</span> <span class="s">'r-'</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s">'Yearly Averages'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">year_range</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">avg_of_avg_temp_by_year</span><span class="p">))</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">avg_of_avg_temp_by_year</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">prop</span><span class="o">=</span><span class="p">{</span><span class="s">'size'</span><span class="p">:</span> <span class="s">'x-small'</span><span class="p">})</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p><img src="/img/output_43_0.png" alt="png" /></p>
+
+<h1 id="eda-beyond-basic-statistics">EDA: Beyond Basic Statistics</h1>
+<p>Descriptive statistics are the basic of more deeper and comprehensive analysis. It is the basic tool for the <code class="highlighter-rouge">EDA</code> <strong>Exploratory Data Analysis</strong>. EDA is required to understand a dataset better, check its features and get a perliminary idea about the data.</p>
+
+<h2 id="correlation-coefficient">Correlation Coefficient</h2>
+
+<p><code class="highlighter-rouge">Numpy</code> has functionality to study the <a href="https://en.wikipedia.org/wiki/Pearson_correlation_coefficient"><code class="highlighter-rouge">Correlation coefficient</code></a> between two variables:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">sun_radiation</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">loadtxt</span><span class="p">(</span><span class="s">'./data/KNMI.txt'</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s">','</span><span class="p">,</span> <span class="n">usecols</span><span class="o">=</span><span class="p">(</span><span class="mi">20</span><span class="p">),</span> <span class="n">unpack</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> 
+                                <span class="n">converters</span><span class="o">=</span><span class="p">{</span><span class="mi">20</span><span class="p">:</span> <span class="n">to_float</span><span class="p">},</span> 
+                                                 <span class="n">encoding</span><span class="o">=</span><span class="s">'latin1'</span><span class="p">,</span> <span class="n">skiprows</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">sun_radiation</span> <span class="o">=</span> <span class="n">ma</span><span class="o">.</span><span class="n">masked_invalid</span><span class="p">(</span><span class="n">sun_radiation</span><span class="p">)</span>
+<span class="n">match_temp</span> <span class="o">=</span> <span class="n">avg_temp</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">logical_not</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">sun_radiation</span><span class="p">))]</span>
+<span class="n">corr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">corrcoef</span><span class="p">(</span><span class="n">match_temp</span><span class="p">,</span> <span class="n">sun_radiation</span><span class="o">.</span><span class="n">compressed</span><span class="p">())[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+<span class="k">print</span> <span class="p">(</span><span class="s">'Correlation Coefficient: '</span><span class="p">,</span> <span class="n">corr</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Correlation Coefficient:  0.6171336988259747
+</code></pre></div></div>
+
+<h2 id="the-covariance-matrix">The Covariance Matrix:</h2>
+
+<p>The convariance matrix is finding the correlation between all the different pairs of features, and usually it is the first step in data analysis to concentrate on correlated features, and eliminate un-related features.</p>
+
+<p>It is called : <code class="highlighter-rouge">Dimensionality Reduction</code></p>
+
+<p>Easy way to get Covariance Matrix:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">iris</span><span class="o">.</span><span class="n">corr</span><span class="p">()</span>
+</code></pre></div></div>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>sepal_length</th>
+      <th>sepal_width</th>
+      <th>petal_length</th>
+      <th>petal_width</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>sepal_length</td>
+      <td>1.000000</td>
+      <td>-0.109369</td>
+      <td>0.871754</td>
+      <td>0.817954</td>
+    </tr>
+    <tr>
+      <td>sepal_width</td>
+      <td>-0.109369</td>
+      <td>1.000000</td>
+      <td>-0.420516</td>
+      <td>-0.356544</td>
+    </tr>
+    <tr>
+      <td>petal_length</td>
+      <td>0.871754</td>
+      <td>-0.420516</td>
+      <td>1.000000</td>
+      <td>0.962757</td>
+    </tr>
+    <tr>
+      <td>petal_width</td>
+      <td>0.817954</td>
+      <td>-0.356544</td>
+      <td>0.962757</td>
+      <td>1.000000</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">corrdata</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">corr</span><span class="p">()</span>
+<span class="n">img</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">matshow</span><span class="p">(</span><span class="n">corrdata</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">rainbow</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">ticks</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">fraction</span><span class="o">=</span><span class="mf">0.045</span><span class="p">)</span>
+<span class="n">corrvalues</span> <span class="o">=</span> <span class="n">corrdata</span><span class="o">.</span><span class="n">values</span>
+<span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">corrvalues</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+    <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">corrvalues</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="s">"{0:.2f}"</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="n">corrvalues</span><span class="p">[</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">]),</span> <span class="n">size</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s">'black'</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s">'center'</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s">'center'</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p><img src="/img/output_48_0.png" alt="png" /></p>
+
+<h3 id="calculating-correlation-between-features-based-on-custom-factors">Calculating Correlation between features based on custom factors</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">pd</span><span class="o">.</span><span class="n">crosstab</span><span class="p">(</span><span class="n">iris</span><span class="p">[</span><span class="s">'petal_length'</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mf">3.758667</span><span class="p">,</span> <span class="n">iris</span><span class="p">[</span><span class="s">'petal_width'</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mf">1.198667</span><span class="p">)</span>
+</code></pre></div></div>
+
+<table>
+  <tbody>
+    <tr>
+      <td>petal_width</td>
+      <td>False</td>
+      <td>True</td>
+    </tr>
+    <tr>
+      <td>petal_length</td>
+      <td> </td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>False</td>
+      <td>56</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td>True</td>
+      <td>4</td>
+      <td>89</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="categorial-data">Categorial data:</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">iris</span><span class="p">[</span><span class="s">'species'</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">()</span>
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>array(['Iris-setosa', 'Iris-versicolor', 'Iris-virginica'], dtype=object)
+</code></pre></div></div>
+
+<h2 id="all-in-one-pandas-profiling">All in one: pandas-profiling:</h2>
+
+<p><code class="highlighter-rouge">pandas-profiling</code> package does a very high level statistical profiling on the data, and generate profile report.<br />
+For each column it does the following: quantile, descriptive, most frequent values, histogram, missing values, correlations…</p>
+
+<p>Examples:</p>
+
+<ul>
+  <li><a href="https://pandas-profiling.github.io/pandas-profiling/examples/census/census_report.html">Census</a>.</li>
+  <li><a href="https://pandas-profiling.github.io/pandas-profiling/examples/meteorites/meteorites_report.html">Nasa</a></li>
+</ul>
 
       </div>
       <div id="disqus_thread"></div>
