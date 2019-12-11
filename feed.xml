@@ -6,9 +6,180 @@
 </description>
     <link>https://blog.gisspan.com/</link>
     <atom:link href="https://blog.gisspan.com/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sun, 24 Nov 2019 04:35:42 -0700</pubDate>
-    <lastBuildDate>Sun, 24 Nov 2019 04:35:42 -0700</lastBuildDate>
+    <pubDate>Tue, 10 Dec 2019 18:36:08 -0700</pubDate>
+    <lastBuildDate>Tue, 10 Dec 2019 18:36:08 -0700</lastBuildDate>
     <generator>Jekyll v4.0.0.pre.beta1</generator>
+    
+      <item>
+        <title>Linear Algebra, Gradient Descent Algorithm in machine learning</title>
+        <description>
+&lt;p&gt;Gradient Descent is one of the basic iterative optimization algorithms used in Machine Learning, and its deep-rooted in linear algebra and math.&lt;br /&gt;
+It is the first algorithm explained by Andrew Ng course of Machine Learning.&lt;br /&gt;
+If you are like me, lost in the math when Andrew explained it, you will find this post useful.&lt;br /&gt;
+&lt;!--more--&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h1 id=&quot;introduction&quot;&gt;Introduction&lt;/h1&gt;
+&lt;p&gt;I am trying here to explain what Andrew explained, but in simpler way.&lt;br /&gt;
+Beside that, we are going to cover the Gradient Descent and build the algorithm from scratch using Python.&lt;/p&gt;
+
+&lt;h3 id=&quot;pre-requisits&quot;&gt;Pre-requisits:&lt;/h3&gt;
+&lt;p&gt;You need the following pre-requisits skills:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;a begineer skills in Python and specially Numpy and Pandas.&lt;/li&gt;
+  &lt;li&gt;some basic high school math.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;dataset-and-code&quot;&gt;Dataset and Code:&lt;/h3&gt;
+&lt;p&gt;The dataset represents house prices in Boston.&lt;br /&gt;
+You can get the fields &lt;a href=&quot;https://github.com/gkarwchan/Python-Statistics/blob/master/data/housing.names&quot;&gt;from here&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;You can find the code and the data &lt;a href=&quot;https://github.com/gkarwchan/Python-Statistics/blob/master/Machine_Learning.ipynb&quot;&gt;in the repository&lt;/a&gt;:&lt;/p&gt;
+
+&lt;h1 id=&quot;the-math-behind-machine-learning&quot;&gt;The math behind machine learning:&lt;/h1&gt;
+
+&lt;p&gt;Let’s start from the data we have. From the data set, the price of the house could be effected by many inputs e.g: number of rooms (RM) crime rate (CRIM), distances to the working cetes (DIS).&lt;/p&gt;
+
+&lt;p&gt;The machine learning model will be a mathematical equatios like this:&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;house\ price = \theta_0 + \theta_1 * crim + \theta_2 * dis + \theta_3 * rm&lt;/script&gt;
+
+&lt;p&gt;We can generalize the above statement to build a function that take the input value and gives the output:&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;h(\theta, x) = \theta_0 + \theta_1 * x_1 + \theta_2 * x_2 + \theta_3 * x_3 +\ ...&lt;/script&gt;
+
+&lt;h3 id=&quot;linear-algebra-to-help&quot;&gt;Linear Algebra to help:&lt;/h3&gt;
+
+&lt;p&gt;The above statement is a linear equation, and to solve it we can use &lt;strong&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;Linear Algebra&lt;/code&gt;&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;p&gt;From our data sets we can get many equations as follows:&lt;/p&gt;
+
+&lt;p&gt;&lt;script type=&quot;math/tex&quot;&gt;price_1 = \theta_0 + \theta_1 * crim_1 + \theta_2 * dis_1 + \theta_3 * rm_1&lt;/script&gt;&lt;br /&gt;
+&lt;script type=&quot;math/tex&quot;&gt;price_2 = \theta_0 + \theta_1 * crim_2 + \theta_2 * dis_2 + \theta_3 * rm_2&lt;/script&gt;&lt;br /&gt;
+&lt;script type=&quot;math/tex&quot;&gt;price_3 = \theta_0 + \theta_1 * crim_3 + \theta_2 * dis_3 + \theta_3 * rm_3&lt;/script&gt;&lt;br /&gt;
+&lt;br /&gt;&lt;/p&gt;
+
+&lt;p&gt;There are two ways to solve the above equations and find the values of &lt;script type=&quot;math/tex&quot;&gt;\theta&lt;/script&gt;:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Normal Equations using Matrices.&lt;/li&gt;
+  &lt;li&gt;Gradient Descent algorithm.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;We are going to cover both these methods.&lt;/p&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;h3 id=&quot;1-using-matrices-normal-equation&quot;&gt;1. Using Matrices (Normal Equation):&lt;/h3&gt;
+
+&lt;p&gt;To solve these equations, we can use matrices in linear algebra.&lt;br /&gt;
+We call this method Normal Equation.&lt;br /&gt;
+We know we can represent the above as:&lt;br /&gt;
+&lt;br /&gt;
+&lt;script type=&quot;math/tex&quot;&gt;\begin{bmatrix}1\hspace{1em}crim_1\hspace{1em}dis_1\hspace{1em}rm_1\newline
+1\hspace{1em}crim_2\hspace{1em}dis_2\hspace{1em}rm_2\newline
+1\hspace{1em}crim_3\hspace{1em}dis_3\hspace{1em}rm_3\newline
+... \newline
+1\hspace{1em}crim_n\hspace{1em}dis_n\hspace{1em}rm_n\newline
+\end{bmatrix}\begin{bmatrix}\theta_0 \hspace{2em} \theta_1 \hspace{2em} ... \hspace{2em} \theta_n\end{bmatrix}&lt;/script&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;br /&gt;
+From linear algebra when we have the following matrices:&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\begin{bmatrix}1\hspace{1em}x^1_1\hspace{1em}x^2_1\hspace{1em}x^3_1\newline
+1\hspace{1em}x^1_2\hspace{1em}x^2_2\hspace{1em}x^3_2\newline
+1\hspace{1em}x^1_3\hspace{1em}x^2_3\hspace{1em}x^3_3\newline
+... \newline
+1\hspace{1em}x^1_n\hspace{1em}x^2_n\hspace{1em}x^3_n\newline
+\end{bmatrix}\begin{bmatrix}\theta_0 \hspace{2em} \theta_1 \hspace{2em} ... \hspace{2em} \theta_n\end{bmatrix} = 
+\begin{bmatrix}y_1\newline y_2\newline ... \newline y_n\end{bmatrix}&lt;/script&gt;
+
+&lt;p&gt;The solution for &lt;strong&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;theta&lt;/code&gt;&lt;/strong&gt; (&lt;script type=&quot;math/tex&quot;&gt;\theta&lt;/script&gt;).&lt;/p&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\Large \theta= (X^T*X)^{-1} * X^T*Y&lt;/script&gt;
+
+&lt;h3 id=&quot;2-gradient-descent&quot;&gt;2. Gradient Descent:&lt;/h3&gt;
+
+&lt;p&gt;Gradient Descent is based on these high level steps:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;selecting arbitrary initial values of &lt;script type=&quot;math/tex&quot;&gt;\theta&lt;/script&gt;.&lt;/li&gt;
+  &lt;li&gt;then measuring the mean error between the real value and the calculated value based on those initial &lt;script type=&quot;math/tex&quot;&gt;\theta&lt;/script&gt;. To calculate the error we used an equation called &lt;code class=&quot;highlighter-rouge&quot;&gt;Squared error&lt;/code&gt; or &lt;code class=&quot;highlighter-rouge&quot;&gt;Mean squared error&lt;/code&gt;. We can use other error equations, but this is one of the most effecient ways.&lt;br /&gt;
+ &lt;script type=&quot;math/tex&quot;&gt;\begin{align}J(\theta) = \dfrac {1}{2m} \displaystyle \sum _{i=1}^m \left (h_\theta (x_{i}) - y_{i} \right)^2\end{align}&lt;/script&gt;. &lt;br /&gt;
+ We call the above the &lt;strong&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;Cost Function&lt;/code&gt;&lt;/strong&gt;.&lt;/li&gt;
+  &lt;li&gt;try to find the &lt;script type=&quot;math/tex&quot;&gt;\theta&lt;/script&gt; that minimize that function.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3 id=&quot;step-1-the-cost-function&quot;&gt;Step 1: The cost Function&lt;/h3&gt;
+&lt;p&gt;Next step in gradient descent is to enhance the effeciency by minimizing the cost function, and make as close as possible to zero.&lt;br /&gt;
+To do that we can use linear algebra by using 
+To enhance the effeciency, and make the model fit the reality, we will work on minimize the cost by using calculus.&lt;br /&gt;
+Without going into details, the equation to find the smallest value for the cost function is as follows:&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\theta_j := \theta_j - \alpha \frac{\partial}{\partial \theta_j} J(\theta_0, \theta_1, \theta_{...})&lt;/script&gt;
+
+&lt;p&gt;By using calculus, we can come to these equations:&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+\begin{align*} \text{repeat until convergence: } \lbrace &amp; \newline \theta_0 := &amp; \theta_0 - \alpha \frac{1}{m} \sum\limits_{i=1}^{m}(h_\theta(x_{i}) - y_{i}) \newline \theta_1 := &amp; \theta_1 - \alpha \frac{1}{m} \sum\limits_{i=1}^{m}\left((h_\theta(x_{i}) - y_{i}) x_{i}\right) \newline {....} \newline 
+\theta_n := &amp; \theta_n - \alpha \frac{1}{m} \sum\limits_{i=1}^{m}\left((h_\theta(x_{n}) - y_{i}) x_{n}\right)
+\newline \rbrace&amp; \end{align*} %]]&gt;&lt;/script&gt;
+
+&lt;p&gt;We can generalize it as:&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+\begin{align*}&amp; \text{repeat until convergence:} \; \lbrace \newline \; &amp; \theta_j := \theta_j - \alpha \frac{1}{m} \sum\limits_{i=1}^{m} (h_\theta(x^{(i)}) - y^{(i)}) \cdot x_j^{(i)} \; &amp; \text{for j := 0...n}\newline \rbrace\end{align*} %]]&gt;&lt;/script&gt;
+
+&lt;h4 id=&quot;using-metrices&quot;&gt;Using metrices:&lt;/h4&gt;
+&lt;p&gt;To calculate the above using matrices:&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\begin{align}
+predictions = X * \theta\newline
+deltas = predictions - y\newline
+J = sum(deltas^2) / 2 /m
+\end{align}&lt;/script&gt;
+
+&lt;h4 id=&quot;using-python&quot;&gt;Using Python:&lt;/h4&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;predictions&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;X&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;@&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;theta&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;T&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;deltas&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;predictions&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;y&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;delta_power&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;np&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;power&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;deltas&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;J&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;np&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;sum&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;delta_power&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;/&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;len&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;X&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;step-2-minimize-the-theta-parameters&quot;&gt;Step 2: Minimize the theta parameters&lt;/h3&gt;
+&lt;p&gt;As we said we want to represent this equation(s):&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+\begin{align*}&amp; \text{repeat until convergence:} \; \lbrace \newline \; &amp; \theta_j := \theta_j - \alpha \frac{1}{m} \sum\limits_{i=1}^{m} (h_\theta(x^{(i)}) - y^{(i)}) \cdot x_j^{(i)} \; &amp; \text{for j := 0...n}\newline \rbrace\end{align*} %]]&gt;&lt;/script&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;using-metrices-1&quot;&gt;Using metrices:&lt;/h4&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\begin{align}
+θ = - (α / m) * (X^T * (X*θ -y))
+\end{align}&lt;/script&gt;
+
+&lt;h4 id=&quot;using-python-1&quot;&gt;Using Python:&lt;/h4&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;predictions&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;X&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;@&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;theta&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;T&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;deltas&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;predictions&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;y&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;theta&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;theta&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;alpha&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;/&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;len&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;X&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;X&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;T&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;@&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;deltas&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; 
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+</description>
+        <pubDate>Tue, 10 Dec 2019 09:45:00 -0700</pubDate>
+        <link>https://blog.gisspan.com/2019/12/linear-algebra-grandient-descent.html</link>
+        <guid isPermaLink="true">https://blog.gisspan.com/2019/12/linear-algebra-grandient-descent.html</guid>
+        
+        <category>ML &amp; data science</category>
+        
+        
+      </item>
     
       <item>
         <title>Using Scikit-learn's Naive Bayes</title>
@@ -1629,170 +1800,6 @@ aws ec2 allocate-address –domain “vpc” –region us-west-2&lt;/p&gt;
         <guid isPermaLink="true">https://blog.gisspan.com/2018/10/developer-introduction-to-cloud-networking.html</guid>
         
         <category>cloud</category>
-        
-        
-      </item>
-    
-      <item>
-        <title>Python Virtual Environment, and Package Management</title>
-        <description>
-&lt;p&gt;Python virtual environments, and as well package management,  has a shaky history, and it has been changing a lot for last few years.&lt;br /&gt;
-Even currently, (early 2018), it is confusing because there are many tools for virtual environments (venv, virtualenv, pyvenv, pyenv).&lt;br /&gt;
-I couldn’t find one tutorial that describe everything in just one place, so I thought, I will write it down.&lt;br /&gt;
-This post is a combination of many official documentation, answers of StackOverflow, and different blog posts that I think will give you comprehensive picture, not only for the virtual environment, but for the package management as well.
-&lt;!--more--&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
-&lt;p&gt;I’ve been doing Python on and off, and every time I came back to Python after a long time off, I had to learn again, what is the best virtual environment tool, and as well their package management.&lt;br /&gt;
-So, I thought I will put this tutorial, that gives a comprehensive description of the Python working environment.&lt;br /&gt;
-I will start the post with the practical side, by describing the virtual environment tools, and differences between them, and then I will go to deeper description of pip and pip ancestor, and the background of virtual environments.
-&lt;br /&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;pip-installation-folder&quot;&gt;Pip installation folder&lt;/h2&gt;
-&lt;p&gt;Unlike NPM, which stores Node packages in the &lt;strong&gt;node_modules&lt;/strong&gt; folder, in one of two possible level:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;project-level node_modules folder, which is the default option.&lt;/li&gt;
-  &lt;li&gt;user-level (global) node_modules folder.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Python’s pip will install the packages in a &lt;strong&gt;site-packages&lt;/strong&gt; folder, which can be one of two levels:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Machine level shared folder.&lt;/li&gt;
-  &lt;li&gt;User level shared folder, which is the default.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Python’s packaging tools also contains two other pip-based tools that will do installation in two other levels:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Virtual environment level shared folder.&lt;/li&gt;
-  &lt;li&gt;Project level installation folder.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h4 id=&quot;user-level-shared-folder&quot;&gt;User level shared folder&lt;/h4&gt;
-&lt;p&gt;Without activating a virtual environment, Pip by default will install the downloaded packages either on a folder that belong to the user folder.&lt;br /&gt;
-Installation on a user folder became the default, and you can control it by this command line:&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&quot;bash&quot;&gt;python setup.py install --user
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;This is called &lt;strong&gt;user scheme&lt;/strong&gt; installation mode.&lt;br /&gt;
-The folder is located:&lt;/p&gt;
-&lt;div style=&quot;width:70%; align:center; margin:auto&quot;&gt;
-
-  &lt;table&gt;
-    &lt;thead&gt;
-      &lt;tr&gt;
-        &lt;th&gt;OS&lt;/th&gt;
-        &lt;th&gt;Folder&lt;/th&gt;
-      &lt;/tr&gt;
-    &lt;/thead&gt;
-    &lt;tbody&gt;
-      &lt;tr&gt;
-        &lt;td&gt;Linux&lt;/td&gt;
-        &lt;td&gt;~/.local/lib/python{version: x.y}/site-packages&lt;/td&gt;
-      &lt;/tr&gt;
-      &lt;tr&gt;
-        &lt;td&gt;Mac&lt;/td&gt;
-        &lt;td&gt;~/Library/Python/{version: x.y}/lib/python/site-packages&lt;/td&gt;
-      &lt;/tr&gt;
-      &lt;tr&gt;
-        &lt;td&gt;Windows&lt;/td&gt;
-        &lt;td&gt;%APPDATA%\Python{version: x.y}\site-packages&lt;/td&gt;
-      &lt;/tr&gt;
-    &lt;/tbody&gt;
-  &lt;/table&gt;
-
-&lt;/div&gt;
-
-&lt;p&gt;You can check if this mode is enabled by this command line&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&quot;bash&quot;&gt;python -m site 
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;The command will display the environment variable &lt;code class=&quot;highlighter-rouge&quot;&gt;ENABLE_USER_SITE&lt;/code&gt; value, which by default is &lt;code class=&quot;highlighter-rouge&quot;&gt;true&lt;/code&gt;.&lt;/p&gt;
-
-&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
-&lt;h4 id=&quot;machine-level-shared-folder&quot;&gt;Machine level shared folder&lt;/h4&gt;
-&lt;p&gt;If the environment variable &lt;code class=&quot;highlighter-rouge&quot;&gt;ENABLE_USER_SITE&lt;/code&gt; is false, then the installation will be stored on the machine folder:&lt;/p&gt;
-
-&lt;table&gt;
-  &lt;thead&gt;
-    &lt;tr&gt;
-      &lt;th&gt;OS&lt;/th&gt;
-      &lt;th&gt;Folder&lt;/th&gt;
-    &lt;/tr&gt;
-  &lt;/thead&gt;
-  &lt;tbody&gt;
-    &lt;tr&gt;
-      &lt;td&gt;Linux&lt;/td&gt;
-      &lt;td&gt;/usr/local/lib/python{version: x.y}/site-packages&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;Mac&lt;/td&gt;
-      &lt;td&gt;/usr/local/lib/python{version: x.y}/site-packages&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;Windows&lt;/td&gt;
-      &lt;td&gt;c:\Python{version: x.y}\Lib\site-packages&lt;/td&gt;
-    &lt;/tr&gt;
-  &lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;h4 id=&quot;virtual-environment-shared-folder&quot;&gt;Virtual environment shared folder&lt;/h4&gt;
-&lt;p&gt;We can create an isolated virtual environment that can be shared between many users, where running pip install, will install inside that virtual environment without polluting the user level or machine level.
-To create a virtual environment, we use another tool called &lt;a href=&quot;https://pypi.org/project/virtualenv/&quot;&gt;virtualenv&lt;/a&gt;, which can be installed with pip itself.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;pip3 &lt;span class=&quot;nb&quot;&gt;install &lt;/span&gt;virtualenv
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Then on a directory where you want to create the virtual environment, run the following command:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;virtualenv my_virtualenv
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;The above command will create a folder in the current directory which contain the Python executable files, and a copy of &lt;code class=&quot;highlighter-rouge&quot;&gt;pip&lt;/code&gt; library, which will be used to install other packages.&lt;br /&gt;
-To begin using the virtual environment, you need to activated using&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;source &lt;/span&gt;my_virtualenv/bin/activate
-
-&lt;span class=&quot;c&quot;&gt;# Or alternative &lt;/span&gt;
-
-&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt; my_virtualenv/bin/activate
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;The left prompt will be changed to add the name of the virtual environment.&lt;br /&gt;
-Now, any pip install, will install the packages inside the virtual environment folder.&lt;/p&gt;
-
-&lt;p&gt;To deactivate the virtual environment run this command&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;deactivate
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
-
-&lt;h4 id=&quot;project-level-installation-folder&quot;&gt;Project level installation folder&lt;/h4&gt;
-&lt;p&gt;Similar to NPM, Python packaging tools has a tool called &lt;a href=&quot;https://pipenv.readthedocs.io/en/latest/&quot;&gt;Pipenv&lt;/a&gt;.&lt;br /&gt;
-As virtualenv, you need to install pipenv separately.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;pip &lt;span class=&quot;nb&quot;&gt;install&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--user&lt;/span&gt; pipenv
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Then you can start using pipenv instead of pip&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;pipenv &lt;span class=&quot;nb&quot;&gt;install &lt;/span&gt;requests
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Pipenv will install the package inside site_packages folder inside the current folder, and will create a &lt;strong&gt;Pipfile&lt;/strong&gt; in the current folder (similar to package.json).&lt;br /&gt;
-To run the application that is using the current installation folder, you need to run python through pipenv itself.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;pipenv run python your-program.py
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-</description>
-        <pubDate>Wed, 22 Aug 2018 09:45:00 -0600</pubDate>
-        <link>https://blog.gisspan.com/2018/08/Python-package-management.html</link>
-        <guid isPermaLink="true">https://blog.gisspan.com/2018/08/Python-package-management.html</guid>
-        
-        <category>python</category>
         
         
       </item>

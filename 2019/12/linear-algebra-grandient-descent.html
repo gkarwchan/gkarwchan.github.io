@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Linear Algebra, Gradient Descent Algorithm in machine learning</title>
+  <meta name="description" content="Gradient Descent is one of the basic iterative optimization algorithms used in Machine Learning, and its deep-rooted in linear algebra and math.It is the fir...">
+
+
+  <!-- CSS Reset -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/3.0.3/normalize.css">
+
+  <!-- utilities -->
+  <link rel="stylesheet" href="/css/milligram.min.css" >
+  <link rel="stylesheet" href="/css/prism.css">
+
+  <link rel="stylesheet" href="/css/main.css">
+  <script src="/js/prism.js"></script>
+  <link rel="canonical" href="https://blog.gisspan.com/2019/12/linear-algebra-grandient-descent.html">
+  <link rel="alternate" type="application/rss+xml" title="Web matters" href="https://blog.gisspan.com/feed.xml">
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-79713706-1', 'auto');
+    ga('send', 'pageview');
+
+  </script>
+</head>
+
+
+  <body>
+    <div class="container">
+      <header class="site-header row">
+  <div class="column column-25">
+    <a class="site-title" href="/">Web matters</a>
+  </div>
+  <div class="column">
+    <nav class="site-nav">
+        
+          
+          <a class="page-link" href="/about/">About Me</a>
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        <a class="page-link" href="/feed.xml"><img src="/img/feed.png" ></img></a>
+    </nav>
+  </div>
+</header>
+
+
+          
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+<script
+  type="text/javascript"
+  charset="utf-8"
+  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"
+>
+</script>
+<script
+  type="text/javascript"
+  charset="utf-8"
+  src="https://vincenttam.github.io/javascripts/MathJaxLocal.js"
+>
+</script>
+
+  <article class="post row" itemscope itemtype="http://schema.org/BlogPosting">
+    <div class="content">
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">Linear Algebra, Gradient Descent Algorithm in machine learning</h1>
+        <p class="post-meta"><time datetime="2019-12-10T09:45:00-07:00" itemprop="datePublished">Dec 10, 2019</time> • <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name">Ghassan Karwchan</span></span></p>
+      </header>
+      <div class="post-content post-font" itemprop="articleBody">
+        
+<p>Gradient Descent is one of the basic iterative optimization algorithms used in Machine Learning, and its deep-rooted in linear algebra and math.<br />
+It is the first algorithm explained by Andrew Ng course of Machine Learning.<br />
+If you are like me, lost in the math when Andrew explained it, you will find this post useful.<br />
+<!--more--></p>
+
+<p><br /></p>
+
+<h1 id="introduction">Introduction</h1>
+<p>I am trying here to explain what Andrew explained, but in simpler way.<br />
+Beside that, we are going to cover the Gradient Descent and build the algorithm from scratch using Python.</p>
+
+<h3 id="pre-requisits">Pre-requisits:</h3>
+<p>You need the following pre-requisits skills:</p>
+
+<ul>
+  <li>a begineer skills in Python and specially Numpy and Pandas.</li>
+  <li>some basic high school math.</li>
+</ul>
+
+<h3 id="dataset-and-code">Dataset and Code:</h3>
+<p>The dataset represents house prices in Boston.<br />
+You can get the fields <a href="https://github.com/gkarwchan/Python-Statistics/blob/master/data/housing.names">from here</a>.</p>
+
+<p>You can find the code and the data <a href="https://github.com/gkarwchan/Python-Statistics/blob/master/Machine_Learning.ipynb">in the repository</a>:</p>
+
+<h1 id="the-math-behind-machine-learning">The math behind machine learning:</h1>
+
+<p>Let’s start from the data we have. From the data set, the price of the house could be effected by many inputs e.g: number of rooms (RM) crime rate (CRIM), distances to the working cetes (DIS).</p>
+
+<p>The machine learning model will be a mathematical equatios like this:</p>
+
+<script type="math/tex; mode=display">house\ price = \theta_0 + \theta_1 * crim + \theta_2 * dis + \theta_3 * rm</script>
+
+<p>We can generalize the above statement to build a function that take the input value and gives the output:</p>
+
+<script type="math/tex; mode=display">h(\theta, x) = \theta_0 + \theta_1 * x_1 + \theta_2 * x_2 + \theta_3 * x_3 +\ ...</script>
+
+<h3 id="linear-algebra-to-help">Linear Algebra to help:</h3>
+
+<p>The above statement is a linear equation, and to solve it we can use <strong><code class="highlighter-rouge">Linear Algebra</code></strong>.</p>
+
+<p>From our data sets we can get many equations as follows:</p>
+
+<p><script type="math/tex">price_1 = \theta_0 + \theta_1 * crim_1 + \theta_2 * dis_1 + \theta_3 * rm_1</script><br />
+<script type="math/tex">price_2 = \theta_0 + \theta_1 * crim_2 + \theta_2 * dis_2 + \theta_3 * rm_2</script><br />
+<script type="math/tex">price_3 = \theta_0 + \theta_1 * crim_3 + \theta_2 * dis_3 + \theta_3 * rm_3</script><br />
+<br /></p>
+
+<p>There are two ways to solve the above equations and find the values of <script type="math/tex">\theta</script>:</p>
+
+<ol>
+  <li>Normal Equations using Matrices.</li>
+  <li>Gradient Descent algorithm.</li>
+</ol>
+
+<p>We are going to cover both these methods.</p>
+
+<p><br /></p>
+<h3 id="1-using-matrices-normal-equation">1. Using Matrices (Normal Equation):</h3>
+
+<p>To solve these equations, we can use matrices in linear algebra.<br />
+We call this method Normal Equation.<br />
+We know we can represent the above as:<br />
+<br />
+<script type="math/tex">\begin{bmatrix}1\hspace{1em}crim_1\hspace{1em}dis_1\hspace{1em}rm_1\newline
+1\hspace{1em}crim_2\hspace{1em}dis_2\hspace{1em}rm_2\newline
+1\hspace{1em}crim_3\hspace{1em}dis_3\hspace{1em}rm_3\newline
+... \newline
+1\hspace{1em}crim_n\hspace{1em}dis_n\hspace{1em}rm_n\newline
+\end{bmatrix}\begin{bmatrix}\theta_0 \hspace{2em} \theta_1 \hspace{2em} ... \hspace{2em} \theta_n\end{bmatrix}</script></p>
+
+<p><br />
+From linear algebra when we have the following matrices:</p>
+
+<script type="math/tex; mode=display">\begin{bmatrix}1\hspace{1em}x^1_1\hspace{1em}x^2_1\hspace{1em}x^3_1\newline
+1\hspace{1em}x^1_2\hspace{1em}x^2_2\hspace{1em}x^3_2\newline
+1\hspace{1em}x^1_3\hspace{1em}x^2_3\hspace{1em}x^3_3\newline
+... \newline
+1\hspace{1em}x^1_n\hspace{1em}x^2_n\hspace{1em}x^3_n\newline
+\end{bmatrix}\begin{bmatrix}\theta_0 \hspace{2em} \theta_1 \hspace{2em} ... \hspace{2em} \theta_n\end{bmatrix} = 
+\begin{bmatrix}y_1\newline y_2\newline ... \newline y_n\end{bmatrix}</script>
+
+<p>The solution for <strong><code class="highlighter-rouge">theta</code></strong> (<script type="math/tex">\theta</script>).</p>
+
+<p><br /></p>
+
+<script type="math/tex; mode=display">\Large \theta= (X^T*X)^{-1} * X^T*Y</script>
+
+<h3 id="2-gradient-descent">2. Gradient Descent:</h3>
+
+<p>Gradient Descent is based on these high level steps:</p>
+
+<ol>
+  <li>selecting arbitrary initial values of <script type="math/tex">\theta</script>.</li>
+  <li>then measuring the mean error between the real value and the calculated value based on those initial <script type="math/tex">\theta</script>. To calculate the error we used an equation called <code class="highlighter-rouge">Squared error</code> or <code class="highlighter-rouge">Mean squared error</code>. We can use other error equations, but this is one of the most effecient ways.<br />
+ <script type="math/tex">\begin{align}J(\theta) = \dfrac {1}{2m} \displaystyle \sum _{i=1}^m \left (h_\theta (x_{i}) - y_{i} \right)^2\end{align}</script>. <br />
+ We call the above the <strong><code class="highlighter-rouge">Cost Function</code></strong>.</li>
+  <li>try to find the <script type="math/tex">\theta</script> that minimize that function.</li>
+</ol>
+
+<h3 id="step-1-the-cost-function">Step 1: The cost Function</h3>
+<p>Next step in gradient descent is to enhance the effeciency by minimizing the cost function, and make as close as possible to zero.<br />
+To do that we can use linear algebra by using 
+To enhance the effeciency, and make the model fit the reality, we will work on minimize the cost by using calculus.<br />
+Without going into details, the equation to find the smallest value for the cost function is as follows:</p>
+
+<script type="math/tex; mode=display">\theta_j := \theta_j - \alpha \frac{\partial}{\partial \theta_j} J(\theta_0, \theta_1, \theta_{...})</script>
+
+<p>By using calculus, we can come to these equations:</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{align*} \text{repeat until convergence: } \lbrace & \newline \theta_0 := & \theta_0 - \alpha \frac{1}{m} \sum\limits_{i=1}^{m}(h_\theta(x_{i}) - y_{i}) \newline \theta_1 := & \theta_1 - \alpha \frac{1}{m} \sum\limits_{i=1}^{m}\left((h_\theta(x_{i}) - y_{i}) x_{i}\right) \newline {....} \newline 
+\theta_n := & \theta_n - \alpha \frac{1}{m} \sum\limits_{i=1}^{m}\left((h_\theta(x_{n}) - y_{i}) x_{n}\right)
+\newline \rbrace& \end{align*} %]]></script>
+
+<p>We can generalize it as:</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{align*}& \text{repeat until convergence:} \; \lbrace \newline \; & \theta_j := \theta_j - \alpha \frac{1}{m} \sum\limits_{i=1}^{m} (h_\theta(x^{(i)}) - y^{(i)}) \cdot x_j^{(i)} \; & \text{for j := 0...n}\newline \rbrace\end{align*} %]]></script>
+
+<h4 id="using-metrices">Using metrices:</h4>
+<p>To calculate the above using matrices:</p>
+
+<script type="math/tex; mode=display">\begin{align}
+predictions = X * \theta\newline
+deltas = predictions - y\newline
+J = sum(deltas^2) / 2 /m
+\end{align}</script>
+
+<h4 id="using-python">Using Python:</h4>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">predictions</span> <span class="o">=</span> <span class="n">X</span> <span class="o">@</span> <span class="n">theta</span><span class="o">.</span><span class="n">T</span>
+<span class="n">deltas</span> <span class="o">=</span> <span class="n">predictions</span> <span class="o">-</span> <span class="n">y</span>
+<span class="n">delta_power</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">power</span><span class="p">(</span><span class="n">deltas</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">J</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="nb">sum</span><span class="p">(</span><span class="n">delta_power</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="step-2-minimize-the-theta-parameters">Step 2: Minimize the theta parameters</h3>
+<p>As we said we want to represent this equation(s):</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{align*}& \text{repeat until convergence:} \; \lbrace \newline \; & \theta_j := \theta_j - \alpha \frac{1}{m} \sum\limits_{i=1}^{m} (h_\theta(x^{(i)}) - y^{(i)}) \cdot x_j^{(i)} \; & \text{for j := 0...n}\newline \rbrace\end{align*} %]]></script>
+
+<p><br /></p>
+
+<h4 id="using-metrices-1">Using metrices:</h4>
+
+<script type="math/tex; mode=display">\begin{align}
+θ = - (α / m) * (X^T * (X*θ -y))
+\end{align}</script>
+
+<h4 id="using-python-1">Using Python:</h4>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">predictions</span> <span class="o">=</span> <span class="n">X</span> <span class="o">@</span> <span class="n">theta</span><span class="o">.</span><span class="n">T</span>
+<span class="n">deltas</span> <span class="o">=</span> <span class="n">predictions</span> <span class="o">-</span> <span class="n">y</span>
+<span class="n">theta</span> <span class="o">=</span> <span class="n">theta</span> <span class="o">-</span> <span class="p">(</span><span class="n">alpha</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">X</span><span class="p">))</span> <span class="o">*</span> <span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">deltas</span><span class="p">)</span> 
+
+</code></pre></div></div>
+
+      </div>
+      <div id="disqus_thread"></div>
+        <script>
+            /**
+             *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+             *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables
+             */
+            /*
+            var disqus_config = function () {
+                this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+                this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+            };
+            */
+            (function() {  // DON'T EDIT BELOW THIS LINE
+                var d = document, s = d.createElement('script');
+                
+                s.src = '//bloggisspancom.disqus.com/embed.js';
+                
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+        <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+     </div>
+  </article>
+
+
+      <footer class="site-footer row">
+<div class="column column-30">
+  <ul class="contact-list">
+          <li>Web matters</li>
+          <li><a href="mailto:ghassan.karwchan@gmail.com">ghassan.karwchan@gmail.com</a></li>
+  </ul>
+</div>
+<div class="column column-25">
+  <ul class="social-media-list">
+          
+          <li>
+            <a href="https://github.com/gkarwchan"><span class="icon icon--github"><svg viewBox="0 0 16 16"><path fill="#828282" d="M7.999,0.431c-4.285,0-7.76,3.474-7.76,7.761 c0,3.428,2.223,6.337,5.307,7.363c0.388,0.071,0.53-0.168,0.53-0.374c0-0.184-0.007-0.672-0.01-1.32 c-2.159,0.469-2.614-1.04-2.614-1.04c-0.353-0.896-0.862-1.135-0.862-1.135c-0.705-0.481,0.053-0.472,0.053-0.472 c0.779,0.055,1.189,0.8,1.189,0.8c0.692,1.186,1.816,0.843,2.258,0.645c0.071-0.502,0.271-0.843,0.493-1.037 C4.86,11.425,3.049,10.76,3.049,7.786c0-0.847,0.302-1.54,0.799-2.082C3.768,5.507,3.501,4.718,3.924,3.65 c0,0,0.652-0.209,2.134,0.796C6.677,4.273,7.34,4.187,8,4.184c0.659,0.003,1.323,0.089,1.943,0.261 c1.482-1.004,2.132-0.796,2.132-0.796c0.423,1.068,0.157,1.857,0.077,2.054c0.497,0.542,0.798,1.235,0.798,2.082 c0,2.981-1.814,3.637-3.543,3.829c0.279,0.24,0.527,0.713,0.527,1.437c0,1.037-0.01,1.874-0.01,2.129 c0,0.208,0.14,0.449,0.534,0.373c3.081-1.028,5.302-3.935,5.302-7.362C15.76,3.906,12.285,0.431,7.999,0.431z"/></svg>
+</span><span class="username">gkarwchan</span></a>
+
+          </li>
+          
+
+          
+          <li>
+            <a href="https://twitter.com/ghassankarwchan"><span class="icon icon--twitter"><svg viewBox="0 0 16 16"><path fill="#828282" d="M15.969,3.058c-0.586,0.26-1.217,0.436-1.878,0.515c0.675-0.405,1.194-1.045,1.438-1.809c-0.632,0.375-1.332,0.647-2.076,0.793c-0.596-0.636-1.446-1.033-2.387-1.033c-1.806,0-3.27,1.464-3.27,3.27 c0,0.256,0.029,0.506,0.085,0.745C5.163,5.404,2.753,4.102,1.14,2.124C0.859,2.607,0.698,3.168,0.698,3.767 c0,1.134,0.577,2.135,1.455,2.722C1.616,6.472,1.112,6.325,0.671,6.08c0,0.014,0,0.027,0,0.041c0,1.584,1.127,2.906,2.623,3.206 C3.02,9.402,2.731,9.442,2.433,9.442c-0.211,0-0.416-0.021-0.615-0.059c0.416,1.299,1.624,2.245,3.055,2.271 c-1.119,0.877-2.529,1.4-4.061,1.4c-0.264,0-0.524-0.015-0.78-0.046c1.447,0.928,3.166,1.469,5.013,1.469 c6.015,0,9.304-4.983,9.304-9.304c0-0.142-0.003-0.283-0.009-0.423C14.976,4.29,15.531,3.714,15.969,3.058z"/></svg>
+</span><span class="username">ghassankarwchan</span></a>
+
+          </li>
+          
+        </ul>
+</div>
+<div class="column">
+  This web site was built using <a href="https://jekyllrb.com/">Jekyll</a>.<br />
+  If you are interest in the code <a href="https://github.com/gkarwchan/BlogWebsite">you can find it here</a>.
+</div>
+
+</footer>
+
+    </div>
+  </body>
+
+</html>
