@@ -6,8 +6,8 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>Secure your web site with SSL</title>
-  <meta name="description" content="In order to secure the web site with SSL, you first need to buy a certificate.A certificate is a document that your website will send back to the browsers as...">
+  <title>Advanced Regular Expression By Examples - Introduction.</title>
+  <meta name="description" content="Regular expressions are implemented by many languages, and they can be used by text processing, as well an important tool to write effecient algorithm, and a...">
 
 
   <!-- CSS Reset -->
@@ -19,7 +19,7 @@
 
   <link rel="stylesheet" href="/css/main.css">
   <script src="/js/prism.js"></script>
-  <link rel="canonical" href="https://blog.gisspan.com/2016/03/secure-your-web-site-with-ssl.html">
+  <link rel="canonical" href="https://blog.gisspan.com/2020/05/Advanced-regular-expression-by-examples.html">
   <link rel="alternate" type="application/rss+xml" title="Web matters" href="https://blog.gisspan.com/feed.xml">
   <script>
     (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -127,11 +127,23 @@
   <article class="post row" itemscope itemtype="http://schema.org/BlogPosting">
     <div class="content">
       <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">Secure your web site with SSL</h1>
-        <p class="post-meta"><time datetime="2016-03-11T08:59:00-07:00" itemprop="datePublished">Mar 11, 2016</time> • <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name">Ghassan Karwchan</span></span></p>
+        <h1 class="post-title" itemprop="name headline">Advanced Regular Expression By Examples - Introduction.</h1>
+        <p class="post-meta"><time datetime="2020-05-06T09:45:00-06:00" itemprop="datePublished">May 6, 2020</time> • <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name">Ghassan Karwchan</span></span></p>
       </header>
       <div class="post-content post-font" itemprop="articleBody">
-        In order to secure the web site with SSL, you first need to buy a certificate.<br />A certificate is a document that your website will send back to the browsers as an "Official identification" for your web site, and your business.<!--more--><br />The certificate is issued by certified companies who are called "Certificate Authorities".<br /></p><h3>Types of SSL Certificates </h3> First of all you have to decide which certificate type you should chose for your web site.<br />There are three types: <ol><li>Domain Validation (DV) SSL Certificate</li> This is the simplest type of certificate, where the CA checks only that the applicant owns or has the right to use the domain name.<br /><li>Organization Validation (OV) SSL Certificates</li>The CA checks more about the company owns the domain name, and display more information about the company owns the domain.<br /><li>Extended Validation (EV) SSL Certificate</li> The CA conducts a thorough check on the organization with some standard guidelines defined by the industry.<br />This is usually required for organizations that require to have payments managed by on their own website and their own software. </ol> <h3>Your home work </h3> After you decided what type of certificate you want to buy, you search for a suitable CA authority to buy your certification from.<br />The CA authority requires from your side a request called "Certificate Signing Request" (CSR) <br />There are many ways to generate the CSR. I will describe the process using <a href="https://www.openssl.org/" target="_blank">OpenSSL tools.</a> <br /> First you need to generate a private key.<br /> <pre><code class="language-bash">openssl genrsa -out domain.com.key 2048</code></pre> And then create the CSR:<br /><pre><code class="language-bash">openssl req -new -sha256 -key domain.com.key -out domain.com.csr</code></pre>This will generate the CSR file, which you will send to the CA authority, which in return will send you the certificates.<br /><br />
+        
+<p>Regular expressions are implemented by many languages, and they can be used by text processing, as well an important tool to write effecient algorithm, and as well they can be used by data science specially in cleaning and scrapping the data to prepare it for modeling. <!--more-->
+<br />
+<br /></p>
+
+<h2 id="list-of-posts">List of posts</h2>
+<p>We are going to explain advanced terms of Regular Expressions through different examples, and through series of posts. These posts are as follows:</p>
+
+<ol>
+  <li>Introduction to the series (this post).</li>
+  <li><a href="/2020/05/Regular-expression-extract-comments-from-code.html">Extracting Comments From Code</a>.</li>
+</ol>
+
       </div>
       <div id="disqus_thread"></div>
         <script>

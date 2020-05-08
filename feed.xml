@@ -6,9 +6,174 @@
 </description>
     <link>https://blog.gisspan.com/</link>
     <atom:link href="https://blog.gisspan.com/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Tue, 10 Dec 2019 18:36:08 -0700</pubDate>
-    <lastBuildDate>Tue, 10 Dec 2019 18:36:08 -0700</lastBuildDate>
+    <pubDate>Thu, 07 May 2020 22:48:50 -0600</pubDate>
+    <lastBuildDate>Thu, 07 May 2020 22:48:50 -0600</lastBuildDate>
     <generator>Jekyll v4.0.0.pre.beta1</generator>
+    
+      <item>
+        <title>Regular expression&amp;#58 Extract Comments From Code</title>
+        <description>
+&lt;p&gt;Explain advanced concepts of Regular Expressions through practical examples:&lt;br /&gt;
+In this example we are going to cover:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Capturing Group&lt;/li&gt;
+  &lt;li&gt;Negated Character Class&lt;/li&gt;
+  &lt;li&gt;Greedy / non-greedy quantifier.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;!--more--&gt;
+&lt;p&gt;&lt;br /&gt;
+&lt;br /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;problem-description&quot;&gt;Problem Description&lt;/h2&gt;
+
+&lt;p&gt;The first example is to parse a file of code to parse and extract the comments in the code.&lt;br /&gt;
+The comments can be single line comments:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-JavaScript&quot;&gt;// this is a single line comment
+x = 1; // a single line comment after code
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Or multi lines&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-JavaScript&quot;&gt;/* This is one way of writing comments */ 
+/* This is a multiline 
+   comment. These can often
+   be useful*/
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;br /&gt;
+&lt;br /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;code&quot;&gt;Code&lt;/h2&gt;
+
+&lt;p&gt;The code in JavaScript:&lt;/p&gt;
+
+&lt;div class=&quot;language-javascript highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
+&lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;processData&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;inputText&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;raw&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;`(//[^\n]*|/\*[\s\S]*?\*/)`&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;ex&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;RegExp&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;g&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;ar&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;inputText&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;match&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;ex&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;map&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; 
+        &lt;span class=&quot;nx&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;split&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;map&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;y&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;y&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;trimStart&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;join&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;ar&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; 
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;And Python&lt;/p&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;sys&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;re&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;extract_comments&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;txt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;comments&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;j&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;lstrip&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;re&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;findall&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;r'(//[^\n]*|/\*.*?\*/)'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;txt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;re&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;MULTILINE&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;re&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;DOTALL&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;j&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;split&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)]&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;join&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;comments&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;br /&gt;
+&lt;br /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;code-description&quot;&gt;Code Description&lt;/h2&gt;
+
+&lt;p&gt;For Python:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;we start by writing the pattern in a string and prefix it with &lt;strong&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;r&lt;/code&gt;&lt;/strong&gt; prefix, which treat the rest as &lt;code class=&quot;highlighter-rouge&quot;&gt;Raw&lt;/code&gt; string, which means ignore the escape character &lt;strong&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;\&lt;/code&gt;&lt;/strong&gt; and treat it as normal character.
+    &lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; &lt;span class=&quot;s&quot;&gt;r'the pattern string'&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Because we want to extract the comments in the code, so we have to create &lt;code class=&quot;highlighter-rouge&quot;&gt;Capturing Group&lt;/code&gt;. The capture group will capture the text matched by them into a numbered group. We create a capture group with &lt;strong&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;()&lt;/code&gt;&lt;/strong&gt;.
+    &lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; &lt;span class=&quot;s&quot;&gt;r'(the pattern of comments to match)'&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;We have two options for the capture group: single line comment, and multi-lines comment. this is why we separate them with &lt;strong&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;|&lt;/code&gt;&lt;/strong&gt;. so our regular expression format is:
+    &lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; &lt;span class=&quot;s&quot;&gt;r'(single line format | multi-line format)'&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;First option is single line comment, is to start with &lt;strong&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;//&lt;/code&gt;&lt;/strong&gt;.&lt;/li&gt;
+  &lt;li&gt;and then contains other characters until new line. To do that we use &lt;strong&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;Negated Character Class&lt;/code&gt;&lt;/strong&gt; : &lt;code class=&quot;highlighter-rouge&quot;&gt;[^\n]*&lt;/code&gt; which means any character but new line. Negated Character Class will match any character that is not in the negated character class.
+    &lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; &lt;span class=&quot;s&quot;&gt;r'(//[^\n]*| multi-line format)'&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;the other options is multi-line.&lt;/li&gt;
+  &lt;li&gt;the multi-line comment start with &lt;strong&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;/*&lt;/code&gt;&lt;/strong&gt; and we represented by &lt;code class=&quot;highlighter-rouge&quot;&gt;/\*&lt;/code&gt; and we put escape character before the start.&lt;/li&gt;
+  &lt;li&gt;Then we match any character including new line, and to that we use &lt;strong&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;.*&lt;/code&gt;&lt;/strong&gt;. Now, the special character &lt;strong&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;.&lt;/code&gt;&lt;/strong&gt; (Dot) will match any character except the new line, but in Python there is an option we can specify to makes the Dot matches new line, and that option will be passed to match statement &lt;code class=&quot;highlighter-rouge&quot;&gt;re.DOTALL&lt;/code&gt;.
+    &lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; &lt;span class=&quot;n&quot;&gt;re&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;findall&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;r'(pattern with Dot)'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;txt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;re&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;MULTILINE&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;re&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;DOTALL&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;to close the multi-line comment we add the following to the pattern: &lt;code class=&quot;highlighter-rouge&quot;&gt;\*/&lt;/code&gt;, which make the whole pattern as follows:
+    &lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; &lt;span class=&quot;n&quot;&gt;re&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;findall&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;r'(//[^\n]*|/\*.*\*/)'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;txt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;re&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;MULTILINE&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;re&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;DOTALL&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Now there is a problem with previous code, which is caused by &lt;code class=&quot;highlighter-rouge&quot;&gt;Greedy quantifier&lt;/code&gt;. We will discuss this in details later, but now to continue and finish, to fix the problem we add &lt;code class=&quot;highlighter-rouge&quot;&gt;?&lt;/code&gt; fater the star &lt;code class=&quot;highlighter-rouge&quot;&gt;*&lt;/code&gt; to be as follows:
+    &lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;re&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;findall&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;r'(//[^\n]*|/\*.*?\*/)'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;txt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;re&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;MULTILINE&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;re&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;DOTALL&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Before we jump to greedy quantifier, let us discuss JavaScript code.&lt;br /&gt;
+The JavaScript code is very similar to the python except one important exception. JavaScript doesn’t have an option to force the special character &lt;code class=&quot;highlighter-rouge&quot;&gt;.&lt;/code&gt; (Dot) to match new line as in Python, and the alternative is to match this:
+    &lt;code class=&quot;highlighter-rouge&quot;&gt;javascript
+    [\s\S]*?
+   &lt;/code&gt;
+And for an alternative for &lt;code class=&quot;highlighter-rouge&quot;&gt;re.MULTILINE&lt;/code&gt; in python there is a flag &lt;code class=&quot;highlighter-rouge&quot;&gt;g&lt;/code&gt; in JavaScript.
+    &lt;code class=&quot;highlighter-rouge&quot;&gt;javascript
+    var t = String.raw`(//[^\n]*|/\*[\s\S]*?\*/)`
+    var ex = new RegExp(t, 'g')
+   &lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;br /&gt;
+&lt;br /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;greedy-and-non-greedy-quantifier&quot;&gt;Greedy and non-greedy quantifier:&lt;/h2&gt;
+
+&lt;p&gt;By default, a quantifier tells the engine to match as many instances of its quantified token or subpattern as possible. This behavior is called greedy.&lt;br /&gt;
+As an example to match&lt;/p&gt;
+
+&lt;div class=&quot;language-javascript highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;rg&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;sr&quot;&gt;/.*apple/g&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;input&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;a tasty apple&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;
+&lt;span class=&quot;nx&quot;&gt;input&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;match&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;rg&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;The previous code won’t match because the &lt;code class=&quot;highlighter-rouge&quot;&gt;.*&lt;/code&gt; is greedy, so it swallow all characters, and then nothing left for &lt;code class=&quot;highlighter-rouge&quot;&gt;apple&lt;/code&gt;.
+The default behavior when you try to match something with the quantifier, it matches the longest possible.&lt;/p&gt;
+
+</description>
+        <pubDate>Thu, 07 May 2020 09:45:00 -0600</pubDate>
+        <link>https://blog.gisspan.com/2020/05/Regular-expression-extract-comments-from-code.html</link>
+        <guid isPermaLink="true">https://blog.gisspan.com/2020/05/Regular-expression-extract-comments-from-code.html</guid>
+        
+        <category>algorithm</category>
+        
+        <category>big data</category>
+        
+        
+      </item>
+    
+      <item>
+        <title>Advanced Regular Expression By Examples - Introduction.</title>
+        <description>
+&lt;p&gt;Regular expressions are implemented by many languages, and they can be used by text processing, as well an important tool to write effecient algorithm, and as well they can be used by data science specially in cleaning and scrapping the data to prepare it for modeling. &lt;!--more--&gt;
+&lt;br /&gt;
+&lt;br /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;list-of-posts&quot;&gt;List of posts&lt;/h2&gt;
+&lt;p&gt;We are going to explain advanced terms of Regular Expressions through different examples, and through series of posts. These posts are as follows:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Introduction to the series (this post).&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;/2020/05/Regular-expression-extract-comments-from-code.html&quot;&gt;Extracting Comments From Code&lt;/a&gt;.&lt;/li&gt;
+&lt;/ol&gt;
+</description>
+        <pubDate>Wed, 06 May 2020 09:45:00 -0600</pubDate>
+        <link>https://blog.gisspan.com/2020/05/Advanced-regular-expression-by-examples.html</link>
+        <guid isPermaLink="true">https://blog.gisspan.com/2020/05/Advanced-regular-expression-by-examples.html</guid>
+        
+        <category>algorithm</category>
+        
+        <category>big data</category>
+        
+        
+      </item>
     
       <item>
         <title>Linear Algebra, Gradient Descent Algorithm in machine learning</title>
@@ -1620,186 +1785,6 @@ For each column it does the following: quantile, descriptive, most frequent valu
         <guid isPermaLink="true">https://blog.gisspan.com/2019/08/Descriptive-statistics-with-numpy.html</guid>
         
         <category>ML &amp; data science</category>
-        
-        
-      </item>
-    
-      <item>
-        <title>Basic Data Science&amp;#58 Correlation analysis.</title>
-        <description>
-&lt;p&gt;One of the pillars of Data Science is the correlation. This post is to describe the correlation and the terms related to it, and how it is essential for the data science.&lt;/p&gt;
-
-&lt;!--more--&gt;
-
-&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
-&lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
-&lt;p&gt;One of the major functionality of data science is find the relationship and associations between data variables, and it is safe to say, if you don’t know how to measure correlation then it is impossible to get much done in the data science.&lt;br /&gt;
-Let us clarify some terms in that field:&lt;/p&gt;
-
-&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;terms&quot;&gt;Terms&lt;/h2&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Correlation analysis:&lt;br /&gt;
-  explores the association between two or more variables and makes inferences about the strength of the relationship.&lt;/li&gt;
-  &lt;li&gt;Correlation coefficient:&lt;br /&gt;
-  measures the association between two variables.&lt;/li&gt;
-  &lt;li&gt;Correlation matrix:  &lt;br /&gt;
-  A correlation matrix measures the correlation between many pairs of variables.&lt;/li&gt;
-  &lt;li&gt;Association:&lt;br /&gt;
-  It is common to use the terms correlation and association interchangeably. Technically, association refers to any relationship between two variables, whereas correlation is often used to refer only to a linear relationship between two variables.&lt;/li&gt;
-  &lt;li&gt;Inferences about association:&lt;br /&gt;
-  Inferences about the strength of association between variables are made using a random bivariate sample of data drawn from the population of interest.&lt;/li&gt;
-  &lt;li&gt;Linear relationships:&lt;br /&gt;
-  if values of two variables change at a constant rate with respect to each other.&lt;/li&gt;
-  &lt;li&gt;Nonlinear relationships:&lt;br /&gt;
-  if the values of correlated variables do not change at a constant rate with respect to each other&lt;/li&gt;
-  &lt;li&gt;Positive correlation:&lt;br /&gt;
-  for two correlated variables, when one variable’s value increases (or decreases), and the other variable’s value also increase (or decrease), then the two variables are positively correlated.&lt;/li&gt;
-  &lt;li&gt;Negative correlation:&lt;br /&gt;
-  Opposite to positive when one value increases (or decreases), and the second value decrease (or increase), then they are negatively correlated.&lt;/li&gt;
-  &lt;li&gt;Covariance:&lt;br /&gt;
-  is a measure of how much two variables change together.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;how-to-measure-correlation&quot;&gt;How to measure correlation&lt;/h2&gt;
-
-&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
-
-&lt;h4 id=&quot;1---correlation-coefficient-intuition&quot;&gt;1 - Correlation coefficient intuition:&lt;/h4&gt;
-&lt;p&gt;The first step is to draw a scatter plots between the two variables. Scatter plot will shows the relationship that can be discovered intuitively.&lt;br /&gt;
-What we can discover from the scatter plot intuitively:&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;Is there a coorelation or not?&lt;/li&gt;
-  &lt;li&gt;Is it positive or nagative?&lt;/li&gt;
-  &lt;li&gt;If the correlation is linear, we can estimate the line that best fit the plot.&lt;/li&gt;
-  &lt;li&gt;We can estimate from the line a rough idea about the line slop and x-intercept and y-intercept.&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;div class=&quot;column&quot; style=&quot;align: center&quot;&gt;
-  &lt;p&gt;&lt;img src=&quot;/img/scatter-plots-correlation.gif&quot; alt=&quot;scattor-plot&quot; height=&quot;500px&quot; width=&quot;auto&quot; align=&quot;center&quot; /&gt;&lt;/p&gt;
-&lt;/div&gt;
-</description>
-        <pubDate>Sun, 18 Aug 2019 09:45:00 -0600</pubDate>
-        <link>https://blog.gisspan.com/2019/08/Correlation-analysis.html</link>
-        <guid isPermaLink="true">https://blog.gisspan.com/2019/08/Correlation-analysis.html</guid>
-        
-        <category>ML &amp; data science</category>
-        
-        
-      </item>
-    
-      <item>
-        <title>A developer introdution to cloud netowrking.</title>
-        <description>
-&lt;p&gt;As a developer who delat with the cloud, either to create a virtual machine, or to deploy a website that connect to a database, then most probabely you had to deal even in short with a private network.&lt;br /&gt;
-And most of us developers don’t know a lot about networking, because it is either the job of dev-ops or system administrator. But on the cloud you find that you have to take some decisions related to the networking.&lt;br /&gt;
-This post is an introduction for developers who know very little about the cloud, and will cover enough information to help you understand how to take better decisions.
-&lt;!--more--&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;introduction-to-private-networks&quot;&gt;Introduction to private networks&lt;/h2&gt;
-&lt;p&gt;Amazon has the &lt;em&gt;Virtual Private Cloud&lt;/em&gt; (VPC), and Azure has its equivalent the &lt;em&gt;Virtual Network&lt;/em&gt; (VN). Both let you isolate many resources (databases, file storage, API servers….) into their own private network that is protected (not accessible) from the outside, and they can securely communicate with each others, even they can communicate securely with on-promises networks. As well, you can create a segment of that network to communicate to the outside world.
-Both VPC, and VN are using the networking idea of &lt;a href=&quot;https://en.wikipedia.org/wiki/Private_network&quot;&gt;Private Network&lt;/a&gt; such as LAN (https://en.wikipedia.org/wiki/Local_area_network).&lt;/p&gt;
-
-&lt;h4 id=&quot;what-is-a-private-network&quot;&gt;What is a private network?&lt;/h4&gt;
-&lt;p&gt;Private Network, is a network that uses private IP address space, which provides two essential functionalities to the network:
-Help in the shortage of IP addresses on IPV4, by re-using the same address range of other private networks.
-Isolate and protect your resources from outside. For example, you want your cloud database to be isolated, and accessible only from your web server.
-Segment your own virtual network, into one or more subnets, so you can isolate your own resources to not communicate with each others.&lt;/p&gt;
-
-&lt;h4 id=&quot;how-private-network-works&quot;&gt;How Private Network works?&lt;/h4&gt;
-&lt;p&gt;When we build a private network, we choose a range of private network addresses, and we should select one of the available address ranges available for private networks.
-Internet Assigned Numbers Authority (IANA) reserved the following IPv4 address ranges for private networks under the protocol &lt;a href=&quot;https://tools.ietf.org/html/rfc1918&quot;&gt;RFC1918&lt;/a&gt;&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;192.168.0.0 - 192.168.255.255 (65,536 IP addresses)&lt;/li&gt;
-  &lt;li&gt;172.16.0.0 - 172.31.255.255 (1,048,576 IP addresses)&lt;/li&gt;
-  &lt;li&gt;10.0.0.0 - 10.255.255.255 (16,777,216 IP addresses)
-We can do a better representation of these addresses with &lt;a href=&quot;https://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing&quot;&gt;CIDR format&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;table&gt;
-  &lt;thead&gt;
-    &lt;tr&gt;
-      &lt;th&gt;RFC1918 name&lt;/th&gt;
-      &lt;th&gt;IP address range&lt;/th&gt;
-      &lt;th&gt;number of addresses&lt;/th&gt;
-      &lt;th&gt;largest CIDR block (subnet mask)&lt;/th&gt;
-      &lt;th&gt;host id size&lt;/th&gt;
-      &lt;th&gt;mask bits&lt;/th&gt;
-      &lt;th&gt;classful description[Note 1]&lt;/th&gt;
-    &lt;/tr&gt;
-  &lt;/thead&gt;
-  &lt;tbody&gt;
-    &lt;tr&gt;
-      &lt;td&gt;24-bit block&lt;/td&gt;
-      &lt;td&gt;10.0.0.0 – 10.255.255.255&lt;/td&gt;
-      &lt;td&gt;16777216&lt;/td&gt;
-      &lt;td&gt;10.0.0.0/8 (255.0.0.0)&lt;/td&gt;
-      &lt;td&gt;24 bits&lt;/td&gt;
-      &lt;td&gt;8 bits&lt;/td&gt;
-      &lt;td&gt;single class A network&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;20-bit block&lt;/td&gt;
-      &lt;td&gt;172.16.0.0 – 172.31.255.255&lt;/td&gt;
-      &lt;td&gt;1048576&lt;/td&gt;
-      &lt;td&gt;172.16.0.0/12 (255.240.0.0)&lt;/td&gt;
-      &lt;td&gt;20 bits&lt;/td&gt;
-      &lt;td&gt;12 bits&lt;/td&gt;
-      &lt;td&gt;16 contiguous class  B networks&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;16-bit block&lt;/td&gt;
-      &lt;td&gt;192.168.0.0 – 192.168.255.255&lt;/td&gt;
-      &lt;td&gt;65536&lt;/td&gt;
-      &lt;td&gt;192.168.0.0/16 (255.255.0.0)&lt;/td&gt;
-      &lt;td&gt;16 bits&lt;/td&gt;
-      &lt;td&gt;16 bits&lt;/td&gt;
-      &lt;td&gt;256 contiguous class C networks&lt;/td&gt;
-    &lt;/tr&gt;
-  &lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;p&gt;To learn more about CIDR please read &lt;a href=&quot;https://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing&quot;&gt;its wikipedia page&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;This is why when you try to find your local IP address through Windows’s &lt;em&gt;ipconfig&lt;/em&gt;, or Linux’s &lt;em&gt;ifconfig&lt;/em&gt;, you will get an address from the ranges above.&lt;/p&gt;
-
-&lt;h4 id=&quot;private-network-and-nat&quot;&gt;Private Network and NAT&lt;/h4&gt;
-&lt;p&gt;In order to allow resources (such as computers) on a private network communicate to the external internet, there is a method called Network Address Translation 
-(NAT), or Port Address Translation (PAT), which is based on a “routing device”  (like your home router) that will translate a large number of these private IP addresses to a single public IP address. It does so by mapping each internal/private IP address to the public IP address and a specific port (as usually defined in the TCP or UDP protocols). This way, you can have a network containing multiple devices (e.g. 10.0.0.1, 10.0.0.2, 10.0.0.3, etc), and they will all be represented by the single router with a public IP address (e.g. 11.32.123.4).&lt;/p&gt;
-
-&lt;h6 id=&quot;exercise-on-nat-in-action&quot;&gt;Exercise on NAT in action&lt;/h6&gt;
-&lt;p&gt;To see the NAT or PAT in action, you can test it on your local home router.
-If you have more than one device in your own home (Laptop, mobile, tablet..), then try find your local private IP address by either using of the these commands:
-Windows’s ipconfig
-POSIX’s ifconfig&lt;/p&gt;
-
-&lt;p&gt;Or on the mobile, you can go to the settings and check your ip address.
-You will find an address from the range mentioned above.&lt;/p&gt;
-
-&lt;p&gt;To find your external IP address, go to the website &lt;a href=&quot;https://www.whatismyip.com/&quot;&gt;https://www.whatismyip.com&lt;/a&gt;.
-You will find a different IP address, which is the IP address that your ISP assigned to you.&lt;/p&gt;
-
-&lt;p&gt;Creating VPC with public and private subnet in AWS
-Create VPC
-Create 2 subnets, one for public and one for private&lt;/p&gt;
-
-&lt;p&gt;Exercise: Create a VPC with a public and Private Subnets
-AWS
-Create an Elastic IP Address for the NAT Gateway
-aws ec2 allocate-address –domain “vpc” –region us-west-2&lt;/p&gt;
-
-</description>
-        <pubDate>Mon, 01 Oct 2018 09:45:00 -0600</pubDate>
-        <link>https://blog.gisspan.com/2018/10/developer-introduction-to-cloud-networking.html</link>
-        <guid isPermaLink="true">https://blog.gisspan.com/2018/10/developer-introduction-to-cloud-networking.html</guid>
-        
-        <category>cloud</category>
         
         
       </item>
