@@ -244,8 +244,34 @@ And for an alternative for <code class="highlighter-rouge">re.MULTILINE</code> i
 <br /></p>
 
 <h2 id="greedy-and-non-greedy-quantifier">Greedy and non-greedy quantifier:</h2>
+<p>An Example on extracting comments that are not working:</p>
 
-<p>By default, a quantifier tells the engine to match as many instances of its quantified token or subpattern as possible. This behavior is called greedy.<br />
+<p>For the input text:</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/* Iterate through the list till we encounter the last node.*/</span>
+    <span class="k">while</span><span class="p">(</span><span class="nx">pointer</span><span class="o">-&gt;</span><span class="nx">next</span><span class="o">!=</span><span class="nx">NULL</span><span class="p">)</span>
+    <span class="p">{</span>
+            <span class="nx">pointer</span> <span class="o">=</span> <span class="nx">pointer</span> <span class="o">-&gt;</span> <span class="nx">next</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="cm">/* Allocate memory for the new node and put data in it.*/</span>
+</code></pre></div></div>
+
+<p>It will generate this output</p>
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/* Iterate through the list till we encounter the last node.*/</span>
+    <span class="k">while</span><span class="p">(</span><span class="nx">pointer</span><span class="o">-&gt;</span><span class="nx">next</span><span class="o">!=</span><span class="nx">NULL</span><span class="p">)</span>
+    <span class="p">{</span>
+            <span class="nx">pointer</span> <span class="o">=</span> <span class="nx">pointer</span> <span class="o">-&gt;</span> <span class="nx">next</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="cm">/* Allocate memory for the new node and put data in it.*/</span>
+</code></pre></div></div>
+
+<p>To fix this problem we will add <code class="highlighter-rouge">*?</code> as non-greedy quantifier.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="s">r'(//[^\n]*|/\*.*?\*/)'</span><span class="p">,</span> <span class="n">txt</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">MULTILINE</span> <span class="o">|</span> <span class="n">re</span><span class="o">.</span><span class="n">DOTALL</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>To explain more:<br />
+By default, a quantifier tells the engine to match as many instances of its quantified token or subpattern as possible. This behavior is called greedy.<br />
 As an example to match</p>
 
 <div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">rg</span> <span class="o">=</span> <span class="sr">/.*apple/g</span>
@@ -255,7 +281,6 @@ As an example to match</p>
 
 <p>The previous code won’t match because the <code class="highlighter-rouge">.*</code> is greedy, so it swallow all characters, and then nothing left for <code class="highlighter-rouge">apple</code>.
 The default behavior when you try to match something with the quantifier, it matches the longest possible.</p>
-
 
       </div>
       <div id="disqus_thread"></div>
