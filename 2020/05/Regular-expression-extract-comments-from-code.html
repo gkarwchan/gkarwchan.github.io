@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <title>Regular expression&#58 Extract Comments From Code</title>
-  <meta name="description" content="Explain advanced concepts of Regular Expressions through practical examples:In this example we are going to cover:  Capturing Group  Negated Character Class ...">
+  <meta name="description" content="Explain advanced concepts of Regular Expressions through practical receipes:In this recipe we are going to cover:  Capturing Group  Negated Character Class  ...">
 
 
   <!-- CSS Reset -->
@@ -117,6 +117,8 @@
         
           
         
+          
+        
         <a class="page-link" href="/feed.xml"><img src="/img/feed.png" ></img></a>
     </nav>
   </div>
@@ -132,8 +134,8 @@
       </header>
       <div class="post-content post-font" itemprop="articleBody">
         
-<p>Explain advanced concepts of Regular Expressions through practical examples:<br />
-In this example we are going to cover:</p>
+<p>Explain advanced concepts of Regular Expressions through practical receipes:<br />
+In this recipe we are going to cover:</p>
 
 <ul>
   <li>Capturing Group</li>
@@ -147,7 +149,7 @@ In this example we are going to cover:</p>
 
 <h2 id="problem-description">Problem Description</h2>
 
-<p>The first example is to parse a file of code to parse and extract the comments in the code.<br />
+<p>We need to parse a file of code to extract the comments in the code.<br />
 The comments can be single line comments:</p>
 
 <pre><code class="language-JavaScript">// this is a single line comment
@@ -165,7 +167,7 @@ x = 1; // a single line comment after code
 
 <h2 id="code">Code</h2>
 
-<p>The code in JavaScript:</p>
+<p>The final code in JavaScript:</p>
 
 <div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
 <span class="kd">function</span> <span class="nx">processData</span><span class="p">(</span><span class="nx">inputText</span><span class="p">)</span> <span class="p">{</span>
@@ -193,6 +195,8 @@ x = 1; // a single line comment after code
 
 <h2 id="code-description">Code Description</h2>
 
+<p>Let us explain the code.</p>
+
 <p>For Python:</p>
 
 <ol>
@@ -204,18 +208,18 @@ x = 1; // a single line comment after code
     <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="s">r'(the pattern of comments to match)'</span>
 </code></pre></div>    </div>
   </li>
-  <li>We have two options for the capture group: single line comment, and multi-lines comment. this is why we separate them with <strong><code class="highlighter-rouge">|</code></strong>. so our regular expression format is:
+  <li>We have two styles of comments to capture: single line comment, and multi-lines comment. this is why we separate them with <strong><code class="highlighter-rouge">|</code></strong>. so our regular expression format is:
     <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="s">r'(single line format | multi-line format)'</span>
 </code></pre></div>    </div>
   </li>
-  <li>First option is single line comment, is to start with <strong><code class="highlighter-rouge">//</code></strong>.</li>
-  <li>and then contains other characters until new line. To do that we use <strong><code class="highlighter-rouge">Negated Character Class</code></strong> : <code class="highlighter-rouge">[^\n]*</code> which means any character but new line. Negated Character Class will match any character that is not in the negated character class.
+  <li>The first comment style is single line comment, which starts with <strong><code class="highlighter-rouge">//</code></strong>.</li>
+  <li>and then we should match all the rest of characters until new line. To do that we use <strong><code class="highlighter-rouge">Negated Character Class</code></strong> : <code class="highlighter-rouge">[^\n]*</code> which means any character but new line. Negated Character Class will match any character that is not in the negated character class.
     <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="s">r'(//[^\n]*| multi-line format)'</span>
 </code></pre></div>    </div>
   </li>
-  <li>the other options is multi-line.</li>
-  <li>the multi-line comment start with <strong><code class="highlighter-rouge">/*</code></strong> and we represented by <code class="highlighter-rouge">/\*</code> and we put escape character before the start.</li>
-  <li>Then we match any character including new line, and to that we use <strong><code class="highlighter-rouge">.*</code></strong>. Now, the special character <strong><code class="highlighter-rouge">.</code></strong> (Dot) will match any character except the new line, but in Python there is an option we can specify to makes the Dot matches new line, and that option will be passed to match statement <code class="highlighter-rouge">re.DOTALL</code>.
+  <li>We are done with first style of comments, and let us move to the second style of comments which is multi-line.</li>
+  <li>the multi-line comment starts with <strong><code class="highlighter-rouge">/*</code></strong>. We represent that with <code class="highlighter-rouge">/\*</code>. Notice how we added the escape character <code class="highlighter-rouge">\ </code> before the star, so we treat the star as a normal star and not a special character.</li>
+  <li>Then we need to match any character including new line, and to do that we use the special character (Dot) <strong><code class="highlighter-rouge">.</code></strong>. The special character <strong><code class="highlighter-rouge">.</code></strong> (Dot) will match any character except the new line, but in Python there is an option we can specify to makes the Dot matches new line, and that option will be passed to match statement <code class="highlighter-rouge">re.DOTALL</code>.
     <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="s">r'(pattern with Dot)'</span><span class="p">,</span> <span class="n">txt</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">MULTILINE</span> <span class="o">|</span> <span class="n">re</span><span class="o">.</span><span class="n">DOTALL</span><span class="p">)</span>
 </code></pre></div>    </div>
   </li>
@@ -223,14 +227,17 @@ x = 1; // a single line comment after code
     <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="s">r'(//[^\n]*|/\*.*\*/)'</span><span class="p">,</span> <span class="n">txt</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">MULTILINE</span> <span class="o">|</span> <span class="n">re</span><span class="o">.</span><span class="n">DOTALL</span><span class="p">)</span>
 </code></pre></div>    </div>
   </li>
-  <li>Now there is a problem with previous code, which is caused by <code class="highlighter-rouge">Greedy quantifier</code>. We will discuss this in details later, but now to continue and finish, to fix the problem we add <code class="highlighter-rouge">?</code> fater the star <code class="highlighter-rouge">*</code> to be as follows:
+  <li>Now there is a problem with previous code, which is caused by <code class="highlighter-rouge">Greedy quantifier</code>. We will discuss this in details later, but now to continue and finish, to fix the problem we add <code class="highlighter-rouge">?</code> after the star <code class="highlighter-rouge">*</code> to be as follows:
     <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="s">r'(//[^\n]*|/\*.*?\*/)'</span><span class="p">,</span> <span class="n">txt</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">MULTILINE</span> <span class="o">|</span> <span class="n">re</span><span class="o">.</span><span class="n">DOTALL</span><span class="p">)</span>
 </code></pre></div>    </div>
   </li>
 </ol>
 
-<p>Before we jump to greedy quantifier, let us discuss JavaScript code.<br />
-The JavaScript code is very similar to the python except one important exception. JavaScript doesn’t have an option to force the special character <code class="highlighter-rouge">.</code> (Dot) to match new line as in Python, and the alternative is to match this:
+<p>Before we jump to greedy quantifier, let us discuss JavaScript code.</p>
+
+<h4 id="javascript-code">JavaScript Code</h4>
+
+<p>The JavaScript code is very similar to the python except one important exception. JavaScript doesn’t have an option to force the special character <code class="highlighter-rouge">.</code> (Dot) to match new line as in Python, and the alternative is to match this:
     <code class="highlighter-rouge">javascript
     [\s\S]*?
    </code>
@@ -271,7 +278,7 @@ And for an alternative for <code class="highlighter-rouge">re.MULTILINE</code> i
 </code></pre></div></div>
 
 <p>To explain more:<br />
-By default, a quantifier tells the engine to match as many instances of its quantified token or subpattern as possible. This behavior is called greedy.<br />
+By default, a quantifier tells the engine to match as many instances of its quantified token or sub-pattern as possible. This behavior is called greedy.<br />
 As an example to match</p>
 
 <div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">rg</span> <span class="o">=</span> <span class="sr">/.*apple/g</span>
@@ -281,6 +288,19 @@ As an example to match</p>
 
 <p>The previous code won’t match because the <code class="highlighter-rouge">.*</code> is greedy, so it swallow all characters, and then nothing left for <code class="highlighter-rouge">apple</code>.
 The default behavior when you try to match something with the quantifier, it matches the longest possible.</p>
+
+<p><br />
+<br /></p>
+
+<h2 id="regular-expression-series">Regular Expression Series:</h2>
+
+<p>This article is part of a series about regular expression. These are the other articles:</p>
+
+<ol>
+  <li><a href="/2020/05/Advanced-regular-expression-by-examples.html">Advanced Regular Expression By Example : An Introduction</a></li>
+  <li>Extract Comments from code ( this article)</li>
+  <li><a href="/2020/05/Regular-expression-extract-domain-names.html">Extract Domain Name</a></li>
+</ol>
 
       </div>
       <div id="disqus_thread"></div>
