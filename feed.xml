@@ -6,9 +6,188 @@
 </description>
     <link>https://blog.gisspan.com/</link>
     <atom:link href="https://blog.gisspan.com/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Fri, 08 May 2020 15:28:38 -0600</pubDate>
-    <lastBuildDate>Fri, 08 May 2020 15:28:38 -0600</lastBuildDate>
+    <pubDate>Fri, 11 Sep 2020 19:35:00 -0600</pubDate>
+    <lastBuildDate>Fri, 11 Sep 2020 19:35:00 -0600</lastBuildDate>
     <generator>Jekyll v4.0.0.pre.beta1</generator>
+    
+      <item>
+        <title>Regular expression&amp;#58 Extract HTML Links</title>
+        <description>
+&lt;p&gt;Explain advanced concepts of Regular Expressions through practical recipes:&lt;br /&gt;
+In this recipe we are going to cover:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Negated Character class&lt;/li&gt;
+  &lt;li&gt;Non-capturing group&lt;/li&gt;
+  &lt;li&gt;Non-Greedy quantifier.&lt;/li&gt;
+  &lt;li&gt;Python’s &lt;code class=&quot;highlighter-rouge&quot;&gt;findall&lt;/code&gt;, and JavaScript’s &lt;code class=&quot;highlighter-rouge&quot;&gt;exec&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;!--more--&gt;
+&lt;p&gt;&lt;br /&gt;
+&lt;br /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;problem-description&quot;&gt;Problem Description&lt;/h2&gt;
+
+&lt;p&gt;We need to extract the html links, or the anchor tags in an html element. We want to extract the url link and the text description for that link.&lt;/p&gt;
+
+&lt;p&gt;The input will be an HTML document, The output we need has the following format:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-code&quot;&gt;url, Text description
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;For example&lt;/p&gt;
+
+&lt;div class=&quot;language-html highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;div&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;portal&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;role=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;navigation&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;id=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'p-navigation'&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;h3&amp;gt;&lt;/span&gt;Navigation&lt;span class=&quot;nt&quot;&gt;&amp;lt;/h3&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;div&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;body&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;ul&amp;gt;&lt;/span&gt;
+ &lt;span class=&quot;nt&quot;&gt;&amp;lt;li&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;id=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;n-mainpage-description&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&amp;lt;a&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;href=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;/wiki/Main_Page&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;title=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Visit the main page [z]&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;accesskey=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;z&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;Main page&lt;span class=&quot;nt&quot;&gt;&amp;lt;/a&amp;gt;&amp;lt;/li&amp;gt;&lt;/span&gt;
+ &lt;span class=&quot;nt&quot;&gt;&amp;lt;li&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;id=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;n-contents&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&amp;lt;a&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;href=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;/wiki/Portal:Contents&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;title=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Guides to browsing Wikipedia&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;Contents&lt;span class=&quot;nt&quot;&gt;&amp;lt;/a&amp;gt;&amp;lt;/li&amp;gt;&lt;/span&gt;
+ &lt;span class=&quot;nt&quot;&gt;&amp;lt;li&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;id=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;n-featuredcontent&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&amp;lt;a&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;href=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;/wiki/Portal:Featured_content&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;title=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Featured content  the best of Wikipedia&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;Featured content&lt;span class=&quot;nt&quot;&gt;&amp;lt;/a&amp;gt;&amp;lt;/li&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;li&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;id=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;n-currentevents&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&amp;lt;a&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;href=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;/wiki/Portal:Current_events&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;title=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Find background information on current events&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;Current events&lt;span class=&quot;nt&quot;&gt;&amp;lt;/a&amp;gt;&amp;lt;/li&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;li&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;id=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;n-randompage&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&amp;lt;a&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;href=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;/wiki/Special:Random&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;title=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Load a random article [x]&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;accesskey=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;x&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;Random article&lt;span class=&quot;nt&quot;&gt;&amp;lt;/a&amp;gt;&amp;lt;/li&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;li&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;id=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;n-sitesupport&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&amp;lt;a&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;href=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;//donate.wikimedia.org/wiki/Special:FundraiserRedirector?utm_source=donate&amp;amp;utm_medium=sidebar&amp;amp;utm_campaign=C13_en.wikipedia.org&amp;amp;uselang=en&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;title=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Support us&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;Donate to Wikipedia&lt;span class=&quot;nt&quot;&gt;&amp;lt;/a&amp;gt;&amp;lt;/li&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;/ul&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;/div&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;/div&amp;gt;&lt;/span&gt;    
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;Will have the follwoing output:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-JavaScript&quot;&gt;/wiki/Main_Page,Main page
+/wiki/Portal:Contents,Contents
+/wiki/Portal:Featured_content,Featured content
+/wiki/Portal:Current_events,Current events
+/wiki/Special:Random,Random article
+//donate.wikimedia.org/wiki/Special:FundraiserRedirector?utm_source=donate&amp;amp;utm_medium=sidebar&amp;amp;utm_campaign=C13_en.wikipedia.org&amp;amp;uselang=en,Donate to Wikipedia    
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;br /&gt;
+&lt;br /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;code&quot;&gt;Code&lt;/h2&gt;
+
+&lt;p&gt;The final code in Python:&lt;/p&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;re&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;extract_links&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;lines&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;pat&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;r'&amp;lt;a\s+(?:[^&amp;gt;]*?\s*)?href=&quot;([^&amp;gt;&quot;]*)&quot;\s*[^&amp;gt;]*&amp;gt;\s*(?:&amp;lt;[^&amp;gt;]*&amp;gt;)?([^&amp;gt;]*)&amp;lt;/'&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;r&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;re&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;compile&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;pat&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;re&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;M&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;','&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;join&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;j&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;j&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;r&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;findall&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;lines&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)]&lt;/span&gt;
+    
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;br /&gt;
+&lt;br /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;code-description&quot;&gt;Code Description&lt;/h2&gt;
+
+&lt;p&gt;Let us explain the code.&lt;/p&gt;
+
+&lt;p&gt;For Python:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;The HTML tag for link are the Anchor &amp;lt;a&amp;gt;, and end with /&amp;gt;, so the pattern will be something like this &amp;lt;a - - -
+    &lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; &lt;span class=&quot;s&quot;&gt;r'&amp;lt;a - - -'&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;between the &lt;code class=&quot;highlighter-rouge&quot;&gt;a&lt;/code&gt; tag and next html attributes there is one space at least..
+    &lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; &lt;span class=&quot;s&quot;&gt;r'&amp;lt;a\s+'&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;The link tag contains many attributes, and we care only about the attribute &lt;strong&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;href&lt;/code&gt;&lt;/strong&gt;. so we need to select the attriute &lt;code class=&quot;highlighter-rouge&quot;&gt;href&lt;/code&gt; as follows:
+    &lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; &lt;span class=&quot;s&quot;&gt;r'&amp;lt;a\s+href=&quot;'&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;the href has the following format:
+    &lt;div class=&quot;language-html highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; &lt;span class=&quot;nt&quot;&gt;&amp;lt;a&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;firstAttribute=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;somedata&quot;&lt;/span&gt;
+ &lt;span class=&quot;na&quot;&gt;href=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;/somelink/somefile.html&quot;&lt;/span&gt; 
+ &lt;span class=&quot;na&quot;&gt;secondAttribute=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;someattr&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;Some Text here&lt;span class=&quot;nt&quot;&gt;&amp;lt;/a&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+    &lt;p&gt;So to capture that&lt;/p&gt;
+
+    &lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; &lt;span class=&quot;s&quot;&gt;r'&amp;lt;a\s+href=&quot;'&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;We need to capture the data in that attribute so we open a capturing group. The capturing group will end with the end of the attribute. As the atrribute will end with double quotes &lt;code class=&quot;highlighter-rouge&quot;&gt;&quot;&lt;/code&gt; so we can capture any character except &lt;code class=&quot;highlighter-rouge&quot;&gt;&amp;gt;&lt;/code&gt; and &lt;code class=&quot;highlighter-rouge&quot;&gt;&quot;&lt;/code&gt;. We can acheive that using &lt;strong&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;Negated Character Class&lt;/code&gt;&lt;/strong&gt; which can be achieved using &lt;code class=&quot;highlighter-rouge&quot;&gt;[^]&lt;/code&gt;. The following statement capture all the text inside the &lt;code class=&quot;highlighter-rouge&quot;&gt;href&lt;/code&gt; attribute. Notice as well how we ended up the attribute with the closing double quote.
+    &lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; &lt;span class=&quot;s&quot;&gt;r'&amp;lt;a\s+href=&quot;([^&amp;gt;&quot;]*)&quot;'&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;The link tag contains other attributes that we are not interested in, so we can get them out by using &lt;strong&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;non capturing group&lt;/code&gt;&lt;/strong&gt;. They can show up before or after the &lt;code class=&quot;highlighter-rouge&quot;&gt;href&lt;/code&gt; attributes.&lt;br /&gt;
+The attributes separated by spaces, so we can write a blue-print of the pattern as follows:
+    &lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;?&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;here&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;we&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;put&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;the&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pattern&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;to&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;capture&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;\&lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;?&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;the pattern to match the other attributes is any character that doesn’t match the end of the html tag &lt;strong&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;&amp;gt;&lt;/code&gt;&lt;/strong&gt;, and we use negated character class again as follows: &lt;strong&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;[^&amp;gt;]&lt;/code&gt;&lt;/strong&gt;. But using only that we will end up using all data in the anchor (link) tag, so we use non-greedy character as follow:
+    &lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; &lt;span class=&quot;s&quot;&gt;r'&amp;lt;a\s+(?:[^&amp;gt;]*?\s*)href=&quot;([^&amp;gt;&quot;]*)&quot;'&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;The previous match the attributes before &lt;code class=&quot;highlighter-rouge&quot;&gt;href&lt;/code&gt;. To add the attributes after the &lt;code class=&quot;highlighter-rouge&quot;&gt;href&lt;/code&gt; we add as well:
+    &lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; &lt;span class=&quot;s&quot;&gt;r'&amp;lt;a\s+(?:[^&amp;gt;]*?\s*)?href=&quot;([^&amp;gt;&quot;]*)&quot;\s*[^&amp;gt;]*'&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;the link tag will end with &lt;strong&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;&amp;gt;&lt;/code&gt;&lt;/strong&gt;
+    &lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; &lt;span class=&quot;s&quot;&gt;r'&amp;lt;a\s+(?:[^&amp;gt;]*?\s*)?href=&quot;([^&amp;gt;&quot;]*)&quot;\s*[^&amp;lt;]*&amp;gt;'&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;the next part is to capture the text description of the link. We capture the text, which can include anything except end of tag &lt;strong&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;&amp;lt;\a&amp;gt;&lt;/code&gt;&lt;/strong&gt;.
+    &lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;s&quot;&gt;r'&amp;lt;a\s+(?:[^&amp;gt;]*?\s*)?href=&quot;([^&amp;gt;&quot;]*)&quot;\s*[^&amp;lt;]*&amp;gt;([^&amp;lt;]*)'&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;And we end up with the link end tag &lt;strong&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;&amp;lt;\a&amp;gt;&lt;/code&gt;&lt;/strong&gt;.
+    &lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;s&quot;&gt;r'&amp;lt;a\s+(?:[^&amp;gt;]*?\s*)?href=&quot;([^&amp;gt;&quot;]*)&quot;\s*[^&amp;lt;]*&amp;gt;([^&amp;lt;]*)&amp;lt;/'&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;BUT WAIT. We are not done yet. there is more small issue.&lt;br /&gt;
+Sometimes the link tag contains nested tags as follows:
+    &lt;div class=&quot;language-html highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;a&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;href=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;/somelink/somefile.html&quot;&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;...&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;img&amp;gt;&lt;/span&gt;...&lt;span class=&quot;nt&quot;&gt;&amp;lt;/img&amp;gt;&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;&amp;lt;data&amp;gt;&amp;lt;/data&amp;gt;&lt;/span&gt;Some Text here&lt;span class=&quot;nt&quot;&gt;&amp;lt;/a&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+    &lt;p&gt;In order to handle this we use non-capturing group for the following pattern:&lt;/p&gt;
+
+    &lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;?&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;^&amp;gt;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&amp;gt;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;?&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+    &lt;p&gt;So at the end the final pattern will be as follows:&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;pat&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;r'&amp;lt;a\s+(?:[^&amp;gt;]*?\s*)?href=&quot;([^&amp;gt;&quot;]*)&quot;\s*[^&amp;gt;]*&amp;gt;\s*(?:&amp;lt;[^&amp;gt;]*&amp;gt;)?([^&amp;lt;]*)&amp;lt;/'&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;python-implementation&quot;&gt;Python implementation&lt;/h2&gt;
+
+&lt;p&gt;We use the method &lt;strong&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;findall&lt;/code&gt;&lt;/strong&gt; with the MultiLine flag. &lt;code class=&quot;highlighter-rouge&quot;&gt;findall&lt;/code&gt; will give an iterator of all capturing groups, where each item is a tuplet of the matching capture groups.&lt;/p&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;re&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;r&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;re&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;compile&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;pat&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;re&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;M&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;htmlInput&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'&amp;lt;html&amp;gt; ... the html string &amp;lt;/html&amp;gt;'&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;j&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;r&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;findall&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;htmlInput&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;# j[0] is the url match
+&lt;/span&gt;  &lt;span class=&quot;c1&quot;&gt;# j[1] is the text description
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;For more about &lt;code class=&quot;highlighter-rouge&quot;&gt;findall&lt;/code&gt; check &lt;a href=&quot;/2020/05/Regular-expression-extract-domain-names.html&quot;&gt;my previous recipe&lt;/a&gt; where I explained in more details.&lt;/p&gt;
+
+&lt;p&gt;&lt;br /&gt;
+&lt;br /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;regular-expression-series&quot;&gt;Regular Expression Series:&lt;/h2&gt;
+
+&lt;p&gt;This article is part of a series about regular expression. These are the other articles:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;&lt;a href=&quot;/2020/05/Advanced-regular-expression-by-examples.html&quot;&gt;Advanced Regular Expression By Example : An Introduction&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;/2020/05/Regular-expression-extract-comments-from-code.html&quot;&gt;Extract Comments from code&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;Extract Domain Name (this article)&lt;/li&gt;
+  &lt;li&gt;Extract Links From HTML Document (this article)&lt;/li&gt;
+&lt;/ol&gt;
+</description>
+        <pubDate>Fri, 11 Sep 2020 09:45:00 -0600</pubDate>
+        <link>https://blog.gisspan.com/2020/09/Regular-expression-extract-html-links.html</link>
+        <guid isPermaLink="true">https://blog.gisspan.com/2020/09/Regular-expression-extract-html-links.html</guid>
+        
+        <category>algorithm</category>
+        
+        
+      </item>
     
       <item>
         <title>Regular expression&amp;#58 Extract Domain Names</title>
@@ -28,14 +207,16 @@ In this recipe we are going to cover:&lt;/p&gt;
 
 &lt;h2 id=&quot;problem-description&quot;&gt;Problem Description&lt;/h2&gt;
 
-&lt;p&gt;HTML Scraping or Web Scraping is widley used, and we need to build a scrapper to extract the URLs in a web page, and to extract the domain names in those URL.&lt;/p&gt;
+&lt;p&gt;HTML Scraping or Web Scraping is widely used, and we need to build a scrapper to extract the URLs in a web page, and to extract the domain names in those URL.&lt;/p&gt;
 
 &lt;p&gt;An example of the data input&lt;/p&gt;
 
 &lt;div class=&quot;language-html highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;div&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;reflist&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;style=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;list-style-type: decimal;&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
 &lt;span class=&quot;nt&quot;&gt;&amp;lt;ol&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;references&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
-&lt;span class=&quot;nt&quot;&gt;&amp;lt;li&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;id=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;cite_note-1&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&amp;lt;span&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;mw-cite-backlink&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&amp;lt;b&amp;gt;&lt;/span&gt; [&quot;Train (noun)&quot;](http://www.askoxford.com/concise_oed/train?view=uk). 
-&lt;span class=&quot;nt&quot;&gt;&amp;lt;i&amp;gt;&lt;/span&gt;(definition – Compact OED)&lt;span class=&quot;nt&quot;&gt;&amp;lt;/i&amp;gt;&lt;/span&gt;. Oxford University Press&lt;span class=&quot;nt&quot;&gt;&amp;lt;span&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;reference-accessdate&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;. 
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;li&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;id=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;cite_note-1&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&amp;lt;span&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;mw-cite-backlink&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&amp;lt;b&amp;gt;&lt;/span&gt; 
+[&quot;Train (noun)&quot;](http://www.askoxford.com/concise_oed/train?view=uk). 
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;i&amp;gt;&lt;/span&gt;(definition – Compact OED)&lt;span class=&quot;nt&quot;&gt;&amp;lt;/i&amp;gt;&lt;/span&gt;. Oxford University Press
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;span&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;reference-accessdate&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;. 
 .....
 &lt;span class=&quot;nt&quot;&gt;&amp;lt;/ol&amp;gt;&lt;/span&gt;
 &lt;span class=&quot;nt&quot;&gt;&amp;lt;/div&amp;gt;&lt;/span&gt;
@@ -47,10 +228,10 @@ In this recipe we are going to cover:&lt;/p&gt;
 
 &lt;p&gt;The url have variant formats, and the domain name can have different formats. Examples of Url in the text as follow:&lt;/p&gt;
 
-&lt;div class=&quot;language-javascript highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nx&quot;&gt;http&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;//www.domain.com&lt;/span&gt;
-&lt;span class=&quot;nx&quot;&gt;https&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;//ww2.anotherdomain.com&lt;/span&gt;
-&lt;span class=&quot;nx&quot;&gt;https&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;//mydomain.com&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;pre&gt;&lt;code class=&quot;language-code&quot;&gt;http://www.domain.com
+https://ww2.anotherdomain.com
+https://mydomain.com
+&lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;&lt;br /&gt;
 &lt;br /&gt;&lt;/p&gt;
@@ -140,7 +321,7 @@ The following example:&lt;/p&gt;
   &lt;span class=&quot;c1&quot;&gt;# output: ['Hello', 'World']
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;If you have more than a captureing group in the pattern, then it will return a list of tuples.&lt;/p&gt;
+&lt;p&gt;If you have more than a capturing group in the pattern, then it will return a list of tuples.&lt;/p&gt;
 
 &lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;pattern&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;re&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;compile&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;r'(\w+) (\w+)'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
 &lt;span class=&quot;n&quot;&gt;pattern&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;findall&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'Hello World!, Hello Tom!'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
@@ -160,10 +341,10 @@ The following example:&lt;/p&gt;
 
 &lt;h4 id=&quot;javascript&quot;&gt;JavaScript&lt;/h4&gt;
 
-&lt;p&gt;JavaScript is a little bit tricky, and arguabley it might be the worst implementation among many languages.&lt;br /&gt;
-JavaScript didn’t have an equivalant for Python’s findall until very recently. It is the method &lt;code class=&quot;highlighter-rouge&quot;&gt;String.matchAll&lt;/code&gt;, and it is supported in Node 12, and very latest browsers.&lt;br /&gt;
+&lt;p&gt;JavaScript is a little bit tricky, and arguably it might be the worst implementation among many languages.&lt;br /&gt;
+JavaScript didn’t have an equivalent for Python’s findall until very recently. It is the method &lt;code class=&quot;highlighter-rouge&quot;&gt;String.matchAll&lt;/code&gt;, and it is supported in Node 12, and very latest browsers.&lt;br /&gt;
 If you need to work in Node before 12, or a little bit older browsers, then you have one option to iterate through many matches.&lt;br /&gt;
-JavaScript is funky becuase it implement the first match in different ways, but to match all matches, it force you in one awkward way (before String.matchAll).&lt;br /&gt;
+JavaScript is funky because it implement the first match in different ways, but to match all matches, it force you in one awkward way (before String.matchAll).&lt;br /&gt;
 To get all matches with their capturing group, you have to use &lt;em&gt;&lt;strong&gt;exec&lt;/strong&gt;&lt;/em&gt; method of regular expression object and iterate through it.&lt;br /&gt;
 An example will be like this:&lt;/p&gt;
 
@@ -184,6 +365,7 @@ An example will be like this:&lt;/p&gt;
   &lt;li&gt;&lt;a href=&quot;/2020/05/Advanced-regular-expression-by-examples.html&quot;&gt;Advanced Regular Expression By Example : An Introduction&lt;/a&gt;&lt;/li&gt;
   &lt;li&gt;&lt;a href=&quot;/2020/05/Regular-expression-extract-comments-from-code.html&quot;&gt;Extract Comments from code&lt;/a&gt;&lt;/li&gt;
   &lt;li&gt;Extract Domain Name (this article)&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;/2020/09/Regular-expression-extract-html-links.html&quot;&gt;Extract Links From HTML Document&lt;/a&gt;&lt;/li&gt;
 &lt;/ol&gt;
 </description>
         <pubDate>Fri, 08 May 2020 09:45:00 -0600</pubDate>
@@ -250,7 +432,8 @@ x = 1; // a single line comment after code
 &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;re&lt;/span&gt;
 
 &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;extract_comments&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;txt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;comments&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;j&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;lstrip&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;re&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;findall&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;r'(//[^\n]*|/\*.*?\*/)'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;txt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;re&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;MULTILINE&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;re&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;DOTALL&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;j&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;split&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)]&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;comments&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;j&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;lstrip&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;re&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;findall&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;r'(//[^\n]*|/\*.*?\*/)'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; 
+        &lt;span class=&quot;n&quot;&gt;txt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;re&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;MULTILINE&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;re&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;DOTALL&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;j&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;split&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)]&lt;/span&gt;
     &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;join&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;comments&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
@@ -364,6 +547,7 @@ The default behavior when you try to match something with the quantifier, it mat
   &lt;li&gt;&lt;a href=&quot;/2020/05/Advanced-regular-expression-by-examples.html&quot;&gt;Advanced Regular Expression By Example : An Introduction&lt;/a&gt;&lt;/li&gt;
   &lt;li&gt;Extract Comments from code ( this article)&lt;/li&gt;
   &lt;li&gt;&lt;a href=&quot;/2020/05/Regular-expression-extract-domain-names.html&quot;&gt;Extract Domain Name&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;/2020/09/Regular-expression-extract-html-links.html&quot;&gt;Extract Links From HTML Document&lt;/a&gt;&lt;/li&gt;
 &lt;/ol&gt;
 </description>
         <pubDate>Thu, 07 May 2020 09:45:00 -0600</pubDate>
@@ -389,6 +573,7 @@ The default behavior when you try to match something with the quantifier, it mat
   &lt;li&gt;Introduction to the series (this post).&lt;/li&gt;
   &lt;li&gt;&lt;a href=&quot;/2020/05/Regular-expression-extract-comments-from-code.html&quot;&gt;Extracting Comments From Code&lt;/a&gt;.&lt;/li&gt;
   &lt;li&gt;&lt;a href=&quot;/2020/05/Regular-expression-extract-domain-names.html&quot;&gt;Extract Domain Name&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;/2020/09/Regular-expression-extract-html-links.html&quot;&gt;Extract Links From HTML Document&lt;/a&gt;&lt;/li&gt;
 &lt;/ol&gt;
 </description>
         <pubDate>Wed, 06 May 2020 09:45:00 -0600</pubDate>
@@ -1220,53 +1405,6 @@ $P(meeting|NS) = \frac{2+1}{4+6} = \frac{3}{10}$&lt;/p&gt;
         <pubDate>Sun, 01 Sep 2019 09:45:00 -0600</pubDate>
         <link>https://blog.gisspan.com/2019/09/Naive-Bayes-By-Examples.html</link>
         <guid isPermaLink="true">https://blog.gisspan.com/2019/09/Naive-Bayes-By-Examples.html</guid>
-        
-        <category>ML &amp; data science</category>
-        
-        
-      </item>
-    
-      <item>
-        <title>Detect Spam with Naive Bayes</title>
-        <description>
-&lt;p&gt;Bayes and Naive Bayes are very important techniques in machine learning. I am going to cover and dig into Naive Bayes in machine learning, and practice that using Python to detect email span. I am going to split this into many posts, because I am going to cover theory and practice.&lt;/p&gt;
-
-&lt;!--more--&gt;
-
-&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;list-of-posts&quot;&gt;List of posts&lt;/h2&gt;
-&lt;p&gt;We are going to cover these points:&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;Preperation and introduction (this post)&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;/2019/09/Naive-Bayes-By-Examples.html&quot;&gt;Naive Bayes by example&lt;/a&gt;.&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;/2019/09/Scrubbing-natural-language-text-data.html&quot;&gt;Scrubbing natural language text&lt;/a&gt;.&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;/2019/09/naive-bayes-classifier.html&quot;&gt;Naive Bayes’ Classifire&lt;/a&gt;.&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;/2019/09/python-spam-detector.html&quot;&gt;Writing Naive Bayes from scratch&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;/2019/09/Using-Scikit-learn-for-naive-bayes.html&quot;&gt;Using Scikit-learn library&lt;/a&gt;&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h2 id=&quot;preparation&quot;&gt;Preparation&lt;/h2&gt;
-
-&lt;h4 id=&quot;1-downloan-the-training-data&quot;&gt;1. Downloan the training data&lt;/h4&gt;
-&lt;p&gt;We are going to work on a sample database as a training samples. You can download it from &lt;a href=&quot;http://www.aueb.gr/users/ion/data/enron-spam/preprocessed/enron1.tar.gz&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;After you download the package file, uncompress it. It contains two folders one called &lt;code class=&quot;highlighter-rouge&quot;&gt;spam&lt;/code&gt; and the second is &lt;code class=&quot;highlighter-rouge&quot;&gt;ham&lt;/code&gt;.&lt;br /&gt;
-We will assume in the next posts that you uncompressed the file under the folder called &lt;code class=&quot;highlighter-rouge&quot;&gt;data&lt;/code&gt;.&lt;/p&gt;
-
-&lt;h4 id=&quot;2-download-the-required-packages&quot;&gt;2. Download the required packages&lt;/h4&gt;
-&lt;p&gt;We are going to use Python, and more specifically natural language library to clean the data.&lt;br /&gt;
-Make sure you install the library &lt;strong&gt;&lt;em&gt;nltk&lt;/em&gt;&lt;/strong&gt;, and will download its accessories that will help our work.&lt;/p&gt;
-
-&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;nltk&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;nltk&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;download&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'names'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;nltk&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;download&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'wordnet'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-</description>
-        <pubDate>Sun, 01 Sep 2019 09:45:00 -0600</pubDate>
-        <link>https://blog.gisspan.com/2019/09/Naive-bayes-detect-email-spam.html</link>
-        <guid isPermaLink="true">https://blog.gisspan.com/2019/09/Naive-bayes-detect-email-spam.html</guid>
         
         <category>ML &amp; data science</category>
         

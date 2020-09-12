@@ -186,7 +186,8 @@ x = 1; // a single line comment after code
 <span class="kn">import</span> <span class="nn">re</span>
 
 <span class="k">def</span> <span class="nf">extract_comments</span><span class="p">(</span><span class="n">txt</span><span class="p">):</span>
-    <span class="n">comments</span> <span class="o">=</span> <span class="p">[</span> <span class="n">j</span><span class="o">.</span><span class="n">lstrip</span><span class="p">()</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="s">r'(//[^\n]*|/\*.*?\*/)'</span><span class="p">,</span> <span class="n">txt</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">MULTILINE</span> <span class="o">|</span> <span class="n">re</span><span class="o">.</span><span class="n">DOTALL</span><span class="p">)</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">i</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">'</span><span class="se">\n</span><span class="s">'</span><span class="p">)]</span>
+    <span class="n">comments</span> <span class="o">=</span> <span class="p">[</span> <span class="n">j</span><span class="o">.</span><span class="n">lstrip</span><span class="p">()</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="s">r'(//[^\n]*|/\*.*?\*/)'</span><span class="p">,</span> 
+        <span class="n">txt</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">MULTILINE</span> <span class="o">|</span> <span class="n">re</span><span class="o">.</span><span class="n">DOTALL</span><span class="p">)</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">i</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">'</span><span class="se">\n</span><span class="s">'</span><span class="p">)]</span>
     <span class="k">return</span> <span class="s">'</span><span class="se">\n</span><span class="s">'</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">comments</span><span class="p">)</span>
 </code></pre></div></div>
 
@@ -300,6 +301,7 @@ The default behavior when you try to match something with the quantifier, it mat
   <li><a href="/2020/05/Advanced-regular-expression-by-examples.html">Advanced Regular Expression By Example : An Introduction</a></li>
   <li>Extract Comments from code ( this article)</li>
   <li><a href="/2020/05/Regular-expression-extract-domain-names.html">Extract Domain Name</a></li>
+  <li><a href="/2020/09/Regular-expression-extract-html-links.html">Extract Links From HTML Document</a></li>
 </ol>
 
       </div>
