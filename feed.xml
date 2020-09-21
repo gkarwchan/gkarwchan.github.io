@@ -6,9 +6,103 @@
 </description>
     <link>https://blog.gisspan.com/</link>
     <atom:link href="https://blog.gisspan.com/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sat, 12 Sep 2020 12:30:24 -0600</pubDate>
-    <lastBuildDate>Sat, 12 Sep 2020 12:30:24 -0600</lastBuildDate>
+    <pubDate>Sun, 20 Sep 2020 21:03:35 -0600</pubDate>
+    <lastBuildDate>Sun, 20 Sep 2020 21:03:35 -0600</lastBuildDate>
     <generator>Jekyll v4.0.0.pre.beta1</generator>
+    
+      <item>
+        <title>Memoization in Python and JavaScript</title>
+        <description>
+&lt;p&gt;Memoization is a technique that is used a lot in Dynamic Programming and in general to speed up algorithms.&lt;br /&gt;
+Memoization is the same as caching but in functional programming. The Caching mechanism will store the data into a cache store, and that data can be from anywhere (HTTP page, REST call, … etc) , where memoization is specific to cache the results of a function, and it create and maintain the store inside the function itself (so the function will be pure function) and send the store as a parameter into the function arguments.&lt;/p&gt;
+
+&lt;!--more--&gt;
+&lt;p&gt;&lt;br /&gt;
+&lt;br /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;python-implementation&quot;&gt;Python implementation&lt;/h2&gt;
+&lt;p&gt;Python already comes with a built-in memoization function, but for learning purpose let us try to implement the memoization ourselves.&lt;br /&gt;
+As memoization used mainly in functional programming and in function, it is better to implement it as a &lt;a href=&quot;https://www.datacamp.com/community/tutorials/decorators-python&quot;&gt;Decorator&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;We create a decorator and pass to it the calculation function as a parameters.&lt;/p&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;memoize&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;func&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;cache&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;dict&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+
+    &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;memoized_func&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;args&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;args&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;not&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;cache&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+          &lt;span class=&quot;n&quot;&gt;cache&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;args&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;func&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;args&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;cache&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;args&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;memoized_func&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Let us see an example how to use it with the fibonacci calculation:&lt;/p&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;o&quot;&gt;@&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;memoize&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;fibonacci&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;c&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]:&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;c&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;fibonacci&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;c&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;fibonacci&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;c&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;But, we don’t need to implement memoization ourselves, because Python comes with a built-in function to do that.&lt;br /&gt;
+&lt;a href=&quot;https://docs.python.org/3/library/functools.html#functools.lru_cache&quot;&gt;&lt;strong&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;functools.lru_cache&lt;/code&gt;&lt;/strong&gt;&lt;/a&gt; is a decorator function that does that.&lt;/p&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;functools&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;lru_cache&lt;/span&gt;
+
+&lt;span class=&quot;o&quot;&gt;@&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;lru_cache&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;fibonacci&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;c&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]:&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;c&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;fibonacci&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;c&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;fibonacci&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;c&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;javascript-implementation&quot;&gt;JavaScript implementation&lt;/h2&gt;
+
+&lt;p&gt;Again in JavaScript as in Python before we use the idea of higher-order function to build the memoization:&lt;/p&gt;
+
+&lt;div class=&quot;language-js highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;memoization&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;func&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;cache&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{};&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(){&lt;/span&gt;
+      &lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;key&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;JSON&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;stringify&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;arguments&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+      &lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;args&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;Array&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;prototype&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;slice&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;call&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;arguments&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+      &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;key&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;cache&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)){&lt;/span&gt;
+        &lt;span class=&quot;nx&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;func&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;apply&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kc&quot;&gt;null&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;vv&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+        &lt;span class=&quot;nx&quot;&gt;cache&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;key&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;val&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+      &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+      &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;cache&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;key&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;The code above is ceating a higher order function that takes a function as an argument.&lt;br /&gt;
+In order to make it general we should create a cache that match all arguments as one key. The way to do that is to convert the arguments to a unique string. The way to do that is to convert using &lt;code class=&quot;highlighter-rouge&quot;&gt;JSON.stringify&lt;/code&gt;.&lt;br /&gt;
+The second step is to capture all arguments as an array to pass them to calling the function later.&lt;/p&gt;
+
+&lt;p&gt;Let’s use the function as follows:&lt;/p&gt;
+
+&lt;div class=&quot;language-js highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;fibonacci&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;c&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;fibonacci&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;c&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;fibonacci&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;c&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;nx&quot;&gt;fibonacci&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;memoization&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;fibonacci&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+
+&lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;fibonacci&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;46&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+</description>
+        <pubDate>Sun, 20 Sep 2020 09:45:00 -0600</pubDate>
+        <link>https://blog.gisspan.com/2020/09/Memoization-python-javascript-csharp.html</link>
+        <guid isPermaLink="true">https://blog.gisspan.com/2020/09/Memoization-python-javascript-csharp.html</guid>
+        
+        <category>python</category>
+        
+        <category>javascript</category>
+        
+        <category>performance</category>
+        
+        
+      </item>
     
       <item>
         <title>Regular expression&amp;#58 Extract HTML Links</title>
@@ -1240,179 +1334,6 @@ Python’s nltk has the &lt;a href=&quot;https://wordnet.princeton.edu/&quot;&gt
         <pubDate>Thu, 05 Sep 2019 09:45:00 -0600</pubDate>
         <link>https://blog.gisspan.com/2019/09/Scrubbing-natural-language-text-data.html</link>
         <guid isPermaLink="true">https://blog.gisspan.com/2019/09/Scrubbing-natural-language-text-data.html</guid>
-        
-        <category>ML &amp; data science</category>
-        
-        
-      </item>
-    
-      <item>
-        <title>Naive Bayes by examples</title>
-        <description>
-&lt;p&gt;Bayes and Naive Bayes are very important techniques in machine learning. I am going to cover the Naive Bayes Classifier which is widley used in machine learning, but before that I will explain in this post the Bayes’ theorm by examples&lt;/p&gt;
-
-&lt;!--more--&gt;
-
-&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;a-brief-introduction-for-bayes-theorem&quot;&gt;A brief introduction for Bayes’ theorem:&lt;/h2&gt;
-&lt;p&gt;Let &lt;strong&gt;&lt;em&gt;A&lt;/em&gt;&lt;/strong&gt; and &lt;strong&gt;&lt;em&gt;B&lt;/em&gt;&lt;/strong&gt; denote two events. In Bayes’ theorem, &lt;strong&gt;&lt;em&gt;P(A|B)&lt;/em&gt;&lt;/strong&gt; the probability that &lt;strong&gt;&lt;em&gt;A&lt;/em&gt;&lt;/strong&gt; occurs given &lt;strong&gt;&lt;em&gt;B&lt;/em&gt;&lt;/strong&gt; already occured can be computed by:&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;P(A|B) = \frac{P(B|A)P(A)}{P(B)}&lt;/script&gt;
-
-&lt;p&gt;Where &lt;strong&gt;&lt;em&gt;P(B|A)&lt;/em&gt;&lt;/strong&gt; is the probability of observing &lt;strong&gt;&lt;em&gt;B&lt;/em&gt;&lt;/strong&gt; given &lt;strong&gt;&lt;em&gt;A&lt;/em&gt;&lt;/strong&gt; occurs, and &lt;strong&gt;&lt;em&gt;P(A)&lt;/em&gt;&lt;/strong&gt;, &lt;strong&gt;&lt;em&gt;P(B)&lt;/em&gt;&lt;/strong&gt; the probability of &lt;strong&gt;&lt;em&gt;A&lt;/em&gt;&lt;/strong&gt; and &lt;strong&gt;&lt;em&gt;B&lt;/em&gt;&lt;/strong&gt; occurs repectively.&lt;/p&gt;
-
-&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;examples&quot;&gt;Examples:&lt;/h2&gt;
-&lt;p&gt;I am copying these examples from many books and tutorial sites, and I am listing these references here:&lt;/p&gt;
-
-&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
-
-&lt;h3 id=&quot;example-1-coin-flip&quot;&gt;Example 1: Coin flip&lt;/h3&gt;
-&lt;p&gt;Given two coins, one is unfair with 90% of flips getting a head and 10% getting a tail, another one is fair. Randomly pick one coin and flip it. What is the probability that this coin is the unfair one, if we get a head?&lt;/p&gt;
-
-&lt;p&gt;Let’s denote &lt;strong&gt;&lt;em&gt;U&lt;/em&gt;&lt;/strong&gt;, the event of picking the unfair coin and &lt;strong&gt;&lt;em&gt;H&lt;/em&gt;&lt;/strong&gt; the event of getting a head. so the probability of unfair coin given a head is already observed is ***P(U|H) can be calculated as:&lt;br /&gt;
-&lt;script type=&quot;math/tex&quot;&gt;P(U|H)=\frac{P(H|U)P(U)}{P(H)}&lt;/script&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;&lt;em&gt;P(H|U)&lt;/em&gt;&lt;/strong&gt; = 90%&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;&lt;em&gt;P(U)&lt;/em&gt;&lt;/strong&gt; = 50% as we randomly pick a coin out of two.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;&lt;em&gt;P(H)&lt;/em&gt;&lt;/strong&gt; can be observed by two paths, the fair coin is picked &lt;strong&gt;&lt;em&gt;P(F)&lt;/em&gt;&lt;/strong&gt; and the unfair coin is picked &lt;strong&gt;&lt;em&gt;P(U)&lt;/em&gt;&lt;/strong&gt;.&lt;br /&gt;
-&lt;strong&gt;&lt;em&gt;P(H)&lt;/em&gt;&lt;/strong&gt; = P(H|U)P(U) + P(H|F)P(F)&lt;br /&gt;
-&lt;script type=&quot;math/tex&quot;&gt;P(U|H)=\frac{P(H|U)P(U)}{P(H|U)P(U)+P(H|F)P(F)}=\frac{0.9 * 0.5}{0.9 * 0.5 + 0.5 * 0.5}=0.64&lt;/script&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
-
-&lt;h3 id=&quot;example-2-cancer-screening&quot;&gt;Example 2: Cancer screening&lt;/h3&gt;
-&lt;p&gt;Suppose a physician reported the following cancer screening test scenario:&lt;/p&gt;
-
-&lt;div style=&quot;width:70%; align:center; margin:auto&quot;&gt;
-
-  &lt;table&gt;
-    &lt;thead&gt;
-      &lt;tr&gt;
-        &lt;th&gt; &lt;/th&gt;
-        &lt;th&gt;Cancer&lt;/th&gt;
-        &lt;th&gt;No Cancer&lt;/th&gt;
-        &lt;th&gt;Total&lt;/th&gt;
-      &lt;/tr&gt;
-    &lt;/thead&gt;
-    &lt;tbody&gt;
-      &lt;tr&gt;
-        &lt;td&gt;Text Positive&lt;/td&gt;
-        &lt;td&gt;80&lt;/td&gt;
-        &lt;td&gt;900&lt;/td&gt;
-        &lt;td&gt;980&lt;/td&gt;
-      &lt;/tr&gt;
-      &lt;tr&gt;
-        &lt;td&gt;Text Negative&lt;/td&gt;
-        &lt;td&gt;20&lt;/td&gt;
-        &lt;td&gt;9000&lt;/td&gt;
-        &lt;td&gt;9020&lt;/td&gt;
-      &lt;/tr&gt;
-      &lt;tr&gt;
-        &lt;td&gt;Total&lt;/td&gt;
-        &lt;td&gt;100&lt;/td&gt;
-        &lt;td&gt;9900&lt;/td&gt;
-        &lt;td&gt;10000&lt;/td&gt;
-      &lt;/tr&gt;
-    &lt;/tbody&gt;
-  &lt;/table&gt;
-
-&lt;/div&gt;
-
-&lt;p&gt;The problem: if the result of this screening test on a person is positive, what is the probability that they actually have cancer?&lt;/p&gt;
-
-&lt;p&gt;Let’s assign the event of having a cancer as &lt;strong&gt;&lt;em&gt;C&lt;/em&gt;&lt;/strong&gt; and positive testing as &lt;strong&gt;&lt;em&gt;Pos&lt;/em&gt;&lt;/strong&gt;. let’s calculate &lt;strong&gt;&lt;em&gt;P(C|Pos)&lt;/em&gt;&lt;/strong&gt;:&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;P(C|Pos) = \frac{P(Pos|C)P(C)}{P(Pos)} = \frac{\frac{80}{100} \frac{100}{10000}}{\frac{980}{10000}} = 8.16\%&lt;/script&gt;
-
-&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
-
-&lt;h3 id=&quot;example-3-email-spam-detector&quot;&gt;Example 3: Email Spam detector:&lt;/h3&gt;
-&lt;p&gt;Let us start with this training data&lt;/p&gt;
-
-&lt;table&gt;
-    &lt;thead&gt;
-        &lt;tr&gt;
-            &lt;th&gt;&lt;/th&gt;
-            &lt;th&gt;ID&lt;/th&gt;
-            &lt;th&gt;Terms in email&lt;/th&gt;
-            &lt;th&gt;Is spam&lt;/th&gt;
-        &lt;/tr&gt;
-    &lt;/thead&gt;
-    &lt;tbody&gt;
-        &lt;tr&gt;
-            &lt;td rowspan=&quot;4&quot;&gt;Training Data&lt;/td&gt;
-            &lt;td style=&quot;padding-left: 0&quot;&gt;1&lt;/td&gt;
-            &lt;td&gt;Click win prize&lt;/td&gt;
-            &lt;td&gt;Yes&lt;/td&gt;
-        &lt;/tr&gt;
-        &lt;tr&gt;
-            &lt;td&gt;2&lt;/td&gt;
-            &lt;td&gt;Click meeting setup meeting&lt;/td&gt;
-            &lt;td&gt;No&lt;/td&gt;
-        &lt;/tr&gt;
-        &lt;tr&gt;
-            &lt;td&gt;3&lt;/td&gt;
-            &lt;td&gt;Prize free prize&lt;/td&gt;
-            &lt;td&gt;Yes&lt;/td&gt;
-        &lt;/tr&gt;
-        &lt;tr&gt;
-            &lt;td&gt;4&lt;/td&gt;
-            &lt;td&gt;Click prize free&lt;/td&gt;
-            &lt;td&gt;Yes&lt;/td&gt;
-        &lt;/tr&gt;
-        &lt;tr&gt;
-            &lt;td&gt;Testing Case&lt;/td&gt;
-            &lt;td style=&quot;padding-left: 0&quot;&gt;5&lt;/td&gt;
-            &lt;td&gt;Free setup meeting free&lt;/td&gt;
-            &lt;td&gt;?&lt;/td&gt;
-        &lt;/tr&gt;
-    &lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;p&gt;First we define two events: spam and not spam $S$ and $NS$ respectively.&lt;br /&gt;
-From the training set:&lt;br /&gt;
-$P(S) = \frac{3}{4}$&lt;br /&gt;
-$P(NS) = \frac{1}{4}$&lt;/p&gt;
-
-&lt;p&gt;Or we can &lt;strong&gt;impose&lt;/strong&gt; an assumption of prior to be $P(s) = 1\%$.&lt;/p&gt;
-
-&lt;p&gt;To calculate $P(S|x)$ where $x = (free, setup, meeting, click)$, we start by calculate $P(x_i|S)$.&lt;br /&gt;
-$P(free|S) = \frac{2+1}{9+6} = \frac{3}{15}$&lt;br /&gt;
-$P(free|NS) = \frac{0+1}{4+6} = \frac{1}{10}$&lt;/p&gt;
-
-&lt;p&gt;&lt;br /&gt;
-$P(setup|S) = \frac{0+1}{9+6} = \frac{1}{15}$&lt;br /&gt;
-$P(setup|NS) = \frac{1+1}{4+6} = \frac{2}{10}$&lt;/p&gt;
-
-&lt;p&gt;&lt;br /&gt;
-$P(meeting|S) = \frac{0+1}{9+6} = \frac{1}{15}$&lt;br /&gt;
-$P(meeting|NS) = \frac{2+1}{4+6} = \frac{3}{10}$&lt;/p&gt;
-
-&lt;p&gt;So, the solution:&lt;br /&gt;
-&lt;script type=&quot;math/tex&quot;&gt;\frac{P(S|x)}{P(NS|x)}=\frac{P(free|S)*P(setup|S)*P(meeting|S)*P(free|S)*P(S)}{P(free|NS)*P(setup|NS)*P(meeting|NS)*P(free|NS)*P(NS)} = \frac{8}{9}&lt;/script&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;list-of-posts&quot;&gt;List of posts&lt;/h2&gt;
-&lt;p&gt;This post is part of a series of posts&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;&lt;a href=&quot;/2019/09/Naive-bayes-detect-email-spam.html&quot;&gt;Preperation and introduction&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;Naive Bayes by example (this post)&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;/2019/09/Scrubbing-natural-language-text-data.html&quot;&gt;Scrubbing natural language text&lt;/a&gt;.&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;/2019/09/naive-bayes-classifier.html&quot;&gt;Naive Bayes’ Classifire&lt;/a&gt;.&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;/2019/09/python-spam-detector.html&quot;&gt;Writing Naive Bayes from scratch&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;/2019/09/Using-Scikit-learn-for-naive-bayes.html&quot;&gt;Using Scikit-learn library&lt;/a&gt;&lt;/li&gt;
-&lt;/ol&gt;
-</description>
-        <pubDate>Sun, 01 Sep 2019 09:45:00 -0600</pubDate>
-        <link>https://blog.gisspan.com/2019/09/Naive-Bayes-By-Examples.html</link>
-        <guid isPermaLink="true">https://blog.gisspan.com/2019/09/Naive-Bayes-By-Examples.html</guid>
         
         <category>ML &amp; data science</category>
         
