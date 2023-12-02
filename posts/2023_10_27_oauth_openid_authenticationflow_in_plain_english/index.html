@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  
+    
+  <title>OAuth, OpenID Connect, SSO and Authentication Flows in plain English. | Ghassan&#39;s Page</title>
+  <meta name="author" content="Ghassan Karwchan">
+  <meta name="description" content="Gone are the days when you force your users to register into your application by creating username/password. Everyone wants to skip that process when they can identify themselves using other ways (google, facebook, twitter…), and they want to use their single sign on process to identify them across multiple applications and multiple websites. In this post I am trying to explain the process and its technologies in simple English.
+An explanation by example:So you are a developer who is building an application and want to allow your users to use their Google credentials to authenticate themselves into your account.">
+  <meta name="keywords" content="blog,developer,personal">
+
+  <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="OAuth, OpenID Connect, SSO and Authentication Flows in plain English."/>
+<meta name="twitter:description" content="Gone are the days when you force your users to register into your application by creating username/password. Everyone wants to skip that process when they can identify themselves using other ways (google, facebook, twitter…), and they want to use their single sign on process to identify them across multiple applications and multiple websites. In this post I am trying to explain the process and its technologies in simple English.
+An explanation by example:So you are a developer who is building an application and want to allow your users to use their Google credentials to authenticate themselves into your account."/>
+
+  <meta property="og:title" content="OAuth, OpenID Connect, SSO and Authentication Flows in plain English." />
+<meta property="og:description" content="Gone are the days when you force your users to register into your application by creating username/password. Everyone wants to skip that process when they can identify themselves using other ways (google, facebook, twitter…), and they want to use their single sign on process to identify them across multiple applications and multiple websites. In this post I am trying to explain the process and its technologies in simple English.
+An explanation by example:So you are a developer who is building an application and want to allow your users to use their Google credentials to authenticate themselves into your account." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://www.ghassan.page/posts/2023_10_27_oauth_openid_authenticationflow_in_plain_english/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2023-10-27T12:41:54-06:00" />
+<meta property="article:modified_time" content="2023-10-27T12:41:54-06:00" />
+
+
+  <link rel="stylesheet" href="/css/bootstrap.min.css"  crossorigin="anonymous">
+  
+  <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.1/css/all.min.css" rel="stylesheet" type="text/css">
+
+  <link rel="stylesheet" href="/sass/main.css">
+
+  <link rel="stylesheet" href="/zoomjs/zoom.min.css">
+
+  <script src=/js/lazysizes.min.js></script>
+
+  
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="manifest" href="/site.webmanifest">
+  
+
+</head>
+
+
+
+<body ontouchstart="">
+  
+  
+  <nav class="navbar navbar-default navbar-custom navbar-fixed-top invert">
+  <div class="container-fluid">
+    
+    <div class="navbar-header page-scroll">
+      <button type="button" class="navbar-toggle">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="https://www.ghassan.page/">Ghassan&#39;s Page</a>
+    </div>
+    
+    <div id="huxblog_navbar">
+      <div class="navbar-collapse">
+        <ul class="nav navbar-nav navbar-right">
+          
+          <li><a href="/" title="Home">Home</a></li>
+          
+          <li><a href="/archive/" title="Archive">Archive</a></li>
+          
+          <li><a href="/about/" title="About">About</a></li>
+          
+          <li><a href="https://github.com/gkarwchan/hugoblogsource" title="Github">Github</a></li>
+          
+
+          <li class="search-icon">
+            <a href="javascript:void(0)">
+              <i class="fa fa-search"></i>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    
+  </div>
+  
+</nav>
+<script>
+  
+  
+  
+  var $body = document.body;
+  var $toggle = document.querySelector(".navbar-toggle");
+  var $navbar = document.querySelector("#huxblog_navbar");
+  var $collapse = document.querySelector(".navbar-collapse");
+
+  var __HuxNav__ = {
+    close: function () {
+      $navbar.className = " ";
+      
+      setTimeout(function () {
+        
+        if ($navbar.className.indexOf("in") < 0) {
+          $collapse.style.height = "0px";
+        }
+      }, 400);
+    },
+    open: function () {
+      $collapse.style.height = "auto";
+      $navbar.className += " in";
+    },
+  };
+
+  
+  $toggle.addEventListener("click", function (e) {
+    if ($navbar.className.indexOf("in") > 0) {
+      __HuxNav__.close();
+    } else {
+      __HuxNav__.open();
+    }
+  });
+
+  
+
+  document.addEventListener("click", function (e) {
+    if (e.target == $toggle) return;
+    if (e.target.className == "icon-bar") return;
+    __HuxNav__.close();
+  });
+</script>
+  
+<div class="search-page">
+  <div class="search-icon-close-container">
+    <span class="search-icon-close">
+      <i class="fa fa-chevron-down"></i>
+    </span>
+  </div>
+  <div class="search-main container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <form></form>
+        <input type="text" id="search-input" placeholder="$ grep...">
+        </form>
+        <div id="search-results" class="mini-post-list"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+  
+  
+
+
+<style type="text/css">
+  header.intro-header {
+    position: relative;
+    background-image: url('');
+  }
+</style>
+
+<header class="intro-header style-text">
+
+  <div class="header-mask"></div>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div class="post-heading">
+          <div class="tags">
+            
+            <a class="tag" href="/tags/security/" title="security">security</a>
+            
+          </div>
+          <h1>OAuth, OpenID Connect, SSO and Authentication Flows in plain English.</h1>
+          <h2 class="subheading"></h2>
+          <span class="meta">
+            Posted by  Ghassan Karwchan 
+            on Fri, Oct 27, 2023
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+
+  
+
+
+<article>
+  <div class="container">
+    <div class="row">
+
+      
+      <div class="
+              col-lg-8 col-lg-offset-2
+              col-md-10 col-md-offset-1
+              post-container">
+        <p>Gone are the days when you force your users to register into your application by creating username/password.
+Everyone wants to skip that process when they can identify themselves using other ways (google, facebook, twitter…), and they want to use their single sign on process to identify them across multiple applications and multiple websites.
+In this post I am trying to explain the process and its technologies in simple English.</p>
+<h2 id="an-explanation-by-example">An explanation by example:<a class="anchorjs-link" href="#an-explanation-by-example"></a></h2><p>So you are a developer who is building an application and want to allow your users to use their Google credentials to authenticate themselves into your account.
+I am going to explain to you the concepts and the technologies.</p>
+<p>To accomplish that, your application must make a request to some API service on the Google Account website in order to initiate the user authentication process and receive a response that identifies the user.
+The Google Account website is the only place where the authentication process should run, and where the user enter their credentials. And Google authentication service should ensures that the credentials are safe and hidden from our application.</p>
+<p>The process of using an external server to sign-on and using its returning identity in different applications is called <strong><code>Single Sign-On (SSO)</code></strong>.</p>
+<p>Google Account website stores information about the user who did previously register into Google Account website. The digital information that uniquely identifies a user on Google Account website and shared on other websites and domains is known as <strong><code>Federated Identity</code></strong>.<br>
+The Google Account website has to provide API services that will achieve that process, and these services must use common protocols and policies that are understood by our application and Google Account. These protocols and policies are called <strong><code>Federated Identity Management (FIdM)</code></strong>.</p>
+<p>Google Account is the provider that provides Authentication service to identify users, and return their Federated Identities, and the technical terms for it is: <strong><code>Federated Identity Provider</code></strong>.</p>
+<p>Our application will be the consumer or the client for <strong><code>FIdM</code></strong>.
+There are many different Federated Identity Providers: Google, Microsoft, Twitter, Facebook…etc. They all provide these FIdM services for industry standard protocols.</p>
+<h2 id="what-technologies-and-protocols-are-used">What technologies and protocols are used?<a class="anchorjs-link" href="#what-technologies-and-protocols-are-used"></a></h2><p>There are three technologies that provide FIdM services:</p>
+<ol>
+<li><strong>SAML</strong> (Security Assertion Markup Language):  It is the oldest technology, and although it is limited used now but still kicking around.</li>
+<li><strong>OAuth 2.0</strong>: the most common one, because it is implemented by all providers.</li>
+<li><strong>OpenID Connect</strong>: is it built on top of OAuth but it cut lots of extra stuff and concentrate on authentication.</li>
+</ol>
+<h3 id="how-they-are-different">How they are different?<a class="anchorjs-link" href="#how-they-are-different"></a></h3><h4 id="saml-and-ws-federation">SAML and WS-Federation:<a class="anchorjs-link" href="#saml-and-ws-federation"></a></h4><p>SAML was the oldest one, and is used mainly for web applications and mostly internal web applications. It uses XML to communicate to the Identity providers. SAML was developed when calling external services was done using SOAP (an old protocol from web services).
+Interesting to note that an approach to make better SAML was initiated and was called <strong><code>WS-Federation</code></strong> but then later REST and HTTP replaced SOAP, and JSON replaced XML, and SAML/WS-Federation became less and less used.<br>
+SAML only returns a digital identity called <strong><code>SAML Assertion</code></strong> to identify the user. The <code>SAML Assertion</code> is very simple and it is the simplest representation of the user.</p>
+<h4 id="oauth-20">OAuth 2.0:<a class="anchorjs-link" href="#oauth-20"></a></h4><p>Although OAuth is used as one of FIdM technologies, but it wasn&rsquo;t mainly built for that purpose.
+With the rising of social media and the wealth of its data, social media companies wanted to provide its data and share user data across the applications.
+They provided more sophisticated protocols to share user information and allow users to choose what information they want to share, and this is how OAuth 2.0 was built.</p>
+<p>Because OAuth 2.0 needed to identify the users on their own social media servers, so it has the SSO features of FIdM, beside it added more features to allow users to chose what information they want to share.<br>
+For example on google we all saw this when using google login.
+<figure>
+  <a class="paragraph-image">
+    <img data-src="https://dev-to-uploads.s3.amazonaws.com/uploads/articles/ngm47aure1o2jr0ta3ac.png" data-action="zoom" alt="Image description"  class="lazyload">
+  </a>
+  
+</figure></p>
+<p>As you see that OAuth has more that SSO and FIdM, but it built very good technologies and protocols, and this is why OpenID came up to life.</p>
+<h4 id="openid-connect">OpenID Connect:<a class="anchorjs-link" href="#openid-connect"></a></h4><p>Because OAuth had good technologies and standards to achieve SSO and FIdM, but has way more of Authorization and sharing information, the industry built a new standard that use OAuth technologies but concentrate only on the Authentication process and cut out the authorization, and it only share the basic data that uniquely identify the user. This new standard is OpenID Connect 1.0.
+OpenID Connect uses lots of common technologies with OAuth, that is sometimes it get confused.</p>
+<h2 id="how-the-process-works">How the process works?<a class="anchorjs-link" href="#how-the-process-works"></a></h2><p>OAuth created many workflows each work better for a specific type of applications. OAuth called these workflows: <strong><code>Flows</code></strong>
+OpenID still using these flows but slightly modified them. So understand them with OAuth is the same as OpenID.
+We can define these types of applications:</p>
+<ol>
+<li>Website application that serve its own UI.</li>
+<li>Single Page Application (SPA), where the client is a thick JavaScript application that can be hosted on any place, and it called different API application.</li>
+<li>Mobile native APP.</li>
+<li>Local desktop App.
+Each type has its matching OAuth</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th>Application Type</th>
+<th>OAuth Flow</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Web application</td>
+<td>Authorization Flow</td>
+</tr>
+<tr>
+<td>SPA</td>
+<td>the Authorization Code Flow with Proof Key for Code Exchange (PKCE) <br> Implicit Flow used to be the one but not any more</td>
+</tr>
+<tr>
+<td>Local Desktop App</td>
+<td>Client Credential Flow</td>
+</tr>
+<tr>
+<td>Native mobile APP</td>
+<td>the Authorization Code Flow with Proof Key for Code Exchange (PKCE)</td>
+</tr>
+</tbody>
+</table>
+<h2 id="conclusion">Conclusion<a class="anchorjs-link" href="#conclusion"></a></h2><p>Hopefully I was able to explain these technical terms and technologies in simple plain Engligh.</p>
+
+
+        <hr style="visibility: hidden;" />
+        <ul class="pager">
+          
+          <li class="previous">
+            <a href="/posts/2023_10_17_subscribe_to_upload_file_azure_blog_storage/" data-toggle="tooltip" data-placement="top" title="Write Asp.NET webhook handlers for Azure Event Grid events.">
+              Previous<br>
+              <span>Write Asp.NET webhook handlers for Azure Event Grid events.</span>
+            </a>
+          </li>
+          
+          
+          <li class="next">
+            <a href="/posts/2023_11_09_get_most_out_of_app_service/" data-toggle="tooltip" data-placement="top" title="Get the most out of Azure App Service.">
+              Next<br>
+              <span>Get the most out of Azure App Service.</span>
+            </a>
+          </li>
+          
+        </ul>
+        <hr style="visibility: hidden;" />
+
+        
+        
+
+
+
+<div class="giscus" id="comments"></div>
+<script src="https://giscus.app/client.js" 
+  data-repo="gkarwchan/hugoblog" 
+  data-repo-id="R_kgDOI9C7aQ"
+  data-category="General"
+  data-category-id="DIC_kwDOI9C7ac4CUTNT"
+  data-mapping="pathname"
+  data-strict="0" 
+  data-reactions-enabled="1" 
+  data-emit-metadata="0" 
+  data-input-position="top"
+  data-theme="light_tritanopia"
+  data-lang="en"
+  crossorigin="anonymous"
+  async>
+  </script>
+
+
+
+
+      </div>
+
+      
+      
+      
+      <div class="
+              col-lg-2 col-lg-offset-0
+              visible-lg-block
+              sidebar-container
+              catalog-container">
+        <div class="side-catalog">
+          <hr class="hidden-sm hidden-xs">
+          <h5>
+            <a class="catalog-toggle" href="#">CATALOG</a>
+          </h5>
+          <ul class="catalog-body"></ul>
+        </div>
+      </div>
+      
+      
+      <div class="
+              col-lg-8 col-lg-offset-2
+              col-md-10 col-md-offset-1
+              sidebar-container">
+
+        
+        
+        <section>
+  
+  
+  <hr class="hidden-sm hidden-xs">
+  
+  <h5>FEATURED TAGS</h5>
+  <div class="tags">
+    
+    <a href="/tags/algorithm/">algorithm</a>
+    
+    <a href="/tags/asp.net/">asp.net</a>
+    
+    <a href="/tags/azure/">azure</a>
+    
+    <a href="/tags/ci/cd/">ci/cd</a>
+    
+    <a href="/tags/container/">container</a>
+    
+    <a href="/tags/dev-tools/">dev tools</a>
+    
+    <a href="/tags/javascript/">javascript</a>
+    
+    <a href="/tags/networking/">networking</a>
+    
+    <a href="/tags/performance/">performance</a>
+    
+    <a href="/tags/python/">python</a>
+    
+    <a href="/tags/security/">security</a>
+    
+  </div>
+</section>
+
+        
+        
+
+      </div>
+    </div>
+  </div>
+</article>
+
+
+
+  
+<footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        
+        <ul class="list-inline text-center">
+
+<li>
+  <a href="https://github.com/gkarwchan" target="_blank">
+    <span class="fa-stack fa-lg">
+      <i class="fa fa-circle fa-stack-2x"></i>
+      <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+    </span>
+  </a>
+</li>
+
+<li>
+  <a href="https://linkedin.com/in/ghassankarwchan" target="_blank">
+    <span class="fa-stack fa-lg">
+      <i class="fa fa-circle fa-stack-2x"></i>
+      <i class="fab fa-linkedin fa-stack-1x fa-inverse"></i>
+    </span>
+  </a>
+</li>
+
+
+<li>
+  <a href="/index.xml" target="_blank">
+    <span class="fa-stack fa-lg">
+      <i class="fa fa-circle fa-stack-2x"></i>
+      <i class="fas fa-rss fa-stack-1x fa-inverse"></i>
+    </span>
+  </a>
+</li></ul>
+
+        <p class="copyright text-muted">
+          Copyright &copy; Ghassan&#39;s Page 2023  
+          <br>
+          Powered by <a href="https://gohugo.io">Hugo</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src=/js/jquery.min.js></script>
+<script src=/js/bootstrap.min.js crossorigin="anonymous"></script>
+
+
+
+<script src="/js/hux-blog.min.c4ea77041cd3edbfc8b2622cd887a9a5d8760a4162d14489e36d2a3fa4c90172.js"></script>
+
+
+<script src=/js/simple-jekyll-search.min.js></script>
+
+
+<script src="/js/search.min.53bce5da475b4d362500e5ce5dddfa22e20e1b9018777411d2020b4b839c9310.js"></script>
+
+
+
+
+
+
+<script type="text/javascript">
+  function generateCatalog(selector) {
+    _containerSelector = 'div.post-container'
+    
+    var P = $(_containerSelector), a, n, t, l, i, c;
+    a = P.find('h1,h2,h3,h4');
+    
+    $(selector).html('')
+    
+    a.each(function () {
+      n = $(this).prop('tagName').toLowerCase();
+      i = "#" + $(this).prop('id');
+      t = $(this).text();
+      c = $('<a href="' + i + '" rel="nofollow">' + t + '</a>');
+      l = $('<li class="' + n + '_nav"></li>').append(c);
+      $(selector).append(l);
+    });
+    return true;
+  }
+
+  generateCatalog(".catalog-body");
+
+  
+  $(".catalog-toggle").click((function (e) {
+    e.preventDefault();
+    $('.side-catalog').toggleClass("fold")
+  }))
+</script>
+
+
+<script type="text/javascript" src='/js/jquery.nav.min.ade6bde8f9fcc6a4b40852cb892e9f5912340ab8fe1305149d917fdd16fffd8d.js'></script>
+<script>
+   $(document).ready( function () {
+    $('.catalog-body').onePageNav({
+      currentClass: "active",
+      changeHash: !1,
+      easing: "swing",
+      filter: "",
+      scrollSpeed: 700,
+      scrollOffset: 0,
+      scrollThreshold: .2,
+      begin: null,
+      end: null,
+      scrollChange: null,
+      padding: 80
+    });
+  });
+</script>
+
+
+
+
+
+
+
+
+
+<script src="/zoomjs/zoom.min.js"></script>
+
+</body>
+
+</html>

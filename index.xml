@@ -1,0 +1,337 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Ghassan&#39;s Page</title>
+    <link>https://www.ghassan.page/</link>
+    <description>Recent content on Ghassan&#39;s Page</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 09 Nov 2023 12:41:54 -0600</lastBuildDate><atom:link href="https://www.ghassan.page/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Get the most out of Azure App Service.</title>
+      <link>https://www.ghassan.page/posts/2023_11_09_get_most_out_of_app_service/</link>
+      <pubDate>Thu, 09 Nov 2023 12:41:54 -0600</pubDate>
+      
+      <guid>https://www.ghassan.page/posts/2023_11_09_get_most_out_of_app_service/</guid>
+      <description>Azure App service take care of tons of infrastructure, hosting, scalability, monitoring, deployment, DevOps, security and environment of your shoulders.
+But the question, are you really utilizing the most out of this wonderful service?
+Azure App service has tons of features that make it easy to forget about some of them and missing using them.
+I am going to list this checklist and explain more details on them. There are features that Must be implemented, and there are features that are optional because you might be using other services to achieve their functionalities.</description>
+    </item>
+    
+    <item>
+      <title>OAuth, OpenID Connect, SSO and Authentication Flows in plain English.</title>
+      <link>https://www.ghassan.page/posts/2023_10_27_oauth_openid_authenticationflow_in_plain_english/</link>
+      <pubDate>Fri, 27 Oct 2023 12:41:54 -0600</pubDate>
+      
+      <guid>https://www.ghassan.page/posts/2023_10_27_oauth_openid_authenticationflow_in_plain_english/</guid>
+      <description>Gone are the days when you force your users to register into your application by creating username/password. Everyone wants to skip that process when they can identify themselves using other ways (google, facebook, twitter…), and they want to use their single sign on process to identify them across multiple applications and multiple websites. In this post I am trying to explain the process and its technologies in simple English.
+An explanation by example:So you are a developer who is building an application and want to allow your users to use their Google credentials to authenticate themselves into your account.</description>
+    </item>
+    
+    <item>
+      <title>Write Asp.NET webhook handlers for Azure Event Grid events.</title>
+      <link>https://www.ghassan.page/posts/2023_10_17_subscribe_to_upload_file_azure_blog_storage/</link>
+      <pubDate>Tue, 17 Oct 2023 12:41:54 -0600</pubDate>
+      
+      <guid>https://www.ghassan.page/posts/2023_10_17_subscribe_to_upload_file_azure_blog_storage/</guid>
+      <description>Azure Event Grid is a Pub Sub message distribution service that is fully integrated with Azure infrastructure. Almost all Azure services, and PaaS, and many third-party SaaS provides integration with Event Grid, by publishing events. It is supporting Http protocol for publishing events to it, and now with a newer upgrade it supports MQTT protocol for lighter fast IoT communications.
+It is providing Pub/Sub services from Azure services to the subscribers, and adding to that reliability to insure the delivery of the messages.</description>
+    </item>
+    
+    <item>
+      <title>Best way to run background services in ASP.NET.</title>
+      <link>https://www.ghassan.page/posts/2023_07_12_hosting_backgroundservice_aspnet/</link>
+      <pubDate>Wed, 12 Jul 2023 12:41:54 -0600</pubDate>
+      
+      <guid>https://www.ghassan.page/posts/2023_07_12_hosting_backgroundservice_aspnet/</guid>
+      <description>Asp.Net provides many ways to run background processes. They are:
+IHostedService interface BackgroundService abstract class Worker Service using Microsoft.NET.SDK.Worker Actually they are just layers on top of each others, each layer provides extra functionality on the one below.
+This post is going to describe each layer and what it provides.
+Running background tasks using IHostedServiceAsp.NET provides support for running background tasks in the same process that host Asp.net application.
+By implementing IHostedService interface, your background task will start a little bit after Asp.</description>
+    </item>
+    
+    <item>
+      <title>Build resilient applications accessing Azure services with no code.</title>
+      <link>https://www.ghassan.page/posts/2023_03_11_build_resilient_applications_azure/</link>
+      <pubDate>Sat, 11 Mar 2023 18:44:55 -0700</pubDate>
+      
+      <guid>https://www.ghassan.page/posts/2023_03_11_build_resilient_applications_azure/</guid>
+      <description>When working on distributed system like systems that are running on the cloud, and microservices, then you should anticipate transient faults like temporary loss of network connection, or temporary unavailability of a service, or a service is busy.
+This is why in cloud application, the term Building for resiliency become a pattern in building application, and it means properly handling these transient faults in the code.
+There are two common used patterns that we can use in our code, that can help build resilience application.</description>
+    </item>
+    
+    <item>
+      <title>Buy Custom Domain With Azure for your App Service.</title>
+      <link>https://www.ghassan.page/posts/2023_03_05_buy_custom_domain_with_azure/</link>
+      <pubDate>Sat, 04 Mar 2023 21:44:55 -0700</pubDate>
+      
+      <guid>https://www.ghassan.page/posts/2023_03_05_buy_custom_domain_with_azure/</guid>
+      <description>If you googled how to buy a domain name on Azure, you might get answers saying that Azure doesn&amp;rsquo;t provide domain name registrar, like the following answer, or the following discussion.
+Not even those answers, even the book Exam Ref AZ-900 which is a Microsoft book says the following about Azure DNS Zone:
+If you want to purchase your own domain name, you go to a domain registrar, and they register the domain to you.</description>
+    </item>
+    
+    <item>
+      <title>Everything you need to know about telemetry for your Asp.NET application on Azure.</title>
+      <link>https://www.ghassan.page/posts/2023_02_24_application_insights_on_azure/</link>
+      <pubDate>Fri, 24 Feb 2023 21:44:55 -0700</pubDate>
+      
+      <guid>https://www.ghassan.page/posts/2023_02_24_application_insights_on_azure/</guid>
+      <description>All of the services that Azure offers for the instrumentation and observability (monitoring) of applications are grouped under Azure Monitor.
+Three services fall under the banner of Azure Monitor:
+Azure Monitor itself, which offers the observability component to track your apps. Application Insights, or its substitute OpenTelemetry, which offers the instrumentation and telemetry components The analytics component is provided by Log Analytics. We will emphasise the instrumentation component in this post.</description>
+    </item>
+    
+    <item>
+      <title>Check performance bottleneck with Azure Application Insights.</title>
+      <link>https://www.ghassan.page/posts/2023_02_22_azure_application_insight_performance/</link>
+      <pubDate>Wed, 22 Feb 2023 21:44:55 -0700</pubDate>
+      
+      <guid>https://www.ghassan.page/posts/2023_02_22_azure_application_insight_performance/</guid>
+      <description>If you have Application Insights enabled for your azure app service, then it is a piece of cake to get the performance bottleneck in your app, and even it check external dependencies like database queries or any other external dependencies.
+I have a Web API application, that is accessing Azure Sql Server, and Azure blob storage.
+By going into the performance blade under Investigate:
+You will see the average time for each API call, sorted descending by time: By clicking on any one, you can drill down to where the time consume even by its external dependencies:</description>
+    </item>
+    
+    <item>
+      <title>Use Azure Key Vault to retrieve secured parameters during  Azure deployment.</title>
+      <link>https://www.ghassan.page/posts/2023_02_04_azure_keyvault_deployment/</link>
+      <pubDate>Sat, 04 Feb 2023 20:42:03 -0700</pubDate>
+      
+      <guid>https://www.ghassan.page/posts/2023_02_04_azure_keyvault_deployment/</guid>
+      <description>You have an ARM template to deploy, and you need to pass secure parameters. Instead of storing secure values in the parameter file, you can just retrieve these values from Key Vault.
+To be able to access the key vault by the resource manager you need to change access policy to allow &amp;ldquo;Azure Resource Manager for template deployment&amp;rdquo;, as shown here.
+Or you can do it from Powershell:
+1// to update an existing key vault 2Set-AzKeyVaultAccessPolicy -VaultName MyVaultName -EnabledForTemplateDeployment 3 4// to create a new key vault with this feature enabled 5New-AzKeyVault ` 6 -VaultName MyVaultName ` 7 -resourceGroupName myresourcegroup ` 8 -Location centralus ` 9 -EnabledForTemplateDeployment How to use it?</description>
+    </item>
+    
+    <item>
+      <title>Parse Azure SAS token using regular expression</title>
+      <link>https://www.ghassan.page/posts/2023_02_03_parse_sas_token_regex/</link>
+      <pubDate>Fri, 03 Feb 2023 20:40:37 -0700</pubDate>
+      
+      <guid>https://www.ghassan.page/posts/2023_02_03_parse_sas_token_regex/</guid>
+      <description>If you have an Azure SAS token that is not working, it is good idea to parse it and understand what permissions and values it contains.
+This is a JavaScript code that uses Regular Expression to parse he SAS token, and an running example where you can try your own SAS token.
+1var paramNames = { 2 sig: &amp;#39;cryptographic signature&amp;#39;, 3 st: &amp;#39;start time&amp;#39;, 4 se: &amp;#39;end time&amp;#39;, 5 spr: &amp;#39;protocol&amp;#39;, 6 srt: &amp;#39;resource types&amp;#39;, 7 sv: &amp;#39;version&amp;#39;, 8 sp: &amp;#39;permissions&amp;#39;, 9 ss: &amp;#39;services&amp;#39; 10}; 11 12let valueLookups = { 13 sp : { 14 r: &amp;#39;read&amp;#39;, d: &amp;#39;delete&amp;#39;, w: &amp;#39;write&amp;#39;, l: &amp;#39;list&amp;#39;, a: &amp;#39;add&amp;#39;, 15 c: &amp;#39;create&amp;#39;, u: &amp;#39;update&amp;#39;, p: &amp;#39;process&amp;#39;, f: &amp;#39;filter&amp;#39; 16 }, 17 srt: { 18 s: &amp;#39;service&amp;#39;, c: &amp;#39;container&amp;#39;, o: &amp;#39;object&amp;#39; 19 }, 20 ss : { 21 b: &amp;#39;blob&amp;#39;, f: &amp;#39;file&amp;#39;, q: &amp;#39;queue&amp;#39;, t: &amp;#39;table&amp;#39; 22 } 23} 24 25let valueConvertor = (key, inputValue) =&amp;gt; 26 valueLookups[key] ?</description>
+    </item>
+    
+    <item>
+      <title>Implement a watchdog for your microservices using off-the-shelf ASP.Net Healthcheck UI.</title>
+      <link>https://www.ghassan.page/posts/2023_02_02_aspnet_watchdog/</link>
+      <pubDate>Thu, 02 Feb 2023 20:22:20 -0700</pubDate>
+      
+      <guid>https://www.ghassan.page/posts/2023_02_02_aspnet_watchdog/</guid>
+      <description>What is a watchdogA watchdog is a service that monitor other services and take actions when it detect a service is failing.
+ASP.NET starting from Core 5 has a built in UI module to monitor other services, and in few line of code you can build a watchdog for your services.
+How to hook it up with your services:Your microservices should implement health check endpoints to be monitored by the orchestration service (Kubernetes, docker storm, &amp;hellip; etc).</description>
+    </item>
+    
+    <item>
+      <title>Introducing Kudu, the engine that handle all web application deployment to Azure App Service.</title>
+      <link>https://www.ghassan.page/posts/2023_02_01_introducing_kudu/</link>
+      <pubDate>Wed, 01 Feb 2023 20:20:40 -0700</pubDate>
+      
+      <guid>https://www.ghassan.page/posts/2023_02_01_introducing_kudu/</guid>
+      <description>If you follow any tutorials on Azure App Service, you will find that they use one of five options to deploy a web application to the Azure.
+Using Azure DevOps Using Github actions and webhooks. FTP Zip Deploy. MSDeploy (Microsoft Web Deploy tool). But behind the scenes, all these options are using the same back engine, which is Kudu.
+When we use FTP, Zip, or MSDeploy, we are actually calling Kudu REST API for deployment.</description>
+    </item>
+    
+    <item>
+      <title>Azure Networking Recipes - Connect Azure Database and an Azure App Service using Virtual Network.</title>
+      <link>https://www.ghassan.page/posts/2023_01_10_azure_networking_reciep_one/</link>
+      <pubDate>Tue, 10 Jan 2023 20:00:24 -0700</pubDate>
+      
+      <guid>https://www.ghassan.page/posts/2023_01_10_azure_networking_reciep_one/</guid>
+      <description>If your application is connecting to Azure database, or any other resources, then connecting them through Virtual Network (VNet) will enhance the performance (assuming the app service and the resources are in the same region), as well it enhance the security and we can lock the resources to have private endpoint, and not accessed publicly. I am going to go through a walk-through tutorial, using Azure Sql Server as an example, but this can work with any database on Azure, or even any resources like blob storage.</description>
+    </item>
+    
+    <item>
+      <title>A developer introduction to cloud networking</title>
+      <link>https://www.ghassan.page/posts/2023_01_09_introduction_azure_networking/</link>
+      <pubDate>Sun, 08 Jan 2023 20:07:36 -0700</pubDate>
+      
+      <guid>https://www.ghassan.page/posts/2023_01_09_introduction_azure_networking/</guid>
+      <description>As a developer who dealt with the cloud, either to create a virtual machine, or to deploy a website that connect to a database, then most probabely you had to deal even in short with a private network. And most of us developers don&amp;rsquo;t know a lot about networking, because it is either the job of dev-ops or system administrator. But on the cloud you find that you have to take some decisions related to the networking.</description>
+    </item>
+    
+    <item>
+      <title>SPA routing and how to handle it with Azure Static Web app.</title>
+      <link>https://www.ghassan.page/posts/2023_01_08_azure_static_webapp_routing/</link>
+      <pubDate>Sun, 08 Jan 2023 19:58:31 -0700</pubDate>
+      
+      <guid>https://www.ghassan.page/posts/2023_01_08_azure_static_webapp_routing/</guid>
+      <description>If you built a SPA application using one of the modern SPA frameworks like React, Vue, Angular&amp;hellip;, then you must be using their router to define your client side routing.
+But you need to make a small adjustment on the server that serve your static application in order to deal with client routing gracefully, and this small adjustment is to tell the server to have a fall back on any route that is not recognized by the server to the root of the application.</description>
+    </item>
+    
+    <item>
+      <title>Deploy A Single Page Application to Azure Static Webapp using TeamCity, Jenkins or any CI, or command line</title>
+      <link>https://www.ghassan.page/posts/2023_01_03_azure_static_webapp_deployment/</link>
+      <pubDate>Tue, 03 Jan 2023 19:56:30 -0700</pubDate>
+      
+      <guid>https://www.ghassan.page/posts/2023_01_03_azure_static_webapp_deployment/</guid>
+      <description>I was trying to setup a deployment for an SPA application to an Azure Static Web app using TeamCity, but most of the tutorials I found was doing the deployment through CI/CD of Github&amp;rsquo;s Actions by monitoring a specific branch of a Github repository and deploy automatically whenever we check in into that branch, or the other alternative is using Azure DevOps pipeline. But what if we don&amp;rsquo;t want to use neither, and instead we need to do it on demand from TeamCity, or any other CI/CD tool?</description>
+    </item>
+    
+    <item>
+      <title>Take your development environment anywhere and on any machine with Dev Containers</title>
+      <link>https://www.ghassan.page/posts/2022_12_29_devcontainer/</link>
+      <pubDate>Thu, 29 Dec 2022 19:51:56 -0700</pubDate>
+      
+      <guid>https://www.ghassan.page/posts/2022_12_29_devcontainer/</guid>
+      <description>Dev containers provides a fantastic way to onboard a new developer up and running in matter of just clone the git repository.
+Dev containers allow you to create a docker container that will host all the development tools and libraries you use in your projects, and run it inside the container, and if you have an editor compatible then you can make the IDE connect to the containers and you can run or debug your code inside the containers.</description>
+    </item>
+    
+    <item>
+      <title>Prepare .NET core Microservice to be monitored by Kubernetes</title>
+      <link>https://www.ghassan.page/posts/2022-12-28_prepare_aspnet_api_monitored_by_k8s/</link>
+      <pubDate>Tue, 27 Dec 2022 19:47:05 -0700</pubDate>
+      
+      <guid>https://www.ghassan.page/posts/2022-12-28_prepare_aspnet_api_monitored_by_k8s/</guid>
+      <description>Kubernetes Monitoring:Kubernetes monitors the deployed microservices and check if any failure or a deadlock that makes the service not responding in order to restart the hosting container.
+Kubernetes achieve this by calling three different probes that determine the status of the container/pod. The three probes are:
+liveness: which monitor any deadlock, or the service is down, and Kubernetes will remove the dead container and restart another one. startup: Your service might need time at startup to wait for all its dependencies to be ready.</description>
+    </item>
+    
+    <item>
+      <title>How to fix common error using Azure Kubernetes AKS from WSL2</title>
+      <link>https://www.ghassan.page/posts/2022_12_27_fix_common_error_kubernets_wsl2/</link>
+      <pubDate>Tue, 27 Dec 2022 19:43:59 -0700</pubDate>
+      
+      <guid>https://www.ghassan.page/posts/2022_12_27_fix_common_error_kubernets_wsl2/</guid>
+      <description>When you use Kubernetes CLI tool: kubectl that is installed while you installed Docker Desktop for Windows, there is a small glitch that it will fail the kubectl commands, because of Kubeconfig file.
+Let&amp;rsquo;s supposed you want to create a new cluster on AKS, as follows:
+1az aks create --resource-group MyResourceGropu --name MyMicroserviceCluster --node-count 1 --enable-addons http_application_routing --generate-ssh-keys And then you need to set that new cluster as your default cluster to work on, so you use</description>
+    </item>
+    
+    <item>
+      <title>Some thoughts about ASP.NET Minimal API and Minimal Hosting Model</title>
+      <link>https://www.ghassan.page/posts/2022_12_19_aspnet_minimal_api/</link>
+      <pubDate>Mon, 19 Dec 2022 19:15:28 -0700</pubDate>
+      
+      <guid>https://www.ghassan.page/posts/2022_12_19_aspnet_minimal_api/</guid>
+      <description>Why this post?ASP.NET 6&amp;rsquo;s minimal hosting model made me compare it to ASP.NET 2 and wonder if Microsoft is going back to some old concepts. I was curious about the potential benefit of migration, so I intend to explain and compare ASP.NET 6, 5 and 2.
+The new WebApplication builder and some history of ASP.NET:Let us generate a new webapi application in .net 6 using webapi template:
+1dotnet new webapi -n tutorial.</description>
+    </item>
+    
+    <item>
+      <title>Using Secret Manager for Configuration in .NET</title>
+      <link>https://www.ghassan.page/posts/2022_11_28_use_secret_manager_in_dotnet/</link>
+      <pubDate>Mon, 28 Nov 2022 19:41:04 -0700</pubDate>
+      
+      <guid>https://www.ghassan.page/posts/2022_11_28_use_secret_manager_in_dotnet/</guid>
+      <description>It is critical not to store passwords or API keys in our code.
+For all environments for the development process: (QA, UAT, Pre-Production, and Production), it is easier to place it in a safe place (Azure Key Vault for example), and access it during deployment.
+For developer machines, we can use Secret Manager, or sometimes called User Secrets, which has a built-in support in ASP.NET.
+Enable Secret Storage:In the project you want to add a secret run this command:</description>
+    </item>
+    
+    <item>
+      <title>No More JavaScript Transpiler</title>
+      <link>https://www.ghassan.page/posts/2020_12_23_no_more_js_transpiler/</link>
+      <pubDate>Wed, 23 Dec 2020 16:02:54 -0700</pubDate>
+      
+      <guid>https://www.ghassan.page/posts/2020_12_23_no_more_js_transpiler/</guid>
+      <description>&lt;p&gt;With modern browsers supporting ES6 modules, and Edge is adopting Chromium which align the major browsers to use latest EcmaScript features, we don&amp;rsquo;t need to use transpilers like Webpack or Gulp.&lt;br&gt;
+This will make it easier on many areas, and enhance the performance of our applications.&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Memoization in Python and JavaScript</title>
+      <link>https://www.ghassan.page/posts/2020_09_20_memoization_python_javascript/</link>
+      <pubDate>Sun, 20 Sep 2020 09:45:00 +0000</pubDate>
+      
+      <guid>https://www.ghassan.page/posts/2020_09_20_memoization_python_javascript/</guid>
+      <description>&lt;p&gt;Memoization is a technique that is used a lot in Dynamic Programming and in general to speed up algorithms.&lt;br&gt;
+Memoization is the same as caching but in functional programming. The Caching mechanism will store the data into a cache store, and that data can be from anywhere (HTTP page, REST call, &amp;hellip; etc) , where memoization is specific to cache the results of a function, and it create and maintain the store inside the function itself (so the function will be pure function) and send the store as a parameter into the function arguments.&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Regular expression: Extract HTML Links</title>
+      <link>https://www.ghassan.page/posts/2020_09_11_regular_expression_extract_html_links/</link>
+      <pubDate>Fri, 11 Sep 2020 09:45:00 +0000</pubDate>
+      
+      <guid>https://www.ghassan.page/posts/2020_09_11_regular_expression_extract_html_links/</guid>
+      <description>&lt;p&gt;Explain advanced concepts of Regular Expressions through practical recipes:&lt;br&gt;
+In this recipe we are going to cover:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Negated Character class&lt;/li&gt;
+&lt;li&gt;Non-capturing group&lt;/li&gt;
+&lt;li&gt;Non-Greedy quantifier.&lt;/li&gt;
+&lt;li&gt;Python&amp;rsquo;s &lt;code&gt;findall&lt;/code&gt;, and JavaScript&amp;rsquo;s &lt;code&gt;exec&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;</description>
+    </item>
+    
+    <item>
+      <title>Regular expression: Extract Domain Names</title>
+      <link>https://www.ghassan.page/posts/2020_05_08_regular_expression_extract_domain_names/</link>
+      <pubDate>Fri, 08 May 2020 09:45:00 +0000</pubDate>
+      
+      <guid>https://www.ghassan.page/posts/2020_05_08_regular_expression_extract_domain_names/</guid>
+      <description>&lt;p&gt;Explain advanced concepts of Regular Expressions through practical recipes:&lt;br&gt;
+In this recipe we are going to cover:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Anchors&lt;/li&gt;
+&lt;li&gt;Non-capturing group&lt;/li&gt;
+&lt;li&gt;Python&amp;rsquo;s &lt;code&gt;findall&lt;/code&gt;, and JavaScript&amp;rsquo;s &lt;code&gt;exec&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;</description>
+    </item>
+    
+    <item>
+      <title>Regular expression: Extract Comments From Code</title>
+      <link>https://www.ghassan.page/posts/2020_05_07_regular_expression_extract_comments_from_code/</link>
+      <pubDate>Thu, 07 May 2020 09:45:00 +0000</pubDate>
+      
+      <guid>https://www.ghassan.page/posts/2020_05_07_regular_expression_extract_comments_from_code/</guid>
+      <description>&lt;p&gt;Explain advanced concepts of Regular Expressions through practical receipes:&lt;br&gt;
+In this recipe we are going to cover:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Capturing Group&lt;/li&gt;
+&lt;li&gt;Negated Character Class&lt;/li&gt;
+&lt;li&gt;Greedy / non-greedy quantifier.&lt;/li&gt;
+&lt;/ul&gt;</description>
+    </item>
+    
+    <item>
+      <title>Advanced Regular Expression Recipes - Introduction.</title>
+      <link>https://www.ghassan.page/posts/2020_05_06_advanced_regular_expression_by_examples/</link>
+      <pubDate>Wed, 06 May 2020 09:45:00 +0000</pubDate>
+      
+      <guid>https://www.ghassan.page/posts/2020_05_06_advanced_regular_expression_by_examples/</guid>
+      <description>&lt;p&gt;Regular expressions are implemented by many languages, and they can be used for different purposes. Mainly they are used for text processing, as well they are important tools to write an efficient algorithms, and as well they can be used by data science specially in cleaning and scrapping the data to prepare it for modeling.&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>About</title>
+      <link>https://www.ghassan.page/about/</link>
+      <pubDate>Thu, 28 Feb 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.ghassan.page/about/</guid>
+      <description>Hi, my name is Ghassan Karwchan.
+I am a full stack software developer living in Calgary, Alberta, Canada.
+I am specialized in web developement, and mostly with .NET platform.
+But sometimes I enjoy developing outside of Microsoft world, with Python, Node.js, or Go.
+Lots of JavaScript experience.</description>
+    </item>
+    
+    <item>
+      <title>Token Based Authentication and JWT.</title>
+      <link>https://www.ghassan.page/posts/2016_04_29_token_based_authentication_jwt/</link>
+      <pubDate>Fri, 29 Apr 2016 12:41:54 -0600</pubDate>
+      
+      <guid>https://www.ghassan.page/posts/2016_04_29_token_based_authentication_jwt/</guid>
+      <description>&lt;p&gt;HTTP protocol specified only two standard authentication mechanisms, which are implemented in every browser, the [HTTP basic authentication]({% post_url 2016-03-31-web-security-basic-authentication %}), and the Digest authentication which is obsolete now because it is not secure anymore.&lt;br&gt;
+Because they are limited and work only on user name/password idea, the development communities in every web development platform came up with their better customized solutions.&lt;br&gt;
+JWT is one of the most promising and smart authentication ideas that is taking famous recently.&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

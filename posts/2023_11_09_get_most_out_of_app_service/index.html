@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  
+    
+  <title>Get the most out of Azure App Service. | Ghassan&#39;s Page</title>
+  <meta name="author" content="Ghassan Karwchan">
+  <meta name="description" content="Azure App service take care of tons of infrastructure, hosting, scalability, monitoring, deployment, DevOps, security and environment of your shoulders.
+But the question, are you really utilizing the most out of this wonderful service?
+Azure App service has tons of features that make it easy to forget about some of them and missing using them.
+I am going to list this checklist and explain more details on them. There are features that Must be implemented, and there are features that are optional because you might be using other services to achieve their functionalities.">
+  <meta name="keywords" content="blog,developer,personal">
+
+  <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Get the most out of Azure App Service."/>
+<meta name="twitter:description" content="Azure App service take care of tons of infrastructure, hosting, scalability, monitoring, deployment, DevOps, security and environment of your shoulders.
+But the question, are you really utilizing the most out of this wonderful service?
+Azure App service has tons of features that make it easy to forget about some of them and missing using them.
+I am going to list this checklist and explain more details on them. There are features that Must be implemented, and there are features that are optional because you might be using other services to achieve their functionalities."/>
+
+  <meta property="og:title" content="Get the most out of Azure App Service." />
+<meta property="og:description" content="Azure App service take care of tons of infrastructure, hosting, scalability, monitoring, deployment, DevOps, security and environment of your shoulders.
+But the question, are you really utilizing the most out of this wonderful service?
+Azure App service has tons of features that make it easy to forget about some of them and missing using them.
+I am going to list this checklist and explain more details on them. There are features that Must be implemented, and there are features that are optional because you might be using other services to achieve their functionalities." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://www.ghassan.page/posts/2023_11_09_get_most_out_of_app_service/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2023-11-09T12:41:54-06:00" />
+<meta property="article:modified_time" content="2023-11-09T12:41:54-06:00" />
+
+
+  <link rel="stylesheet" href="/css/bootstrap.min.css"  crossorigin="anonymous">
+  
+  <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.1/css/all.min.css" rel="stylesheet" type="text/css">
+
+  <link rel="stylesheet" href="/sass/main.css">
+
+  <link rel="stylesheet" href="/zoomjs/zoom.min.css">
+
+  <script src=/js/lazysizes.min.js></script>
+
+  
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="manifest" href="/site.webmanifest">
+  
+
+</head>
+
+
+
+<body ontouchstart="">
+  
+  
+  <nav class="navbar navbar-default navbar-custom navbar-fixed-top invert">
+  <div class="container-fluid">
+    
+    <div class="navbar-header page-scroll">
+      <button type="button" class="navbar-toggle">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="https://www.ghassan.page/">Ghassan&#39;s Page</a>
+    </div>
+    
+    <div id="huxblog_navbar">
+      <div class="navbar-collapse">
+        <ul class="nav navbar-nav navbar-right">
+          
+          <li><a href="/" title="Home">Home</a></li>
+          
+          <li><a href="/archive/" title="Archive">Archive</a></li>
+          
+          <li><a href="/about/" title="About">About</a></li>
+          
+          <li><a href="https://github.com/gkarwchan/hugoblogsource" title="Github">Github</a></li>
+          
+
+          <li class="search-icon">
+            <a href="javascript:void(0)">
+              <i class="fa fa-search"></i>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    
+  </div>
+  
+</nav>
+<script>
+  
+  
+  
+  var $body = document.body;
+  var $toggle = document.querySelector(".navbar-toggle");
+  var $navbar = document.querySelector("#huxblog_navbar");
+  var $collapse = document.querySelector(".navbar-collapse");
+
+  var __HuxNav__ = {
+    close: function () {
+      $navbar.className = " ";
+      
+      setTimeout(function () {
+        
+        if ($navbar.className.indexOf("in") < 0) {
+          $collapse.style.height = "0px";
+        }
+      }, 400);
+    },
+    open: function () {
+      $collapse.style.height = "auto";
+      $navbar.className += " in";
+    },
+  };
+
+  
+  $toggle.addEventListener("click", function (e) {
+    if ($navbar.className.indexOf("in") > 0) {
+      __HuxNav__.close();
+    } else {
+      __HuxNav__.open();
+    }
+  });
+
+  
+
+  document.addEventListener("click", function (e) {
+    if (e.target == $toggle) return;
+    if (e.target.className == "icon-bar") return;
+    __HuxNav__.close();
+  });
+</script>
+  
+<div class="search-page">
+  <div class="search-icon-close-container">
+    <span class="search-icon-close">
+      <i class="fa fa-chevron-down"></i>
+    </span>
+  </div>
+  <div class="search-main container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <form></form>
+        <input type="text" id="search-input" placeholder="$ grep...">
+        </form>
+        <div id="search-results" class="mini-post-list"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+  
+  
+
+
+<style type="text/css">
+  header.intro-header {
+    position: relative;
+    background-image: url('');
+  }
+</style>
+
+<header class="intro-header style-text">
+
+  <div class="header-mask"></div>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div class="post-heading">
+          <div class="tags">
+            
+            <a class="tag" href="/tags/azure/" title="azure">azure</a>
+            
+          </div>
+          <h1>Get the most out of Azure App Service.</h1>
+          <h2 class="subheading"></h2>
+          <span class="meta">
+            Posted by  Ghassan Karwchan 
+            on Thu, Nov 9, 2023
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+
+  
+
+
+<article>
+  <div class="container">
+    <div class="row">
+
+      
+      <div class="
+              col-lg-8 col-lg-offset-2
+              col-md-10 col-md-offset-1
+              post-container">
+        <p>Azure App service take care of tons of infrastructure, hosting, scalability, monitoring, deployment, DevOps, security and environment of your shoulders.</p>
+<p>But the question, are you really utilizing the most out of this wonderful service?<br>
+Azure App service has tons of features that make it easy to forget about some of them and missing using them.</p>
+<p>I am going to list this checklist and explain more details on them. There are features that <strong>Must</strong> be implemented, and there are features that are optional because you might be using other services to achieve their functionalities.</p>
+<h3 id="must-be-implemented-features">Must be implemented features:<a class="anchorjs-link" href="#must-be-implemented-features"></a></h3><ol>
+<li>Scalability and auto-scaling out/in.</li>
+<li>Staging deployment slots.</li>
+<li>Using App Configurations and Key Vault to store sensitive data and certificates.</li>
+<li>Use virtual networking to secure other SaaS resources.</li>
+<li>Use managed identity.</li>
+<li>Integrate with other Azure web services for security and performance.</li>
+</ol>
+<h3 id="other-optional-features">Other Optional features:<a class="anchorjs-link" href="#other-optional-features"></a></h3><ol>
+<li>Using Azure built-in authentication.</li>
+<li>Logging and instrumentation.</li>
+<li>API management.</li>
+</ol>
+<h1 id="must-implement-features">Must implement features:<a class="anchorjs-link" href="#must-implement-features"></a></h1><h2 id="1-scalability-and-auto-scaling">1. Scalability and auto-scaling<a class="anchorjs-link" href="#1-scalability-and-auto-scaling"></a></h2><p>Autoscaling in Azure App Service monitors the resource metrics of a web app as it runs. It detects situations where other resources are required to handle an increasing workload, and responds to changes in the environment by adding or removing web servers and balancing the load between them. Autoscaling provides elasticity for your services. For example, you might expect increased/reduced activity for a business app during holidays.</p>
+<p>Autoscaling improves availability and fault tolerance. It can help ensure that client requests to a service won&rsquo;t be denied because an instance is either not able to acknowledge the request in a timely manner, or because an overloaded instance has crashed.</p>
+<p>As well by auto-scaling down when the demands go down, you will save money.</p>
+<h2 id="2-use-deployment-slots">2. Use deployment slots:<a class="anchorjs-link" href="#2-use-deployment-slots"></a></h2><p>When you deploy to an App Service (anything Standard and better), you can deploy to a staging environment to test your deployment, with different configuration, and after you test it you can switch it to production with zero downtime.
+So what is difference between a deployment slot and separate staging environment?<br>
+The staging environment has a different App Service Plan, and App Service, where the deployment slot is deploying to the same App Service Plan, which means it might deploy to the same worker machines that host the production ones, or machines from the same images that are defined in the App Service Plan.<br>
+As well deployment slots provide zero production deployment because when you deploy to the deployment slot, and after you test it and you are ok with it, you <code>swap</code> the slot, which is only switch the configurations and the routing, which take zero downtime.</p>
+<h2 id="3-using-key-vault-and-app-configurations">3. Using Key Vault and App Configurations.<a class="anchorjs-link" href="#3-using-key-vault-and-app-configurations"></a></h2><p>If you have sensitive credentials and you want to provide them for your application, it is essentials to not store these in your code repository.  Instead we can use the App Configuration and for secrets we can use Key Vault.<br>
+<a href="https://learn.microsoft.com/en-us/azure/azure-app-configuration/faq#should-i-store-secrets-in-app-configuration">Key vault provides extra layer of security over App Configuration</a>.<br>
+And more important, A user with App Service Administrator can add configuration to reference the key vault without having access to the key vault data.  So if you are using database credentials and you want to keep it secret even from the user who is managing the App Service, then you can store it in Key Vault and let the manager reference the key vault in the app configurations.</p>
+<h2 id="4-virtual-networking">4. Virtual Networking<a class="anchorjs-link" href="#4-virtual-networking"></a></h2><p>If you are using other SaaS services on Azure, like databases or message queue, or cashing service, then you can use virtual networking to provide a secure and private connection between the App service and those services. Those services will be secured from the outside world and only accessed through a private connection to your app.  <a href="https://www.ghassan.page/posts/2023_01_10_azure_networking_reciep_one/">Here and example on how to create a private connection between App service and Azure Sql Server</a>.</p>
+<h2 id="5-managed-identity">5. Managed Identity:<a class="anchorjs-link" href="#5-managed-identity"></a></h2><p>Managed Identity is an Microsoft Entra Identity that is issued for an application, so the application can provide this identity to other services (like database), and because it is Microsoft Entra identity so you can use it like any other identity and you don&rsquo;t need to store the credentials to communicate to the database.</p>
+<h2 id="6-integrate-with-other-azure-web-services">6. Integrate with other Azure web services:<a class="anchorjs-link" href="#6-integrate-with-other-azure-web-services"></a></h2><p>There are two services that can increase the security and enhance the performance of the web application and they are easy to integrate to App service:</p>
+<ul>
+<li>Azure CDN (to host any media or static files).</li>
+<li>Web Application Firewall (WAF), which provide a security layer of your web application to protect against multiple attacks.</li>
+</ul>
+<h1 id="optional-features">Optional features:<a class="anchorjs-link" href="#optional-features"></a></h1><h2 id="1-built-in-authentication--authorization">1. Built-in Authentication / Authorization<a class="anchorjs-link" href="#1-built-in-authentication--authorization"></a></h2><p>App Service provides built-in authentication and authorization support, and it is integrated with all other Azure services that your app is using.<br>
+Even you are using third-party authentication provider, if that provider is compliant with Federated Identity standards (SAML, OAuth, OpenID Connect), then you can still using it and integrated with the built-in features of App services, and you can sync the users from third-party authentication to Azure authentication provider and using RBAC to control authorization.
+The following Identity providers are available by default:</p>
+<ol>
+<li>Microsoft Identity Platform.</li>
+<li>Facebook</li>
+<li>Google</li>
+<li>Twitter</li>
+<li>OpenID connect provider</li>
+<li>GitHub</li>
+</ol>
+<h2 id="2-built-in-logging-and-instrumentation">2. Built-in logging and instrumentation:<a class="anchorjs-link" href="#2-built-in-logging-and-instrumentation"></a></h2><h2 id="3-api-management">3. API Management<a class="anchorjs-link" href="#3-api-management"></a></h2>
+
+        <hr style="visibility: hidden;" />
+        <ul class="pager">
+          
+          <li class="previous">
+            <a href="/posts/2023_10_27_oauth_openid_authenticationflow_in_plain_english/" data-toggle="tooltip" data-placement="top" title="OAuth, OpenID Connect, SSO and Authentication Flows in plain English.">
+              Previous<br>
+              <span>OAuth, OpenID Connect, SSO and Authentication Flows in plain English.</span>
+            </a>
+          </li>
+          
+          
+        </ul>
+        <hr style="visibility: hidden;" />
+
+        
+        
+
+
+
+<div class="giscus" id="comments"></div>
+<script src="https://giscus.app/client.js" 
+  data-repo="gkarwchan/hugoblog" 
+  data-repo-id="R_kgDOI9C7aQ"
+  data-category="General"
+  data-category-id="DIC_kwDOI9C7ac4CUTNT"
+  data-mapping="pathname"
+  data-strict="0" 
+  data-reactions-enabled="1" 
+  data-emit-metadata="0" 
+  data-input-position="top"
+  data-theme="light_tritanopia"
+  data-lang="en"
+  crossorigin="anonymous"
+  async>
+  </script>
+
+
+
+
+      </div>
+
+      
+      
+      
+      <div class="
+              col-lg-2 col-lg-offset-0
+              visible-lg-block
+              sidebar-container
+              catalog-container">
+        <div class="side-catalog">
+          <hr class="hidden-sm hidden-xs">
+          <h5>
+            <a class="catalog-toggle" href="#">CATALOG</a>
+          </h5>
+          <ul class="catalog-body"></ul>
+        </div>
+      </div>
+      
+      
+      <div class="
+              col-lg-8 col-lg-offset-2
+              col-md-10 col-md-offset-1
+              sidebar-container">
+
+        
+        
+        <section>
+  
+  
+  <hr class="hidden-sm hidden-xs">
+  
+  <h5>FEATURED TAGS</h5>
+  <div class="tags">
+    
+    <a href="/tags/algorithm/">algorithm</a>
+    
+    <a href="/tags/asp.net/">asp.net</a>
+    
+    <a href="/tags/azure/">azure</a>
+    
+    <a href="/tags/ci/cd/">ci/cd</a>
+    
+    <a href="/tags/container/">container</a>
+    
+    <a href="/tags/dev-tools/">dev tools</a>
+    
+    <a href="/tags/javascript/">javascript</a>
+    
+    <a href="/tags/networking/">networking</a>
+    
+    <a href="/tags/performance/">performance</a>
+    
+    <a href="/tags/python/">python</a>
+    
+    <a href="/tags/security/">security</a>
+    
+  </div>
+</section>
+
+        
+        
+
+      </div>
+    </div>
+  </div>
+</article>
+
+
+
+  
+<footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        
+        <ul class="list-inline text-center">
+
+<li>
+  <a href="https://github.com/gkarwchan" target="_blank">
+    <span class="fa-stack fa-lg">
+      <i class="fa fa-circle fa-stack-2x"></i>
+      <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+    </span>
+  </a>
+</li>
+
+<li>
+  <a href="https://linkedin.com/in/ghassankarwchan" target="_blank">
+    <span class="fa-stack fa-lg">
+      <i class="fa fa-circle fa-stack-2x"></i>
+      <i class="fab fa-linkedin fa-stack-1x fa-inverse"></i>
+    </span>
+  </a>
+</li>
+
+
+<li>
+  <a href="/index.xml" target="_blank">
+    <span class="fa-stack fa-lg">
+      <i class="fa fa-circle fa-stack-2x"></i>
+      <i class="fas fa-rss fa-stack-1x fa-inverse"></i>
+    </span>
+  </a>
+</li></ul>
+
+        <p class="copyright text-muted">
+          Copyright &copy; Ghassan&#39;s Page 2023  
+          <br>
+          Powered by <a href="https://gohugo.io">Hugo</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src=/js/jquery.min.js></script>
+<script src=/js/bootstrap.min.js crossorigin="anonymous"></script>
+
+
+
+<script src="/js/hux-blog.min.c4ea77041cd3edbfc8b2622cd887a9a5d8760a4162d14489e36d2a3fa4c90172.js"></script>
+
+
+<script src=/js/simple-jekyll-search.min.js></script>
+
+
+<script src="/js/search.min.53bce5da475b4d362500e5ce5dddfa22e20e1b9018777411d2020b4b839c9310.js"></script>
+
+
+
+
+
+
+<script type="text/javascript">
+  function generateCatalog(selector) {
+    _containerSelector = 'div.post-container'
+    
+    var P = $(_containerSelector), a, n, t, l, i, c;
+    a = P.find('h1,h2,h3,h4');
+    
+    $(selector).html('')
+    
+    a.each(function () {
+      n = $(this).prop('tagName').toLowerCase();
+      i = "#" + $(this).prop('id');
+      t = $(this).text();
+      c = $('<a href="' + i + '" rel="nofollow">' + t + '</a>');
+      l = $('<li class="' + n + '_nav"></li>').append(c);
+      $(selector).append(l);
+    });
+    return true;
+  }
+
+  generateCatalog(".catalog-body");
+
+  
+  $(".catalog-toggle").click((function (e) {
+    e.preventDefault();
+    $('.side-catalog').toggleClass("fold")
+  }))
+</script>
+
+
+<script type="text/javascript" src='/js/jquery.nav.min.ade6bde8f9fcc6a4b40852cb892e9f5912340ab8fe1305149d917fdd16fffd8d.js'></script>
+<script>
+   $(document).ready( function () {
+    $('.catalog-body').onePageNav({
+      currentClass: "active",
+      changeHash: !1,
+      easing: "swing",
+      filter: "",
+      scrollSpeed: 700,
+      scrollOffset: 0,
+      scrollThreshold: .2,
+      begin: null,
+      end: null,
+      scrollChange: null,
+      padding: 80
+    });
+  });
+</script>
+
+
+
+
+
+
+
+
+
+<script src="/zoomjs/zoom.min.js"></script>
+
+</body>
+
+</html>
