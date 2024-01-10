@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  
+    
+  <title>Making sense of SSL, RSA, X509 and CSR | Ghassan&#39;s Page</title>
+  <meta name="author" content="Ghassan Karwchan">
+  <meta name="description" content="This is the second part of learning about SSL/TLS.
+The first part was how to protect the site with SSL.
+This part is about explaining more the terms, technologies, protocols, standards used in SSL.
+What is SSL/TLS:SSL is the standard protocol to secure the communication between a web server and a browser, by creating an encrypted link between the two.
+SSL last version was 3.0, and TLS succeeds SSL, and become the new standard.">
+  <meta name="keywords" content="blog,developer,personal">
+
+  <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Making sense of SSL, RSA, X509 and CSR"/>
+<meta name="twitter:description" content="This is the second part of learning about SSL/TLS.
+The first part was how to protect the site with SSL.
+This part is about explaining more the terms, technologies, protocols, standards used in SSL.
+What is SSL/TLS:SSL is the standard protocol to secure the communication between a web server and a browser, by creating an encrypted link between the two.
+SSL last version was 3.0, and TLS succeeds SSL, and become the new standard."/>
+
+  <meta property="og:title" content="Making sense of SSL, RSA, X509 and CSR" />
+<meta property="og:description" content="This is the second part of learning about SSL/TLS.
+The first part was how to protect the site with SSL.
+This part is about explaining more the terms, technologies, protocols, standards used in SSL.
+What is SSL/TLS:SSL is the standard protocol to secure the communication between a web server and a browser, by creating an encrypted link between the two.
+SSL last version was 3.0, and TLS succeeds SSL, and become the new standard." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://www.ghassan.page/posts/2016_04_18_making_sense_of_ssl_rsa_x509_and_csr/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2016-04-18T23:42:00-06:00" />
+<meta property="article:modified_time" content="2016-04-18T23:42:00-06:00" />
+
+
+  <link rel="stylesheet" href="/css/bootstrap.min.css"  crossorigin="anonymous">
+  
+  <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.1/css/all.min.css" rel="stylesheet" type="text/css">
+
+  <link rel="stylesheet" href="/sass/main.css">
+
+  <link rel="stylesheet" href="/zoomjs/zoom.min.css">
+
+  <script src=/js/lazysizes.min.js></script>
+
+  
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="manifest" href="/site.webmanifest">
+  
+
+</head>
+
+
+
+<body ontouchstart="">
+  
+  
+  <nav class="navbar navbar-default navbar-custom navbar-fixed-top invert">
+  <div class="container-fluid">
+    
+    <div class="navbar-header page-scroll">
+      <button type="button" class="navbar-toggle">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="https://www.ghassan.page/">Ghassan&#39;s Page</a>
+    </div>
+    
+    <div id="huxblog_navbar">
+      <div class="navbar-collapse">
+        <ul class="nav navbar-nav navbar-right">
+          
+          <li><a href="/" title="Home">Home</a></li>
+          
+          <li><a href="/archive/" title="Archive">Archive</a></li>
+          
+          <li><a href="/about/" title="About">About</a></li>
+          
+          <li><a href="https://github.com/gkarwchan/hugoblogsource" title="Github">Github</a></li>
+          
+
+          <li class="search-icon">
+            <a href="javascript:void(0)">
+              <i class="fa fa-search"></i>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    
+  </div>
+  
+</nav>
+<script>
+  
+  
+  
+  var $body = document.body;
+  var $toggle = document.querySelector(".navbar-toggle");
+  var $navbar = document.querySelector("#huxblog_navbar");
+  var $collapse = document.querySelector(".navbar-collapse");
+
+  var __HuxNav__ = {
+    close: function () {
+      $navbar.className = " ";
+      
+      setTimeout(function () {
+        
+        if ($navbar.className.indexOf("in") < 0) {
+          $collapse.style.height = "0px";
+        }
+      }, 400);
+    },
+    open: function () {
+      $collapse.style.height = "auto";
+      $navbar.className += " in";
+    },
+  };
+
+  
+  $toggle.addEventListener("click", function (e) {
+    if ($navbar.className.indexOf("in") > 0) {
+      __HuxNav__.close();
+    } else {
+      __HuxNav__.open();
+    }
+  });
+
+  
+
+  document.addEventListener("click", function (e) {
+    if (e.target == $toggle) return;
+    if (e.target.className == "icon-bar") return;
+    __HuxNav__.close();
+  });
+</script>
+  
+<div class="search-page">
+  <div class="search-icon-close-container">
+    <span class="search-icon-close">
+      <i class="fa fa-chevron-down"></i>
+    </span>
+  </div>
+  <div class="search-main container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <form></form>
+        <input type="text" id="search-input" placeholder="$ grep...">
+        </form>
+        <div id="search-results" class="mini-post-list"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+  
+  
+
+
+<style type="text/css">
+  header.intro-header {
+    position: relative;
+    background-image: url('');
+  }
+</style>
+
+<header class="intro-header style-text">
+
+  <div class="header-mask"></div>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div class="post-heading">
+          <div class="tags">
+            
+            <a class="tag" href="/tags/security/" title="security">security</a>
+            
+          </div>
+          <h1>Making sense of SSL, RSA, X509 and CSR</h1>
+          <h2 class="subheading"></h2>
+          <span class="meta">
+            Posted by  Ghassan Karwchan 
+            on Mon, Apr 18, 2016
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+
+  
+
+
+<article>
+  <div class="container">
+    <div class="row">
+
+      
+      <div class="
+              col-lg-8 col-lg-offset-2
+              col-md-10 col-md-offset-1
+              post-container">
+        <p>This is the second part of learning about SSL/TLS.<br>
+<a href="https://www.ghassan.page/posts/2016_03_11_secure_your_application_with_ssl">The first part was how to protect the site with SSL</a>.<br>
+This part is about explaining more the terms, technologies, protocols, standards used in SSL.</p>
+<h2 id="what-is-ssltls">What is SSL/TLS:<a class="anchorjs-link" href="#what-is-ssltls"></a></h2><p><code>SSL</code> is the standard protocol to secure the communication between a web server and a browser, by creating an encrypted link between the two.<br>
+<code>SSL</code> last version was 3.0, and TLS  succeeds SSL, and become the new standard. But still some components of the protocols have the name SSL, like SSL certificate for example, so when you see the name SSL it most probably means the new TLS, because SSL is rarely used any more.</p>
+<h2 id="ssltls-workflow-and-tls-handshake">SSL/TLS workflow and TLS Handshake:<a class="anchorjs-link" href="#ssltls-workflow-and-tls-handshake"></a></h2><p>When a browser hits the web server using the <strong><code>HTTPS</code></strong> protocol, it start a process of creating an encrypted session between the two.<br>
+At the beginning, the encryption used is public-key encryption, which is an asymmetric type encryption.<br>
+The web server has a couple of keys public and private. It sends the public key to the browsers, and the browsers use the public key to encrypt the communications later.<br>
+Only the web server can know how to decrypt the communication.<br>
+Because the public key decryption is slow and expensive, so the web server and the browser will switch to symmetric encryption where only one key is required.<br>
+They negotiate between each other on what the best encryption algorithm they should use. The algorithm used would depend on the server and the browser.<br>
+This negotiation phase is called TLS handshake.</p>
+<h2 id="protocols-standards-and-concepts-used-in-ssl">Protocols, standards and concepts used in SSL<a class="anchorjs-link" href="#protocols-standards-and-concepts-used-in-ssl"></a></h2><h3 id="1-public-key-encryption-rsa">1. Public key encryption RSA:<a class="anchorjs-link" href="#1-public-key-encryption-rsa"></a></h3><p>As we mentioned the server that implement <code>SSL</code> has pair of keys, public and private, which are used during the TLS handshake.<br>
+The most common public key encryption used in SSL is the <strong><code>RSA</code></strong>.<br>
+In <code>OpenSSL</code> tools, the <code>RSA</code> is the default option when generating a public/private key.<br>
+To generate key pairs with OpenSSL, we generate first a private key, then generate a public key depending on the private key.<br>
+Example of generate a private key:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>openssl genrsa -out <span style="color:#ff79c6">{</span>private-key-filename<span style="color:#ff79c6">}</span> <span style="color:#bd93f9">2048</span>
+</span></span></code></pre></div><p>The 2048 is the size of the private key, which is now a days considered the appropriate secure size. Less than 2048 is not secure, and bigger than 2048 will be slow to process.<br>
+To extract a public key from the private key :</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>openssl rsa -pubout -in <span style="color:#ff79c6">{</span>private-key-filename<span style="color:#ff79c6">}</span> -out <span style="color:#ff79c6">{</span>public-key-filename<span style="color:#ff79c6">}</span>
+</span></span></code></pre></div><h3 id="2-pem-protocol">2. PEM Protocol<a class="anchorjs-link" href="#2-pem-protocol"></a></h3><p>When we generate the keys in the previous example, the generate files will contains data like this:</p>
+<blockquote>
+<p>&ldquo;&mdash;&ndash;BEGIN PRIVATE KEY&mdash;&ndash;<br>
+MIIEczCCA1ugAwIBAgIBADANBgkqhkiG9w0BAQQFAD..<br>
+AkGA1UEBhMCR0IEzARBgNVBAgTClNvbWUtU3RhdGUxFDASBgNVBAoTC0..<br>
+0EgTHRkMTcwNQYD<br>
+&hellip;&hellip;<br>
+&hellip;&hellip;<br>
+It8una2gY4l2O//on88r5IWJlm1L0oA8e4fR2yrBHX..adsGeFKkyNrwGi/<br>
+7vQMfXdGsRrXNGRGnX+vWDZ3zWI0joDtCkNnqEpVn..HoX<br>
+&mdash;&ndash;END CERTIFICATE&mdash;&ndash;&rdquo;</p>
+</blockquote>
+<p>This format called <strong><code>PEM</code></strong> format, stands for <strong><code>Privacy Enhanced Mail</code></strong>.<br>
+<code>PEM</code> is a text representation of the real binary key in <code>DER</code> format (<strong><code>X.509 ASN.1 key</code></strong>), it is base64 encoding of the DER binary format.<br>
+We could store the binary version of the file only with <strong><code>DER</code></strong> encoding, but the most common way is the PEM version.</p>
+<h3 id="3-digital-identity">3. Digital Identity<a class="anchorjs-link" href="#3-digital-identity"></a></h3><p>As a user, in order to trust a web site for your precious information, you need to trust the web site owner.<br>
+Similarly, if you receive an email, you want to trust that the email you received was sent by the email owner, and not hacked by anyone else.<br>
+In real life, we have our identity card, which is a trusted document issued by a trusted authority (the government) which is a prove of our identity.<br>
+The industry came up with similar policies and standards to handle the digital identity.</p>
+<h3 id="4-public-key-infrastructure-pki-and-certificate-authority-ca">4. Public Key Infrastructure (PKI) and Certificate Authority (CA):<a class="anchorjs-link" href="#4-public-key-infrastructure-pki-and-certificate-authority-ca"></a></h3><p>The <code>PKI</code> is the infrastructure that the industry created to manage the digital identities.<br>
+The PKI created a hierarchical body of many organizations which their role is to issue digital identities.<br>
+These organizations called <code>Certificate Authority (CA)</code>, and when you want to protect your site with <code>SSL/TLS</code>, you have to communicate with them, and they have to follow up with you to make sure that you are a legitimate company, and you are who you want to claim you are.<br>
+The digital identity has many four types ranked depending on their security level and how much investigation the <code>CA</code> will do before they submit a certificate.<br>
+Please find out these types in my previous post.</p>
+<h3 id="5-digital-certificate-x509">5. Digital Certificate (X.509)<a class="anchorjs-link" href="#5-digital-certificate-x509"></a></h3><p>As we discussed before, SSL required the web server to have public key, and a digital identity, to give to the browsers.<br>
+The industry decided to combine these two in one file, which is called : digital certificate, or <code>SSL certificate</code>.<br>
+PKI policies defined the format for this certificate in a standard called <strong><code>X.509</code></strong>
+The Certificate format X.509 v3 contains:</p>
+<ol>
+<li>Version Number.</li>
+<li>Serial Number.</li>
+<li>Signature Algorithm ID.</li>
+<li>Issuer Name.</li>
+<li>Validity period:
+<ol>
+<li>Not Before.</li>
+<li>Not After.</li>
+</ol>
+</li>
+<li>Subject name.</li>
+<li>Subject Public Key Info:
+<ol>
+<li>Public Key Algorithm</li>
+<li>Subject Public Key</li>
+</ol>
+</li>
+<li>Issuer Unique Identifier (optional).</li>
+<li>Subject Unique Identifier (optional)</li>
+<li>Extensions (optional)<br>
+&hellip;</li>
+<li>Certificate Signature Algorithm</li>
+<li>Certificate Signature</li>
+</ol>
+<h3 id="6-csr-certificate-signing-request">6. CSR: Certificate Signing Request:<a class="anchorjs-link" href="#6-csr-certificate-signing-request"></a></h3><p>The certificate is issued by one of CA(s), and in order to get a certificate you have to contact one of the CA(s) and send them a request in the format: CSR (Certificate Signing Request).<br>
+The CSR is a PEM formatted file with the following information:</p>
+<ul>
+<li>Common Name</li>
+<li>Organization</li>
+<li>Organizational Unit</li>
+<li>City</li>
+<li>State/County/Region</li>
+<li>Country</li>
+<li>Email Address</li>
+<li>Public Key.<br>
+You can generate a CSR by either doing it from a web server, or using openssl tools like the following:</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>openssl req -new -sha256 -key privatekey.key -out request.csr
+</span></span></code></pre></div><p>When you run the previous command, it will prompt you to enter all the CSR details and will generate a CSR file for you.</p>
+
+
+        <hr style="visibility: hidden;" />
+        <ul class="pager">
+          
+          <li class="previous">
+            <a href="/posts/2016_03_11_secure_your_application_with_ssl/" data-toggle="tooltip" data-placement="top" title="Secure your web site with SSL">
+              Previous<br>
+              <span>Secure your web site with SSL</span>
+            </a>
+          </li>
+          
+          
+          <li class="next">
+            <a href="/posts/2016_04_29_token_based_authentication_jwt/" data-toggle="tooltip" data-placement="top" title="Token Based Authentication and JWT.">
+              Next<br>
+              <span>Token Based Authentication and JWT.</span>
+            </a>
+          </li>
+          
+        </ul>
+        <hr style="visibility: hidden;" />
+
+        
+        
+
+
+
+<div class="giscus" id="comments"></div>
+<script src="https://giscus.app/client.js" 
+  data-repo="gkarwchan/hugoblog" 
+  data-repo-id="R_kgDOI9C7aQ"
+  data-category="General"
+  data-category-id="DIC_kwDOI9C7ac4CUTNT"
+  data-mapping="pathname"
+  data-strict="0" 
+  data-reactions-enabled="1" 
+  data-emit-metadata="0" 
+  data-input-position="top"
+  data-theme="light_tritanopia"
+  data-lang="en"
+  crossorigin="anonymous"
+  async>
+  </script>
+
+
+
+
+      </div>
+
+      
+      
+      
+      <div class="
+              col-lg-2 col-lg-offset-0
+              visible-lg-block
+              sidebar-container
+              catalog-container">
+        <div class="side-catalog">
+          <hr class="hidden-sm hidden-xs">
+          <h5>
+            <a class="catalog-toggle" href="#">CATALOG</a>
+          </h5>
+          <ul class="catalog-body"></ul>
+        </div>
+      </div>
+      
+      
+      <div class="
+              col-lg-8 col-lg-offset-2
+              col-md-10 col-md-offset-1
+              sidebar-container">
+
+        
+        
+        <section>
+  
+  
+  <hr class="hidden-sm hidden-xs">
+  
+  <h5>FEATURED TAGS</h5>
+  <div class="tags">
+    
+    <a href="/tags/algorithm/">algorithm</a>
+    
+    <a href="/tags/asp.net/">asp.net</a>
+    
+    <a href="/tags/azure/">azure</a>
+    
+    <a href="/tags/ci/cd/">ci/cd</a>
+    
+    <a href="/tags/container/">container</a>
+    
+    <a href="/tags/dev-tools/">dev tools</a>
+    
+    <a href="/tags/javascript/">javascript</a>
+    
+    <a href="/tags/networking/">networking</a>
+    
+    <a href="/tags/performance/">performance</a>
+    
+    <a href="/tags/python/">python</a>
+    
+    <a href="/tags/security/">security</a>
+    
+  </div>
+</section>
+
+        
+        
+
+      </div>
+    </div>
+  </div>
+</article>
+
+
+
+  
+<footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        
+        <ul class="list-inline text-center">
+
+<li>
+  <a href="https://github.com/gkarwchan" target="_blank">
+    <span class="fa-stack fa-lg">
+      <i class="fa fa-circle fa-stack-2x"></i>
+      <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+    </span>
+  </a>
+</li>
+
+<li>
+  <a href="https://linkedin.com/in/ghassankarwchan" target="_blank">
+    <span class="fa-stack fa-lg">
+      <i class="fa fa-circle fa-stack-2x"></i>
+      <i class="fab fa-linkedin fa-stack-1x fa-inverse"></i>
+    </span>
+  </a>
+</li>
+
+
+<li>
+  <a href="/index.xml" target="_blank">
+    <span class="fa-stack fa-lg">
+      <i class="fa fa-circle fa-stack-2x"></i>
+      <i class="fas fa-rss fa-stack-1x fa-inverse"></i>
+    </span>
+  </a>
+</li></ul>
+
+        <p class="copyright text-muted">
+          Copyright &copy; Ghassan&#39;s Page 2024  
+          <br>
+          Powered by <a href="https://gohugo.io">Hugo</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src=/js/jquery.min.js></script>
+<script src=/js/bootstrap.min.js crossorigin="anonymous"></script>
+
+
+
+<script src="/js/hux-blog.min.c4ea77041cd3edbfc8b2622cd887a9a5d8760a4162d14489e36d2a3fa4c90172.js"></script>
+
+
+<script src=/js/simple-jekyll-search.min.js></script>
+
+
+<script src="/js/search.min.53bce5da475b4d362500e5ce5dddfa22e20e1b9018777411d2020b4b839c9310.js"></script>
+
+
+
+
+
+
+<script type="text/javascript">
+  function generateCatalog(selector) {
+    _containerSelector = 'div.post-container'
+    
+    var P = $(_containerSelector), a, n, t, l, i, c;
+    a = P.find('h1,h2,h3,h4');
+    
+    $(selector).html('')
+    
+    a.each(function () {
+      n = $(this).prop('tagName').toLowerCase();
+      i = "#" + $(this).prop('id');
+      t = $(this).text();
+      c = $('<a href="' + i + '" rel="nofollow">' + t + '</a>');
+      l = $('<li class="' + n + '_nav"></li>').append(c);
+      $(selector).append(l);
+    });
+    return true;
+  }
+
+  generateCatalog(".catalog-body");
+
+  
+  $(".catalog-toggle").click((function (e) {
+    e.preventDefault();
+    $('.side-catalog').toggleClass("fold")
+  }))
+</script>
+
+
+<script type="text/javascript" src='/js/jquery.nav.min.ade6bde8f9fcc6a4b40852cb892e9f5912340ab8fe1305149d917fdd16fffd8d.js'></script>
+<script>
+   $(document).ready( function () {
+    $('.catalog-body').onePageNav({
+      currentClass: "active",
+      changeHash: !1,
+      easing: "swing",
+      filter: "",
+      scrollSpeed: 700,
+      scrollOffset: 0,
+      scrollThreshold: .2,
+      begin: null,
+      end: null,
+      scrollChange: null,
+      padding: 80
+    });
+  });
+</script>
+
+
+
+
+
+
+
+
+
+<script src="/zoomjs/zoom.min.js"></script>
+
+</body>
+
+</html>

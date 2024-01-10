@@ -6,7 +6,40 @@
     <description>Recent content in Posts on Ghassan&#39;s Page</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 09 Nov 2023 12:41:54 -0600</lastBuildDate><atom:link href="https://www.ghassan.page/posts/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 05 Jan 2024 12:41:54 -0600</lastBuildDate><atom:link href="https://www.ghassan.page/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>How Single Page Application call a secure your API with OAuth2</title>
+      <link>https://www.ghassan.page/posts/2024_01_05_oauth2_and_spa/</link>
+      <pubDate>Fri, 05 Jan 2024 12:41:54 -0600</pubDate>
+      
+      <guid>https://www.ghassan.page/posts/2024_01_05_oauth2_and_spa/</guid>
+      <description>When a public SPA needs to authenticate through OAuth 2.0, it faces a big challenge.
+The challenge is you cannot store any type of secrets of credentials in your code. This is why OAuth provided a special flow to be used by SPA: Authorization Code Grant &amp;amp; PKCE. We are going to describe this flow in details here.
+Summary of the process:To describe the flow briefly, when the SPA requires to get a token it will direct the application to an Authorization Server (AS), which will use that server login page and UI, and the user will run the login process on the AS server website, then that server will return back to the original client website using a callback url passing the token to the SPA.</description>
+    </item>
+    
+    <item>
+      <title>Different options to add SSL certificate to you Azure App Service</title>
+      <link>https://www.ghassan.page/posts/2023_12_8_azureappservice_ssl_certificate/</link>
+      <pubDate>Fri, 08 Dec 2023 12:41:54 -0600</pubDate>
+      
+      <guid>https://www.ghassan.page/posts/2023_12_8_azureappservice_ssl_certificate/</guid>
+      <description>To add a SSL certificate to your web app hosted on Azure App Service with a custom domain, there are few options. I am going to list them here.
+Free certificate:Azure provides a free SSL certificate, and it is fully managed by Azure. Azure renew the process for you, and take care of everything for you.
+Although having a free certificate is a wonderful idea, but it has some shortcoming:</description>
+    </item>
+    
+    <item>
+      <title>Everything you need to know about configure DNS to provide domain for your blog</title>
+      <link>https://www.ghassan.page/posts/2023_12_3_dns_settings_to_map_blog/</link>
+      <pubDate>Sun, 03 Dec 2023 12:41:54 -0600</pubDate>
+      
+      <guid>https://www.ghassan.page/posts/2023_12_3_dns_settings_to_map_blog/</guid>
+      <description>You host your blog on Github pages, or Azure static website, or Azure blob storage with static website enabled. But you need to use a custom domain.
+Every time I changed my content location, I go back to remember how to do it, so I decided to make a post about it.
+Step by step on how to use DNS config to map your url:But wait, there is no IP address?</description>
+    </item>
+    
     <item>
       <title>Get the most out of Azure App Service.</title>
       <link>https://www.ghassan.page/posts/2023_11_09_get_most_out_of_app_service/</link>
@@ -171,6 +204,16 @@ But you need to make a small adjustment on the server that serve your static app
     </item>
     
     <item>
+      <title>Calling HTTP API and Socket Exhaustion problem</title>
+      <link>https://www.ghassan.page/posts/2023_01_8_http_and_socket_exhaustion/</link>
+      <pubDate>Sun, 08 Jan 2023 12:41:54 -0600</pubDate>
+      
+      <guid>https://www.ghassan.page/posts/2023_01_8_http_and_socket_exhaustion/</guid>
+      <description>You definitely had to write code to communicate to an API service. Regardless of the language you use, or the framework you use, there is a two major problems when you want to do lots of calls. They are:
+Socket Exhaustion DNS Rotation I am going to use C# and ASP.NET as an example and show you what .NET world has a solution for that, but there are solutions in every language and framework.</description>
+    </item>
+    
+    <item>
       <title>Deploy A Single Page Application to Azure Static Webapp using TeamCity, Jenkins or any CI, or command line</title>
       <link>https://www.ghassan.page/posts/2023_01_03_azure_static_webapp_deployment/</link>
       <pubDate>Tue, 03 Jan 2023 19:56:30 -0700</pubDate>
@@ -318,6 +361,31 @@ In this recipe we are going to cover:&lt;/p&gt;
       <description>&lt;p&gt;HTTP protocol specified only two standard authentication mechanisms, which are implemented in every browser, the [HTTP basic authentication]({% post_url 2016-03-31-web-security-basic-authentication %}), and the Digest authentication which is obsolete now because it is not secure anymore.&lt;br&gt;
 Because they are limited and work only on user name/password idea, the development communities in every web development platform came up with their better customized solutions.&lt;br&gt;
 JWT is one of the most promising and smart authentication ideas that is taking famous recently.&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Making sense of SSL, RSA, X509 and CSR</title>
+      <link>https://www.ghassan.page/posts/2016_04_18_making_sense_of_ssl_rsa_x509_and_csr/</link>
+      <pubDate>Mon, 18 Apr 2016 23:42:00 -0600</pubDate>
+      
+      <guid>https://www.ghassan.page/posts/2016_04_18_making_sense_of_ssl_rsa_x509_and_csr/</guid>
+      <description>This is the second part of learning about SSL/TLS.
+The first part was how to protect the site with SSL.
+This part is about explaining more the terms, technologies, protocols, standards used in SSL.
+What is SSL/TLS:SSL is the standard protocol to secure the communication between a web server and a browser, by creating an encrypted link between the two.
+SSL last version was 3.0, and TLS succeeds SSL, and become the new standard.</description>
+    </item>
+    
+    <item>
+      <title>Secure your web site with SSL</title>
+      <link>https://www.ghassan.page/posts/2016_03_11_secure_your_application_with_ssl/</link>
+      <pubDate>Fri, 11 Mar 2016 08:59:00 -0700</pubDate>
+      
+      <guid>https://www.ghassan.page/posts/2016_03_11_secure_your_application_with_ssl/</guid>
+      <description>What does it mean?In order to secure the web site with SSL, you first need to buy a certificate.
+A certificate is a document that your website will send back to the browsers as an Official identification for your web site, and your business.
+The certificate is issued by certified companies who are called Certificate Authorities`.
+Types of SSL Certificates:First of all you have to decide which certificate type you should chose for your web site.</description>
     </item>
     
   </channel>

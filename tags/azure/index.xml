@@ -6,7 +6,40 @@
     <description>Recent content in azure on Ghassan&#39;s Page</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 09 Nov 2023 12:41:54 -0600</lastBuildDate><atom:link href="https://www.ghassan.page/tags/azure/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 05 Jan 2024 12:41:54 -0600</lastBuildDate><atom:link href="https://www.ghassan.page/tags/azure/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>How Single Page Application call a secure your API with OAuth2</title>
+      <link>https://www.ghassan.page/posts/2024_01_05_oauth2_and_spa/</link>
+      <pubDate>Fri, 05 Jan 2024 12:41:54 -0600</pubDate>
+      
+      <guid>https://www.ghassan.page/posts/2024_01_05_oauth2_and_spa/</guid>
+      <description>When a public SPA needs to authenticate through OAuth 2.0, it faces a big challenge.
+The challenge is you cannot store any type of secrets of credentials in your code. This is why OAuth provided a special flow to be used by SPA: Authorization Code Grant &amp;amp; PKCE. We are going to describe this flow in details here.
+Summary of the process:To describe the flow briefly, when the SPA requires to get a token it will direct the application to an Authorization Server (AS), which will use that server login page and UI, and the user will run the login process on the AS server website, then that server will return back to the original client website using a callback url passing the token to the SPA.</description>
+    </item>
+    
+    <item>
+      <title>Different options to add SSL certificate to you Azure App Service</title>
+      <link>https://www.ghassan.page/posts/2023_12_8_azureappservice_ssl_certificate/</link>
+      <pubDate>Fri, 08 Dec 2023 12:41:54 -0600</pubDate>
+      
+      <guid>https://www.ghassan.page/posts/2023_12_8_azureappservice_ssl_certificate/</guid>
+      <description>To add a SSL certificate to your web app hosted on Azure App Service with a custom domain, there are few options. I am going to list them here.
+Free certificate:Azure provides a free SSL certificate, and it is fully managed by Azure. Azure renew the process for you, and take care of everything for you.
+Although having a free certificate is a wonderful idea, but it has some shortcoming:</description>
+    </item>
+    
+    <item>
+      <title>Everything you need to know about configure DNS to provide domain for your blog</title>
+      <link>https://www.ghassan.page/posts/2023_12_3_dns_settings_to_map_blog/</link>
+      <pubDate>Sun, 03 Dec 2023 12:41:54 -0600</pubDate>
+      
+      <guid>https://www.ghassan.page/posts/2023_12_3_dns_settings_to_map_blog/</guid>
+      <description>You host your blog on Github pages, or Azure static website, or Azure blob storage with static website enabled. But you need to use a custom domain.
+Every time I changed my content location, I go back to remember how to do it, so I decided to make a post about it.
+Step by step on how to use DNS config to map your url:But wait, there is no IP address?</description>
+    </item>
+    
     <item>
       <title>Get the most out of Azure App Service.</title>
       <link>https://www.ghassan.page/posts/2023_11_09_get_most_out_of_app_service/</link>

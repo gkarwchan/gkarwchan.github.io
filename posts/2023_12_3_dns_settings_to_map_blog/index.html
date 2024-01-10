@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  
+    
+  <title>Everything you need to know about configure DNS to provide domain for your blog | Ghassan&#39;s Page</title>
+  <meta name="author" content="Ghassan Karwchan">
+  <meta name="description" content="You host your blog on Github pages, or Azure static website, or Azure blob storage with static website enabled. But you need to use a custom domain.
+Every time I changed my content location, I go back to remember how to do it, so I decided to make a post about it.
+Step by step on how to use DNS config to map your url:But wait, there is no IP address?">
+  <meta name="keywords" content="blog,developer,personal">
+
+  <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Everything you need to know about configure DNS to provide domain for your blog"/>
+<meta name="twitter:description" content="You host your blog on Github pages, or Azure static website, or Azure blob storage with static website enabled. But you need to use a custom domain.
+Every time I changed my content location, I go back to remember how to do it, so I decided to make a post about it.
+Step by step on how to use DNS config to map your url:But wait, there is no IP address?"/>
+
+  <meta property="og:title" content="Everything you need to know about configure DNS to provide domain for your blog" />
+<meta property="og:description" content="You host your blog on Github pages, or Azure static website, or Azure blob storage with static website enabled. But you need to use a custom domain.
+Every time I changed my content location, I go back to remember how to do it, so I decided to make a post about it.
+Step by step on how to use DNS config to map your url:But wait, there is no IP address?" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://www.ghassan.page/posts/2023_12_3_dns_settings_to_map_blog/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2023-12-03T12:41:54-06:00" />
+<meta property="article:modified_time" content="2023-12-03T12:41:54-06:00" />
+
+
+  <link rel="stylesheet" href="/css/bootstrap.min.css"  crossorigin="anonymous">
+  
+  <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.1/css/all.min.css" rel="stylesheet" type="text/css">
+
+  <link rel="stylesheet" href="/sass/main.css">
+
+  <link rel="stylesheet" href="/zoomjs/zoom.min.css">
+
+  <script src=/js/lazysizes.min.js></script>
+
+  
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="manifest" href="/site.webmanifest">
+  
+
+</head>
+
+
+
+<body ontouchstart="">
+  
+  
+  <nav class="navbar navbar-default navbar-custom navbar-fixed-top invert">
+  <div class="container-fluid">
+    
+    <div class="navbar-header page-scroll">
+      <button type="button" class="navbar-toggle">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="https://www.ghassan.page/">Ghassan&#39;s Page</a>
+    </div>
+    
+    <div id="huxblog_navbar">
+      <div class="navbar-collapse">
+        <ul class="nav navbar-nav navbar-right">
+          
+          <li><a href="/" title="Home">Home</a></li>
+          
+          <li><a href="/archive/" title="Archive">Archive</a></li>
+          
+          <li><a href="/about/" title="About">About</a></li>
+          
+          <li><a href="https://github.com/gkarwchan/hugoblogsource" title="Github">Github</a></li>
+          
+
+          <li class="search-icon">
+            <a href="javascript:void(0)">
+              <i class="fa fa-search"></i>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    
+  </div>
+  
+</nav>
+<script>
+  
+  
+  
+  var $body = document.body;
+  var $toggle = document.querySelector(".navbar-toggle");
+  var $navbar = document.querySelector("#huxblog_navbar");
+  var $collapse = document.querySelector(".navbar-collapse");
+
+  var __HuxNav__ = {
+    close: function () {
+      $navbar.className = " ";
+      
+      setTimeout(function () {
+        
+        if ($navbar.className.indexOf("in") < 0) {
+          $collapse.style.height = "0px";
+        }
+      }, 400);
+    },
+    open: function () {
+      $collapse.style.height = "auto";
+      $navbar.className += " in";
+    },
+  };
+
+  
+  $toggle.addEventListener("click", function (e) {
+    if ($navbar.className.indexOf("in") > 0) {
+      __HuxNav__.close();
+    } else {
+      __HuxNav__.open();
+    }
+  });
+
+  
+
+  document.addEventListener("click", function (e) {
+    if (e.target == $toggle) return;
+    if (e.target.className == "icon-bar") return;
+    __HuxNav__.close();
+  });
+</script>
+  
+<div class="search-page">
+  <div class="search-icon-close-container">
+    <span class="search-icon-close">
+      <i class="fa fa-chevron-down"></i>
+    </span>
+  </div>
+  <div class="search-main container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <form></form>
+        <input type="text" id="search-input" placeholder="$ grep...">
+        </form>
+        <div id="search-results" class="mini-post-list"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+  
+  
+
+
+<style type="text/css">
+  header.intro-header {
+    position: relative;
+    background-image: url('');
+  }
+</style>
+
+<header class="intro-header style-text">
+
+  <div class="header-mask"></div>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div class="post-heading">
+          <div class="tags">
+            
+            <a class="tag" href="/tags/azure/" title="azure">azure</a>
+            
+            <a class="tag" href="/tags/networking/" title="networking">networking</a>
+            
+          </div>
+          <h1>Everything you need to know about configure DNS to provide domain for your blog</h1>
+          <h2 class="subheading"></h2>
+          <span class="meta">
+            Posted by  Ghassan Karwchan 
+            on Sun, Dec 3, 2023
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+
+  
+
+
+<article>
+  <div class="container">
+    <div class="row">
+
+      
+      <div class="
+              col-lg-8 col-lg-offset-2
+              col-md-10 col-md-offset-1
+              post-container">
+        <p>You host your blog on Github pages, or Azure static website, or Azure blob storage with static website enabled.  But you need to use a custom domain.<br>
+Every time I changed my content location, I go back to remember how to do it, so I decided to make a post about it.</p>
+<h1 id="step-by-step-on-how-to-use-dns-config-to-map-your-url">Step by step on how to use DNS config to map your url:<a class="anchorjs-link" href="#step-by-step-on-how-to-use-dns-config-to-map-your-url"></a></h1><h2 id="but-wait-there-is-no-ip-address">But wait, there is no IP address?<a class="anchorjs-link" href="#but-wait-there-is-no-ip-address"></a></h2><p>For static web app that is hosted on <code>azure blob storage</code>,  <code>github pages</code>, or <code>azure static web app</code>, there is no IP address, but there is a url, so we need to map the url to another url.</p>
+<h3 id="map-url-to-another-url-using-cname-record-in-dns">Map url to another url using <code>CNAME</code> record in DNS:<a class="anchorjs-link" href="#map-url-to-another-url-using-cname-record-in-dns"></a></h3><p>DNS mainly is used to map IP address to a domain, but it is possible to map a url to a custom domain, using <code>CNAME</code> record.</p>
+<p><code>CNAME</code> record is used to map your domain to a different url, to get its content from there.<br>
+Which means in your DNS provider (registrar), you need to add a <code>CNAME</code> record, that point the url of the content to your custom domain.</p>
+<p>But there is one small problem. <code>CNAME</code> works only for subdomain.<br>
+So if you want your blog or website to be hosted under something like: blog.mysite.com, or even <a href="https://www.mysite.com">www.mysite.com</a> then you are good to use <code>CNAME</code>.</p>
+<p>But what if you want to use  the <code>naked domain</code> or <code>apex domain</code> like: mysite.com?</p>
+<p>Then the process will be different depending on your DNS provider.</p>
+<h3 id="mapping-apex-domain-to-another-domain">Mapping apex domain to another domain.<a class="anchorjs-link" href="#mapping-apex-domain-to-another-domain"></a></h3><p>In old DNS protocol, apex domain (or the naked domain) can be mapped only to an IP address using <code>A</code> record.<br>
+There is no way in old DNS that will map the apex domain to a different url.<br>
+But later DNS developed and added new records in order to do that feature. They added these records:</p>
+<ul>
+<li><code>ANAME</code>: Will work as <code>CNAME</code> by pointing to a URL, but can work on the apex domain.</li>
+<li><code>ALIAS</code>: Is a DNS way for forwarding.</li>
+<li><code>CNAME flattening</code>: is another mechanism of using CNAME to map to apex.</li>
+</ul>
+<p>But the sad story is not all DNS providers support the above records. For example GoDaddy, and Google both don&rsquo;t support this feature.<br>
+So how you do support that feature if you are using those DNS?<br>
+The answer is either move to a better DNS provider, like Azure DNS service?<br>
+Or you forward your apex domain to www subdomain.</p>
+<p>But wait, isn&rsquo;t forwarding the same as <code>CNAME</code> mapping subdomain?</p>
+<h3 id="forwarding-vs-cname-mapping">Forwarding vs. CNAME mapping:<a class="anchorjs-link" href="#forwarding-vs-cname-mapping"></a></h3><p>Forwarding is responding with 302 HTTP status and forward your browser url itself, so you will see the new URL in the browser.</p>
+<p>But <code>CNAME</code> mapping is serving the content from the mapped url, but the browser url still the same.</p>
+<blockquote>
+<p><strong>PS</strong>: Browsers hides the <code>www</code> subdomain to simplify the address bar and because it used to be the default subdomain. So even you have been redirected from apex to www subdomain but your browser still showing the apex.</p>
+</blockquote>
+<blockquote>
+<p><strong>PS</strong>: Even you can serve your site from apex domain, but as a security best practice is always good to secure your www subdomain, and either you do forwarding or reserve it to server something else from your website.</p>
+</blockquote>
+<blockquote>
+<p><strong>Another fun fact</strong>: historically all domains served their content from www subdomain to distinguish them from <code>ftp</code> and <code>mail</code> subdomains. But later the use of ftp become less common, so many companies now serve their content from the naked domain.</p>
+</blockquote>
+<h3 id="mapping-to-apex-with-azure-dns">mapping to apex with Azure DNS<a class="anchorjs-link" href="#mapping-to-apex-with-azure-dns"></a></h3><p>Azure DNS, and many other DNS providers support: <code>ALIAS</code>, <code>ANAME</code>, so to map apex domain is as easy as add <code>ANAME</code> record that map your custom domain to the storage url.</p>
+<h2 id="summary">Summary:<a class="anchorjs-link" href="#summary"></a></h2><p>So to summarize, to map to a subdomain (like blog.mysite.com), you just add a <code>CNAME</code> record in your DNS provider.<br>
+To map the apex domain, either use a DNS provider that support <code>ANAME</code>, or forward your apex domain to <code>www</code> subdomain, and then map the <code>www</code> subdomain.</p>
+
+
+        <hr style="visibility: hidden;" />
+        <ul class="pager">
+          
+          <li class="previous">
+            <a href="/posts/2023_11_09_get_most_out_of_app_service/" data-toggle="tooltip" data-placement="top" title="Get the most out of Azure App Service.">
+              Previous<br>
+              <span>Get the most out of Azure App Service.</span>
+            </a>
+          </li>
+          
+          
+          <li class="next">
+            <a href="/posts/2023_12_8_azureappservice_ssl_certificate/" data-toggle="tooltip" data-placement="top" title="Different options to add SSL certificate to you Azure App Service">
+              Next<br>
+              <span>Different options to add SSL certificate to you Azure App Service</span>
+            </a>
+          </li>
+          
+        </ul>
+        <hr style="visibility: hidden;" />
+
+        
+        
+
+
+
+<div class="giscus" id="comments"></div>
+<script src="https://giscus.app/client.js" 
+  data-repo="gkarwchan/hugoblog" 
+  data-repo-id="R_kgDOI9C7aQ"
+  data-category="General"
+  data-category-id="DIC_kwDOI9C7ac4CUTNT"
+  data-mapping="pathname"
+  data-strict="0" 
+  data-reactions-enabled="1" 
+  data-emit-metadata="0" 
+  data-input-position="top"
+  data-theme="light_tritanopia"
+  data-lang="en"
+  crossorigin="anonymous"
+  async>
+  </script>
+
+
+
+
+      </div>
+
+      
+      
+      
+      <div class="
+              col-lg-2 col-lg-offset-0
+              visible-lg-block
+              sidebar-container
+              catalog-container">
+        <div class="side-catalog">
+          <hr class="hidden-sm hidden-xs">
+          <h5>
+            <a class="catalog-toggle" href="#">CATALOG</a>
+          </h5>
+          <ul class="catalog-body"></ul>
+        </div>
+      </div>
+      
+      
+      <div class="
+              col-lg-8 col-lg-offset-2
+              col-md-10 col-md-offset-1
+              sidebar-container">
+
+        
+        
+        <section>
+  
+  
+  <hr class="hidden-sm hidden-xs">
+  
+  <h5>FEATURED TAGS</h5>
+  <div class="tags">
+    
+    <a href="/tags/algorithm/">algorithm</a>
+    
+    <a href="/tags/asp.net/">asp.net</a>
+    
+    <a href="/tags/azure/">azure</a>
+    
+    <a href="/tags/ci/cd/">ci/cd</a>
+    
+    <a href="/tags/container/">container</a>
+    
+    <a href="/tags/dev-tools/">dev tools</a>
+    
+    <a href="/tags/javascript/">javascript</a>
+    
+    <a href="/tags/networking/">networking</a>
+    
+    <a href="/tags/performance/">performance</a>
+    
+    <a href="/tags/python/">python</a>
+    
+    <a href="/tags/security/">security</a>
+    
+  </div>
+</section>
+
+        
+        
+
+      </div>
+    </div>
+  </div>
+</article>
+
+
+
+  
+<footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        
+        <ul class="list-inline text-center">
+
+<li>
+  <a href="https://github.com/gkarwchan" target="_blank">
+    <span class="fa-stack fa-lg">
+      <i class="fa fa-circle fa-stack-2x"></i>
+      <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+    </span>
+  </a>
+</li>
+
+<li>
+  <a href="https://linkedin.com/in/ghassankarwchan" target="_blank">
+    <span class="fa-stack fa-lg">
+      <i class="fa fa-circle fa-stack-2x"></i>
+      <i class="fab fa-linkedin fa-stack-1x fa-inverse"></i>
+    </span>
+  </a>
+</li>
+
+
+<li>
+  <a href="/index.xml" target="_blank">
+    <span class="fa-stack fa-lg">
+      <i class="fa fa-circle fa-stack-2x"></i>
+      <i class="fas fa-rss fa-stack-1x fa-inverse"></i>
+    </span>
+  </a>
+</li></ul>
+
+        <p class="copyright text-muted">
+          Copyright &copy; Ghassan&#39;s Page 2024  
+          <br>
+          Powered by <a href="https://gohugo.io">Hugo</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src=/js/jquery.min.js></script>
+<script src=/js/bootstrap.min.js crossorigin="anonymous"></script>
+
+
+
+<script src="/js/hux-blog.min.c4ea77041cd3edbfc8b2622cd887a9a5d8760a4162d14489e36d2a3fa4c90172.js"></script>
+
+
+<script src=/js/simple-jekyll-search.min.js></script>
+
+
+<script src="/js/search.min.53bce5da475b4d362500e5ce5dddfa22e20e1b9018777411d2020b4b839c9310.js"></script>
+
+
+
+
+
+
+<script type="text/javascript">
+  function generateCatalog(selector) {
+    _containerSelector = 'div.post-container'
+    
+    var P = $(_containerSelector), a, n, t, l, i, c;
+    a = P.find('h1,h2,h3,h4');
+    
+    $(selector).html('')
+    
+    a.each(function () {
+      n = $(this).prop('tagName').toLowerCase();
+      i = "#" + $(this).prop('id');
+      t = $(this).text();
+      c = $('<a href="' + i + '" rel="nofollow">' + t + '</a>');
+      l = $('<li class="' + n + '_nav"></li>').append(c);
+      $(selector).append(l);
+    });
+    return true;
+  }
+
+  generateCatalog(".catalog-body");
+
+  
+  $(".catalog-toggle").click((function (e) {
+    e.preventDefault();
+    $('.side-catalog').toggleClass("fold")
+  }))
+</script>
+
+
+<script type="text/javascript" src='/js/jquery.nav.min.ade6bde8f9fcc6a4b40852cb892e9f5912340ab8fe1305149d917fdd16fffd8d.js'></script>
+<script>
+   $(document).ready( function () {
+    $('.catalog-body').onePageNav({
+      currentClass: "active",
+      changeHash: !1,
+      easing: "swing",
+      filter: "",
+      scrollSpeed: 700,
+      scrollOffset: 0,
+      scrollThreshold: .2,
+      begin: null,
+      end: null,
+      scrollChange: null,
+      padding: 80
+    });
+  });
+</script>
+
+
+
+
+
+
+
+
+
+<script src="/zoomjs/zoom.min.js"></script>
+
+</body>
+
+</html>

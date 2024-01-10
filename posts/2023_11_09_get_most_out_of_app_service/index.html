@@ -231,11 +231,23 @@ So what is difference between a deployment slot and separate staging environment
 The staging environment has a different App Service Plan, and App Service, where the deployment slot is deploying to the same App Service Plan, which means it might deploy to the same worker machines that host the production ones, or machines from the same images that are defined in the App Service Plan.<br>
 As well deployment slots provide zero production deployment because when you deploy to the deployment slot, and after you test it and you are ok with it, you <code>swap</code> the slot, which is only switch the configurations and the routing, which take zero downtime.</p>
 <h2 id="3-using-key-vault-and-app-configurations">3. Using Key Vault and App Configurations.<a class="anchorjs-link" href="#3-using-key-vault-and-app-configurations"></a></h2><p>If you have sensitive credentials and you want to provide them for your application, it is essentials to not store these in your code repository.  Instead we can use the App Configuration and for secrets we can use Key Vault.<br>
-<a href="https://learn.microsoft.com/en-us/azure/azure-app-configuration/faq#should-i-store-secrets-in-app-configuration">Key vault provides extra layer of security over App Configuration</a>.<br>
-And more important, A user with App Service Administrator can add configuration to reference the key vault without having access to the key vault data.  So if you are using database credentials and you want to keep it secret even from the user who is managing the App Service, then you can store it in Key Vault and let the manager reference the key vault in the app configurations.</p>
-<h2 id="4-virtual-networking">4. Virtual Networking<a class="anchorjs-link" href="#4-virtual-networking"></a></h2><p>If you are using other SaaS services on Azure, like databases or message queue, or cashing service, then you can use virtual networking to provide a secure and private connection between the App service and those services. Those services will be secured from the outside world and only accessed through a private connection to your app.  <a href="https://www.ghassan.page/posts/2023_01_10_azure_networking_reciep_one/">Here and example on how to create a private connection between App service and Azure Sql Server</a>.</p>
-<h2 id="5-managed-identity">5. Managed Identity:<a class="anchorjs-link" href="#5-managed-identity"></a></h2><p>Managed Identity is an Microsoft Entra Identity that is issued for an application, so the application can provide this identity to other services (like database), and because it is Microsoft Entra identity so you can use it like any other identity and you don&rsquo;t need to store the credentials to communicate to the database.</p>
-<h2 id="6-integrate-with-other-azure-web-services">6. Integrate with other Azure web services:<a class="anchorjs-link" href="#6-integrate-with-other-azure-web-services"></a></h2><p>There are two services that can increase the security and enhance the performance of the web application and they are easy to integrate to App service:</p>
+And more important, A user with App Service Administrator can add configuration to reference the key vault without having access to the key vault data.  So if you are using database credentials and you want to keep it secret even from the user who is managing the App Service, then you can store it in Key Vault and let the manager reference the key vault in the app configurations.<br>
+If you are using .NET you can add KeyVault configuration using</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="color:#ff79c6">using</span> Azure.Identity;
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span><span style="color:#8be9fd">var</span> builder = WebApplication.CreateBuilder(args);
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span>builder.Configuration.AddAzureKeyVault(
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6</span><span>    <span style="color:#ff79c6">new</span> Uri(<span style="color:#f1fa8c">$&#34;https://{builder.Configuration[&#34;</span>KeyVaultName<span style="color:#f1fa8c">&#34;]}.vault.azure.net/&#34;</span>),
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7</span><span>    <span style="color:#ff79c6">new</span> DefaultAzureCredential());
+</span></span></code></pre></div><h2 id="4-virtual-networking">4. Virtual Networking<a class="anchorjs-link" href="#4-virtual-networking"></a></h2><p>If you are using other SaaS services on Azure, like databases or message queue, or cashing service, then you can use virtual networking to provide a secure and private connection between the App service and those services. Those services will be secured from the outside world and only accessed through a private connection to your app.  <a href="https://www.ghassan.page/posts/2023_01_10_azure_networking_reciep_one/">Here and example on how to create a private connection between App service and Azure Sql Server</a>.</p>
+<h2 id="5-managed-identity">5. Managed Identity:<a class="anchorjs-link" href="#5-managed-identity"></a></h2><p>Managed Identity is an Microsoft Entra Identity that is issued for an application, so the application can provide this identity to other services (like database), and because it is Microsoft Entra identity so you can use it like any other identity and you don&rsquo;t need to store the credentials to communicate to the database.<br>
+To add a managed identity to the web app run the following:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>az webapp identity assign --resource-group &lt;resource-group-name&gt; --name &lt;app-service-name&gt;
+</span></span></code></pre></div><p>The previous command will create a managed identity and will return json with the new <code>principalId</code>.<br>
+Now you can give permissions to that user by assigning them permissions to the services. For example to give that user permissions to read a key-vault that we created for the web app, run the following:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>az keyvault set-policy --secret-permissions get list --name &lt;your-unique-vault-name&gt; --object-id &lt;your-managed-identity-principleid&gt;
+</span></span></code></pre></div><h2 id="6-integrate-with-other-azure-web-services">6. Integrate with other Azure web services:<a class="anchorjs-link" href="#6-integrate-with-other-azure-web-services"></a></h2><p>There are two services that can increase the security and enhance the performance of the web application and they are easy to integrate to App service:</p>
 <ul>
 <li>Azure CDN (to host any media or static files).</li>
 <li>Web Application Firewall (WAF), which provide a security layer of your web application to protect against multiple attacks.</li>
@@ -263,6 +275,13 @@ The following Identity providers are available by default:</p>
             </a>
           </li>
           
+          
+          <li class="next">
+            <a href="/posts/2023_12_3_dns_settings_to_map_blog/" data-toggle="tooltip" data-placement="top" title="Everything you need to know about configure DNS to provide domain for your blog">
+              Next<br>
+              <span>Everything you need to know about configure DNS to provide domain for your blog</span>
+            </a>
+          </li>
           
         </ul>
         <hr style="visibility: hidden;" />
@@ -399,7 +418,7 @@ The following Identity providers are available by default:</p>
 </li></ul>
 
         <p class="copyright text-muted">
-          Copyright &copy; Ghassan&#39;s Page 2023  
+          Copyright &copy; Ghassan&#39;s Page 2024  
           <br>
           Powered by <a href="https://gohugo.io">Hugo</a>
         </p>

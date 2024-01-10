@@ -3,24 +3,36 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://www.ghassan.page/tags/azure/</loc>
-    <lastmod>2023-11-09T12:41:54-06:00</lastmod>
+    <lastmod>2024-01-05T12:41:54-06:00</lastmod>
+  </url><url>
+    <loc>https://www.ghassan.page/</loc>
+    <lastmod>2024-01-05T12:41:54-06:00</lastmod>
+  </url><url>
+    <loc>https://www.ghassan.page/posts/2024_01_05_oauth2_and_spa/</loc>
+    <lastmod>2024-01-05T12:41:54-06:00</lastmod>
+  </url><url>
+    <loc>https://www.ghassan.page/posts/</loc>
+    <lastmod>2024-01-05T12:41:54-06:00</lastmod>
+  </url><url>
+    <loc>https://www.ghassan.page/tags/security/</loc>
+    <lastmod>2024-01-05T12:41:54-06:00</lastmod>
+  </url><url>
+    <loc>https://www.ghassan.page/tags/</loc>
+    <lastmod>2024-01-05T12:41:54-06:00</lastmod>
+  </url><url>
+    <loc>https://www.ghassan.page/posts/2023_12_8_azureappservice_ssl_certificate/</loc>
+    <lastmod>2023-12-08T12:41:54-06:00</lastmod>
+  </url><url>
+    <loc>https://www.ghassan.page/posts/2023_12_3_dns_settings_to_map_blog/</loc>
+    <lastmod>2023-12-03T12:41:54-06:00</lastmod>
+  </url><url>
+    <loc>https://www.ghassan.page/tags/networking/</loc>
+    <lastmod>2023-12-03T12:41:54-06:00</lastmod>
   </url><url>
     <loc>https://www.ghassan.page/posts/2023_11_09_get_most_out_of_app_service/</loc>
     <lastmod>2023-11-09T12:41:54-06:00</lastmod>
   </url><url>
-    <loc>https://www.ghassan.page/</loc>
-    <lastmod>2023-11-09T12:41:54-06:00</lastmod>
-  </url><url>
-    <loc>https://www.ghassan.page/posts/</loc>
-    <lastmod>2023-11-09T12:41:54-06:00</lastmod>
-  </url><url>
-    <loc>https://www.ghassan.page/tags/</loc>
-    <lastmod>2023-11-09T12:41:54-06:00</lastmod>
-  </url><url>
     <loc>https://www.ghassan.page/posts/2023_10_27_oauth_openid_authenticationflow_in_plain_english/</loc>
-    <lastmod>2023-10-27T12:41:54-06:00</lastmod>
-  </url><url>
-    <loc>https://www.ghassan.page/tags/security/</loc>
     <lastmod>2023-10-27T12:41:54-06:00</lastmod>
   </url><url>
     <loc>https://www.ghassan.page/tags/asp.net/</loc>
@@ -36,9 +48,6 @@
     <lastmod>2023-03-11T18:44:55-07:00</lastmod>
   </url><url>
     <loc>https://www.ghassan.page/posts/2023_03_05_buy_custom_domain_with_azure/</loc>
-    <lastmod>2023-03-04T21:44:55-07:00</lastmod>
-  </url><url>
-    <loc>https://www.ghassan.page/tags/networking/</loc>
     <lastmod>2023-03-04T21:44:55-07:00</lastmod>
   </url><url>
     <loc>https://www.ghassan.page/posts/2023_02_24_application_insights_on_azure/</loc>
@@ -70,6 +79,9 @@
   </url><url>
     <loc>https://www.ghassan.page/posts/2023_01_08_azure_static_webapp_routing/</loc>
     <lastmod>2023-01-08T19:58:31-07:00</lastmod>
+  </url><url>
+    <loc>https://www.ghassan.page/posts/2023_01_8_http_and_socket_exhaustion/</loc>
+    <lastmod>2023-01-08T12:41:54-06:00</lastmod>
   </url><url>
     <loc>https://www.ghassan.page/posts/2023_01_03_azure_static_webapp_deployment/</loc>
     <lastmod>2023-01-03T19:56:30-07:00</lastmod>
@@ -133,6 +145,12 @@
   </url><url>
     <loc>https://www.ghassan.page/posts/2016_04_29_token_based_authentication_jwt/</loc>
     <lastmod>2016-04-29T12:41:54-06:00</lastmod>
+  </url><url>
+    <loc>https://www.ghassan.page/posts/2016_04_18_making_sense_of_ssl_rsa_x509_and_csr/</loc>
+    <lastmod>2016-04-18T23:42:00-06:00</lastmod>
+  </url><url>
+    <loc>https://www.ghassan.page/posts/2016_03_11_secure_your_application_with_ssl/</loc>
+    <lastmod>2016-03-11T08:59:00-07:00</lastmod>
   </url><url>
     <loc>https://www.ghassan.page/categories/</loc>
   </url><url>

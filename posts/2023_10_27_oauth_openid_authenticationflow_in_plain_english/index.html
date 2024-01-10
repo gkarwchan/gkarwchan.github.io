@@ -244,7 +244,7 @@ We can define these types of applications:</p>
 <li>Single Page Application (SPA), where the client is a thick JavaScript application that can be hosted on any place, and it called different API application.</li>
 <li>Mobile native APP.</li>
 <li>Local desktop App.
-Each type has its matching OAuth</li>
+Each type has its matching OAuth, and each <code>flow</code> communicate to the <code>Authorization Server (SA)</code> using different services and end point.</li>
 </ol>
 <table>
 <thead>
@@ -272,7 +272,30 @@ Each type has its matching OAuth</li>
 </tr>
 </tbody>
 </table>
-<h2 id="conclusion">Conclusion<a class="anchorjs-link" href="#conclusion"></a></h2><p>Hopefully I was able to explain these technical terms and technologies in simple plain Engligh.</p>
+<h2 id="using-off-the-shelf-saas-service">Using Off-the-shelf <code>SaaS</code> Service:<a class="anchorjs-link" href="#using-off-the-shelf-saas-service"></a></h2><p>You can build your own <code>Authentication Server</code>, and write code with client side JavaScript, and server side code. Or you can use one of the off-the-shelf <code>SaaS</code> services on the market.<br>
+These <code>SaaS</code> services provides all the OAuth 2.0 and OpenID Connect services for your needs.<br>
+Just as example of these services:</p>
+<ul>
+<li>[Auth0] (<a href="https://auth0.com/">https://auth0.com/</a>) is very popular service, and maybe the most used one.</li>
+<li>[Google Firebase] (<a href="https://firebase.google.com/">https://firebase.google.com/</a>) is another very popular service.</li>
+<li>Microsoft Identity Platform is bunch of OAuth tools, and they are provided on Azure.</li>
+</ul>
+<p>There are bunch of benefits I can list for using such services.</p>
+<ol>
+<li>Easy of use.</li>
+<li>Up-to-date with security standard.</li>
+</ol>
+<h3 id="easy-of-use">Easy of use:<a class="anchorjs-link" href="#easy-of-use"></a></h3><p>By using these services, you don&rsquo;t need to learn which <code>flow</code> is proper for your application, and you don&rsquo;t have to worry about how to implement these flow. For example if you use Auth0, and you want to implement security, Auth0 will give you a list of options for your application:</p>
+<p><figure>
+  <a class="paragraph-image">
+    <img data-src="https://dev-to-uploads.s3.amazonaws.com/uploads/articles/rv72wxytprr15mcot4vq.png" data-action="zoom" alt="Image description"  class="lazyload">
+  </a>
+  
+</figure></p>
+<p>All you need to do is to chose what type of application, and by using the service with its SDK will handle the rest by choosing the proper <code>flow</code> and will communicate to the server to the proper end points.</p>
+<h3 id="up-to-date-with-security-standard">Up-to-date with security standard:<a class="anchorjs-link" href="#up-to-date-with-security-standard"></a></h3><p>The security standard changed with time. For example: SH-256 is the accepted hash standard for encryption, but in the future that will change for sure, so by using off-the-shelf service, they will take care of that update.<br>
+Another good example is change OAuth 2.0 standard. For example the flow <code>Implicit Grant</code> was an accepted standard flow for SPA application, but later in 2018 it is considered not secured enough and a new standard came which is <code>Authorization Code Grant</code>. So if you were using Auth0 for example and you defined your application as SPA, all what you need to do is to update the SDK library and Auth0 will take care of the rest for you.</p>
+<h2 id="conclusion">Conclusion<a class="anchorjs-link" href="#conclusion"></a></h2><p>Hopefully I was able to explain these technical terms and technologies in simple plain English.</p>
 
 
         <hr style="visibility: hidden;" />
@@ -428,7 +451,7 @@ Each type has its matching OAuth</li>
 </li></ul>
 
         <p class="copyright text-muted">
-          Copyright &copy; Ghassan&#39;s Page 2023  
+          Copyright &copy; Ghassan&#39;s Page 2024  
           <br>
           Powered by <a href="https://gohugo.io">Hugo</a>
         </p>
