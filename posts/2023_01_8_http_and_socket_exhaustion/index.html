@@ -233,7 +233,7 @@ To open a connection the computer needs to open a port with a random number betw
 </figure></p>
 <p>The combination of the computer IP address and port is called <strong><code>Socket</code></strong>.<br>
 The problem with above code is even you dispose the Http client, but the underlying connection won&rsquo;t be disposed immediately, and the port won&rsquo;t be release right away.<br>
-In Http protocol, when a connection disposed, it will stays in <strong><code>TIME_WAIT</code></strong> status for 240 seconds (4 minutes).</p>
+In Http protocol, when a connection disposed, it will stays in <strong><code>TIME_WAIT</code></strong> status for 240 seconds (4 minutes). To read more about the <code>TIME_WAIT</code> <a href="https://www.rfc-editor.org/rfc/rfc9293.html#section-3.3.2">check TCP/HTTP specification</a>.</p>
 <p>With lots of calls you might use all the ports on the client computer, which lead to the application will hang waiting for a port to be released.<br>
 That situation is called <strong><code>Socket Exhaustion</code></strong>.</p>
 <h2 id="fixing-socket-exhaustion">Fixing Socket Exhaustion<a class="anchorjs-link" href="#fixing-socket-exhaustion"></a></h2><p>So what if we introduce one instance of Http Client (that is using only one random port), and keep it alive, and re-use it for all calls?<br>
@@ -254,12 +254,12 @@ Any scale up on cloud PaaS, or even new deployment might change the IP.<br>
 Having one HttpClient, will keep the old IP address that was detected on the first call.</p>
 <h2 id="how-net-core-fixed-the-problem">How .NET core fixed the problem?<a class="anchorjs-link" href="#how-net-core-fixed-the-problem"></a></h2><p>.NET fixed the problem by introducing a feature called <strong><code>IHttpClientFactory</code></strong> in Core version 2.1.</p>
 <h3 id="how-ihttpclientfactory-solved-the-problem">How IHttpClientFactory solved the problem?<a class="anchorjs-link" href="#how-ihttpclientfactory-solved-the-problem"></a></h3><p>HttpClient internally is creating a connection and doing the calls using a class in .NET called <strong><code>SocketsHttpHandler</code></strong>.<br>
-The real work of establishing a connection is happening inside <code>SocketsHttpHandler</code> , and the disposing of this handler that will take <strong><code>Time_WAIT</code></strong> for 4 minutes to be really released.</p>
-<p>HttpClientFactory uses an internal class called <code>HttpClientHandler</code>, and it is the same as <code>SocketsHttpHanlder</code>, which might be confusing, so before we talk what HttpClientFactory is doing, let us explain the difference.</p>
-<h4 id="httpclienthandler-vs-socketshttphandler">HttpClientHandler vs. SocketsHttpHandler:<a class="anchorjs-link" href="#httpclienthandler-vs-socketshttphandler"></a></h4><p>HttpClientHandler was the old handler that HttpClient uses to do the real http communication. After version Core 2.1, the SocketsHttpHanlder was introduced, and HttpClient started using the new handler, but HttpClientFactory kept using the old handler HttpClientHandler.<br>
-But in Core 5.0, HttpClientHandler <a href="https://github.com/dotnet/runtime/blob/f518b2e533ba9c5ed9c1dce3651a77e9a1807b8b/src/libraries/System.Net.Http/src/System/Net/Http/HttpClientHandler.cs#L16">was changed to use SocketsHttpHanlder internally</a>. So in reality they are the same, and when you are talking about Core version 5.0 and later both are the same which is SocketsHttpHandler.</p>
+The real work of establishing a connection is happening inside <code>SocketsHttpHandler</code> , and the disposing of this handler which is taking <strong><code>Time_WAIT</code></strong> for 4 minutes to be really released.</p>
+<p>HttpClientFactory uses an internal class called <code>HttpClientHandler</code>, and it is the same as <code>SocketsHttpHandler</code>, which might be confusing, so before we talk what HttpClientFactory is doing, let us explain the difference.</p>
+<h4 id="httpclienthandler-vs-socketshttphandler">HttpClientHandler vs. SocketsHttpHandler:<a class="anchorjs-link" href="#httpclienthandler-vs-socketshttphandler"></a></h4><p>HttpClientHandler was the old handler that HttpClient uses to do the real http communication. After version Core 2.1, the SocketsHttpHandler was introduced, and HttpClient started using the new handler, but HttpClientFactory kept using the old handler HttpClientHandler.<br>
+But in Core 5.0, HttpClientHandler <a href="https://github.com/dotnet/runtime/blob/f518b2e533ba9c5ed9c1dce3651a77e9a1807b8b/src/libraries/System.Net.Http/src/System/Net/Http/HttpClientHandler.cs#L16">was changed to use SocketsHttpHandler internally</a>. So in reality they are the same, and when you are talking about Core version 5.0 and later both are the same which is SocketsHttpHandler.</p>
 <p>If you read about IHttpClientFactory you will read that it is using an internal class called HttpClientHandler, and that might create confusion.</p>
-<p>So back to our question how HttpClientFactory fixed the problmes?<br>
+<p>So back to our question how HttpClientFactory fixed the problems?<br>
 <code>IHttpClientFactory</code> will create an internal pool of  <code>HttpClientHandler</code> and keep them and passing them when create <code>HttpClient</code>. So when create or dispose <code>HttpClient</code>, <code>IHttpClientFactory</code> is using <code>HttpClientHandler</code> from its pool.<br>
 <code>IHttpClientFactory</code> rotate between the <code>HttpClientHandler</code> in the pool every 2 minutes (the half time of <strong><code>WAIT_TIME</code></strong>).<br>
 For 2 minutes <code>IHttpClientFactory</code> uses one <code>HttpClientHandler</code> to create all <code>HttpClient</code> during that 2 minutes.<br>
@@ -365,7 +365,7 @@ In ConfigureServices part:</p>
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span>        <span style="color:#ff79c6">return</span> <span style="color:#ff79c6">await</span> client.GetFinancialData();
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span><span>    }
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span><span>}
-</span></span></code></pre></div>
+</span></span></code></pre></div><h2 id="another-solution-using-socketshttphandler">Another solution using SocketsHttpHandler?<a class="anchorjs-link" href="#another-solution-using-socketshttphandler"></a></h2>
 
         <hr style="visibility: hidden;" />
         <ul class="pager">
