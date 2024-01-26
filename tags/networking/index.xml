@@ -15,7 +15,7 @@
       <guid>https://www.ghassan.page/posts/2023_12_3_dns_settings_to_map_blog/</guid>
       <description>You host your blog on Github pages, or Azure static website, or Azure blob storage with static website enabled. But you need to use a custom domain.
 Every time I changed my content location, I go back to remember how to do it, so I decided to make a post about it.
-Step by step on how to use DNS config to map your url:But wait, there is no IP address?</description>
+Understand how custom domain mapping works:You host your static web pages on one of the static hosting services, for example these three:</description>
     </item>
     
     <item>
