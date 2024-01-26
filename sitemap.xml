@@ -2,19 +2,25 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
+    <loc>https://www.ghassan.page/tags/asp.net/</loc>
+    <lastmod>2024-01-23T10:41:54-06:00</lastmod>
+  </url><url>
+    <loc>https://www.ghassan.page/posts/2024_01_23_get_the_most_of_ihttpclientfactory/</loc>
+    <lastmod>2024-01-23T10:41:54-06:00</lastmod>
+  </url><url>
+    <loc>https://www.ghassan.page/</loc>
+    <lastmod>2024-01-23T10:41:54-06:00</lastmod>
+  </url><url>
+    <loc>https://www.ghassan.page/posts/</loc>
+    <lastmod>2024-01-23T10:41:54-06:00</lastmod>
+  </url><url>
+    <loc>https://www.ghassan.page/tags/</loc>
+    <lastmod>2024-01-23T10:41:54-06:00</lastmod>
+  </url><url>
     <loc>https://www.ghassan.page/tags/azure/</loc>
     <lastmod>2024-01-14T10:41:54-06:00</lastmod>
   </url><url>
-    <loc>https://www.ghassan.page/</loc>
-    <lastmod>2024-01-14T10:41:54-06:00</lastmod>
-  </url><url>
-    <loc>https://www.ghassan.page/posts/</loc>
-    <lastmod>2024-01-14T10:41:54-06:00</lastmod>
-  </url><url>
     <loc>https://www.ghassan.page/tags/security/</loc>
-    <lastmod>2024-01-14T10:41:54-06:00</lastmod>
-  </url><url>
-    <loc>https://www.ghassan.page/tags/</loc>
     <lastmod>2024-01-14T10:41:54-06:00</lastmod>
   </url><url>
     <loc>https://www.ghassan.page/posts/2024_01_14_managedidentity/</loc>
@@ -37,9 +43,6 @@
   </url><url>
     <loc>https://www.ghassan.page/posts/2023_10_27_oauth_openid_authenticationflow_in_plain_english/</loc>
     <lastmod>2023-10-27T12:41:54-06:00</lastmod>
-  </url><url>
-    <loc>https://www.ghassan.page/tags/asp.net/</loc>
-    <lastmod>2023-10-17T12:41:54-06:00</lastmod>
   </url><url>
     <loc>https://www.ghassan.page/posts/2023_10_17_subscribe_to_upload_file_azure_blog_storage/</loc>
     <lastmod>2023-10-17T12:41:54-06:00</lastmod>
@@ -83,7 +86,7 @@
     <loc>https://www.ghassan.page/posts/2023_01_08_azure_static_webapp_routing/</loc>
     <lastmod>2023-01-08T19:58:31-07:00</lastmod>
   </url><url>
-    <loc>https://www.ghassan.page/posts/2023_01_8_http_and_socket_exhaustion/</loc>
+    <loc>https://www.ghassan.page/posts/2023_01_08_http_and_socket_exhaustion/</loc>
     <lastmod>2023-01-08T12:41:54-06:00</lastmod>
   </url><url>
     <loc>https://www.ghassan.page/posts/2023_01_03_azure_static_webapp_deployment/</loc>

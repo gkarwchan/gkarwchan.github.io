@@ -6,7 +6,17 @@
     <description>Recent content on Ghassan&#39;s Page</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 14 Jan 2024 10:41:54 -0600</lastBuildDate><atom:link href="https://www.ghassan.page/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 23 Jan 2024 10:41:54 -0600</lastBuildDate><atom:link href="https://www.ghassan.page/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Best practices of calling HTTP from Asp.NET Core</title>
+      <link>https://www.ghassan.page/posts/2024_01_23_get_the_most_of_ihttpclientfactory/</link>
+      <pubDate>Tue, 23 Jan 2024 10:41:54 -0600</pubDate>
+      
+      <guid>https://www.ghassan.page/posts/2024_01_23_get_the_most_of_ihttpclientfactory/</guid>
+      <description>I described before how IHttpClientFactory solved the Socket Exhaustion problem.
+But IHtpClientFactory has lots of other benefits which can help you build resilient Http consumer. We are going to talk about them here.</description>
+    </item>
+    
     <item>
       <title>Using Azure Managed Identity to skip sharing credentials</title>
       <link>https://www.ghassan.page/posts/2024_01_14_managedidentity/</link>
@@ -215,10 +225,10 @@ But you need to make a small adjustment on the server that serve your static app
     
     <item>
       <title>Calling HTTP API and Socket Exhaustion problem</title>
-      <link>https://www.ghassan.page/posts/2023_01_8_http_and_socket_exhaustion/</link>
+      <link>https://www.ghassan.page/posts/2023_01_08_http_and_socket_exhaustion/</link>
       <pubDate>Sun, 08 Jan 2023 12:41:54 -0600</pubDate>
       
-      <guid>https://www.ghassan.page/posts/2023_01_8_http_and_socket_exhaustion/</guid>
+      <guid>https://www.ghassan.page/posts/2023_01_08_http_and_socket_exhaustion/</guid>
       <description>You definitely had to write code to communicate to an API service. Regardless of the language you use, or the framework you use, there is a two major problems when you want to do lots of calls. They are:
 Socket Exhaustion DNS Rotation I am going to use C# and ASP.NET as an example and show you what .NET world has a solution for that, but there are solutions in every language and framework.</description>
     </item>
