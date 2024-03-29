@@ -16,8 +16,7 @@ Azure App service has tons of features that make it easy to forget about some of
 I am going to list this checklist and explain more details on them. There are features that Must be implemented, and there are features that are optional because you might be using other services to achieve their functionalities.">
   <meta name="keywords" content="blog,developer,personal">
 
-  <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="Get the most out of Azure App Service."/>
+  <meta name="twitter:card" content="summary"/><meta name="twitter:title" content="Get the most out of Azure App Service."/>
 <meta name="twitter:description" content="Azure App service take care of tons of infrastructure, hosting, scalability, monitoring, deployment, DevOps, security and environment of your shoulders.
 But the question, are you really utilizing the most out of this wonderful service?
 Azure App service has tons of features that make it easy to forget about some of them and missing using them.
@@ -32,6 +31,7 @@ I am going to list this checklist and explain more details on them. There are fe
 <meta property="og:url" content="https://www.ghassan.page/posts/2023_11_09_get_most_out_of_app_service/" /><meta property="article:section" content="posts" />
 <meta property="article:published_time" content="2023-11-09T12:41:54-06:00" />
 <meta property="article:modified_time" content="2023-11-09T12:41:54-06:00" />
+
 
 
   <link rel="stylesheet" href="/css/bootstrap.min.css"  crossorigin="anonymous">
@@ -233,20 +233,20 @@ As well deployment slots provide zero production deployment because when you dep
 <h2 id="3-using-key-vault-and-app-configurations">3. Using Key Vault and App Configurations.<a class="anchorjs-link" href="#3-using-key-vault-and-app-configurations"></a></h2><p>If you have sensitive credentials and you want to provide them for your application, it is essentials to not store these in your code repository.  Instead we can use the App Configuration and for secrets we can use Key Vault.<br>
 And more important, A user with App Service Administrator can add configuration to reference the key vault without having access to the key vault data.  So if you are using database credentials and you want to keep it secret even from the user who is managing the App Service, then you can store it in Key Vault and let the manager reference the key vault in the app configurations.<br>
 If you are using .NET you can add KeyVault configuration using</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="color:#ff79c6">using</span> Azure.Identity;
-</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>
-</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span><span style="color:#8be9fd">var</span> builder = WebApplication.CreateBuilder(args);
-</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span>
-</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span>builder.Configuration.AddAzureKeyVault(
-</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6</span><span>    <span style="color:#ff79c6">new</span> Uri(<span style="color:#f1fa8c">$&#34;https://{builder.Configuration[&#34;</span>KeyVaultName<span style="color:#f1fa8c">&#34;]}.vault.azure.net/&#34;</span>),
-</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7</span><span>    <span style="color:#ff79c6">new</span> DefaultAzureCredential());
-</span></span></code></pre></div><h2 id="4-virtual-networking">4. Virtual Networking<a class="anchorjs-link" href="#4-virtual-networking"></a></h2><p>If you are using other SaaS services on Azure, like databases or message queue, or cashing service, then you can use virtual networking to provide a secure and private connection between the App service and those services. Those services will be secured from the outside world and only accessed through a private connection to your app.  <a href="https://www.ghassan.page/posts/2023_01_10_azure_networking_reciep_one/">Here and example on how to create a private connection between App service and Azure Sql Server</a>.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="color:#ff79c6">using</span> Azure.Identity;
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span><span style="color:#8be9fd">var</span> builder = WebApplication.CreateBuilder(args);
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span>builder.Configuration.AddAzureKeyVault(
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6</span><span>    <span style="color:#ff79c6">new</span> Uri(<span style="color:#f1fa8c">$&#34;https://{builder.Configuration[&#34;</span>KeyVaultName<span style="color:#f1fa8c">&#34;]}.vault.azure.net/&#34;</span>),
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7</span><span>    <span style="color:#ff79c6">new</span> DefaultAzureCredential());
+</span></span></code></pre></div><h2 id="4-virtual-networking">4. Virtual Networking<a class="anchorjs-link" href="#4-virtual-networking"></a></h2><p>If you are using other SaaS services on Azure, like databases or message queue, or cashing service, then you can use virtual networking to provide a secure and private connection between the App service and those services. Those services will be secured from the outside world and only accessed through a private connection to your app.  <a href="/posts/2023_01_10_azure_networking_reciep_one/" target="_blank">Here and example on how to create a private connection between App service and Azure Sql Server</a>.</p>
 <h2 id="5-managed-identity">5. Managed Identity:<a class="anchorjs-link" href="#5-managed-identity"></a></h2><p>Managed Identity is an Microsoft Entra Identity that is issued for an application, so the application can provide this identity to other services (like database), and because it is Microsoft Entra identity so you can use it like any other identity and you don&rsquo;t need to store the credentials to communicate to the database.<br>
 To add a managed identity to the web app run the following:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>az webapp identity assign --resource-group &lt;resource-group-name&gt; --name &lt;app-service-name&gt;
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>az webapp identity assign --resource-group &lt;resource-group-name&gt; --name &lt;app-service-name&gt;
 </span></span></code></pre></div><p>The previous command will create a managed identity and will return json with the new <code>principalId</code>.<br>
 Now you can give permissions to that user by assigning them permissions to the services. For example to give that user permissions to read a key-vault that we created for the web app, run the following:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>az keyvault set-policy --secret-permissions get list --name &lt;your-unique-vault-name&gt; --object-id &lt;your-managed-identity-principleid&gt;
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>az keyvault set-policy --secret-permissions get list --name &lt;your-unique-vault-name&gt; --object-id &lt;your-managed-identity-principleid&gt;
 </span></span></code></pre></div><h2 id="6-integrate-with-other-azure-web-services">6. Integrate with other Azure web services:<a class="anchorjs-link" href="#6-integrate-with-other-azure-web-services"></a></h2><p>There are two services that can increase the security and enhance the performance of the web application and they are easy to integrate to App service:</p>
 <ul>
 <li>Azure CDN (to host any media or static files).</li>
@@ -358,6 +358,8 @@ The following Identity providers are available by default:</p>
     
     <a href="/tags/dev-tools/">dev tools</a>
     
+    <a href="/tags/dotnet/">dotnet</a>
+    
     <a href="/tags/javascript/">javascript</a>
     
     <a href="/tags/networking/">networking</a>
@@ -432,7 +434,7 @@ The following Identity providers are available by default:</p>
 
 
 
-<script src="/js/hux-blog.min.c4ea77041cd3edbfc8b2622cd887a9a5d8760a4162d14489e36d2a3fa4c90172.js"></script>
+<script src="/js/hux-blog.min.73a6a8d8df45293e042d15867416f603045bbeb98406731e5022d6c60388cd9d.js"></script>
 
 
 <script src=/js/simple-jekyll-search.min.js></script>

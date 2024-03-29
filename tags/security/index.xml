@@ -6,116 +6,77 @@
     <description>Recent content in security on Ghassan&#39;s Page</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 14 Jan 2024 10:41:54 -0600</lastBuildDate><atom:link href="https://www.ghassan.page/tags/security/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 14 Jan 2024 10:41:54 -0600</lastBuildDate>
+    <atom:link href="https://www.ghassan.page/tags/security/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Using Azure Managed Identity to skip sharing credentials</title>
       <link>https://www.ghassan.page/posts/2024_01_14_managedidentity/</link>
       <pubDate>Sun, 14 Jan 2024 10:41:54 -0600</pubDate>
-      
       <guid>https://www.ghassan.page/posts/2024_01_14_managedidentity/</guid>
-      <description>A common challenge for developers is the management of secrets and credentials used to secure communication between different components making up a solution. Managed identities eliminate the need for developers to manage credentials.
-While developers can securely store the secrets in Azure Key Vault, services need a way to access Azure Key Vault. Managed identities provide an automatically managed identity in Microsoft Entra ID for applications to use when connecting to Azure resources.</description>
+      <description>A common challenge for developers is the management of secrets and credentials used to secure communication between different components making up a solution. Managed identities eliminate the need for developers to manage credentials.&#xA;While developers can securely store the secrets in Azure Key Vault, services need a way to access Azure Key Vault. Managed identities provide an automatically managed identity in Microsoft Entra ID for applications to use when connecting to Azure resources.</description>
     </item>
-    
     <item>
       <title>How Single Page Application call a secure your API with OAuth2</title>
       <link>https://www.ghassan.page/posts/2024_01_05_oauth2_and_spa/</link>
       <pubDate>Fri, 05 Jan 2024 12:41:54 -0600</pubDate>
-      
       <guid>https://www.ghassan.page/posts/2024_01_05_oauth2_and_spa/</guid>
-      <description>When a public SPA needs to authenticate through OAuth 2.0, it faces a big challenge.
-The challenge is you cannot store any type of secrets of credentials in your code. This is why OAuth provided a special flow to be used by SPA: Authorization Code Grant &amp;amp; PKCE. We are going to describe this flow in details here.
-Summary of the process:To describe the flow briefly, when the SPA requires to get a token it will direct the application to an Authorization Server (AS), which will use that server login page and UI, and the user will run the login process on the AS server website, then that server will return back to the original client website using a callback url passing the token to the SPA.</description>
+      <description>When a public SPA needs to authenticate through OAuth 2.0, it faces a big challenge.&#xA;The challenge is you cannot store any type of secrets of credentials in your code. This is why OAuth provided a special flow to be used by SPA: Authorization Code Grant &amp;amp; PKCE. We are going to describe this flow in details here.&#xA;Summary of the process:To describe the flow briefly, when the SPA requires to get a token it will direct the application to an Authorization Server (AS), which will use that server login page and UI, and the user will run the login process on the AS server website, then that server will return back to the original client website using a callback url passing the token to the SPA.</description>
     </item>
-    
     <item>
       <title>Different options to add SSL certificate to you Azure App Service</title>
       <link>https://www.ghassan.page/posts/2023_12_8_azureappservice_ssl_certificate/</link>
       <pubDate>Fri, 08 Dec 2023 12:41:54 -0600</pubDate>
-      
       <guid>https://www.ghassan.page/posts/2023_12_8_azureappservice_ssl_certificate/</guid>
-      <description>To add a SSL certificate to your web app hosted on Azure App Service with a custom domain, there are few options. I am going to list them here.
-Free certificate:Azure provides a free SSL certificate, and it is fully managed by Azure. Azure renew the process for you, and take care of everything for you.
-Although having a free certificate is a wonderful idea, but it has some shortcoming:</description>
+      <description>To add a SSL certificate to your web app hosted on Azure App Service with a custom domain, there are few options. I am going to list them here.&#xA;Free certificate:Azure provides a free SSL certificate, and it is fully managed by Azure. Azure renew the process for you, and take care of everything for you.&#xA;Although having a free certificate is a wonderful idea, but it has some shortcoming:</description>
     </item>
-    
     <item>
       <title>OAuth, OpenID Connect, SSO and Authentication Flows in plain English.</title>
       <link>https://www.ghassan.page/posts/2023_10_27_oauth_openid_authenticationflow_in_plain_english/</link>
       <pubDate>Fri, 27 Oct 2023 12:41:54 -0600</pubDate>
-      
       <guid>https://www.ghassan.page/posts/2023_10_27_oauth_openid_authenticationflow_in_plain_english/</guid>
-      <description>Gone are the days when you force your users to register into your application by creating username/password. Everyone wants to skip that process when they can identify themselves using other ways (google, facebook, twitter…), and they want to use their single sign on process to identify them across multiple applications and multiple websites. In this post I am trying to explain the process and its technologies in simple English.
-An explanation by example:So you are a developer who is building an application and want to allow your users to use their Google credentials to authenticate themselves into your account.</description>
+      <description>Gone are the days when you force your users to register into your application by creating username/password. Everyone wants to skip that process when they can identify themselves using other ways (google, facebook, twitter…), and they want to use their single sign on process to identify them across multiple applications and multiple websites. In this post I am trying to explain the process and its technologies in simple English.&#xA;An explanation by example:So you are a developer who is building an application and want to allow your users to use their Google credentials to authenticate themselves into your account.</description>
     </item>
-    
     <item>
       <title>Use Azure Key Vault to retrieve secured parameters during  Azure deployment.</title>
       <link>https://www.ghassan.page/posts/2023_02_04_azure_keyvault_deployment/</link>
       <pubDate>Sat, 04 Feb 2023 20:42:03 -0700</pubDate>
-      
       <guid>https://www.ghassan.page/posts/2023_02_04_azure_keyvault_deployment/</guid>
-      <description>You have an ARM template to deploy, and you need to pass secure parameters. Instead of storing secure values in the parameter file, you can just retrieve these values from Key Vault.
-To be able to access the key vault by the resource manager you need to change access policy to allow &amp;ldquo;Azure Resource Manager for template deployment&amp;rdquo;, as shown here.
-Or you can do it from Powershell:
-1// to update an existing key vault 2Set-AzKeyVaultAccessPolicy -VaultName MyVaultName -EnabledForTemplateDeployment 3 4// to create a new key vault with this feature enabled 5New-AzKeyVault ` 6 -VaultName MyVaultName ` 7 -resourceGroupName myresourcegroup ` 8 -Location centralus ` 9 -EnabledForTemplateDeployment How to use it?</description>
+      <description>You have an ARM template to deploy, and you need to pass secure parameters. Instead of storing secure values in the parameter file, you can just retrieve these values from Key Vault.&#xA;To be able to access the key vault by the resource manager you need to change access policy to allow &amp;ldquo;Azure Resource Manager for template deployment&amp;rdquo;, as shown here.&#xA;Or you can do it from Powershell:&#xA;1// to update an existing key vault 2Set-AzKeyVaultAccessPolicy -VaultName MyVaultName -EnabledForTemplateDeployment 3 4// to create a new key vault with this feature enabled 5New-AzKeyVault ` 6 -VaultName MyVaultName ` 7 -resourceGroupName myresourcegroup ` 8 -Location centralus ` 9 -EnabledForTemplateDeployment How to use it?</description>
     </item>
-    
     <item>
       <title>Parse Azure SAS token using regular expression</title>
       <link>https://www.ghassan.page/posts/2023_02_03_parse_sas_token_regex/</link>
       <pubDate>Fri, 03 Feb 2023 20:40:37 -0700</pubDate>
-      
       <guid>https://www.ghassan.page/posts/2023_02_03_parse_sas_token_regex/</guid>
-      <description>If you have an Azure SAS token that is not working, it is good idea to parse it and understand what permissions and values it contains.
-This is a JavaScript code that uses Regular Expression to parse he SAS token, and an running example where you can try your own SAS token.
-1var paramNames = { 2 sig: &amp;#39;cryptographic signature&amp;#39;, 3 st: &amp;#39;start time&amp;#39;, 4 se: &amp;#39;end time&amp;#39;, 5 spr: &amp;#39;protocol&amp;#39;, 6 srt: &amp;#39;resource types&amp;#39;, 7 sv: &amp;#39;version&amp;#39;, 8 sp: &amp;#39;permissions&amp;#39;, 9 ss: &amp;#39;services&amp;#39; 10}; 11 12let valueLookups = { 13 sp : { 14 r: &amp;#39;read&amp;#39;, d: &amp;#39;delete&amp;#39;, w: &amp;#39;write&amp;#39;, l: &amp;#39;list&amp;#39;, a: &amp;#39;add&amp;#39;, 15 c: &amp;#39;create&amp;#39;, u: &amp;#39;update&amp;#39;, p: &amp;#39;process&amp;#39;, f: &amp;#39;filter&amp;#39; 16 }, 17 srt: { 18 s: &amp;#39;service&amp;#39;, c: &amp;#39;container&amp;#39;, o: &amp;#39;object&amp;#39; 19 }, 20 ss : { 21 b: &amp;#39;blob&amp;#39;, f: &amp;#39;file&amp;#39;, q: &amp;#39;queue&amp;#39;, t: &amp;#39;table&amp;#39; 22 } 23} 24 25let valueConvertor = (key, inputValue) =&amp;gt; 26 valueLookups[key] ?</description>
+      <description>If you have an Azure SAS token that is not working, it is good idea to parse it and understand what permissions and values it contains.&#xA;This is a JavaScript code that uses Regular Expression to parse he SAS token, and an running example where you can try your own SAS token.&#xA;1var paramNames = { 2 sig: &amp;#39;cryptographic signature&amp;#39;, 3 st: &amp;#39;start time&amp;#39;, 4 se: &amp;#39;end time&amp;#39;, 5 spr: &amp;#39;protocol&amp;#39;, 6 srt: &amp;#39;resource types&amp;#39;, 7 sv: &amp;#39;version&amp;#39;, 8 sp: &amp;#39;permissions&amp;#39;, 9 ss: &amp;#39;services&amp;#39; 10}; 11 12let valueLookups = { 13 sp : { 14 r: &amp;#39;read&amp;#39;, d: &amp;#39;delete&amp;#39;, w: &amp;#39;write&amp;#39;, l: &amp;#39;list&amp;#39;, a: &amp;#39;add&amp;#39;, 15 c: &amp;#39;create&amp;#39;, u: &amp;#39;update&amp;#39;, p: &amp;#39;process&amp;#39;, f: &amp;#39;filter&amp;#39; 16 }, 17 srt: { 18 s: &amp;#39;service&amp;#39;, c: &amp;#39;container&amp;#39;, o: &amp;#39;object&amp;#39; 19 }, 20 ss : { 21 b: &amp;#39;blob&amp;#39;, f: &amp;#39;file&amp;#39;, q: &amp;#39;queue&amp;#39;, t: &amp;#39;table&amp;#39; 22 } 23} 24 25let valueConvertor = (key, inputValue) =&amp;gt; 26 valueLookups[key] ?</description>
     </item>
-    
     <item>
       <title>Azure Networking Recipes - Connect Azure Database and an Azure App Service using Virtual Network.</title>
       <link>https://www.ghassan.page/posts/2023_01_10_azure_networking_reciep_one/</link>
       <pubDate>Tue, 10 Jan 2023 20:00:24 -0700</pubDate>
-      
       <guid>https://www.ghassan.page/posts/2023_01_10_azure_networking_reciep_one/</guid>
       <description>If your application is connecting to Azure database, or any other resources, then connecting them through Virtual Network (VNet) will enhance the performance (assuming the app service and the resources are in the same region), as well it enhance the security and we can lock the resources to have private endpoint, and not accessed publicly. I am going to go through a walk-through tutorial, using Azure Sql Server as an example, but this can work with any database on Azure, or even any resources like blob storage.</description>
     </item>
-    
     <item>
       <title>Token Based Authentication and JWT.</title>
       <link>https://www.ghassan.page/posts/2016_04_29_token_based_authentication_jwt/</link>
       <pubDate>Fri, 29 Apr 2016 12:41:54 -0600</pubDate>
-      
       <guid>https://www.ghassan.page/posts/2016_04_29_token_based_authentication_jwt/</guid>
-      <description>&lt;p&gt;HTTP protocol specified only two standard authentication mechanisms, which are implemented in every browser, the [HTTP basic authentication]({% post_url 2016-03-31-web-security-basic-authentication %}), and the Digest authentication which is obsolete now because it is not secure anymore.&lt;br&gt;
-Because they are limited and work only on user name/password idea, the development communities in every web development platform came up with their better customized solutions.&lt;br&gt;
-JWT is one of the most promising and smart authentication ideas that is taking famous recently.&lt;/p&gt;</description>
+      <description>&lt;p&gt;HTTP protocol specified only two standard authentication mechanisms, which are implemented in every browser, the [HTTP basic authentication]({% post_url 2016-03-31-web-security-basic-authentication %}), and the Digest authentication which is obsolete now because it is not secure anymore.&lt;br&gt;&#xA;Because they are limited and work only on user name/password idea, the development communities in every web development platform came up with their better customized solutions.&lt;br&gt;&#xA;JWT is one of the most promising and smart authentication ideas that is taking famous recently.&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>Making sense of SSL, RSA, X509 and CSR</title>
       <link>https://www.ghassan.page/posts/2016_04_18_making_sense_of_ssl_rsa_x509_and_csr/</link>
       <pubDate>Mon, 18 Apr 2016 23:42:00 -0600</pubDate>
-      
       <guid>https://www.ghassan.page/posts/2016_04_18_making_sense_of_ssl_rsa_x509_and_csr/</guid>
-      <description>This is the second part of learning about SSL/TLS.
-The first part was how to protect the site with SSL.
-This part is about explaining more the terms, technologies, protocols, standards used in SSL.
-What is SSL/TLS:SSL is the standard protocol to secure the communication between a web server and a browser, by creating an encrypted link between the two.
-SSL last version was 3.0, and TLS succeeds SSL, and become the new standard.</description>
+      <description>This is the second part of learning about SSL/TLS.&#xA;The first part was how to protect the site with SSL.&#xA;This part is about explaining more the terms, technologies, protocols, standards used in SSL.&#xA;What is SSL/TLS:SSL is the standard protocol to secure the communication between a web server and a browser, by creating an encrypted link between the two.&#xA;SSL last version was 3.0, and TLS succeeds SSL, and become the new standard.</description>
     </item>
-    
     <item>
       <title>Secure your web site with SSL</title>
       <link>https://www.ghassan.page/posts/2016_03_11_secure_your_application_with_ssl/</link>
       <pubDate>Fri, 11 Mar 2016 08:59:00 -0700</pubDate>
-      
       <guid>https://www.ghassan.page/posts/2016_03_11_secure_your_application_with_ssl/</guid>
-      <description>What does it mean?In order to secure the web site with SSL, you first need to buy a certificate.
-A certificate is a document that your website will send back to the browsers as an Official identification for your web site, and your business.
-The certificate is issued by certified companies who are called Certificate Authorities`.
-Types of SSL Certificates:First of all you have to decide which certificate type you should chose for your web site.</description>
+      <description>What does it mean?In order to secure the web site with SSL, you first need to buy a certificate.&#xA;A certificate is a document that your website will send back to the browsers as an Official identification for your web site, and your business.&#xA;The certificate is issued by certified companies who are called Certificate Authorities`.&#xA;Types of SSL Certificates:First of all you have to decide which certificate type you should chose for your web site.</description>
     </item>
-    
   </channel>
 </rss>

@@ -15,8 +15,7 @@ Because they are limited and work only on user name/password idea, the developme
 JWT is one of the most promising and smart authentication ideas that is taking famous recently.">
   <meta name="keywords" content="blog,developer,personal">
 
-  <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="Token Based Authentication and JWT."/>
+  <meta name="twitter:card" content="summary"/><meta name="twitter:title" content="Token Based Authentication and JWT."/>
 <meta name="twitter:description" content="HTTP protocol specified only two standard authentication mechanisms, which are implemented in every browser, the [HTTP basic authentication]({% post_url 2016-03-31-web-security-basic-authentication %}), and the Digest authentication which is obsolete now because it is not secure anymore.
 Because they are limited and work only on user name/password idea, the development communities in every web development platform came up with their better customized solutions.
 JWT is one of the most promising and smart authentication ideas that is taking famous recently."/>
@@ -29,6 +28,7 @@ JWT is one of the most promising and smart authentication ideas that is taking f
 <meta property="og:url" content="https://www.ghassan.page/posts/2016_04_29_token_based_authentication_jwt/" /><meta property="article:section" content="posts" />
 <meta property="article:published_time" content="2016-04-29T12:41:54-06:00" />
 <meta property="article:modified_time" content="2016-04-29T12:41:54-06:00" />
+
 
 
   <link rel="stylesheet" href="/css/bootstrap.min.css"  crossorigin="anonymous">
@@ -228,7 +228,7 @@ Cookies had many issues (that we are going to cover in next section), which push
 <br />
 <h4 id="token-based-authentication">Token Based Authentication: <a class="anchorjs-link" href="#token-based-authentication"></a></h4><p>Using the same approach of generating an access token when authenticating, but instead of sending the token in a cookie, it use an HTTP header attribute (usually Authorization HTTP header) to send the token.<br>
 This solution was developed mainly by OAuth authentication, but it doesn&rsquo;t have to be used only in OAuth, and it can be used by local security based solution.<br>
-The solution became mature with development of more robust standard like <a href="https://jwt.io/">Jason Web Token (JWT)</a>, which became the de facto standard for modern web security.<br>
+The solution became mature with development of more robust standard like <a href="https://jwt.io/" target="_blank">Jason Web Token (JWT)</a>, which became the de facto standard for modern web security.<br>
 There are two common approach to send this access token:</p>
 <ol>
 <li><strong>Bearer token</strong>: Bearer token is an non encrypted token. If you want to use it, you should use it over HTTPS.
@@ -253,7 +253,7 @@ In that case you have to force your users to use cookies in order for them to us
 <li>They won&rsquo;t work across-domains:<br>
 So you cannot use the same credentials with many different domains, where in token based, you can authenticate in one place, and use the same token across many different domains.</li>
 <li>Cookies and mobiles are not friends together.</li>
-<li>Cookies are volunerables for <a href="https://en.wikipedia.org/wiki/Cross-site_request_forgery">CSRF attacks</a>.</li>
+<li>Cookies are volunerables for <a href="https://en.wikipedia.org/wiki/Cross-site_request_forgery" target="_blank">CSRF attacks</a>.</li>
 </ol>
 <br /> 
 <h2 id="json-web-tokens-jwt">JSON Web Tokens (JWT)<a class="anchorjs-link" href="#json-web-tokens-jwt"></a></h2><p>JWT became lately the most common used authentication solution for APIs and mobile solutions.<br>
@@ -272,9 +272,9 @@ The client will store the token either with a cookie, or with an HTML5 local dat
           
           
           <li class="next">
-            <a href="/about/" data-toggle="tooltip" data-placement="top" title="About">
+            <a href="/posts/2016_12_08_send_email_with_attachments_using_aws_ses/" data-toggle="tooltip" data-placement="top" title="Build emails with attachments using SMTP, MIME standard (AWS SES Case)">
               Next<br>
-              <span>About</span>
+              <span>Build emails with attachments using SMTP, MIME standard (AWS SES Case)</span>
             </a>
           </li>
           
@@ -353,6 +353,8 @@ The client will store the token either with a cookie, or with an HTML5 local dat
     
     <a href="/tags/dev-tools/">dev tools</a>
     
+    <a href="/tags/dotnet/">dotnet</a>
+    
     <a href="/tags/javascript/">javascript</a>
     
     <a href="/tags/networking/">networking</a>
@@ -427,7 +429,7 @@ The client will store the token either with a cookie, or with an HTML5 local dat
 
 
 
-<script src="/js/hux-blog.min.c4ea77041cd3edbfc8b2622cd887a9a5d8760a4162d14489e36d2a3fa4c90172.js"></script>
+<script src="/js/hux-blog.min.73a6a8d8df45293e042d15867416f603045bbeb98406731e5022d6c60388cd9d.js"></script>
 
 
 <script src=/js/simple-jekyll-search.min.js></script>

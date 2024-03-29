@@ -17,8 +17,7 @@ Running background tasks using IHostedServiceAsp.NET provides support for runnin
 By implementing IHostedService interface, your background task will start a little bit after Asp.">
   <meta name="keywords" content="blog,developer,personal">
 
-  <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="Best way to run background services in ASP.NET."/>
+  <meta name="twitter:card" content="summary"/><meta name="twitter:title" content="Best way to run background services in ASP.NET."/>
 <meta name="twitter:description" content="Asp.Net provides many ways to run background processes. They are:
 IHostedService interface BackgroundService abstract class Worker Service using Microsoft.NET.SDK.Worker Actually they are just layers on top of each others, each layer provides extra functionality on the one below.
 This post is going to describe each layer and what it provides.
@@ -35,6 +34,7 @@ By implementing IHostedService interface, your background task will start a litt
 <meta property="og:url" content="https://www.ghassan.page/posts/2023_07_12_hosting_backgroundservice_aspnet/" /><meta property="article:section" content="posts" />
 <meta property="article:published_time" content="2023-07-12T12:41:54-06:00" />
 <meta property="article:modified_time" content="2023-07-12T12:41:54-06:00" />
+
 
 
   <link rel="stylesheet" href="/css/bootstrap.min.css"  crossorigin="anonymous">
@@ -223,43 +223,43 @@ By implementing <code>IHostedService</code> interface, your background task will
 <p>P.S.: Asp.NET core server, Kestrel itself is a hosted service.</p>
 </blockquote>
 <p>IHostedService has two methods:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="color:#ff79c6">public</span> <span style="color:#ff79c6">interface</span> <span style="color:#50fa7b">IHostedService</span>
-</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>{
-</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>    Task StartAsync(CancellationToken cancellationToken);
-</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span>    Task StopAsync(CancellationToken cancellationToken);
-</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span>}
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#ff79c6">interface</span> <span style="color:#50fa7b">IHostedService</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>{
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>    Task StartAsync(CancellationToken cancellationToken);
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span>    Task StopAsync(CancellationToken cancellationToken);
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span>}
 </span></span></code></pre></div><p>After you implement the interface, you need to register the task, and register it with the DI container. Asp.NET provides <code>AddHostedService</code> extension method on <code>IServiceCollection</code> for that purpose:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>
-</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span><span style="color:#ff79c6">public</span> <span style="color:#ff79c6">void</span> ConfigureServices(IServiceCollection services)
-</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>{
-</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span>   services.AddHostedService&lt;MyExampleService&gt;();
-</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span>}
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span><span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#ff79c6">void</span> ConfigureServices(IServiceCollection services)
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>{
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span>   services.AddHostedService&lt;MyExampleService&gt;();
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span>}
 </span></span></code></pre></div><h4 id="using-scoped-services-in-the-background-task">Using <strong>scoped</strong> services in the background task:<a class="anchorjs-link" href="#using-scoped-services-in-the-background-task"></a></h4><p><code>AddHostedService</code> is doing registering the service as Singleton in the DI container.<br>
 That leads to a problem if you need to use services registered as scoped-lifetime services.<br>
 To fix this problem, create a new container scope anywhere you need access to scoped service, as the following code:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="color:#ff79c6">public</span> <span style="color:#ff79c6">class</span> <span style="color:#50fa7b">MyExampleService</span> : IHostedService
-</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>{
-</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>   <span style="color:#ff79c6">private</span> <span style="color:#ff79c6">readonly</span> IServiceProvider _provider;
-</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span>   <span style="color:#ff79c6">public</span> MyExampleService (IServiceProvider provider)
-</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span>   {
-</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span>      _provider = provider;
-</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span>   }
-</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span>
-</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span>   <span style="color:#ff79c6">public</span> Task StartAsync (CancellationToken cancellationToken)
-</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span>   {
-</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span>     <span style="color:#ff79c6">using</span> (IServiceScope scope = _provider.CreateScope())
-</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span>     {
-</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span><span>         <span style="color:#8be9fd">var</span> scopedProvider = scope.ServiceProvider;
-</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span><span>         <span style="color:#8be9fd">var</span> client = scopeProvider.GetRequiredService&lt;ExampleScopedService&gt;();
-</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15</span><span>         ...
-</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16</span><span>      }
-</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17</span><span>    }
-</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18</span><span>}
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#ff79c6">class</span> <span style="color:#50fa7b">MyExampleService</span> : IHostedService
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>{
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>   <span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#ff79c6">readonly</span> IServiceProvider _provider;
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span>   <span style="color:#8be9fd;font-style:italic">public</span> MyExampleService (IServiceProvider provider)
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span>   {
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span>      _provider = provider;
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span>   }
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span>   <span style="color:#8be9fd;font-style:italic">public</span> Task StartAsync (CancellationToken cancellationToken)
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span>   {
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span>     <span style="color:#ff79c6">using</span> (IServiceScope scope = _provider.CreateScope())
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span>     {
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span><span>         <span style="color:#8be9fd">var</span> scopedProvider = scope.ServiceProvider;
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span><span>         <span style="color:#8be9fd">var</span> client = scopeProvider.GetRequiredService&lt;ExampleScopedService&gt;();
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15</span><span>         ...
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16</span><span>      }
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17</span><span>    }
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18</span><span>}
 </span></span></code></pre></div><h4 id="guidelines-on-ihostedservice">Guidelines on IHostedService<a class="anchorjs-link" href="#guidelines-on-ihostedservice"></a></h4><p>There are subtleties to implementing the interface correctly. In particular, the <code>StartAsync</code> method, although asynchronous, runs inline as part of your application startup. Background tasks that are expected to run for the lifetime of your application must return a Task immediately and schedule background work on a different thread. Calling await in the <code>IHostedService.StartAsync</code> method will block your application from starting until the method completes. This can be useful in some cases, but it’s often not the desired behavior for background tasks.</p>
 <h2 id="backgroundservice">BackgroundService<a class="anchorjs-link" href="#backgroundservice"></a></h2><p>To make it easier to create background services using best-practice patterns, ASP.NET Core provides the abstract base class <code>BackgroundService</code>, which implements <code>IHostedService</code> and is designed to be used for long-running tasks. To create a background task you must override a single method of this class, <code>ExecuteAsync</code>. You’re free to use async-await inside this method, and you can keep running the method for the lifetime of your app.</p>
 <h2 id="worker-service">Worker Service<a class="anchorjs-link" href="#worker-service"></a></h2><p>.NET provides a special kind of application called <code>Worker Service</code>, which runs IHostedService in a host that is lighter than Asp.NET host.<br>
 That lighter host is <code>Microsoft.Extensions.Hosting.Host</code>, which is a general host that is hosting the Asp.Net WebApplication itself.<br>
-<a href="https://www.ghassan.page/posts/2022_12_19_aspnet_minimal_api/">I wrote before</a> about the relation between Host and WebApplication.<br>
+<a href="/posts/2022_12_19_aspnet_minimal_api/" target="_blank">I wrote before</a> about the relation between Host and WebApplication.<br>
 The worker service&rsquo;s <code>Host</code> will run background service, but doesn&rsquo;t handle HTTP request. It has the following:</p>
 <ul>
 <li>configuration features.</li>
@@ -267,7 +267,7 @@ The worker service&rsquo;s <code>Host</code> will run background service, but do
 <li>dependency injection features.</li>
 </ul>
 <p>To use Worker Service, run the following:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>dotnet new worker
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>dotnet new worker
 </span></span></code></pre></div><p>This will create a <strong><code>BackgroundService</code></strong> class, that is hosted in <strong><code>Microsoft.Extensions.Hosting.Host</code></strong>, which is an implementation of <strong><code>IHost</code></strong> which what we described as a lightweight host.</p>
 <h2 id="running-worker-service-in-production">Running Worker Service in production<a class="anchorjs-link" href="#running-worker-service-in-production"></a></h2><p>You can run Worker Service as a Windows Service, or Linux&rsquo;s Systemd service.</p>
 
@@ -365,6 +365,8 @@ The worker service&rsquo;s <code>Host</code> will run background service, but do
     
     <a href="/tags/dev-tools/">dev tools</a>
     
+    <a href="/tags/dotnet/">dotnet</a>
+    
     <a href="/tags/javascript/">javascript</a>
     
     <a href="/tags/networking/">networking</a>
@@ -439,7 +441,7 @@ The worker service&rsquo;s <code>Host</code> will run background service, but do
 
 
 
-<script src="/js/hux-blog.min.c4ea77041cd3edbfc8b2622cd887a9a5d8760a4162d14489e36d2a3fa4c90172.js"></script>
+<script src="/js/hux-blog.min.73a6a8d8df45293e042d15867416f603045bbeb98406731e5022d6c60388cd9d.js"></script>
 
 
 <script src=/js/simple-jekyll-search.min.js></script>

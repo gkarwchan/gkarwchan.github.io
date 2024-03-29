@@ -2,25 +2,19 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://www.ghassan.page/tags/asp.net/</loc>
-    <lastmod>2024-01-23T10:41:54-06:00</lastmod>
-  </url><url>
-    <loc>https://www.ghassan.page/posts/2024_01_23_get_the_most_of_ihttpclientfactory/</loc>
-    <lastmod>2024-01-23T10:41:54-06:00</lastmod>
-  </url><url>
-    <loc>https://www.ghassan.page/</loc>
-    <lastmod>2024-01-23T10:41:54-06:00</lastmod>
-  </url><url>
-    <loc>https://www.ghassan.page/posts/</loc>
-    <lastmod>2024-01-23T10:41:54-06:00</lastmod>
-  </url><url>
-    <loc>https://www.ghassan.page/tags/</loc>
-    <lastmod>2024-01-23T10:41:54-06:00</lastmod>
-  </url><url>
     <loc>https://www.ghassan.page/tags/azure/</loc>
     <lastmod>2024-01-14T10:41:54-06:00</lastmod>
   </url><url>
+    <loc>https://www.ghassan.page/</loc>
+    <lastmod>2024-01-14T10:41:54-06:00</lastmod>
+  </url><url>
+    <loc>https://www.ghassan.page/posts/</loc>
+    <lastmod>2024-01-14T10:41:54-06:00</lastmod>
+  </url><url>
     <loc>https://www.ghassan.page/tags/security/</loc>
+    <lastmod>2024-01-14T10:41:54-06:00</lastmod>
+  </url><url>
+    <loc>https://www.ghassan.page/tags/</loc>
     <lastmod>2024-01-14T10:41:54-06:00</lastmod>
   </url><url>
     <loc>https://www.ghassan.page/posts/2024_01_14_managedidentity/</loc>
@@ -43,6 +37,9 @@
   </url><url>
     <loc>https://www.ghassan.page/posts/2023_10_27_oauth_openid_authenticationflow_in_plain_english/</loc>
     <lastmod>2023-10-27T12:41:54-06:00</lastmod>
+  </url><url>
+    <loc>https://www.ghassan.page/tags/asp.net/</loc>
+    <lastmod>2023-10-17T12:41:54-06:00</lastmod>
   </url><url>
     <loc>https://www.ghassan.page/posts/2023_10_17_subscribe_to_upload_file_azure_blog_storage/</loc>
     <lastmod>2023-10-17T12:41:54-06:00</lastmod>
@@ -148,6 +145,12 @@
   </url><url>
     <loc>https://www.ghassan.page/about/</loc>
     <lastmod>2019-02-28T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://www.ghassan.page/posts/2016_12_08_send_email_with_attachments_using_aws_ses/</loc>
+    <lastmod>2016-12-08T12:41:54-06:00</lastmod>
+  </url><url>
+    <loc>https://www.ghassan.page/tags/dotnet/</loc>
+    <lastmod>2016-12-08T12:41:54-06:00</lastmod>
   </url><url>
     <loc>https://www.ghassan.page/posts/2016_04_29_token_based_authentication_jwt/</loc>
     <lastmod>2016-04-29T12:41:54-06:00</lastmod>

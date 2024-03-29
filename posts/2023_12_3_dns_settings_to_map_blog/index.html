@@ -15,8 +15,7 @@ Every time I changed my content location, I go back to remember how to do it, so
 Understand how custom domain mapping works:You host your static web pages on one of the static hosting services, for example these three:">
   <meta name="keywords" content="blog,developer,personal">
 
-  <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="Everything you need to know about configure DNS to provide domain for your blog"/>
+  <meta name="twitter:card" content="summary"/><meta name="twitter:title" content="Everything you need to know about configure DNS to provide domain for your blog"/>
 <meta name="twitter:description" content="You host your blog on Github pages, or Azure static website, or Azure blob storage with static website enabled. But you need to use a custom domain.
 Every time I changed my content location, I go back to remember how to do it, so I decided to make a post about it.
 Understand how custom domain mapping works:You host your static web pages on one of the static hosting services, for example these three:"/>
@@ -29,6 +28,7 @@ Understand how custom domain mapping works:You host your static web pages on one
 <meta property="og:url" content="https://www.ghassan.page/posts/2023_12_3_dns_settings_to_map_blog/" /><meta property="article:section" content="posts" />
 <meta property="article:published_time" content="2023-12-03T12:41:54-06:00" />
 <meta property="article:modified_time" content="2023-12-03T12:41:54-06:00" />
+
 
 
   <link rel="stylesheet" href="/css/bootstrap.min.css"  crossorigin="anonymous">
@@ -226,7 +226,7 @@ For example these are the typical urls for those services:</p>
 <p><code>CNAME</code> record is used to map your domain to a different url, to get its content from there.<br>
 Which means in your DNS provider (registrar), you need to add a <code>CNAME</code> record, that point the url of the content to your custom domain.</p>
 <p>But there is one small problem. <code>CNAME</code> works only for subdomain.<br>
-So if you want your blog or website to be hosted under something like: blog.mysite.com, or even <a href="https://www.mysite.com">www.mysite.com</a> then you are good to use <code>CNAME</code>.</p>
+So if you want your blog or website to be hosted under something like: blog.mysite.com, or even <a href="https://www.mysite.com" target="_blank">www.mysite.com</a> then you are good to use <code>CNAME</code>.</p>
 <p>But what if you want to use  the <code>naked domain</code> or <code>apex domain</code> like: mysite.com?</p>
 <p>Then the process will be different depending on your DNS provider.</p>
 <h3 id="mapping-apex-domain-to-another-domain">Mapping apex domain to another domain.<a class="anchorjs-link" href="#mapping-apex-domain-to-another-domain"></a></h3><p>In old DNS protocol, apex domain (or the naked domain) can be mapped only to an IP address using <code>A</code> record.<br>
@@ -272,10 +272,10 @@ One more point. It is important you first do the mapping from the host to custom
 <h4 id="mapping-with-other-dns">mapping with other DNS<a class="anchorjs-link" href="#mapping-with-other-dns"></a></h4><p>If your DNS doesn&rsquo;t support them, then you can do the following:</p>
 <p>For github pages only, github provide a solution by providing the IP addresses of the Github Pages Server.<br>
 So for github pages, you add an <code>A</code> record, which is a record that map IP address to domain name, and the IP address is the addresses for GitHub Pages servers, which is as follows:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>185.199.108.153
-</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>185.199.109.153
-</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>185.199.110.153
-</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span>185.199.111.153
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>185.199.108.153
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>185.199.109.153
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>185.199.110.153
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span>185.199.111.153
 </span></span></code></pre></div><p>For no github pages, you need to create a forward rule in your DNS provider, which redirect your apex domain to the www subdomain.</p>
 <h3 id="domain-verification">Domain Verification:<a class="anchorjs-link" href="#domain-verification"></a></h3><p>In order to prevent other people host their content on a subdomain of your custom domain, a verification process has to be done.</p>
 <p>The verification is achieved by adding a <code>TXT</code> record in your DNS provider.<br>
@@ -286,6 +286,10 @@ Each host provider has its own interface to validate that value.</p>
 <blockquote>
 <p>PS: it might take 24 hours for that <code>TXT</code> record to take effect.</p>
 </blockquote>
+<h3 id="a-word-about-https">A word about HTTPS<a class="anchorjs-link" href="#a-word-about-https"></a></h3><p>You don&rsquo;t need to add your own SSL certificate for all three types of hosting. Github pages provides HTTPS even for custom domains, and Azure provides SSL over static website, and blob hosting.<br>
+But there is a catch for Azure, their built-in certificate doesn&rsquo;t support <code>Extended Validation</code> which provides another layer of trust. You need to provide your own certification if you want that feature.<br>
+In order to provide your own certificate you have to add Azure CDN and host the certificate there.<br>
+For Github pages, you don&rsquo;t need to add your certificate because Github pages will support that, but in case you want, then you cannot do it with Github pages.</p>
 <h2 id="summary">Summary:<a class="anchorjs-link" href="#summary"></a></h2><p>So to summarize, to map to a subdomain (like blog.mysite.com), you just add a <code>CNAME</code> record in your DNS provider.<br>
 To map the apex domain, either use a DNS provider that support <code>ANAME</code>, or forward your apex domain to <code>www</code> subdomain, and then map the <code>www</code> subdomain.</p>
 
@@ -383,6 +387,8 @@ To map the apex domain, either use a DNS provider that support <code>ANAME</code
     
     <a href="/tags/dev-tools/">dev tools</a>
     
+    <a href="/tags/dotnet/">dotnet</a>
+    
     <a href="/tags/javascript/">javascript</a>
     
     <a href="/tags/networking/">networking</a>
@@ -457,7 +463,7 @@ To map the apex domain, either use a DNS provider that support <code>ANAME</code
 
 
 
-<script src="/js/hux-blog.min.c4ea77041cd3edbfc8b2622cd887a9a5d8760a4162d14489e36d2a3fa4c90172.js"></script>
+<script src="/js/hux-blog.min.73a6a8d8df45293e042d15867416f603045bbeb98406731e5022d6c60388cd9d.js"></script>
 
 
 <script src=/js/simple-jekyll-search.min.js></script>

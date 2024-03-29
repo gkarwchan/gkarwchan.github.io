@@ -16,8 +16,7 @@ The certificate is issued by certified companies who are called Certificate Auth
 Types of SSL Certificates:First of all you have to decide which certificate type you should chose for your web site.">
   <meta name="keywords" content="blog,developer,personal">
 
-  <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="Secure your web site with SSL"/>
+  <meta name="twitter:card" content="summary"/><meta name="twitter:title" content="Secure your web site with SSL"/>
 <meta name="twitter:description" content="What does it mean?In order to secure the web site with SSL, you first need to buy a certificate.
 A certificate is a document that your website will send back to the browsers as an Official identification for your web site, and your business.
 The certificate is issued by certified companies who are called Certificate Authorities`.
@@ -32,6 +31,7 @@ Types of SSL Certificates:First of all you have to decide which certificate type
 <meta property="og:url" content="https://www.ghassan.page/posts/2016_03_11_secure_your_application_with_ssl/" /><meta property="article:section" content="posts" />
 <meta property="article:published_time" content="2016-03-11T08:59:00-07:00" />
 <meta property="article:modified_time" content="2016-03-11T08:59:00-07:00" />
+
 
 
   <link rel="stylesheet" href="/css/bootstrap.min.css"  crossorigin="anonymous">
@@ -216,11 +216,11 @@ A certificate is a document that your website will send back to the browsers as 
 <li><strong>Extended Validation (EV) SSL Certificate</strong>: The <code>CA</code> conducts a thorough check on the organization with some standard guidelines defined by the industry. This is usually required for organizations that require to have payments managed by on their own website and their own software.</li>
 </ul>
 <h2 id="how-to-buy-a-certificate">How to buy a certificate:<a class="anchorjs-link" href="#how-to-buy-a-certificate"></a></h2><p>After you decided what type of certificate you want to buy, you search for a suitable <code>CA</code> authority to buy your certification from. The <code>CA</code> authority requires from your side a request called <strong><code>Certificate Signing Request</code></strong> (CSR).<br>
-There are many ways to generate the CSR. I will describe the process using <a href="%22https://www.openssl.org/%22">OpenSSL tools</a>.</p>
+There are many ways to generate the CSR. I will describe the process using <a href="#ZgotmplZ">OpenSSL tools</a>.</p>
 <p>First you need to generate a private key:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>openssl genrsa -out domain.com.key <span style="color:#bd93f9">2048</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>openssl genrsa -out domain.com.key <span style="color:#bd93f9">2048</span>
 </span></span></code></pre></div><p>And then create the CSR:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>openssl req -new -sha256 -key domain.com.key -out domain.com.csr
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>openssl req -new -sha256 -key domain.com.key -out domain.com.csr
 </span></span></code></pre></div><p>This will generate the CSR file, which you will send to the CA authority, which in return will send you the certificates.</p>
 
 
@@ -310,6 +310,8 @@ There are many ways to generate the CSR. I will describe the process using <a hr
     
     <a href="/tags/dev-tools/">dev tools</a>
     
+    <a href="/tags/dotnet/">dotnet</a>
+    
     <a href="/tags/javascript/">javascript</a>
     
     <a href="/tags/networking/">networking</a>
@@ -384,7 +386,7 @@ There are many ways to generate the CSR. I will describe the process using <a hr
 
 
 
-<script src="/js/hux-blog.min.c4ea77041cd3edbfc8b2622cd887a9a5d8760a4162d14489e36d2a3fa4c90172.js"></script>
+<script src="/js/hux-blog.min.73a6a8d8df45293e042d15867416f603045bbeb98406731e5022d6c60388cd9d.js"></script>
 
 
 <script src=/js/simple-jekyll-search.min.js></script>
