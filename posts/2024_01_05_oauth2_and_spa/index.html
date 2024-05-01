@@ -209,13 +209,9 @@ Summary of the process:To describe the flow briefly, when the SPA requires to ge
 The challenge is you cannot store any type of secrets of credentials in your code. This is why OAuth provided a special flow to be used by SPA: Authorization Code Grant &amp; PKCE. We are going to describe this flow in details here.</p>
 <h2 id="summary-of-the-process">Summary of the process:<a class="anchorjs-link" href="#summary-of-the-process"></a></h2><p>To describe the flow briefly, when the SPA requires to get a token it will direct the application to an Authorization Server (AS), which will use that server login page and UI, and the user will run the login process on the AS server website, then that server will return back to the original client website using a callback url passing the token to the SPA.<br>
 So the client SPA has no idea about the credentials and the client cannot intercept those credentials because the login run on Authorization Server website.</p>
-<p>Let us imagine we have this setup and see how we will do that. I am going to use Auth0 service as an example:</p>
-<p><figure>
-  <a class="paragraph-image">
-    <img data-src="https://dev-to-uploads.s3.amazonaws.com/uploads/articles/wgdd12gtmk4lnuegbxaj.jpg" data-action="zoom" alt="The application we are going to implement"  class="lazyload">
-  </a>
-  
-</figure></p>
+<h4 id="so-what-is-authorization-code-grant--pkce">So what is Authorization Code Grant &amp; PKCE<a class="anchorjs-link" href="#so-what-is-authorization-code-grant--pkce"></a></h4><p>On SPA and mobile apps, because it is open code and can be interpreted by anyone, it is essential to not to exchange the token directly.<br>
+So, the laternative is the <code>AS</code> will return a encrypted code, hence the PKCE, and that encrypted code will be sent again by the client to get the token. And only the client that initiated the first login request will be able to call with code.<br>
+<code>PKCE</code> (pronounced &lsquo;pixy&rsquo;), provides an encryption mechanism for the communication between SPA and the <code>AS</code>.</p>
 <h2 id="how-to-configure-auth0">How to configure Auth0<a class="anchorjs-link" href="#how-to-configure-auth0"></a></h2><p>Before we start writing code, we should configure our API and our SPA application on Auth0.<br>
 I am not going to show the details on how to do it in Auth0, and assume you know how to do it.</p>
 <ol>
@@ -282,6 +278,45 @@ After <code>Submit</code> login, the page will do a post call to login as follow
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span><span style="color:#f1fa8c">&#34;id_token&#34;</span>: <span style="color:#f1fa8c">&#34;&lt;id token&gt;&#34;</span>, 
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6</span><span><span style="color:#f1fa8c">&#34;scope&#34;</span>: <span style="color:#f1fa8c">&#34;openid profile email&#34;</span>
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7</span><span>}
+</span></span></code></pre></div><h2 id="how-to-use-auth0-js-client">How to use Auth0 JS client:<a class="anchorjs-link" href="#how-to-use-auth0-js-client"></a></h2><p>As I meantioned before, if you use an off-the-shelf authentication service, it will hide the complexity for you, and you don&rsquo;t have to work with previous http workflow.</p>
+<p>From the Auth0 JavaScript client: <a href="https://github.com/auth0/auth0-spa-js" target="_blank">Auth0-SPA-JS</a>.<br>
+You have to do only four steps:</p>
+<ol>
+<li>create an auth0 client:</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="color:#ff79c6">import</span> { createAuth0Client } from <span style="color:#f1fa8c">&#39;@auth0/auth0-spa-js&#39;</span>;
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span><span style="color:#6272a4">//with async/await
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span><span style="color:#6272a4"></span><span style="color:#ff79c6">const</span> auth0 <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">await</span> createAuth0Client({
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span>  domain<span style="color:#ff79c6">:</span> <span style="color:#f1fa8c">&#39;&lt;AUTH0_DOMAIN&gt;&#39;</span>,
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span>  clientId<span style="color:#ff79c6">:</span> <span style="color:#f1fa8c">&#39;&lt;AUTH0_CLIENT_ID&gt;&#39;</span>,
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span>  authorizationParams<span style="color:#ff79c6">:</span> {
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span>    redirect_uri<span style="color:#ff79c6">:</span> <span style="color:#f1fa8c">&#39;&lt;MY_CALLBACK_URL&gt;&#39;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span>  }
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span>});
+</span></span></code></pre></div><ol start="2">
+<li>call login, with will do authorize / login API call</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>  <span style="color:#ff79c6">await</span> auth0.loginWithRedirect();
+</span></span></code></pre></div><ol start="3">
+<li>in the redirect url, write a handler:</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>  <span style="color:#ff79c6">const</span> redirectResult <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">await</span> auth0.handleRedirectCallback();
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>  <span style="color:#6272a4">//logged in. you can get the user profile like this:
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span><span style="color:#6272a4"></span>  <span style="color:#ff79c6">const</span> user <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">await</span> auth0.getUser();
+</span></span></code></pre></div><ol start="4">
+<li>get the token:<br>
+Any time you need to call an API to authenticate you can get the token</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="color:#8be9fd;font-style:italic">var</span> accessToken <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">await</span> auth0.getTokenSilently();
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span><span style="color:#8be9fd;font-style:italic">var</span> result <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">await</span> fetch(<span style="color:#f1fa8c">&#39;&lt;my api url&gt;&#39;</span>, {
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span>  headers<span style="color:#ff79c6">:</span> {
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span>    Authorization<span style="color:#ff79c6">:</span> <span style="color:#f1fa8c">`Bearer </span><span style="color:#f1fa8c">${</span>accessToken<span style="color:#f1fa8c">}</span><span style="color:#f1fa8c">`</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6</span><span>  }
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7</span><span>});
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">8</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">9</span><span><span style="color:#8be9fd;font-style:italic">var</span> data <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">await</span> result.json();
 </span></span></code></pre></div><h3 id="a-word-about-scopes">A word about scopes:<a class="anchorjs-link" href="#a-word-about-scopes"></a></h3><p>An API can define a set of permissions that can be used to divide the functionality of that API into smaller chunks. When a API&rsquo;s functionality is chunked into small permission sets, third-party apps can be built to request only the permissions that they need to perform their function. Users and administrators can know what data the app can access.<br>
 In OAuth 2.0, these types of permission sets are called scopes, and they are presented as string values.<br>
 The values can be something like this as examples:  financial:read, financial:write, admin, user:write&hellip;<br>
