@@ -6,8 +6,15 @@
     <description>Recent content in asp.net on Ghassan&#39;s Page</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 17 Oct 2023 12:41:54 -0600</lastBuildDate>
+    <lastBuildDate>Sat, 22 Jun 2024 10:41:54 -0600</lastBuildDate>
     <atom:link href="https://www.ghassan.page/tags/asp.net/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Stream long running webapi with Asp.NET Core and Javascript</title>
+      <link>https://www.ghassan.page/posts/2024_06_22_streamline_long_process_with_aspnet_core_and_javascript/</link>
+      <pubDate>Sat, 22 Jun 2024 10:41:54 -0600</pubDate>
+      <guid>https://www.ghassan.page/posts/2024_06_22_streamline_long_process_with_aspnet_core_and_javascript/</guid>
+      <description>If you have a long running process that return array of data, or a data that you can send back as chunk of data, then you can stream the result.&#xA;Streaming from the serverIn Asp.NET core 6 and later, it is so easy to stream back the result using IAsyncEnumerable.&#xA;Let us jump into the code right away:&#xA;1 [HttpGet(&amp;#34;ProcessLongData&amp;#34;)] 2 [ResponseCache(NoStore = true, Location = ResponseCacheLocation.None)] 3 public async IAsyncEnumerable&amp;lt;string&amp;gt; ProcessLongData(string input) 4 { 5 6 7 for (var i = 0; i &amp;lt; 10; i++) 8 { 9 await Task.</description>
+    </item>
     <item>
       <title>Write Asp.NET webhook handlers for Azure Event Grid events.</title>
       <link>https://www.ghassan.page/posts/2023_10_17_subscribe_to_upload_file_azure_blog_storage/</link>

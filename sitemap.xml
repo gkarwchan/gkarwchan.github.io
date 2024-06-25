@@ -2,19 +2,28 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
+    <loc>https://www.ghassan.page/tags/asp.net/</loc>
+    <lastmod>2024-06-22T10:41:54-06:00</lastmod>
+  </url><url>
+    <loc>https://www.ghassan.page/</loc>
+    <lastmod>2024-06-22T10:41:54-06:00</lastmod>
+  </url><url>
+    <loc>https://www.ghassan.page/tags/javascript/</loc>
+    <lastmod>2024-06-22T10:41:54-06:00</lastmod>
+  </url><url>
+    <loc>https://www.ghassan.page/posts/</loc>
+    <lastmod>2024-06-22T10:41:54-06:00</lastmod>
+  </url><url>
+    <loc>https://www.ghassan.page/posts/2024_06_22_streamline_long_process_with_aspnet_core_and_javascript/</loc>
+    <lastmod>2024-06-22T10:41:54-06:00</lastmod>
+  </url><url>
+    <loc>https://www.ghassan.page/tags/</loc>
+    <lastmod>2024-06-22T10:41:54-06:00</lastmod>
+  </url><url>
     <loc>https://www.ghassan.page/tags/azure/</loc>
     <lastmod>2024-01-14T10:41:54-06:00</lastmod>
   </url><url>
-    <loc>https://www.ghassan.page/</loc>
-    <lastmod>2024-01-14T10:41:54-06:00</lastmod>
-  </url><url>
-    <loc>https://www.ghassan.page/posts/</loc>
-    <lastmod>2024-01-14T10:41:54-06:00</lastmod>
-  </url><url>
     <loc>https://www.ghassan.page/tags/security/</loc>
-    <lastmod>2024-01-14T10:41:54-06:00</lastmod>
-  </url><url>
-    <loc>https://www.ghassan.page/tags/</loc>
     <lastmod>2024-01-14T10:41:54-06:00</lastmod>
   </url><url>
     <loc>https://www.ghassan.page/posts/2024_01_14_managedidentity/</loc>
@@ -37,9 +46,6 @@
   </url><url>
     <loc>https://www.ghassan.page/posts/2023_10_27_oauth_openid_authenticationflow_in_plain_english/</loc>
     <lastmod>2023-10-27T12:41:54-06:00</lastmod>
-  </url><url>
-    <loc>https://www.ghassan.page/tags/asp.net/</loc>
-    <lastmod>2023-10-17T12:41:54-06:00</lastmod>
   </url><url>
     <loc>https://www.ghassan.page/posts/2023_10_17_subscribe_to_upload_file_azure_blog_storage/</loc>
     <lastmod>2023-10-17T12:41:54-06:00</lastmod>
@@ -109,9 +115,6 @@
   </url><url>
     <loc>https://www.ghassan.page/posts/2022_11_28_use_secret_manager_in_dotnet/</loc>
     <lastmod>2022-11-28T19:41:04-07:00</lastmod>
-  </url><url>
-    <loc>https://www.ghassan.page/tags/javascript/</loc>
-    <lastmod>2020-12-23T16:02:54-07:00</lastmod>
   </url><url>
     <loc>https://www.ghassan.page/posts/2020_12_23_no_more_js_transpiler/</loc>
     <lastmod>2020-12-23T16:02:54-07:00</lastmod>
