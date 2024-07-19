@@ -6,8 +6,15 @@
     <description>Recent content in security on Ghassan&#39;s Page</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 14 Jan 2024 10:41:54 -0600</lastBuildDate>
+    <lastBuildDate>Wed, 01 May 2024 10:41:54 -0600</lastBuildDate>
     <atom:link href="https://www.ghassan.page/tags/security/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Auth0 Single Sign On and seamless silent authentication</title>
+      <link>https://www.ghassan.page/posts/2024_05_01_auth0_and_spa/</link>
+      <pubDate>Wed, 01 May 2024 10:41:54 -0600</pubDate>
+      <guid>https://www.ghassan.page/posts/2024_05_01_auth0_and_spa/</guid>
+      <description>Auth0 streamlines lots of complexity for you when it comes to authenticate your SPA application.&#xA;In this article we will talk about how Single Sign ON works.&#xA;Auth0 Single Sign On and sessions:Auth0 provides Single Sign-on through the use of sessions. There are up to three different sessions:&#xA;Local session. Authorication Server session, if SSO is enabled. Identity Provider (IdP) session, if the user login through an IdP like Google, Facebook&amp;hellip;etc.</description>
+    </item>
     <item>
       <title>Using Azure Managed Identity to skip sharing credentials</title>
       <link>https://www.ghassan.page/posts/2024_01_14_managedidentity/</link>

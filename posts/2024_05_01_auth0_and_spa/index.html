@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  
+    
+  <title>Auth0 Single Sign On and seamless silent authentication | Ghassan&#39;s Page</title>
+  <meta name="author" content="Ghassan Karwchan">
+  <meta name="description" content="Auth0 streamlines lots of complexity for you when it comes to authenticate your SPA application.
+In this article we will talk about how Single Sign ON works.
+Auth0 Single Sign On and sessions:Auth0 provides Single Sign-on through the use of sessions. There are up to three different sessions:
+Local session. Authorication Server session, if SSO is enabled. Identity Provider (IdP) session, if the user login through an IdP like Google, Facebook&hellip;etc.">
+  <meta name="keywords" content="blog,developer,personal">
+
+  <meta name="twitter:card" content="summary"/><meta name="twitter:title" content="Auth0 Single Sign On and seamless silent authentication"/>
+<meta name="twitter:description" content="Auth0 streamlines lots of complexity for you when it comes to authenticate your SPA application.
+In this article we will talk about how Single Sign ON works.
+Auth0 Single Sign On and sessions:Auth0 provides Single Sign-on through the use of sessions. There are up to three different sessions:
+Local session. Authorication Server session, if SSO is enabled. Identity Provider (IdP) session, if the user login through an IdP like Google, Facebook&hellip;etc."/>
+
+  <meta property="og:title" content="Auth0 Single Sign On and seamless silent authentication" />
+<meta property="og:description" content="Auth0 streamlines lots of complexity for you when it comes to authenticate your SPA application.
+In this article we will talk about how Single Sign ON works.
+Auth0 Single Sign On and sessions:Auth0 provides Single Sign-on through the use of sessions. There are up to three different sessions:
+Local session. Authorication Server session, if SSO is enabled. Identity Provider (IdP) session, if the user login through an IdP like Google, Facebook&hellip;etc." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://www.ghassan.page/posts/2024_05_01_auth0_and_spa/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2024-05-01T10:41:54-06:00" />
+<meta property="article:modified_time" content="2024-05-01T10:41:54-06:00" />
+
+
+
+  <link rel="stylesheet" href="/css/bootstrap.min.css"  crossorigin="anonymous">
+  
+  <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.1/css/all.min.css" rel="stylesheet" type="text/css">
+
+  <link rel="stylesheet" href="/sass/main.css">
+
+  <link rel="stylesheet" href="/zoomjs/zoom.min.css">
+
+  <script src=/js/lazysizes.min.js></script>
+
+  
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="manifest" href="/site.webmanifest">
+  
+
+</head>
+
+
+
+<body ontouchstart="">
+  
+  
+  <nav class="navbar navbar-default navbar-custom navbar-fixed-top invert">
+  <div class="container-fluid">
+    
+    <div class="navbar-header page-scroll">
+      <button type="button" class="navbar-toggle">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="https://www.ghassan.page/">Ghassan&#39;s Page</a>
+    </div>
+    
+    <div id="huxblog_navbar">
+      <div class="navbar-collapse">
+        <ul class="nav navbar-nav navbar-right">
+          
+          <li><a href="/" title="Home">Home</a></li>
+          
+          <li><a href="/archive/" title="Archive">Archive</a></li>
+          
+          <li><a href="/about/" title="About">About</a></li>
+          
+          <li><a href="https://github.com/gkarwchan/hugoblogsource" title="Github">Github</a></li>
+          
+
+          <li class="search-icon">
+            <a href="javascript:void(0)">
+              <i class="fa fa-search"></i>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    
+  </div>
+  
+</nav>
+<script>
+  
+  
+  
+  var $body = document.body;
+  var $toggle = document.querySelector(".navbar-toggle");
+  var $navbar = document.querySelector("#huxblog_navbar");
+  var $collapse = document.querySelector(".navbar-collapse");
+
+  var __HuxNav__ = {
+    close: function () {
+      $navbar.className = " ";
+      
+      setTimeout(function () {
+        
+        if ($navbar.className.indexOf("in") < 0) {
+          $collapse.style.height = "0px";
+        }
+      }, 400);
+    },
+    open: function () {
+      $collapse.style.height = "auto";
+      $navbar.className += " in";
+    },
+  };
+
+  
+  $toggle.addEventListener("click", function (e) {
+    if ($navbar.className.indexOf("in") > 0) {
+      __HuxNav__.close();
+    } else {
+      __HuxNav__.open();
+    }
+  });
+
+  
+
+  document.addEventListener("click", function (e) {
+    if (e.target == $toggle) return;
+    if (e.target.className == "icon-bar") return;
+    __HuxNav__.close();
+  });
+</script>
+  
+<div class="search-page">
+  <div class="search-icon-close-container">
+    <span class="search-icon-close">
+      <i class="fa fa-chevron-down"></i>
+    </span>
+  </div>
+  <div class="search-main container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <form></form>
+        <input type="text" id="search-input" placeholder="$ grep...">
+        </form>
+        <div id="search-results" class="mini-post-list"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+  
+  
+
+
+<style type="text/css">
+  header.intro-header {
+    position: relative;
+    background-image: url('');
+  }
+</style>
+
+<header class="intro-header style-text">
+
+  <div class="header-mask"></div>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div class="post-heading">
+          <div class="tags">
+            
+            <a class="tag" href="/tags/security/" title="security">security</a>
+            
+          </div>
+          <h1>Auth0 Single Sign On and seamless silent authentication</h1>
+          <h2 class="subheading"></h2>
+          <span class="meta">
+            Posted by  Ghassan Karwchan 
+            on Wed, May 1, 2024
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+
+  
+
+
+<article>
+  <div class="container">
+    <div class="row">
+
+      
+      <div class="
+              col-lg-8 col-lg-offset-2
+              col-md-10 col-md-offset-1
+              post-container">
+        <p>Auth0 streamlines lots of complexity for you when it comes to authenticate your SPA application.<br>
+In this article we will talk about how Single Sign ON works.</p>
+<h2 id="auth0-single-sign-on-and-sessions">Auth0 Single Sign On and sessions:<a class="anchorjs-link" href="#auth0-single-sign-on-and-sessions"></a></h2><p>Auth0 provides Single Sign-on through the use of sessions. There are up to three different sessions:</p>
+<ol>
+<li>Local session.</li>
+<li>Authorication Server session, if SSO is enabled.</li>
+<li>Identity Provider (IdP) session, if the user login through an IdP like Google, Facebook&hellip;etc.</li>
+</ol>
+<h2 id="how-sso-works">How SSO works:<a class="anchorjs-link" href="#how-sso-works"></a></h2><ol>
+<li>the application will redirect the user to login page on Auth0 Authorization Server.</li>
+<li>Auth0 checks to see if there is an existing SSO cookie for the authorization server.</li>
+<li>there is no cookie, so the user will be redirect to the login page.</li>
+<li>after login, Auth0 will set SSO cookie and redirect the user to our application, returning the ID token.</li>
+<li>The user compes back to our application.</li>
+<li>the application will redirect to the login page.</li>
+<li>Auh0 check for SSO cookie.</li>
+<li>Auth0 will find the cookie and update it without the login process.</li>
+</ol>
+<p>The developer can check for the SSO session from their application by using Auth0 SDK: <a href="https://auth0.com/docs/libraries/auth0js" target="_blank">Auth0.js</a>.</p>
+<p>So, there is a redirect to the login page all the time, but in <code>Authorization Code Flow with PKCE</code> workflow in conjuction with <code>Silent Authentication</code> can renew your session without relogin, and redirect.</p>
+<h2 id="silent-authentication">Silent authentication<a class="anchorjs-link" href="#silent-authentication"></a></h2><p>To get a fresh token with silent authentication, all you have to do is using Auth0 SDK: <a href="https://auth0.com/docs/libraries/auth0js" target="_blank">Auth0.js</a>, you call <code>checkSession</code> or <code>getTokenSilently</code> on older versions, and the library will do the magic for you.<br>
+So what that magic is, and how that works?</p>
+<h4 id="how-silent-authentication-work">How silent authentication work?<a class="anchorjs-link" href="#how-silent-authentication-work"></a></h4><p>Auth0 used to use cookies to store the Auth0 session to be able to get back the authentication.<br>
+But modern browsers prevent third-party cookies, therefore Auth0 shifted to use : <strong><code>Refresh Token Rotation</code></strong>, which provides a secure way for using refresh tokens in SPA while providing end-users with seamless access to resources without the disruption in UX.</p>
+<p>The library using iframe will call the <code>authorization server</code> (<code>AS</code>) for an endpoint that will try to authenticate silently.</p>
+<p><code>OpenId Connect</code> protocol supports a <code>prompt=none</code> parameter on the authentication request, which indicate the Authentication Server (<code>AS</code>) must not display any user interaction. The Auth0 server will either return a successful token or return an error, in which case the user has to redirect to login.</p>
+<p>to authenticate using OpenId Connect use the following endpoint:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-http" data-lang="http"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span>GET https://{yourDomain}/authorize
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>    ?response_type=id_token token&amp;
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>    client_id=...&amp;
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span>    redirect_uri=...&amp;
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span>    state=...&amp;
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span>    scope=openid...&amp;
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span>    nonce=...&amp;
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span>    audience=...&amp;
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span>    response_mode=...&amp;
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span>    prompt=none
+</span></span></code></pre></div><p>Because the library use iframe targetting <code>AS</code>then it can check the stored cookies for that server.<br>
+The above call will either return success, or failure.<br>
+The failure has <code>ERROR_CODE</code> that describe the failure.</p>
+<p>The possible values for ERROR_CODE are defined by the OpenID Connect specification:</p>
+<ol>
+<li>login_required: The user was not logged in at Auth0, so silent authentication is not possible.</li>
+<li>consent_required: The user was logged in at Auth0, but needs to give consent to authorize the application.</li>
+<li>interaction_required: The user was logged in at Auth0 and has authorized the application, but needs to be redirected elsewhere before authentication can be completed; for example, when using a redirect rule.</li>
+</ol>
+<p>The library silently will refersh the token for you using <a href="https://auth0.com/docs/secure/tokens/refresh-tokens/refresh-token-rotation" target="_blank">Refresh Token Rotation</a></p>
+
+
+        <hr style="visibility: hidden;" />
+        <ul class="pager">
+          
+          <li class="previous">
+            <a href="/posts/2024_01_14_managedidentity/" data-toggle="tooltip" data-placement="top" title="Using Azure Managed Identity to skip sharing credentials">
+              Previous<br>
+              <span>Using Azure Managed Identity to skip sharing credentials</span>
+            </a>
+          </li>
+          
+          
+          <li class="next">
+            <a href="/posts/2024_06_22_streamline_long_process_with_aspnet_core_and_javascript/" data-toggle="tooltip" data-placement="top" title="Stream long running webapi with Asp.NET Core and Javascript">
+              Next<br>
+              <span>Stream long running webapi with Asp.NET Core and Javascript</span>
+            </a>
+          </li>
+          
+        </ul>
+        <hr style="visibility: hidden;" />
+
+        
+        
+
+
+
+<div class="giscus" id="comments"></div>
+<script src="https://giscus.app/client.js" 
+  data-repo="gkarwchan/gkarwchan.github.io" 
+  data-repo-id="R_kgDOK0QUTA"
+  data-category="General"
+  data-category-id="DIC_kwDOK0QUTM4Ccf8h"
+  data-mapping="pathname"
+  data-strict="0" 
+  data-reactions-enabled="1" 
+  data-emit-metadata="0" 
+  data-input-position="top"
+  data-theme="light_tritanopia"
+  data-lang="en"
+  crossorigin="anonymous"
+  async>
+  </script>
+
+
+
+
+      </div>
+
+      
+      
+      
+      <div class="
+              col-lg-2 col-lg-offset-0
+              visible-lg-block
+              sidebar-container
+              catalog-container">
+        <div class="side-catalog">
+          <hr class="hidden-sm hidden-xs">
+          <h5>
+            <a class="catalog-toggle" href="#">CATALOG</a>
+          </h5>
+          <ul class="catalog-body"></ul>
+        </div>
+      </div>
+      
+      
+      <div class="
+              col-lg-8 col-lg-offset-2
+              col-md-10 col-md-offset-1
+              sidebar-container">
+
+        
+        
+        <section>
+  
+  
+  <hr class="hidden-sm hidden-xs">
+  
+  <h5>FEATURED TAGS</h5>
+  <div class="tags">
+    
+    <a href="/tags/algorithm/">algorithm</a>
+    
+    <a href="/tags/asp.net/">asp.net</a>
+    
+    <a href="/tags/azure/">azure</a>
+    
+    <a href="/tags/ci/cd/">ci/cd</a>
+    
+    <a href="/tags/container/">container</a>
+    
+    <a href="/tags/dev-tools/">dev tools</a>
+    
+    <a href="/tags/javascript/">javascript</a>
+    
+    <a href="/tags/networking/">networking</a>
+    
+    <a href="/tags/performance/">performance</a>
+    
+    <a href="/tags/python/">python</a>
+    
+    <a href="/tags/security/">security</a>
+    
+  </div>
+</section>
+
+        
+        
+
+      </div>
+    </div>
+  </div>
+</article>
+
+
+
+  
+<footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        
+        <ul class="list-inline text-center">
+
+<li>
+  <a href="https://github.com/gkarwchan" target="_blank">
+    <span class="fa-stack fa-lg">
+      <i class="fa fa-circle fa-stack-2x"></i>
+      <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+    </span>
+  </a>
+</li>
+
+<li>
+  <a href="https://linkedin.com/in/ghassankarwchan" target="_blank">
+    <span class="fa-stack fa-lg">
+      <i class="fa fa-circle fa-stack-2x"></i>
+      <i class="fab fa-linkedin fa-stack-1x fa-inverse"></i>
+    </span>
+  </a>
+</li>
+
+
+<li>
+  <a href="/index.xml" target="_blank">
+    <span class="fa-stack fa-lg">
+      <i class="fa fa-circle fa-stack-2x"></i>
+      <i class="fas fa-rss fa-stack-1x fa-inverse"></i>
+    </span>
+  </a>
+</li></ul>
+
+        <p class="copyright text-muted">
+          Copyright &copy; Ghassan&#39;s Page 2024  
+          <br>
+          Powered by <a href="https://gohugo.io">Hugo</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src=/js/jquery.min.js></script>
+<script src=/js/bootstrap.min.js crossorigin="anonymous"></script>
+
+
+
+<script src="/js/hux-blog.min.73a6a8d8df45293e042d15867416f603045bbeb98406731e5022d6c60388cd9d.js"></script>
+
+
+<script src=/js/simple-jekyll-search.min.js></script>
+
+
+<script src="/js/search.min.53bce5da475b4d362500e5ce5dddfa22e20e1b9018777411d2020b4b839c9310.js"></script>
+
+
+
+
+
+
+<script type="text/javascript">
+  function generateCatalog(selector) {
+    _containerSelector = 'div.post-container'
+    
+    var P = $(_containerSelector), a, n, t, l, i, c;
+    a = P.find('h1,h2,h3,h4');
+    
+    $(selector).html('')
+    
+    a.each(function () {
+      n = $(this).prop('tagName').toLowerCase();
+      i = "#" + $(this).prop('id');
+      t = $(this).text();
+      c = $('<a href="' + i + '" rel="nofollow">' + t + '</a>');
+      l = $('<li class="' + n + '_nav"></li>').append(c);
+      $(selector).append(l);
+    });
+    return true;
+  }
+
+  generateCatalog(".catalog-body");
+
+  
+  $(".catalog-toggle").click((function (e) {
+    e.preventDefault();
+    $('.side-catalog').toggleClass("fold")
+  }))
+</script>
+
+
+<script type="text/javascript" src='/js/jquery.nav.min.ade6bde8f9fcc6a4b40852cb892e9f5912340ab8fe1305149d917fdd16fffd8d.js'></script>
+<script>
+   $(document).ready( function () {
+    $('.catalog-body').onePageNav({
+      currentClass: "active",
+      changeHash: !1,
+      easing: "swing",
+      filter: "",
+      scrollSpeed: 700,
+      scrollOffset: 0,
+      scrollThreshold: .2,
+      begin: null,
+      end: null,
+      scrollChange: null,
+      padding: 80
+    });
+  });
+</script>
+
+
+
+
+
+
+
+
+
+<script src="/zoomjs/zoom.min.js"></script>
+
+</body>
+
+</html>
