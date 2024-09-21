@@ -178,7 +178,7 @@ Or you can do it from Powershell:
             
             <a class="tag" href="/tags/azure/" title="azure">azure</a>
             
-            <a class="tag" href="/tags/ci/cd/" title="ci/cd">ci/cd</a>
+            <a class="tag" href="/tags/devops/" title="devops">devops</a>
             
             <a class="tag" href="/tags/security/" title="security">security</a>
             
@@ -251,7 +251,8 @@ Or you can do it from Powershell:
 </span></span></code></pre></div><p>Permissions to run deployments:</p>
 <p>The beauty of this feature is the user who is doing deployment doesn&rsquo;t need to have access to the secrets, even read access. Just need a special permission called deploy permission, or more specifically this permission</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>Microsoft.keyVault/Vaults/deploy/action
-</span></span></code></pre></div><p>To assign this permission to the user, it is easier if we create a custom role with this permission and then assign this role to any user want to deploy.<br>
+</span></span></code></pre></div><p>The owner or contributor of the key-vault will give the user that permission to the user.<br>
+It is easier if we create a custom role with this permission and then assign this role to any user want to deploy.<br>
 First we create a json to represent the definition of the custom role:</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span>{
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>  <span style="color:#ff79c6">&#34;Name&#34;</span>: <span style="color:#f1fa8c">&#34;TemplateDeploymentForResourceManagerRole&#34;</span>,
@@ -349,11 +350,11 @@ This powershell script does this:</p>
     
     <a href="/tags/azure/">azure</a>
     
-    <a href="/tags/ci/cd/">ci/cd</a>
-    
     <a href="/tags/container/">container</a>
     
     <a href="/tags/dev-tools/">dev tools</a>
+    
+    <a href="/tags/devops/">devops</a>
     
     <a href="/tags/javascript/">javascript</a>
     

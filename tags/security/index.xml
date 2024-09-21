@@ -6,8 +6,15 @@
     <description>Recent content in security on Ghassan&#39;s Page</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 01 May 2024 10:41:54 -0600</lastBuildDate>
+    <lastBuildDate>Mon, 19 Aug 2024 10:41:54 -0600</lastBuildDate>
     <atom:link href="https://www.ghassan.page/tags/security/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>A Journey into Microsoft Identity Platform</title>
+      <link>https://www.ghassan.page/posts/2024_08_19_microsoft_identity_platform/</link>
+      <pubDate>Mon, 19 Aug 2024 10:41:54 -0600</pubDate>
+      <guid>https://www.ghassan.page/posts/2024_08_19_microsoft_identity_platform/</guid>
+      <description>It is not exaggeration if I said, Microsoft Identity Platform is bigger than any SAS authentication provider, and if you are using Azure as your cloud provider, then the authorization benefits that will add to your application off-the-shelf, won&amp;rsquo;t be able to do it with any other platform without writing code.&#xA;Usage with .NET.NET has a library, which is considered part of the platform. It is Microsfot.Identity.Web.&#xA;How to use it?</description>
+    </item>
     <item>
       <title>Auth0 Single Sign On and seamless silent authentication</title>
       <link>https://www.ghassan.page/posts/2024_05_01_auth0_and_spa/</link>

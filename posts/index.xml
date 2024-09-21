@@ -6,8 +6,22 @@
     <description>Recent content in Posts on Ghassan&#39;s Page</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 22 Jun 2024 10:41:54 -0600</lastBuildDate>
+    <lastBuildDate>Sat, 21 Sep 2024 10:41:54 -0600</lastBuildDate>
     <atom:link href="https://www.ghassan.page/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Are you still using `git checkout` for everything? It is time to switch to `gitswitch`</title>
+      <link>https://www.ghassan.page/posts/2024_09_21_git_checkout_splitted_to_many_commands/</link>
+      <pubDate>Sat, 21 Sep 2024 10:41:54 -0600</pubDate>
+      <guid>https://www.ghassan.page/posts/2024_09_21_git_checkout_splitted_to_many_commands/</guid>
+      <description>If you&amp;rsquo;re like me and still rely on the trusty git checkout for a variety of tasks—like switching branches, restoring files, and checking out commits—then you&amp;rsquo;re in for a treat. The Git community has made things easier by introducing two new commands to split the workload: git switch and git restore.&#xA;These new commands were created to reduce the overload on git checkout and make Git a bit more intuitive, especially for developers who sometimes found it confusing.</description>
+    </item>
+    <item>
+      <title>A Journey into Microsoft Identity Platform</title>
+      <link>https://www.ghassan.page/posts/2024_08_19_microsoft_identity_platform/</link>
+      <pubDate>Mon, 19 Aug 2024 10:41:54 -0600</pubDate>
+      <guid>https://www.ghassan.page/posts/2024_08_19_microsoft_identity_platform/</guid>
+      <description>It is not exaggeration if I said, Microsoft Identity Platform is bigger than any SAS authentication provider, and if you are using Azure as your cloud provider, then the authorization benefits that will add to your application off-the-shelf, won&amp;rsquo;t be able to do it with any other platform without writing code.&#xA;Usage with .NET.NET has a library, which is considered part of the platform. It is Microsfot.Identity.Web.&#xA;How to use it?</description>
+    </item>
     <item>
       <title>Stream long running webapi with Asp.NET Core and Javascript</title>
       <link>https://www.ghassan.page/posts/2024_06_22_streamline_long_process_with_aspnet_core_and_javascript/</link>
