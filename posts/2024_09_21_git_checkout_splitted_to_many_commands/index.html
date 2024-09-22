@@ -8,17 +8,17 @@
 
   
     
-  <title>Are you still using `git checkout` for everything? It is time to switch to `gitswitch` | Ghassan&#39;s Page</title>
+  <title>Are you still using git checkout for everything? It is time to switch to git switch | Ghassan&#39;s Page</title>
   <meta name="author" content="Ghassan Karwchan">
   <meta name="description" content="If you&rsquo;re like me and still rely on the trusty git checkout for a variety of tasks—like switching branches, restoring files, and checking out commits—then you&rsquo;re in for a treat. The Git community has made things easier by introducing two new commands to split the workload: git switch and git restore.
 These new commands were created to reduce the overload on git checkout and make Git a bit more intuitive, especially for developers who sometimes found it confusing.">
   <meta name="keywords" content="blog,developer,personal">
 
-  <meta name="twitter:card" content="summary"/><meta name="twitter:title" content="Are you still using `git checkout` for everything? It is time to switch to `gitswitch`"/>
+  <meta name="twitter:card" content="summary"/><meta name="twitter:title" content="Are you still using git checkout for everything? It is time to switch to git switch"/>
 <meta name="twitter:description" content="If you&rsquo;re like me and still rely on the trusty git checkout for a variety of tasks—like switching branches, restoring files, and checking out commits—then you&rsquo;re in for a treat. The Git community has made things easier by introducing two new commands to split the workload: git switch and git restore.
 These new commands were created to reduce the overload on git checkout and make Git a bit more intuitive, especially for developers who sometimes found it confusing."/>
 
-  <meta property="og:title" content="Are you still using `git checkout` for everything? It is time to switch to `gitswitch`" />
+  <meta property="og:title" content="Are you still using git checkout for everything? It is time to switch to git switch" />
 <meta property="og:description" content="If you&rsquo;re like me and still rely on the trusty git checkout for a variety of tasks—like switching branches, restoring files, and checking out commits—then you&rsquo;re in for a treat. The Git community has made things easier by introducing two new commands to split the workload: git switch and git restore.
 These new commands were created to reduce the overload on git checkout and make Git a bit more intuitive, especially for developers who sometimes found it confusing." />
 <meta property="og:type" content="article" />
@@ -175,7 +175,7 @@ These new commands were created to reduce the overload on git checkout and make 
             <a class="tag" href="/tags/devops/" title="devops">devops</a>
             
           </div>
-          <h1>Are you still using `git checkout` for everything? It is time to switch to `gitswitch`</h1>
+          <h1>Are you still using git checkout for everything? It is time to switch to git switch</h1>
           <h2 class="subheading"></h2>
           <span class="meta">
             Posted by  Ghassan Karwchan 
@@ -244,7 +244,7 @@ So you have a command to switch to another branch</p>
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span><span style="color:#6272a4"># to revert the changes in index/stage area only use the following override argument</span>
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6</span><span>git restore . --staged 
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7</span><span><span style="color:#6272a4"># to revert both working tree and stage area use</span>
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">8</span><span>git restore . --staged --worktree <span style="color:#6272a4"># this similar to git checkout .</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">8</span><span>git restore --source . --staged --worktree <span style="color:#6272a4"># this similar to git checkout .</span>
 </span></span></code></pre></div><p>Or you can restore to a specific commit</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>git restore --source &lt;commit-hash&gt; &lt;file&gt; 
 </span></span></code></pre></div><h2 id="wrapping-up">Wrapping up<a class="anchorjs-link" href="#wrapping-up"></a></h2><p>While <code>git checkout</code> still works, switching to the new commands can make you Git workflow more intutive and less confusion. Branches, files, and commits are all just pointers in your Git history, but by using these specialized commands, you’ll reduce the mental load and avoid mistakes.</p>
