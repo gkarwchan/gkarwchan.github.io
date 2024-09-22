@@ -2,19 +2,22 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://www.ghassan.page/tags/devops/</loc>
-    <lastmod>2024-09-22T10:41:54-06:00</lastmod>
+    <loc>https://www.ghassan.page/posts/2024_09_23_design_and_implement_a_branch_strategy_and_workflow/</loc>
+    <lastmod>2024-09-23T10:41:54-06:00</lastmod>
   </url><url>
-    <loc>https://www.ghassan.page/posts/2024_09_22_make_sense_of_many_git_credential_helper/</loc>
-    <lastmod>2024-09-22T10:41:54-06:00</lastmod>
+    <loc>https://www.ghassan.page/tags/devops/</loc>
+    <lastmod>2024-09-23T10:41:54-06:00</lastmod>
   </url><url>
     <loc>https://www.ghassan.page/</loc>
-    <lastmod>2024-09-22T10:41:54-06:00</lastmod>
+    <lastmod>2024-09-23T10:41:54-06:00</lastmod>
   </url><url>
     <loc>https://www.ghassan.page/posts/</loc>
-    <lastmod>2024-09-22T10:41:54-06:00</lastmod>
+    <lastmod>2024-09-23T10:41:54-06:00</lastmod>
   </url><url>
     <loc>https://www.ghassan.page/tags/</loc>
+    <lastmod>2024-09-23T10:41:54-06:00</lastmod>
+  </url><url>
+    <loc>https://www.ghassan.page/posts/2024_09_22_make_sense_of_many_git_credential_helper/</loc>
     <lastmod>2024-09-22T10:41:54-06:00</lastmod>
   </url><url>
     <loc>https://www.ghassan.page/posts/2024_09_21_git_checkout_splitted_to_many_commands/</loc>
