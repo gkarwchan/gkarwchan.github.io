@@ -6,14 +6,28 @@
     <description>Recent content in devops on Ghassan&#39;s Page</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 23 Sep 2024 10:41:54 -0600</lastBuildDate>
+    <lastBuildDate>Wed, 25 Sep 2024 18:41:54 -0600</lastBuildDate>
     <atom:link href="https://www.ghassan.page/tags/devops/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>Design and implement Git branching strategies and workflow</title>
+      <title>Git Tools Every DevOps Engineer Should Know</title>
+      <link>https://www.ghassan.page/posts/2024_09_25_git_commands_every_devops_should_know/</link>
+      <pubDate>Wed, 25 Sep 2024 18:41:54 -0600</pubDate>
+      <guid>https://www.ghassan.page/posts/2024_09_25_git_commands_every_devops_should_know/</guid>
+      <description>As a DevOps engineer managing an active Git repository with hundreds of commits daily, you&amp;rsquo;ll inevitably face challenges that require a solid understanding of Git and its ecosystem. This post covers common issues that teams encounter while using Git and the tools used to address them. Each tool mentioned deserves a dedicated post, but here’s a brief overview of the essentials.&#xA;The tools we&amp;rsquo;ll cover:&#xA;Maintaining the health of the repository.</description>
+    </item>
+    <item>
+      <title>Enhancing Team Collaboration with a Git Forking Strategy</title>
+      <link>https://www.ghassan.page/posts/2024_09_24_team_collaboration_using_git_fork/</link>
+      <pubDate>Mon, 23 Sep 2024 18:41:54 -0600</pubDate>
+      <guid>https://www.ghassan.page/posts/2024_09_24_team_collaboration_using_git_fork/</guid>
+      <description>The fork-based pull request (PR) workflow is widely used in open-source projects because it enables external contributions while keeping the core repository secure and controlled by a designated team.&#xA;Fork-baed workflow and Inner SourceTypically, only contributors with repository access can create pull requests. As a contributor, you can create branches, submit PRs, and request merges. However, what happens if you&amp;rsquo;re not part of the repository&amp;rsquo;s team, as is the case in open-source projects?</description>
+    </item>
+    <item>
+      <title>Design and implement Git branching strategies for CI/CD integration</title>
       <link>https://www.ghassan.page/posts/2024_09_23_design_and_implement_a_branch_strategy_and_workflow/</link>
       <pubDate>Mon, 23 Sep 2024 10:41:54 -0600</pubDate>
       <guid>https://www.ghassan.page/posts/2024_09_23_design_and_implement_a_branch_strategy_and_workflow/</guid>
-      <description>Adopting a standardized development process for Git workflow, and how it integrate with CI/CD is the first step you should establish in your team before writing one line of code. We are going to cover one major well known workflow called Trunk-based workflow that is used by many companies, including Microsoft.&#xA;Chose a branching strategy:Every organization should settle on a standard code release process to ensure consistency, and reduce risks. The code release strategy start from adopting Git workflow, and include building CI/CD process and end with building a release strategy.</description>
+      <description>Establishing a standardized development process that integrates a Git workflow with Continuous Integration/Continuous Deployment (CI/CD) is crucial before writing any code. This post will explore a widely-used approach: the Trunk-Based Development Workflow, which is adopted by many leading companies, including Microsoft.&#xA;Choosing a branching strategy:Every team should adopt a consistent code release process to maintain quality and reduce risks. This starts with selecting a Git workflow, continues through integrating CI/CD, and culminates in defining a release strategy.</description>
     </item>
     <item>
       <title>Enhancing Your Git Workflow with Git Credential Manager Core</title>
