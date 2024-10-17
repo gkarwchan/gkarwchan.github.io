@@ -6,8 +6,15 @@
     <description>Recent content in devops on Ghassan&#39;s Page</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 23 Sep 2024 18:41:54 -0600</lastBuildDate>
+    <lastBuildDate>Wed, 25 Sep 2024 18:41:54 -0600</lastBuildDate>
     <atom:link href="https://www.ghassan.page/tags/devops/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Git Tools Every DevOps Engineer Should Know</title>
+      <link>https://www.ghassan.page/posts/2024_09_25_git_commands_every_devops_should_know/</link>
+      <pubDate>Wed, 25 Sep 2024 18:41:54 -0600</pubDate>
+      <guid>https://www.ghassan.page/posts/2024_09_25_git_commands_every_devops_should_know/</guid>
+      <description>As a DevOps engineer managing an active Git repository with hundreds of commits daily, you&amp;rsquo;ll inevitably face challenges that require a solid understanding of Git and its ecosystem. This post covers common issues that teams encounter while using Git and the tools used to address them. Each tool mentioned deserves a dedicated post, but here’s a brief overview of the essentials.&#xA;The tools we&amp;rsquo;ll cover:&#xA;Maintaining the health of the repository.</description>
+    </item>
     <item>
       <title>Enhancing Team Collaboration with a Git Forking Strategy</title>
       <link>https://www.ghassan.page/posts/2024_09_24_team_collaboration_using_git_fork/</link>

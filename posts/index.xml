@@ -6,8 +6,15 @@
     <description>Recent content in Posts on Ghassan&#39;s Page</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 23 Sep 2024 18:41:54 -0600</lastBuildDate>
+    <lastBuildDate>Wed, 25 Sep 2024 18:41:54 -0600</lastBuildDate>
     <atom:link href="https://www.ghassan.page/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Git Tools Every DevOps Engineer Should Know</title>
+      <link>https://www.ghassan.page/posts/2024_09_25_git_commands_every_devops_should_know/</link>
+      <pubDate>Wed, 25 Sep 2024 18:41:54 -0600</pubDate>
+      <guid>https://www.ghassan.page/posts/2024_09_25_git_commands_every_devops_should_know/</guid>
+      <description>As a DevOps engineer managing an active Git repository with hundreds of commits daily, you&amp;rsquo;ll inevitably face challenges that require a solid understanding of Git and its ecosystem. This post covers common issues that teams encounter while using Git and the tools used to address them. Each tool mentioned deserves a dedicated post, but here’s a brief overview of the essentials.&#xA;The tools we&amp;rsquo;ll cover:&#xA;Maintaining the health of the repository.</description>
+    </item>
     <item>
       <title>Enhancing Team Collaboration with a Git Forking Strategy</title>
       <link>https://www.ghassan.page/posts/2024_09_24_team_collaboration_using_git_fork/</link>
@@ -308,6 +315,20 @@
       <pubDate>Fri, 11 Mar 2016 08:59:00 -0700</pubDate>
       <guid>https://www.ghassan.page/posts/2016_03_11_secure_your_application_with_ssl/</guid>
       <description>What does it mean?In order to secure the web site with SSL, you first need to buy a certificate.&#xA;A certificate is a document that your website will send back to the browsers as an Official identification for your web site, and your business.&#xA;The certificate is issued by certified companies who are called Certificate Authorities`.&#xA;Types of SSL Certificates:First of all you have to decide which certificate type you should chose for your web site.</description>
+    </item>
+    <item>
+      <title>CSS Fonts</title>
+      <link>https://www.ghassan.page/posts/2015_11_26_css_fonts/</link>
+      <pubDate>Thu, 26 Nov 2015 19:51:56 -0700</pubDate>
+      <guid>https://www.ghassan.page/posts/2015_11_26_css_fonts/</guid>
+      <description>The simplist way to use different fonts in your web site is using fonts from the &amp;ldquo;Web-Safe&amp;rdquo; fonts[1] [2].&#xA;But, no impressive design will depend only on these web-safe fonts, and designers add their own preferable fonts to the web site they are building.&#xA;How to add your preferable fonts?Fonts comes as files that you have to upload to the site, and then reference them in the CSS file.&#xA;Usually font vendors provide fonts with different formats in order to be consumable by many different browsers.</description>
+    </item>
+    <item>
+      <title>CSS Reset</title>
+      <link>https://www.ghassan.page/posts/2015_11_18_css_reset/</link>
+      <pubDate>Wed, 18 Nov 2015 19:51:56 -0700</pubDate>
+      <guid>https://www.ghassan.page/posts/2015_11_18_css_reset/</guid>
+      <description>Every web developer had an experience where he test his web site on Chrome, IE and FireFox, to find out that the experience is a little bit different, because browsers have their own default implementation and rendering for the HTML elements. Which means if you don&amp;rsquo;t overwrite the default implementation with your own CSS rules, then the browser will use its own implementation.&#xA;If you are very keen on making the exact same user experience between all browsers even with the smallest details, then the community came up with a technique called &amp;ldquo;CSS Reset&amp;rdquo;.</description>
     </item>
   </channel>
 </rss>
