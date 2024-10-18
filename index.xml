@@ -296,6 +296,13 @@
       <description>Hi, my name is Ghassan Karwchan.&#xA;I am a full stack software developer living in Calgary, Alberta, Canada.&#xA;I am specialized in web developement, and mostly with .NET platform.&#xA;But sometimes I enjoy developing outside of Microsoft world, with Python, Node.js, or Go.&#xA;Lots of JavaScript experience.</description>
     </item>
     <item>
+      <title>Advanced HTTP</title>
+      <link>https://www.ghassan.page/posts/2017_09_26_advanced_https/</link>
+      <pubDate>Tue, 26 Sep 2017 19:51:56 -0700</pubDate>
+      <guid>https://www.ghassan.page/posts/2017_09_26_advanced_https/</guid>
+      <description>Adding an SSL Certificate and enabling HTTPS on your web site is not the end of the road for securing your website, and securing the communication to your website.&#xA;It is just the start, and you need to do more steps related to HTTPS to guarantee your site safety, and your visitor safety.&#xA;In this post I am going to describe:&#xA;TLS and its algorithms in more depth. Insecure protocols, and algorithm.</description>
+    </item>
+    <item>
       <title>Build emails with attachments using SMTP, MIME standard (AWS SES Case)</title>
       <link>https://www.ghassan.page/posts/2016_12_08_send_email_with_attachments_using_aws_ses/</link>
       <pubDate>Thu, 08 Dec 2016 12:41:54 -0600</pubDate>
@@ -322,6 +329,13 @@
       <pubDate>Fri, 11 Mar 2016 08:59:00 -0700</pubDate>
       <guid>https://www.ghassan.page/posts/2016_03_11_secure_your_application_with_ssl/</guid>
       <description>What does it mean?In order to secure the web site with SSL, you first need to buy a certificate.&#xA;A certificate is a document that your website will send back to the browsers as an Official identification for your web site, and your business.&#xA;The certificate is issued by certified companies who are called Certificate Authorities`.&#xA;Types of SSL Certificates:First of all you have to decide which certificate type you should chose for your web site.</description>
+    </item>
+    <item>
+      <title>Ajax, CORS, JSONP and the battle with Same-Origin Policy</title>
+      <link>https://www.ghassan.page/posts/2015_12_16_ajax_cors/</link>
+      <pubDate>Wed, 16 Dec 2015 19:51:56 -0700</pubDate>
+      <guid>https://www.ghassan.page/posts/2015_12_16_ajax_cors/</guid>
+      <description>All modern browsers have a built-in security policy called Same-origin policy, which help mitigate many vulnerabilities and security flaws. This policy means the browser can only pull data from the same site.&#xA;Same site means pages that share the scheme (http, ftp, https&amp;hellip;), and the host name and the port.&#xA;The clash between Same-Origin Policy and AjaxThis policy was useful for a while to protect against XSS, but with the advance of ajax, and requesting data and resources from different domains and sites, then this policy become an obstacle.</description>
     </item>
     <item>
       <title>CSS Fonts</title>

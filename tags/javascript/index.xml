@@ -30,6 +30,13 @@
       <description>&lt;p&gt;Memoization is a technique that is used a lot in Dynamic Programming and in general to speed up algorithms.&lt;br&gt;&#xA;Memoization is the same as caching but in functional programming. The Caching mechanism will store the data into a cache store, and that data can be from anywhere (HTTP page, REST call, &amp;hellip; etc) , where memoization is specific to cache the results of a function, and it create and maintain the store inside the function itself (so the function will be pure function) and send the store as a parameter into the function arguments.&lt;/p&gt;</description>
     </item>
     <item>
+      <title>Ajax, CORS, JSONP and the battle with Same-Origin Policy</title>
+      <link>https://www.ghassan.page/posts/2015_12_16_ajax_cors/</link>
+      <pubDate>Wed, 16 Dec 2015 19:51:56 -0700</pubDate>
+      <guid>https://www.ghassan.page/posts/2015_12_16_ajax_cors/</guid>
+      <description>All modern browsers have a built-in security policy called Same-origin policy, which help mitigate many vulnerabilities and security flaws. This policy means the browser can only pull data from the same site.&#xA;Same site means pages that share the scheme (http, ftp, https&amp;hellip;), and the host name and the port.&#xA;The clash between Same-Origin Policy and AjaxThis policy was useful for a while to protect against XSS, but with the advance of ajax, and requesting data and resources from different domains and sites, then this policy become an obstacle.</description>
+    </item>
+    <item>
       <title>CSS Fonts</title>
       <link>https://www.ghassan.page/posts/2015_11_26_css_fonts/</link>
       <pubDate>Thu, 26 Nov 2015 19:51:56 -0700</pubDate>

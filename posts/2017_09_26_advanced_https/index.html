@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  
+    
+  <title>Advanced HTTP | Ghassan&#39;s Page</title>
+  <meta name="author" content="Ghassan Karwchan">
+  <meta name="description" content="Adding an SSL Certificate and enabling HTTPS on your web site is not the end of the road for securing your website, and securing the communication to your website.
+It is just the start, and you need to do more steps related to HTTPS to guarantee your site safety, and your visitor safety.
+In this post I am going to describe:
+TLS and its algorithms in more depth. Insecure protocols, and algorithm.">
+  <meta name="keywords" content="blog,developer,personal">
+
+  <meta name="twitter:card" content="summary"/><meta name="twitter:title" content="Advanced HTTP"/>
+<meta name="twitter:description" content="Adding an SSL Certificate and enabling HTTPS on your web site is not the end of the road for securing your website, and securing the communication to your website.
+It is just the start, and you need to do more steps related to HTTPS to guarantee your site safety, and your visitor safety.
+In this post I am going to describe:
+TLS and its algorithms in more depth. Insecure protocols, and algorithm."/>
+
+  <meta property="og:title" content="Advanced HTTP" />
+<meta property="og:description" content="Adding an SSL Certificate and enabling HTTPS on your web site is not the end of the road for securing your website, and securing the communication to your website.
+It is just the start, and you need to do more steps related to HTTPS to guarantee your site safety, and your visitor safety.
+In this post I am going to describe:
+TLS and its algorithms in more depth. Insecure protocols, and algorithm." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://www.ghassan.page/posts/2017_09_26_advanced_https/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2017-09-26T19:51:56-07:00" />
+<meta property="article:modified_time" content="2017-09-26T19:51:56-07:00" />
+
+
+
+  <link rel="stylesheet" href="/css/bootstrap.min.css"  crossorigin="anonymous">
+  
+  <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.1/css/all.min.css" rel="stylesheet" type="text/css">
+
+  <link rel="stylesheet" href="/sass/main.css">
+
+  <link rel="stylesheet" href="/zoomjs/zoom.min.css">
+
+  <script src=/js/lazysizes.min.js></script>
+
+  
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="manifest" href="/site.webmanifest">
+  
+
+</head>
+
+
+
+<body ontouchstart="">
+  <nav class="navbar navbar-default navbar-custom navbar-fixed-top invert">
+  <div class="container-fluid">
+    
+    <div class="navbar-header page-scroll">
+      <button type="button" class="navbar-toggle">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="https://www.ghassan.page/">Ghassan&#39;s Page</a>
+    </div>
+    
+    <div id="huxblog_navbar">
+      <div class="navbar-collapse">
+        <ul class="nav navbar-nav navbar-right">
+          
+          <li><a href="/" title="Home">Home</a></li>
+          
+          <li><a href="/archive/" title="Archive">Archive</a></li>
+          
+          <li><a href="/about/" title="About">About</a></li>
+          
+          <li><a href="https://github.com/gkarwchan/hugoblogsource" title="Github">Github</a></li>
+          
+
+          <li class="search-icon">
+            <a href="javascript:void(0)">
+              <i class="fa fa-search"></i>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    
+  </div>
+  
+</nav>
+<script>
+  
+  
+  
+  var $body = document.body;
+  var $toggle = document.querySelector(".navbar-toggle");
+  var $navbar = document.querySelector("#huxblog_navbar");
+  var $collapse = document.querySelector(".navbar-collapse");
+
+  var __HuxNav__ = {
+    close: function () {
+      $navbar.className = " ";
+      
+      setTimeout(function () {
+        
+        if ($navbar.className.indexOf("in") < 0) {
+          $collapse.style.height = "0px";
+        }
+      }, 400);
+    },
+    open: function () {
+      $collapse.style.height = "auto";
+      $navbar.className += " in";
+    },
+  };
+
+  
+  $toggle.addEventListener("click", function (e) {
+    if ($navbar.className.indexOf("in") > 0) {
+      __HuxNav__.close();
+    } else {
+      __HuxNav__.open();
+    }
+  });
+
+  
+
+  document.addEventListener("click", function (e) {
+    if (e.target == $toggle) return;
+    if (e.target.className == "icon-bar") return;
+    __HuxNav__.close();
+  });
+</script>
+  
+<div class="search-page">
+  <div class="search-icon-close-container">
+    <span class="search-icon-close">
+      <i class="fa fa-chevron-down"></i>
+    </span>
+  </div>
+  <div class="search-main container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <form></form>
+        <input type="text" id="search-input" placeholder="$ grep...">
+        </form>
+        <div id="search-results" class="mini-post-list"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+  
+  
+
+
+<style type="text/css">
+  header.intro-header {
+    position: relative;
+    background-image: url('');
+  }
+</style>
+
+<header class="intro-header style-text">
+
+  <div class="header-mask"></div>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div class="post-heading">
+          <div class="tags">
+            
+            <a class="tag" href="/tags/security/" title="security">security</a>
+            
+          </div>
+          <h1>Advanced HTTP</h1>
+          <h2 class="subheading"></h2>
+          <span class="meta">
+            Posted by  Ghassan Karwchan 
+            on Tue, Sep 26, 2017
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+
+  
+
+
+<article>
+  <div class="container">
+    <div class="row">
+
+      
+      <div class="
+              col-lg-8 col-lg-offset-2
+              col-md-10 col-md-offset-1
+              post-container">
+        <p>Adding an SSL Certificate and enabling HTTPS on your web site is not the end of the road for securing your website, and securing the communication to your website.<br>
+It is just the start, and you need to do more steps related to HTTPS to guarantee your site safety, and your visitor safety.<br>
+In this post I am going to describe:</p>
+<ol>
+<li>TLS and its algorithms in more depth.</li>
+<li>Insecure protocols, and algorithm.</li>
+<li>Best algorithm combination.</li>
+<li>Redirect from HTTP using HSTS.</li>
+</ol>
+<h2 id="introduction">Introduction<a class="anchorjs-link" href="#introduction"></a></h2><p>If you want to learn more about HTTPS and its basic concepts, I wrote two posts about:</p>
+<ol>
+<li>
+<p><a href="/https://www.ghassan.page/posts/2016_03_11_secure_your_application_with_ssl/">Creating an SSL Certificate</a>.</p>
+</li>
+<li>
+<p>[SSL/TLS terminologies]({{ &lt;ref 2016_04_18_making_sense_of_ssl_rsa_x509_and_csr &gt; }}) that cover lots of basic knowledge on that subject.<br>
+I recommend reading them to know the basic and how to implement HTTPS on your web site.<br>
+After enabling HTTPS on your web site, you should do the following:</p>
+</li>
+<li>
+<p>disable insecure protocol SSL 3.0.</p>
+</li>
+<li>
+<p>either disable TLS 1.0 or disable all insecure algorithms.</p>
+</li>
+<li>
+<p>disable ciphers that are insecure.</p>
+</li>
+<li>
+<p>redirect from http to https using HSTS.</p>
+</li>
+</ol>
+<h2 id="tls-releases">TLS Releases<a class="anchorjs-link" href="#tls-releases"></a></h2><p>TLS protocol keeps developing and enhancing its security. The newer versions are better and more secure and more difficult to break than the older ones, and older versions become less secure or even insecure.<br>
+Old versions like TLS 1.0 and all SSL are considered insecure nowadays.<br>
+This is a table of TLS releases and its status.</p>
+<table>
+<thead>
+<tr>
+<th>Protocol Version</th>
+<th>Security Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>SSL 2.0</td>
+<td>Insecure</td>
+</tr>
+<tr>
+<td>SSL 3.0</td>
+<td>Insecure</td>
+</tr>
+<tr>
+<td>TLS 1.0</td>
+<td>Depends on configuration</td>
+</tr>
+<tr>
+<td>TLS 1.1</td>
+<td>Depends on algorithm</td>
+</tr>
+<tr>
+<td>TLS 1.2</td>
+<td>Depends on algorithm</td>
+</tr>
+</tbody>
+</table>
+<h3 id="what-tls-version-my-website-support">What TLS version my website support?<a class="anchorjs-link" href="#what-tls-version-my-website-support"></a></h3><p>How do you know what TLS protocols your website is supporting?<br>
+If you are developing on Windows/IIS, then (as my knowledge goes back only to Windows Server 2008), as long as you have Windows Server 2008 Service Pack 1, and higer, then you are having up-to-date TLS 1.2.<br>
+If you are developing NodeJs, or Go language website, on a Linux operating system, then NodeJs, and Go are using OpenSSL software, and if you have if you are updating your server regularly (as you should), then you have TLS 1.2.</p>
+<h3 id="which-protocol-version-is-being-used">Which protocol version is being used?<a class="anchorjs-link" href="#which-protocol-version-is-being-used"></a></h3><p>When a browser visit your website, there is a process called TLS handshake, where the web server and the browser will find what is the highest TLS protocols that both support, and they will use it.</p>
+<h3 id="disable-ssl-protocols-2--3">Disable SSL protocols 2 &amp; 3<a class="anchorjs-link" href="#disable-ssl-protocols-2--3"></a></h3><p>As we mentioned SSL 2.0 and 3.0 are insecure, and we should disable them permenantly.<br>
+SSL insecurity was very serious, that triggered Web servers, and browsers to disable it permenantly.<br>
+Here is a list of when major web browsers disabled SSL 3.0:</p>
+<table>
+<thead>
+<tr>
+<th>Web Browser</th>
+<th>Version</th>
+<th>Release Date</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Chrome</td>
+<td>40</td>
+<td>January 2015</td>
+</tr>
+<tr>
+<td>Firefox</td>
+<td>35</td>
+<td>January 2015</td>
+</tr>
+<tr>
+<td>Explorer</td>
+<td>11 (patches)</td>
+<td>January 2015</td>
+</tr>
+</tbody>
+</table>
+<p>For the web server side, I am covering NodeJS or Go language on Linux server, and IIS solutions on Windows Servers. If your solution is not one of these, refer to <a href="http://disablessl3.com/" target="_blank">this website</a> to find a solution.</p>
+<h4 id="nodejs--go-on-linux">NodeJS &amp; Go on Linux<a class="anchorjs-link" href="#nodejs--go-on-linux"></a></h4><p>if you are doing NodeJs or Go language website, then you are using <code>OpenSSL</code>.<br>
+Even your Linux regular update should take care of it, but double check that you have the proper OpenSSL version:</p>
+<ul>
+<li>OpenSSL 1.0.1 users should upgrade to 1.0.1j.</li>
+<li>OpenSSL 1.0.0 users should upgrade to 1.0.0o.</li>
+<li>OpenSSL 0.9.8 users should upgrade to 0.9.8zc.</li>
+<li>OpenSSL 1.0.2 users are laughing.</li>
+</ul>
+<p>But still you can have this line of code to make sure your web server won’t fallback to SSL if the browser (a melicious user) requested that.</p>
+<h4 id="iis-and-windows-server">IIS and Windows Server<a class="anchorjs-link" href="#iis-and-windows-server"></a></h4><p>Edit the Windows Registry as follows:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="color:#ff79c6">[</span>HKEY_LOCAL_MACHINE<span style="color:#f1fa8c">\S</span>YSTEM<span style="color:#f1fa8c">\C</span>urrentControlSet<span style="color:#f1fa8c">\C</span>ontrol<span style="color:#f1fa8c">\S</span>ecurityProviders<span style="color:#f1fa8c">\S</span>CHANNEL<span style="color:#f1fa8c">\P</span>rotocols<span style="color:#f1fa8c">\S</span>SL 3.0<span style="color:#f1fa8c">\S</span>erver<span style="color:#ff79c6">]</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span><span style="color:#f1fa8c">&#34;Enabled&#34;</span><span style="color:#ff79c6">=</span>dword:00000000
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span><span style="color:#ff79c6">[</span>HKEY_LOCAL_MACHINE<span style="color:#f1fa8c">\S</span>YSTEM<span style="color:#f1fa8c">\C</span>urrentControlSet<span style="color:#f1fa8c">\C</span>ontrol<span style="color:#f1fa8c">\S</span>ecurityProviders<span style="color:#f1fa8c">\S</span>CHANNEL<span style="color:#f1fa8c">\P</span>rotocols<span style="color:#f1fa8c">\S</span>SL 2.0<span style="color:#f1fa8c">\S</span>erver<span style="color:#ff79c6">]</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span><span style="color:#f1fa8c">&#34;Enabled&#34;</span><span style="color:#ff79c6">=</span>dword:00000000
+</span></span></code></pre></div><h3 id="what-about-tls-10">What about TLS 1.0?<a class="anchorjs-link" href="#what-about-tls-10"></a></h3><p>Some consider TLS 1.0 is insecure, and it is better to disable it, but there is one problem with disabling TLS 1.0, which is IE before 11, and I mean IE 8 to 10 have TLS 1.1 disabled by default, and only TLS 1.0 is enabled by default.<br>
+If you don’t care to support IE before 11, then it is better to disable it on your website, and in case you have to support old IE, then you have no choice but to disable all vulnerable ciphers in TLS 1.0.</p>
+<h3 id="how-bad-tls-10">How bad TLS 1.0?<a class="anchorjs-link" href="#how-bad-tls-10"></a></h3><p>I am not a security expert, but according from my modest knowledge, the biggest weakness of TLS 1.0 is that it include a means by which can downgrade to SSL 3.0, and that TLS 1.0 cryptographic initialization being predictable in some implementation, which means if someone with millions of dollars will dedicate to crack your HTTPS to force it to downgrade.</p>
+<h3 id="tls-algorithms">TLS algorithms<a class="anchorjs-link" href="#tls-algorithms"></a></h3><p>TLS protocols define suite of algorithms to encrypt the data, and these algorithms can be categorized in three categories:</p>
+<ol>
+<li>Key exchange or key agreement.</li>
+<li>Ciphers.</li>
+<li>Data integrity.</li>
+</ol>
+<h3 id="key-exchange">Key exchange<a class="anchorjs-link" href="#key-exchange"></a></h3><p>Key exchange are the inialize the handshake to decide on the next phase of cipher that will be used.<br>
+Some of the secure algorithms:</p>
+<ul>
+<li>RSA</li>
+<li>DHE-RSA</li>
+<li>ECDHE-RSA</li>
+<li>ECDHE-ECDSA</li>
+<li>Kerberos.</li>
+</ul>
+<p>And some of insecure algorithms:</p>
+<ul>
+<li>DH-ANON</li>
+<li>ECDH-ANON.</li>
+</ul>
+<h3 id="chiphers">Chiphers<a class="anchorjs-link" href="#chiphers"></a></h3><p>Ciphers are the main encryption algorithms.<br>
+Some of the secure algorithms:</p>
+<ul>
+<li>AES</li>
+<li>Camellia</li>
+<li>SEED.</li>
+</ul>
+<p>And some of insecure algorithms:</p>
+<ul>
+<li>IDES</li>
+<li>3DES</li>
+<li>DES</li>
+<li>RC4.</li>
+</ul>
+<h3 id="data-integrity">Data Integrity<a class="anchorjs-link" href="#data-integrity"></a></h3><p>Secure algorithms: SHA256/384.<br>
+Insecure algorithms: MD5, SHA1.</p>
+<h3 id="disable-insecure-algorithms-in-nodejs">Disable insecure algorithms in NodeJs<a class="anchorjs-link" href="#disable-insecure-algorithms-in-nodejs"></a></h3><p>To disable insecure algorithms in nodejs, we specify the list when we initialize the https server.
+We pass the options <code>ciphers</code> as follows:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="color:#8be9fd;font-style:italic">var</span> server <span style="color:#ff79c6">=</span> https.createServer({
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>    key<span style="color:#ff79c6">:</span> privateKey,
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>    cert<span style="color:#ff79c6">:</span> certificate,
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span>    ca<span style="color:#ff79c6">:</span> certificateAuthority,
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span>    ciphers<span style="color:#ff79c6">:</span> <span style="color:#f1fa8c">&#34;ECDHE-RSA-AES128-SHA256:!RC4:!HIGH!MD5&#34;</span>,
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6</span><span>    app);
+</span></span></code></pre></div><p>The ciphers is a string of sub-strings separated by colon <strong><code>:</code></strong> which enable or disable an algorithm.<br>
+If the sub-string start with <strong><code>!</code></strong>, then it means disable.<br>
+So, in the previous example I am disabling MD5, RC4, and HIGH.
+A common practice is to specify the three types of algorithms (key exchange, cipher and data integrity) in one string seperated by <strong><code>-</code></strong>.</p>
+<p>So, in the previous example: “ECDHE-RSA-AES128-SHA256” means use ECDHE-RSA for key exchange, and AES128 for cipher, and SHA256 for data integrity.</p>
+<p>This is a list that will let you pass <a href="https://www.ssllabs.com/ssltest/" target="_blank">SSL labs</a> test with A+:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span>[ <span style="color:#f1fa8c">&#39;ECDHE-RSA-AES128-GCM-SHA256&#39;</span>,
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>  <span style="color:#f1fa8c">&#39;ECDHE-ECDSA-AES128-GCM-SHA256&#39;</span>,
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>  <span style="color:#f1fa8c">&#39;ECDHE-RSA-AES256-GCM-SHA384&#39;</span>,
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span>  <span style="color:#f1fa8c">&#39;ECDHE-ECDSA-AES256-GCM-SHA384&#39;</span>,
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span>  <span style="color:#f1fa8c">&#39;DHE-RSA-AES128-GCM-SHA256&#39;</span>,
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span>  <span style="color:#f1fa8c">&#39;ECDHE-RSA-AES128-SHA256&#39;</span>,
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span>  <span style="color:#f1fa8c">&#39;DHE-RSA-AES128-SHA256&#39;</span>,
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span>  <span style="color:#f1fa8c">&#39;ECDHE-RSA-AES256-SHA384&#39;</span>,
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span>  <span style="color:#f1fa8c">&#39;DHE-RSA-AES256-SHA384&#39;</span>,
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span>  <span style="color:#f1fa8c">&#39;ECDHE-RSA-AES256-SHA256&#39;</span>,
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span>  <span style="color:#f1fa8c">&#39;DHE-RSA-AES256-SHA256&#39;</span>,
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span>  <span style="color:#f1fa8c">&#39;HIGH&#39;</span>, <span style="color:#f1fa8c">&#39;!aNULL&#39;</span>, <span style="color:#f1fa8c">&#39;!eNULL&#39;</span>,
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span><span>  <span style="color:#f1fa8c">&#39;!EXPORT&#39;</span>, <span style="color:#f1fa8c">&#39;!DES&#39;</span>, <span style="color:#f1fa8c">&#39;!RC4&#39;</span>,
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span><span>  <span style="color:#f1fa8c">&#39;!MD5&#39;</span>, <span style="color:#f1fa8c">&#39;!PSK&#39;</span>, <span style="color:#f1fa8c">&#39;!SRP&#39;</span>, <span style="color:#f1fa8c">&#39;!CAMELLIA&#39;</span>, <span style="color:#f1fa8c">&#39;!3DES&#39;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15</span><span>  ].join(<span style="color:#f1fa8c">&#39;:&#39;</span>)
+</span></span></code></pre></div><h2 id="redirect-from-http-to-https--hsts">Redirect from HTTP to HTTPS &amp; HSTS<a class="anchorjs-link" href="#redirect-from-http-to-https--hsts"></a></h2><p>You need to provide a redirection from your website from http to https, so when the user visit your website without specifying the https, will be directed to https.<br>
+The more traditional way, is to build an HTTP redirect (301), either in your application, or through the web server.<br>
+All web servers: IIS, Apache, NGINX.. have a way to do that indirection.</p>
+<h3 id="hsts">HSTS<a class="anchorjs-link" href="#hsts"></a></h3><p>There is a new way emerging, and it is more secure than the 301-redirect: HSTS (HTTP Strict Transport Security).<br>
+The only complication with it that it requires both Browsers, and web servers to support it.<br>
+As most modern browsers support it, so you can count on it.<br>
+When an agent visit an http address, it respond with a result with a header field named <strong><code>Strict-Transport-Security</code></strong>.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-http" data-lang="http"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>Strict-Transport-Security: max-age=31536000
+</span></span></code></pre></div>
+
+        <hr style="visibility: hidden;" />
+        <ul class="pager">
+          
+          <li class="previous">
+            <a href="/posts/2016_12_08_send_email_with_attachments_using_aws_ses/" data-toggle="tooltip" data-placement="top" title="Build emails with attachments using SMTP, MIME standard (AWS SES Case)">
+              Previous<br>
+              <span>Build emails with attachments using SMTP, MIME standard (AWS SES Case)</span>
+            </a>
+          </li>
+          
+          
+          <li class="next">
+            <a href="/about/" data-toggle="tooltip" data-placement="top" title="About">
+              Next<br>
+              <span>About</span>
+            </a>
+          </li>
+          
+        </ul>
+        <hr style="visibility: hidden;" />
+
+        
+        
+
+
+
+<div class="giscus" id="comments"></div>
+<script src="https://giscus.app/client.js" 
+  data-repo="gkarwchan/gkarwchan.github.io" 
+  data-repo-id="R_kgDOK0QUTA"
+  data-category="General"
+  data-category-id="DIC_kwDOK0QUTM4Ccf8h"
+  data-mapping="pathname"
+  data-strict="0" 
+  data-reactions-enabled="1" 
+  data-emit-metadata="0" 
+  data-input-position="top"
+  data-theme="light_tritanopia"
+  data-lang="en"
+  crossorigin="anonymous"
+  async>
+  </script>
+
+
+
+
+      </div>
+
+      
+      
+      
+      
+      <div class="
+              col-lg-8 col-lg-offset-2
+              col-md-10 col-md-offset-1
+              sidebar-container">
+
+        
+        
+        <section>
+  
+  
+  <hr class="hidden-sm hidden-xs">
+  
+  <h5>FEATURED TAGS</h5>
+  <div class="tags">
+    
+    <a href="/tags/algorithm/">algorithm</a>
+    
+    <a href="/tags/asp.net/">asp.net</a>
+    
+    <a href="/tags/azure/">azure</a>
+    
+    <a href="/tags/container/">container</a>
+    
+    <a href="/tags/css/">css</a>
+    
+    <a href="/tags/dev-tools/">dev tools</a>
+    
+    <a href="/tags/devops/">devops</a>
+    
+    <a href="/tags/javascript/">javascript</a>
+    
+    <a href="/tags/networking/">networking</a>
+    
+    <a href="/tags/performance/">performance</a>
+    
+    <a href="/tags/python/">python</a>
+    
+    <a href="/tags/security/">security</a>
+    
+  </div>
+</section>
+
+        
+        
+
+      </div>
+    </div>
+  </div>
+</article>
+
+
+
+  
+<footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        
+        <ul class="list-inline text-center">
+
+<li>
+  <a href="https://github.com/gkarwchan" target="_blank">
+    <span class="fa-stack fa-lg">
+      <i class="fa fa-circle fa-stack-2x"></i>
+      <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+    </span>
+  </a>
+</li>
+
+<li>
+  <a href="https://linkedin.com/in/ghassankarwchan" target="_blank">
+    <span class="fa-stack fa-lg">
+      <i class="fa fa-circle fa-stack-2x"></i>
+      <i class="fab fa-linkedin fa-stack-1x fa-inverse"></i>
+    </span>
+  </a>
+</li>
+
+
+<li>
+  <a href="/index.xml" target="_blank">
+    <span class="fa-stack fa-lg">
+      <i class="fa fa-circle fa-stack-2x"></i>
+      <i class="fas fa-rss fa-stack-1x fa-inverse"></i>
+    </span>
+  </a>
+</li></ul>
+
+        <p class="copyright text-muted">
+          Copyright &copy; Ghassan&#39;s Page 2024  
+          <br>
+          Powered by <a href="https://gohugo.io">Hugo</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src=/js/jquery.min.js></script>
+<script src=/js/bootstrap.min.js crossorigin="anonymous"></script>
+
+
+
+<script src="/js/hux-blog.min.73a6a8d8df45293e042d15867416f603045bbeb98406731e5022d6c60388cd9d.js"></script>
+
+
+<script src=/js/simple-jekyll-search.min.js></script>
+
+
+<script src="/js/search.min.53bce5da475b4d362500e5ce5dddfa22e20e1b9018777411d2020b4b839c9310.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script src="/zoomjs/zoom.min.js"></script>
+
+</body>
+
+</html>
