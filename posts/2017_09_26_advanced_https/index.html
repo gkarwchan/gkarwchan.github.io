@@ -216,10 +216,10 @@ In this post I am going to describe:</p>
 <h2 id="introduction">Introduction<a class="anchorjs-link" href="#introduction"></a></h2><p>If you want to learn more about HTTPS and its basic concepts, I wrote two posts about:</p>
 <ol>
 <li>
-<p><a href="//posts/2016_03_11_secure_your_application_with_ssl/">Creating an SSL Certificate</a>.</p>
+<p><a href="/posts/2016_03_11_secure_your_application_with_ssl/">Creating an SSL Certificate</a>.</p>
 </li>
 <li>
-<p><a href="//posts/2016_04_18_making_sense_of_ssl_rsa_x509_and_csr/">SSL/TLS terminologies</a> that cover lots of basic knowledge on that subject.<br>
+<p><a href="/posts/2016_04_18_making_sense_of_ssl_rsa_x509_and_csr/">SSL/TLS terminologies</a> that cover lots of basic knowledge on that subject.<br>
 I recommend reading them to know the basic and how to implement HTTPS on your web site.<br>
 After enabling HTTPS on your web site, you should do the following:</p>
 </li>
@@ -302,7 +302,7 @@ Here is a list of when major web browsers disabled SSL 3.0:</p>
 </tr>
 </tbody>
 </table>
-<p>For the web server side, I am covering NodeJS or Go language on Linux server, and IIS solutions on Windows Servers. If your solution is not one of these, refer to <a href="http://disablessl3.com/" target="_blank">this website</a> to find a solution.</p>
+<p>For the web server side, I am covering NodeJS or Go language on Linux server, and IIS solutions on Windows Servers. If your solution is not one of these, refer to <a href="http://disablessl3.com/">this website</a> to find a solution.</p>
 <h4 id="nodejs--go-on-linux">NodeJS &amp; Go on Linux<a class="anchorjs-link" href="#nodejs--go-on-linux"></a></h4><p>if you are doing NodeJs or Go language website, then you are using <code>OpenSSL</code>.<br>
 Even your Linux regular update should take care of it, but double check that you have the proper OpenSSL version:</p>
 <ul>
@@ -370,7 +370,7 @@ If the sub-string start with <strong><code>!</code></strong>, then it means disa
 So, in the previous example I am disabling MD5, RC4, and HIGH.
 A common practice is to specify the three types of algorithms (key exchange, cipher and data integrity) in one string seperated by <strong><code>-</code></strong>.</p>
 <p>So, in the previous example: “ECDHE-RSA-AES128-SHA256” means use ECDHE-RSA for key exchange, and AES128 for cipher, and SHA256 for data integrity.</p>
-<p>This is a list that will let you pass <a href="https://www.ssllabs.com/ssltest/" target="_blank">SSL labs</a> test with A+:</p>
+<p>This is a list that will let you pass <a href="https://www.ssllabs.com/ssltest/">SSL labs</a> test with A+:</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span>[ <span style="color:#f1fa8c">&#39;ECDHE-RSA-AES128-GCM-SHA256&#39;</span>,
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>  <span style="color:#f1fa8c">&#39;ECDHE-ECDSA-AES128-GCM-SHA256&#39;</span>,
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>  <span style="color:#f1fa8c">&#39;ECDHE-RSA-AES256-GCM-SHA384&#39;</span>,

@@ -244,7 +244,7 @@ For example this is the message from a blob creation event:</p>
 <li>Id</li>
 <li>EventTime</li>
 </ul>
-<p>Azure has a schema that represent those event, as well Azure supports a common de-facto industry standard schema called <a href="https://cloudevents.io" target="_blank">Cloud Event</a> so we can use it with other cloud providers.</p>
+<p>Azure has a schema that represent those event, as well Azure supports a common de-facto industry standard schema called <a href="https://cloudevents.io">Cloud Event</a> so we can use it with other cloud providers.</p>
 <h2 id="webhook-event-delivery-with-aspnet">Webhook Event Delivery with Asp.NET:<a class="anchorjs-link" href="#webhook-event-delivery-with-aspnet"></a></h2><p>Event Grid can publish messages using <code>Webhook</code> to integrate with customer&rsquo;s services.<br>
 Event Grid will publish to webhook using HTTP&rsquo;s <strong><code>POST</code></strong> message call, submitting a <code>JSON</code> representation of the event.</p>
 <p>The webhook handler can be any <code>POST</code> handler, and the only requirement is to add handler for a process called <strong><code>Handshake</code></strong>.<br>

@@ -259,7 +259,7 @@ To fix this problem, create a new container scope anywhere you need access to sc
 <h2 id="backgroundservice">BackgroundService<a class="anchorjs-link" href="#backgroundservice"></a></h2><p>To make it easier to create background services using best-practice patterns, ASP.NET Core provides the abstract base class <code>BackgroundService</code>, which implements <code>IHostedService</code> and is designed to be used for long-running tasks. To create a background task you must override a single method of this class, <code>ExecuteAsync</code>. You’re free to use async-await inside this method, and you can keep running the method for the lifetime of your app.</p>
 <h2 id="worker-service">Worker Service<a class="anchorjs-link" href="#worker-service"></a></h2><p>.NET provides a special kind of application called <code>Worker Service</code>, which runs IHostedService in a host that is lighter than Asp.NET host.<br>
 That lighter host is <code>Microsoft.Extensions.Hosting.Host</code>, which is a general host that is hosting the Asp.Net WebApplication itself.<br>
-<a href="/posts/2022_12_19_aspnet_minimal_api/" target="_blank">I wrote before</a> about the relation between Host and WebApplication.<br>
+<a href="https://www.ghassan.page/posts/2022_12_19_aspnet_minimal_api/">I wrote before</a> about the relation between Host and WebApplication.<br>
 The worker service&rsquo;s <code>Host</code> will run background service, but doesn&rsquo;t handle HTTP request. It has the following:</p>
 <ul>
 <li>configuration features.</li>

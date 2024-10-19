@@ -263,7 +263,7 @@ The .NET package for the service bus <strong><code>Azure.Messaging.ServiceBus</c
 <li>Azure Storage</li>
 </ol>
 <h4 id="retry-using-polly">Retry using Polly<a class="anchorjs-link" href="#retry-using-polly"></a></h4><p>If you need to connect to other API services, or you need to connect to Azure SQL but without Entity Framework, then you need to implement the code yourself.<br>
-But there is a .NET package that is already doing that: <a href="https://github.com/App-vNext/Polly" target="_blank"><strong><code>Polly</code></strong></a>.<br>
+But there is a .NET package that is already doing that: <a href="https://github.com/App-vNext/Polly"><strong><code>Polly</code></strong></a>.<br>
 Let us see for example how to connect to SQL using ADO.NET and Polly:</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">async</span> <span style="color:#8be9fd;font-style:italic">static</span> Task&lt;SqlDataReader&gt; ExecuteReaderWithRetryAsync(<span style="color:#ff79c6">this</span> SqlCommand command)
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>{

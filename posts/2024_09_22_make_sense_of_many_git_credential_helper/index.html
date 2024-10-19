@@ -201,23 +201,23 @@ In August 2021, GitHub introduced a new cross-platform tool called the Git Crede
               col-md-10 col-md-offset-1
               post-container">
         <p>Git’s credential helper is a handy tool that saves your credentials, so you won’t need to re-enter your username and password for every <code>git pull</code> or <code>git push</code>. However, depending on the age of the tutorial you&rsquo;re following and the platform you&rsquo;re using, the instructions for setting up credential storage may vary.</p>
-<p>In August 2021, GitHub introduced a new cross-platform tool called the <a href="https://github.blog/open-source/git/git-credential-manager-core-building-a-universal-authentication-experience/" target="_blank">Git Credential Manager Core</a>. Let’s explore how this tool can streamline your team’s workflow.</p>
-<h2 id="before-git-credential-manager-core">Before Git Credential Manager Core:<a class="anchorjs-link" href="#before-git-credential-manager-core"></a></h2><p>Historically, Git offered several options for managing credentials, which you can see <a href="https://git-scm.com/doc/credential-helpers" target="_blank">their list here</a>, and we’ll briefly review:</p>
-<h4 id="git-credential-store">Git Credential Store:<a class="anchorjs-link" href="#git-credential-store"></a></h4><p>Before <code>Git Credential Manager Core</code>, the only cross-platform option was <a href="https://git-scm.com/docs/git-credential-store" target="_blank"><strong><code>Git Credential Store</code></strong></a>, which stores the credentials as plain-text.<br>
+<p>In August 2021, GitHub introduced a new cross-platform tool called the <a href="https://github.blog/open-source/git/git-credential-manager-core-building-a-universal-authentication-experience/">Git Credential Manager Core</a>. Let’s explore how this tool can streamline your team’s workflow.</p>
+<h2 id="before-git-credential-manager-core">Before Git Credential Manager Core:<a class="anchorjs-link" href="#before-git-credential-manager-core"></a></h2><p>Historically, Git offered several options for managing credentials, which you can see <a href="https://git-scm.com/doc/credential-helpers">their list here</a>, and we’ll briefly review:</p>
+<h4 id="git-credential-store">Git Credential Store:<a class="anchorjs-link" href="#git-credential-store"></a></h4><p>Before <code>Git Credential Manager Core</code>, the only cross-platform option was <a href="https://git-scm.com/docs/git-credential-store"><strong><code>Git Credential Store</code></strong></a>, which stores the credentials as plain-text.<br>
 With the rise of two-factor authentication (2FA), this method became obsolete since it could not handle 2FA.</p>
 <h4 id="platform-specific-encryption-store">Platform-Specific Encryption Store:<a class="anchorjs-link" href="#platform-specific-encryption-store"></a></h4><p>Credential storage methods that used encryption were platform-specific, relying on the operating system’s native encryption capabilities. These included:</p>
 <ul>
 <li>git-credential-osxkeychain for Mac: which use Mac&rsquo;s keyChain to store the credentials.</li>
 <li>git-credential-libsecret for Linux: which use Linux secret service.</li>
 <li>git-credential-wincred for Windows: which use Windows Credential Manager.</li>
-<li>deprecated <a href="https://github.com/microsoft/Git-Credential-Manager-for-Windows" target="_blank">Git Credential Manager for Windows</a>: This tool was deprecated after the Core one was created, and it is no longer maintained.</li>
+<li>deprecated <a href="https://github.com/microsoft/Git-Credential-Manager-for-Windows">Git Credential Manager for Windows</a>: This tool was deprecated after the Core one was created, and it is no longer maintained.</li>
 </ul>
 <h4 id="other-special-stores">Other special stores:<a class="anchorjs-link" href="#other-special-stores"></a></h4><p>There are two stores that are less used:</p>
 <ul>
 <li>git-credential-cache (not for windows): which stores the credential in memory for 15 minuntes.</li>
 <li>git-credential-oauth for Linux: which use OAuth authentication.</li>
 </ul>
-<h2 id="the-arrival-of-git-credential-manager-core">The arrival of Git Credential Manager Core:<a class="anchorjs-link" href="#the-arrival-of-git-credential-manager-core"></a></h2><p>As mentioned above, there wasn’t a single tool that could both encrypt credentials and work across all platforms—until <a href="https://github.blog/open-source/git/git-credential-manager-core-building-a-universal-authentication-experience/" target="_blank"><code>Git Credential Manager Core</code></a> was introduced. This tool addresses both of these needs: it&rsquo;s cross-platform and encrypts credentials securely.</p>
+<h2 id="the-arrival-of-git-credential-manager-core">The arrival of Git Credential Manager Core:<a class="anchorjs-link" href="#the-arrival-of-git-credential-manager-core"></a></h2><p>As mentioned above, there wasn’t a single tool that could both encrypt credentials and work across all platforms—until <a href="https://github.blog/open-source/git/git-credential-manager-core-building-a-universal-authentication-experience/"><code>Git Credential Manager Core</code></a> was introduced. This tool addresses both of these needs: it&rsquo;s cross-platform and encrypts credentials securely.</p>
 <p>Although it was created by GitHub, it has since been adopted by the broader Git community and integrated into Git installations for Windows as well.</p>
 <h2 id="how-to-set-it-up">How to set it up.<a class="anchorjs-link" href="#how-to-set-it-up"></a></h2><p>If you installed git on your machinge with version 2.39 and later, then you installed that tool by default.<br>
 To know if you have that tool, check the following:</p>

@@ -224,9 +224,9 @@ In this article we will talk about how Single Sign ON works.</p>
 <li>Auh0 check for SSO cookie.</li>
 <li>Auth0 will find the cookie and update it without the login process.</li>
 </ol>
-<p>The developer can check for the SSO session from their application by using Auth0 SDK: <a href="https://auth0.com/docs/libraries/auth0js" target="_blank">Auth0.js</a>.</p>
+<p>The developer can check for the SSO session from their application by using Auth0 SDK: <a href="https://auth0.com/docs/libraries/auth0js">Auth0.js</a>.</p>
 <p>So, there is a redirect to the login page all the time, but in <code>Authorization Code Flow with PKCE</code> workflow in conjuction with <code>Silent Authentication</code> can renew your session without relogin, and redirect.</p>
-<h2 id="silent-authentication">Silent authentication<a class="anchorjs-link" href="#silent-authentication"></a></h2><p>To get a fresh token with silent authentication, all you have to do is using Auth0 SDK: <a href="https://auth0.com/docs/libraries/auth0js" target="_blank">Auth0.js</a>, you call <code>checkSession</code> or <code>getTokenSilently</code> on older versions, and the library will do the magic for you.<br>
+<h2 id="silent-authentication">Silent authentication<a class="anchorjs-link" href="#silent-authentication"></a></h2><p>To get a fresh token with silent authentication, all you have to do is using Auth0 SDK: <a href="https://auth0.com/docs/libraries/auth0js">Auth0.js</a>, you call <code>checkSession</code> or <code>getTokenSilently</code> on older versions, and the library will do the magic for you.<br>
 So what that magic is, and how that works?</p>
 <h4 id="how-silent-authentication-work">How silent authentication work?<a class="anchorjs-link" href="#how-silent-authentication-work"></a></h4><p>Auth0 used to use cookies to store the Auth0 session to be able to get back the authentication.<br>
 But modern browsers prevent third-party cookies, therefore Auth0 shifted to use : <strong><code>Refresh Token Rotation</code></strong>, which provides a secure way for using refresh tokens in SPA while providing end-users with seamless access to resources without the disruption in UX.</p>
@@ -252,7 +252,7 @@ The failure has <code>ERROR_CODE</code> that describe the failure.</p>
 <li>consent_required: The user was logged in at Auth0, but needs to give consent to authorize the application.</li>
 <li>interaction_required: The user was logged in at Auth0 and has authorized the application, but needs to be redirected elsewhere before authentication can be completed; for example, when using a redirect rule.</li>
 </ol>
-<p>The library silently will refersh the token for you using <a href="https://auth0.com/docs/secure/tokens/refresh-tokens/refresh-token-rotation" target="_blank">Refresh Token Rotation</a></p>
+<p>The library silently will refersh the token for you using <a href="https://auth0.com/docs/secure/tokens/refresh-tokens/refresh-token-rotation">Refresh Token Rotation</a></p>
 
 
         <hr style="visibility: hidden;" />

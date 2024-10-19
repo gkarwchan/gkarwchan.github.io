@@ -219,7 +219,7 @@ After CORS was introduced, JSONP became less and less used.</p>
 <h2 id="how-cors-work">How CORS work?<a class="anchorjs-link" href="#how-cors-work"></a></h2><p>CORS requires coordination from the browsers and from the servers, and work has to be done on both side</p>
 <h3 id="client-side">Client side:<a class="anchorjs-link" href="#client-side"></a></h3><p>What should be done on the client side?<br>
 You don&rsquo;t have to do anything except using a browser that support CORS, and almost all browsers now support CORS.<br>
-<a href="https://caniuse.com/#search=cors" target="_blank">This is a list of browsers supporting CORS</a>.<br>
+<a href="https://caniuse.com/#search=cors">This is a list of browsers supporting CORS</a>.<br>
 The browser that support CORS changed its implementation to XMLHttpRequest to use XMLHttpRequest2 (or some people call it XMLHttpRequest Level 2).<br>
 That means that your Javascript code you still create XMLHttpRequest, but the browser itself is implementing the specifications of XMLHttpRequest2.<br>
 Because XMLHttpRequest is implementing the new specs in the new browsers, so developers don&rsquo;t have to do anything on the client side.</p>
@@ -228,7 +228,7 @@ On the server side, and specifically on the remote server that you are requestin
 You have to add a new setting to the header and set it to true
 the Header attribute is called Access-Control-Allow-Credentials, and it is used like this</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-http" data-lang="http"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>Access-Control-Allow-Credentials: true
-</span></span></code></pre></div><p><a href="http://enable-cors.org/server.html" target="_blank">This is a web site</a> that shows you how to do it in different server side languages.</p>
+</span></span></code></pre></div><p><a href="http://enable-cors.org/server.html">This is a web site</a> that shows you how to do it in different server side languages.</p>
 <h3 id="one-more-thing">One more thing:<a class="anchorjs-link" href="#one-more-thing"></a></h3><p>One issue that is related to the client side.<br>
 If you are using jQuery&rsquo;s ajax before 1.5, then you might have to do some changes.<br>
 The reason you have to do some changes on jQuery side, because jQuery was adding its own security check to prevent XSS vulnerability. But with jQuery version 1.5 , jQuery introduced a new setting when calling ajax that is called crossDomain in version 1.5, which was introduced to handle JSONP settings.</p>

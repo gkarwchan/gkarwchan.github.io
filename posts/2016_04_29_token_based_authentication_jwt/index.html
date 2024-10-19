@@ -228,7 +228,7 @@ Cookies had many issues (that we are going to cover in next section), which push
 <br />
 <h4 id="token-based-authentication">Token Based Authentication: <a class="anchorjs-link" href="#token-based-authentication"></a></h4><p>Using the same approach of generating an access token when authenticating, but instead of sending the token in a cookie, it use an HTTP header attribute (usually Authorization HTTP header) to send the token.<br>
 This solution was developed mainly by OAuth authentication, but it doesn&rsquo;t have to be used only in OAuth, and it can be used by local security based solution.<br>
-The solution became mature with development of more robust standard like <a href="https://jwt.io/" target="_blank">Jason Web Token (JWT)</a>, which became the de facto standard for modern web security.<br>
+The solution became mature with development of more robust standard like <a href="https://jwt.io/">Jason Web Token (JWT)</a>, which became the de facto standard for modern web security.<br>
 There are two common approach to send this access token:</p>
 <ol>
 <li><strong>Bearer token</strong>: Bearer token is an non encrypted token. If you want to use it, you should use it over HTTPS.
@@ -253,7 +253,7 @@ In that case you have to force your users to use cookies in order for them to us
 <li>They won&rsquo;t work across-domains:<br>
 So you cannot use the same credentials with many different domains, where in token based, you can authenticate in one place, and use the same token across many different domains.</li>
 <li>Cookies and mobiles are not friends together.</li>
-<li>Cookies are volunerables for <a href="https://en.wikipedia.org/wiki/Cross-site_request_forgery" target="_blank">CSRF attacks</a>.</li>
+<li>Cookies are volunerables for <a href="https://en.wikipedia.org/wiki/Cross-site_request_forgery">CSRF attacks</a>.</li>
 </ol>
 <br /> 
 <h2 id="json-web-tokens-jwt">JSON Web Tokens (JWT)<a class="anchorjs-link" href="#json-web-tokens-jwt"></a></h2><p>JWT became lately the most common used authentication solution for APIs and mobile solutions.<br>

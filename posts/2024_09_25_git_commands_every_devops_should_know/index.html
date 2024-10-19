@@ -257,7 +257,7 @@ the following commands do that:</p>
 </tr>
 </tbody>
 </table>
-<p>To manage large files effectively, Git offers an extension called <a href="https://git-lfs.com/" target="_blank">Git Large File Storage</a>. Instead of storing large files in the Git database, LFS stores them externally and tracks them using lightweight pointers in Git.</p>
+<p>To manage large files effectively, Git offers an extension called <a href="https://git-lfs.com/">Git Large File Storage</a>. Instead of storing large files in the Git database, LFS stores them externally and tracks them using lightweight pointers in Git.</p>
 <h3 id="how-to-use-git-lfs">How to use Git LFS?<a class="anchorjs-link" href="#how-to-use-git-lfs"></a></h3><p>After downloading and installing Git LFS, enable it by running:</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>git lfs install
 </span></span></code></pre></div><p>You can then configure specific file types to be tracked by LFS, for example:</p>
@@ -292,9 +292,9 @@ the following commands do that:</p>
 </span></span></code></pre></div><p>This process alter the repo&rsquo;s history, which means will change the SHAs for that commit you are altering, and will change all its child and dependent commits.<br>
 So before doing that, make sure to close any pull requestes in your repository.</p>
 <p>BFG and other tools that will change the history will work on bare repository</p>
-<h3 id="using-git-filter-repo">Using git filter-repo<a class="anchorjs-link" href="#using-git-filter-repo"></a></h3><p><a href="https://github.com/newren/git-filter-repo" target="_blank">git-filter-repo</a> is a more comprehensive tool for rewriting Git history, purging unwanted data, and trimming repository size. It’s more versatile than BFG and handles many complex use cases.</p>
-<h1 id="dealing-with-large-repositories">Dealing with Large Repositories:<a class="anchorjs-link" href="#dealing-with-large-repositories"></a></h1><p>If your team works with a large repository, you may need a solution to improve performance without sacrificing history. The best tool for this is <a href="https://github.com/microsoft/scalar/" target="_blank">Scalar</a>, developed by Microsoft after managing their massive Windows repository.</p>
-<p>Scalar is built on top of <a href="https://github.com/microsoft/VFSForGit" target="_blank"><code>VFS For Git</code></a>, or <strong><code>Virtual File System For Git</code></strong>, and still uses this technology under the hood.</p>
+<h3 id="using-git-filter-repo">Using git filter-repo<a class="anchorjs-link" href="#using-git-filter-repo"></a></h3><p><a href="https://github.com/newren/git-filter-repo">git-filter-repo</a> is a more comprehensive tool for rewriting Git history, purging unwanted data, and trimming repository size. It’s more versatile than BFG and handles many complex use cases.</p>
+<h1 id="dealing-with-large-repositories">Dealing with Large Repositories:<a class="anchorjs-link" href="#dealing-with-large-repositories"></a></h1><p>If your team works with a large repository, you may need a solution to improve performance without sacrificing history. The best tool for this is <a href="https://github.com/microsoft/scalar/">Scalar</a>, developed by Microsoft after managing their massive Windows repository.</p>
+<p>Scalar is built on top of <a href="https://github.com/microsoft/VFSForGit"><code>VFS For Git</code></a>, or <strong><code>Virtual File System For Git</code></strong>, and still uses this technology under the hood.</p>
 <p>Scalar works seamlessly with large repositories by using a combination of Git LFS and efficient file tracking systems.<br>
 Scalar includes a background service that runs on developer machines to monitor and sync repositories, keeping them healthy and up-to-date. It requires a Git service provider that supports the GVFS protocol, such as GitHub or Azure Repos.</p>
 <h1 id="automatically-generating-a-changelog-for-releases">Automatically Generating a Changelog for Releases<a class="anchorjs-link" href="#automatically-generating-a-changelog-for-releases"></a></h1><p>During development, your team adds new features, fixes bugs, and commits meaningful messages. When it&rsquo;s time for a release, you&rsquo;ll want a summary of these changes. A common approach is to create a <code>CHANGELOG</code> file.</p>
@@ -305,8 +305,8 @@ Scalar includes a background service that runs on developer machines to monitor 
 <li>gitchangelog</li>
 <li>github-changelog-generator</li>
 </ul>
-<h3 id="gitchangelog">gitchangelog<a class="anchorjs-link" href="#gitchangelog"></a></h3><p><a href="https://pypi.org/project/gitchangelog/" target="_blank">gitchangelog</a> is a python tool that parses commit messages using a defined pattern to create a well-organized report from Git logs.</p>
-<h3 id="github-changelog-generator">github-changelog-generator<a class="anchorjs-link" href="#github-changelog-generator"></a></h3><p><a href="https://github.com/github-changelog-generator/github-changelog-generator" target="_blank">github-changelog-generator</a> is a Ruby tool that generates changelogs by parsing pull request messages on GitHub.</p>
+<h3 id="gitchangelog">gitchangelog<a class="anchorjs-link" href="#gitchangelog"></a></h3><p><a href="https://pypi.org/project/gitchangelog/">gitchangelog</a> is a python tool that parses commit messages using a defined pattern to create a well-organized report from Git logs.</p>
+<h3 id="github-changelog-generator">github-changelog-generator<a class="anchorjs-link" href="#github-changelog-generator"></a></h3><p><a href="https://github.com/github-changelog-generator/github-changelog-generator">github-changelog-generator</a> is a Ruby tool that generates changelogs by parsing pull request messages on GitHub.</p>
 
 
         <hr style="visibility: hidden;" />

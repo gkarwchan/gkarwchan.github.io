@@ -227,7 +227,7 @@ Let us jump into the code right away:</p>
 </span></span></code></pre></div><h4 id="how-aspnet-serialize-the-result-back">How ASP.NET serialize the result back?<a class="anchorjs-link" href="#how-aspnet-serialize-the-result-back"></a></h4><p>Json serializer <code>System.Text.Json</code> has a built-in support to serialize stream, so you don&rsquo;t have to do anything because it is the default serializer for Asp.NET core.<br>
 But what in case your project is using <code>NewtonsoftJson</code>?<br>
 Then you need to override the json serializer for that controller, or that method.<br>
-You do that by using the <a href="https://learn.microsoft.com/en-us/aspnet/mvc/overview/older-versions-1/controllers-and-routing/understanding-action-filters-cs" target="_blank">Action Filter</a> in Asp.NET.<br>
+You do that by using the <a href="https://learn.microsoft.com/en-us/aspnet/mvc/overview/older-versions-1/controllers-and-routing/understanding-action-filters-cs">Action Filter</a> in Asp.NET.<br>
 Here is a code that will do that:</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="color:#ff79c6">using</span> System.Text.Json;
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span><span style="color:#ff79c6">using</span> Microsoft.AspNetCore.Mvc;
@@ -269,7 +269,7 @@ Here is a code that will do that:</p>
   </a>
   
 </figure>.</p>
-<h2 id="how-to-handle-stream-in-javascript">How to handle stream in JavaScript<a class="anchorjs-link" href="#how-to-handle-stream-in-javascript"></a></h2><p>JavaScript has the ability to read stream using the <a href="https://developer.mozilla.org/en-US/docs/Web/API/Streams_API/Using_readable_streams" target="_blank">Stream API</a>.</p>
+<h2 id="how-to-handle-stream-in-javascript">How to handle stream in JavaScript<a class="anchorjs-link" href="#how-to-handle-stream-in-javascript"></a></h2><p>JavaScript has the ability to read stream using the <a href="https://developer.mozilla.org/en-US/docs/Web/API/Streams_API/Using_readable_streams">Stream API</a>.</p>
 <p>A simple code will look like:</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span>  <span style="color:#8be9fd;font-style:italic">var</span> postStream <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">async</span> (path, body) =&gt; {
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>    

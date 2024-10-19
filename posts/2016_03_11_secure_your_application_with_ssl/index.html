@@ -216,7 +216,7 @@ A certificate is a document that your website will send back to the browsers as 
 <li><strong>Extended Validation (EV) SSL Certificate</strong>: The <code>CA</code> conducts a thorough check on the organization with some standard guidelines defined by the industry. This is usually required for organizations that require to have payments managed by on their own website and their own software.</li>
 </ul>
 <h2 id="how-to-buy-a-certificate">How to buy a certificate:<a class="anchorjs-link" href="#how-to-buy-a-certificate"></a></h2><p>After you decided what type of certificate you want to buy, you search for a suitable <code>CA</code> authority to buy your certification from. The <code>CA</code> authority requires from your side a request called <strong><code>Certificate Signing Request</code></strong> (CSR).<br>
-There are many ways to generate the CSR. I will describe the process using <a href="#ZgotmplZ">OpenSSL tools</a>.</p>
+There are many ways to generate the CSR. I will describe the process using <a href="%22https://www.openssl.org/%22">OpenSSL tools</a>.</p>
 <p>First you need to generate a private key:</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>openssl genrsa -out domain.com.key <span style="color:#bd93f9">2048</span>
 </span></span></code></pre></div><p>And then create the CSR:</p>
