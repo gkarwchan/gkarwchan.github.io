@@ -6,8 +6,15 @@
     <description>Recent content in Posts on Ghassan&#39;s Page</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 25 Sep 2024 18:41:54 -0600</lastBuildDate>
+    <lastBuildDate>Sat, 26 Oct 2024 18:41:54 -0600</lastBuildDate>
     <atom:link href="https://www.ghassan.page/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Upload files using streaming in Asp.NET</title>
+      <link>https://www.ghassan.page/posts/2024_10_26_upload_files_using_stream_with_aspnet/</link>
+      <pubDate>Sat, 26 Oct 2024 18:41:54 -0600</pubDate>
+      <guid>https://www.ghassan.page/posts/2024_10_26_upload_files_using_stream_with_aspnet/</guid>
+      <description>Asp.NET provide a binding technique to upload files IFormFile. But that technique will consume memory as it buffers the content of the file in the memory or in the database.&#xA;To skip buffering and use streaming, we kind of have to code it in own our way.&#xA;Http Protocol and uploading file:The simplest way to upload file is to create an Html file input element, and include it in html form with submit button as follows:</description>
+    </item>
     <item>
       <title>Git Tools Every DevOps Engineer Should Know</title>
       <link>https://www.ghassan.page/posts/2024_09_25_git_commands_every_devops_should_know/</link>
