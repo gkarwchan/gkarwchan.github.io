@@ -8,26 +8,23 @@
 
   
     
-  <title>Secure your web site with SSL/TLS | Ghassan&#39;s Page</title>
+  <title>Self certified certificates | Ghassan&#39;s Page</title>
   <meta name="author" content="Ghassan Karwchan">
-  <meta name="description" content="SSL (Secure Sockets Layer) and its successor, TLS (Transport Layer Security), are cryptographic protocols that secure internet communication by encrypting data between a client (like a browser) and a server.
-How SSL/TLS works?SSL/TLS secure communication by:
-Encryption: Ensures that data transmitted between the client and server cannot be read by third parties. Authentication: Verifies the identity of the server (and sometimes the client), establishing trust. Data Integrity: Guarantees that data has not been altered during transmission.">
+  <meta name="description" content="A self-signed certificate is a type of SSL/TLS certificate that is generated and signed by the individual or organization that owns it, rather than being issued by a trusted Certificate Authority (CA). It is used inside development process to use https on your development server or on developer machine.
+Generate self-signed :1# Generate private key 2openssl genrsa -des3 -out myCA.key 2048 3# Generate root certificate 4openssl req -x509 -new -nodes -key myCA.">
   <meta name="keywords" content="blog,developer,personal">
 
-  <meta name="twitter:card" content="summary"/><meta name="twitter:title" content="Secure your web site with SSL/TLS"/>
-<meta name="twitter:description" content="SSL (Secure Sockets Layer) and its successor, TLS (Transport Layer Security), are cryptographic protocols that secure internet communication by encrypting data between a client (like a browser) and a server.
-How SSL/TLS works?SSL/TLS secure communication by:
-Encryption: Ensures that data transmitted between the client and server cannot be read by third parties. Authentication: Verifies the identity of the server (and sometimes the client), establishing trust. Data Integrity: Guarantees that data has not been altered during transmission."/>
+  <meta name="twitter:card" content="summary"/><meta name="twitter:title" content="Self certified certificates"/>
+<meta name="twitter:description" content="A self-signed certificate is a type of SSL/TLS certificate that is generated and signed by the individual or organization that owns it, rather than being issued by a trusted Certificate Authority (CA). It is used inside development process to use https on your development server or on developer machine.
+Generate self-signed :1# Generate private key 2openssl genrsa -des3 -out myCA.key 2048 3# Generate root certificate 4openssl req -x509 -new -nodes -key myCA."/>
 
-  <meta property="og:title" content="Secure your web site with SSL/TLS" />
-<meta property="og:description" content="SSL (Secure Sockets Layer) and its successor, TLS (Transport Layer Security), are cryptographic protocols that secure internet communication by encrypting data between a client (like a browser) and a server.
-How SSL/TLS works?SSL/TLS secure communication by:
-Encryption: Ensures that data transmitted between the client and server cannot be read by third parties. Authentication: Verifies the identity of the server (and sometimes the client), establishing trust. Data Integrity: Guarantees that data has not been altered during transmission." />
+  <meta property="og:title" content="Self certified certificates" />
+<meta property="og:description" content="A self-signed certificate is a type of SSL/TLS certificate that is generated and signed by the individual or organization that owns it, rather than being issued by a trusted Certificate Authority (CA). It is used inside development process to use https on your development server or on developer machine.
+Generate self-signed :1# Generate private key 2openssl genrsa -des3 -out myCA.key 2048 3# Generate root certificate 4openssl req -x509 -new -nodes -key myCA." />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://www.ghassan.page/posts/2016_03_11_secure_your_application_with_ssl/" /><meta property="article:section" content="posts" />
-<meta property="article:published_time" content="2016-03-11T08:59:00-07:00" />
-<meta property="article:modified_time" content="2016-03-11T08:59:00-07:00" />
+<meta property="og:url" content="https://www.ghassan.page/posts/2024_11_05_self-signed-certificates/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2024-11-05T18:41:54-06:00" />
+<meta property="article:modified_time" content="2024-11-05T18:41:54-06:00" />
 
 
 
@@ -178,11 +175,11 @@ Encryption: Ensures that data transmitted between the client and server cannot b
             <a class="tag" href="/tags/security/" title="security">security</a>
             
           </div>
-          <h1>Secure your web site with SSL/TLS</h1>
+          <h1>Self certified certificates</h1>
           <h2 class="subheading"></h2>
           <span class="meta">
             Posted by  Ghassan Karwchan 
-            on Fri, Mar 11, 2016
+            on Tue, Nov 5, 2024
           </span>
         </div>
       </div>
@@ -203,48 +200,55 @@ Encryption: Ensures that data transmitted between the client and server cannot b
               col-lg-8 col-lg-offset-2
               col-md-10 col-md-offset-1
               post-container">
-        <p>SSL (Secure Sockets Layer) and its successor, TLS (Transport Layer Security), are cryptographic protocols that secure internet communication by encrypting data between a client (like a browser) and a server.</p>
-<h1 id="how-ssltls-works">How SSL/TLS works?<a class="anchorjs-link" href="#how-ssltls-works"></a></h1><p>SSL/TLS secure communication by:</p>
+        <p>A self-signed certificate is a type of SSL/TLS certificate that is generated and signed by the individual or organization that owns it, rather than being issued by a trusted Certificate Authority (CA). It is used inside development process to use https on your development server or on developer machine.</p>
+<h1 id="generate-self-signed-">Generate self-signed :<a class="anchorjs-link" href="#generate-self-signed-"></a></h1><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="color:#6272a4"># Generate private key</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>openssl genrsa -des3 -out myCA.key <span style="color:#bd93f9">2048</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span><span style="color:#6272a4"># Generate root certificate</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span>openssl req -x509 -new -nodes -key myCA.key -out myCA.pem
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6</span><span><span style="color:#6272a4"># Or you can do it in one statement</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7</span><span>openssl req -nodes -new -x509 -keyout server.key -out server.cert
+</span></span></code></pre></div><p>Where in the provious code:</p>
 <ul>
-<li>Encryption: Ensures that data transmitted between the client and server cannot be read by third parties.</li>
-<li>Authentication: Verifies the identity of the server (and sometimes the client), establishing trust.</li>
-<li>Data Integrity: Guarantees that data has not been altered during transmission.</li>
+<li>-nodes: Generates a private key without password protection</li>
+<li>-new: Generates a new certificate.</li>
+<li>-x509: Use X.509 format</li>
+<li>-keyout: Specifies the file name for the key.</li>
+<li>-out: Specifies the file name for the certificate</li>
 </ul>
-<h1 id="how-to-do-it">How to do it?<a class="anchorjs-link" href="#how-to-do-it"></a></h1><p>In order to secure the web site with SSL, you first need to buy a certificate.<br>
-A certificate is a document that your website will send back to the browsers as an <strong><code>Official identification</code></strong> for your web site, and your business.</p>
-<p>The certificate is issued by certified companies who are called <strong><code>Certificate Authorities</code></strong>`.</p>
-<h2 id="types-of-ssl-certificates">Types of SSL Certificates:<a class="anchorjs-link" href="#types-of-ssl-certificates"></a></h2><p>First of all you have to decide which certificate type you should chose for your web site. There are three types:</p>
+<p>The previous comand will prompt for information like country, state, &hellip;<br>
+Make sure when it comes to specify the <strong><code>DNS name</code></strong> to use <strong><code>localhost</code></strong>.</p>
+<p>Alternativley you can specify all the details as follows:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>openssl req -nodes -new -x509 -keyout server.key -out server.cert <span style="color:#f1fa8c">\
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span><span style="color:#f1fa8c"></span>-subj /CN<span style="color:#ff79c6">=</span>localhost/O<span style="color:#ff79c6">=</span>home/C<span style="color:#ff79c6">=</span>US/emailAddress<span style="color:#ff79c6">=</span>me@mail.internal <span style="color:#f1fa8c">\
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span><span style="color:#f1fa8c"></span>-addext <span style="color:#f1fa8c">&#34;subjectAltName = DNS:localhost,DNS:web.internal,email:me@mail.internal&#34;</span> <span style="color:#f1fa8c">\
+</span></span></span></code></pre></div><p>After running the previous command, it will generate two files:</p>
 <ul>
-<li><strong>Domain Validation (DV) SSL Certificate</strong>: This is the simplest type of certificate, where the <code>CA</code> checks only that the applicant owns or has the right to use the domain name.</li>
-<li><strong>Organization Validation (OV) SSL Certificates</strong>: The <code>CA</code> checks more about the company owns the domain name, and display more information about the company owns the domain.</li>
-<li><strong>Extended Validation (EV) SSL Certificate</strong>: The <code>CA</code> conducts a thorough check on the organization with some standard guidelines defined by the industry. This is usually required for organizations that require to have payments managed by on their own website and their own software.</li>
+<li>server.key: the private key.</li>
+<li>server.cert: the certificate.</li>
 </ul>
-<h2 id="how-to-buy-a-certificate">How to buy a certificate:<a class="anchorjs-link" href="#how-to-buy-a-certificate"></a></h2><p>After you decided what type of certificate you want to buy, you search for a suitable <code>CA</code> authority to buy your certification from. The <code>CA</code> authority requires from your side a request called <strong><code>Certificate Signing Request</code></strong> (CSR).<br>
-There are many ways to generate the CSR. I will describe the process using <a href="%22https://www.openssl.org/%22">OpenSSL tools</a>.</p>
-<p>First you need to generate a private key:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>openssl genrsa -out domain.com.key <span style="color:#bd93f9">2048</span>
-</span></span></code></pre></div><p>And then create the CSR:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>openssl req -new -sha256 -key domain.com.key -out domain.com.csr
-</span></span></code></pre></div><p>This will generate the CSR file, which you will send to the CA authority, which in return will send you the certificates.</p>
+<p>Now you can use it in NodeJs as follows:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>npx http-server -S -C server.cert -K server.key -p <span style="color:#bd93f9">8080</span>
+</span></span></code></pre></div><p>using Powershell</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-powershell" data-lang="powershell"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="color:#8be9fd;font-style:italic">New-SelfSignedCertificate</span> -NotBefore (<span style="color:#8be9fd;font-style:italic">Get-Date</span>) -NotAfter (<span style="color:#8be9fd;font-style:italic">Get-Date</span>).AddYears(<span style="color:#bd93f9">5</span>) `
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>-Subject <span style="color:#f1fa8c">&#34;CN=localhost&#34;</span> -KeyAlgorithm <span style="color:#f1fa8c">&#34;RSA&#34;</span> -KeyLength <span style="color:#bd93f9">2048</span> `
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>-HashAlgorithm <span style="color:#f1fa8c">&#34;SHA256&#34;</span> -CertStoreLocation <span style="color:#f1fa8c">&#34;Cert:\CurrentUser\My&#34;</span> `
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span>-FriendlyName <span style="color:#f1fa8c">&#34;HTTPS Development Certificate&#34;</span> `
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span>-TextExtension @(<span style="color:#f1fa8c">&#34;2.5.29.19={text}&#34;</span>,<span style="color:#f1fa8c">&#34;2.5.29.17={text}DNS=localhost&#34;</span>)
+</span></span></code></pre></div><p>mkcert</p>
+<p><a href="https://github.com/FiloSottile/mkcert">https://github.com/FiloSottile/mkcert</a></p>
 
 
         <hr style="visibility: hidden;" />
         <ul class="pager">
           
           <li class="previous">
-            <a href="/posts/2015_12_16_ajax_cors/" data-toggle="tooltip" data-placement="top" title="Ajax, CORS, JSONP and the battle with Same-Origin Policy">
+            <a href="/posts/2024_10_26_upload_files_using_stream_with_aspnet/" data-toggle="tooltip" data-placement="top" title="Upload files using streaming in Asp.NET">
               Previous<br>
-              <span>Ajax, CORS, JSONP and the battle with Same-Origin Policy</span>
+              <span>Upload files using streaming in Asp.NET</span>
             </a>
           </li>
           
-          
-          <li class="next">
-            <a href="/posts/2016_04_18_making_sense_of_ssl_rsa_x509_and_csr/" data-toggle="tooltip" data-placement="top" title="Making sense of SSL, RSA, X509 and CSR">
-              Next<br>
-              <span>Making sense of SSL, RSA, X509 and CSR</span>
-            </a>
-          </li>
           
         </ul>
         <hr style="visibility: hidden;" />

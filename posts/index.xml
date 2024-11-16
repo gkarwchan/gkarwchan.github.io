@@ -6,8 +6,15 @@
     <description>Recent content in Posts on Ghassan&#39;s Page</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 26 Oct 2024 18:41:54 -0600</lastBuildDate>
+    <lastBuildDate>Tue, 05 Nov 2024 18:41:54 -0600</lastBuildDate>
     <atom:link href="https://www.ghassan.page/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Self certified certificates</title>
+      <link>https://www.ghassan.page/posts/2024_11_05_self-signed-certificates/</link>
+      <pubDate>Tue, 05 Nov 2024 18:41:54 -0600</pubDate>
+      <guid>https://www.ghassan.page/posts/2024_11_05_self-signed-certificates/</guid>
+      <description>A self-signed certificate is a type of SSL/TLS certificate that is generated and signed by the individual or organization that owns it, rather than being issued by a trusted Certificate Authority (CA). It is used inside development process to use https on your development server or on developer machine.&#xA;Generate self-signed :1# Generate private key 2openssl genrsa -des3 -out myCA.key 2048 3# Generate root certificate 4openssl req -x509 -new -nodes -key myCA.</description>
+    </item>
     <item>
       <title>Upload files using streaming in Asp.NET</title>
       <link>https://www.ghassan.page/posts/2024_10_26_upload_files_using_stream_with_aspnet/</link>
@@ -324,11 +331,11 @@
       <description>This is the second part of learning about SSL/TLS.&#xA;The first part was how to protect the site with SSL.&#xA;This part is about explaining more the terms, technologies, protocols, standards used in SSL.&#xA;What is SSL/TLS:SSL is the standard protocol to secure the communication between a web server and a browser, by creating an encrypted link between the two.&#xA;SSL last version was 3.0, and TLS succeeds SSL, and become the new standard.</description>
     </item>
     <item>
-      <title>Secure your web site with SSL</title>
+      <title>Secure your web site with SSL/TLS</title>
       <link>https://www.ghassan.page/posts/2016_03_11_secure_your_application_with_ssl/</link>
       <pubDate>Fri, 11 Mar 2016 08:59:00 -0700</pubDate>
       <guid>https://www.ghassan.page/posts/2016_03_11_secure_your_application_with_ssl/</guid>
-      <description>What does it mean?In order to secure the web site with SSL, you first need to buy a certificate.&#xA;A certificate is a document that your website will send back to the browsers as an Official identification for your web site, and your business.&#xA;The certificate is issued by certified companies who are called Certificate Authorities`.&#xA;Types of SSL Certificates:First of all you have to decide which certificate type you should chose for your web site.</description>
+      <description>SSL (Secure Sockets Layer) and its successor, TLS (Transport Layer Security), are cryptographic protocols that secure internet communication by encrypting data between a client (like a browser) and a server.&#xA;How SSL/TLS works?SSL/TLS secure communication by:&#xA;Encryption: Ensures that data transmitted between the client and server cannot be read by third parties. Authentication: Verifies the identity of the server (and sometimes the client), establishing trust. Data Integrity: Guarantees that data has not been altered during transmission.</description>
     </item>
     <item>
       <title>Ajax, CORS, JSONP and the battle with Same-Origin Policy</title>
