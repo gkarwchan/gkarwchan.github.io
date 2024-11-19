@@ -13,7 +13,7 @@
       <link>https://www.ghassan.page/posts/2024_11_05_self-signed-certificates/</link>
       <pubDate>Tue, 05 Nov 2024 18:41:54 -0600</pubDate>
       <guid>https://www.ghassan.page/posts/2024_11_05_self-signed-certificates/</guid>
-      <description>A self-signed certificate is a type of SSL/TLS certificate that is generated and signed by the individual or organization that owns it, rather than being issued by a trusted Certificate Authority (CA). It is used inside development process to use https on your development server or on developer machine.&#xA;Generate self-signed :1# Generate private key 2openssl genrsa -des3 -out myCA.key 2048 3# Generate root certificate 4openssl req -x509 -new -nodes -key myCA.</description>
+      <description>A self-signed certificate is a type of SSL/TLS certificate that is generated and signed by the individual or organization that owns it, rather than being issued by a trusted Certificate Authority (CA). It is used inside development process to use https on your development server or on developer machine.&#xA;Generate self-signed :We will see how to generate self-signed certificate using:&#xA;.NET Core tool Powershell OpenSSL tool called mkcert With .NET Core tool:The .</description>
     </item>
     <item>
       <title>Upload files using streaming in Asp.NET</title>

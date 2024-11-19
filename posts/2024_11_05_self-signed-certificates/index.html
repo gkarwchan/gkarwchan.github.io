@@ -11,16 +11,19 @@
   <title>Self certified certificates | Ghassan&#39;s Page</title>
   <meta name="author" content="Ghassan Karwchan">
   <meta name="description" content="A self-signed certificate is a type of SSL/TLS certificate that is generated and signed by the individual or organization that owns it, rather than being issued by a trusted Certificate Authority (CA). It is used inside development process to use https on your development server or on developer machine.
-Generate self-signed :1# Generate private key 2openssl genrsa -des3 -out myCA.key 2048 3# Generate root certificate 4openssl req -x509 -new -nodes -key myCA.">
+Generate self-signed :We will see how to generate self-signed certificate using:
+.NET Core tool Powershell OpenSSL tool called mkcert With .NET Core tool:The .">
   <meta name="keywords" content="blog,developer,personal">
 
   <meta name="twitter:card" content="summary"/><meta name="twitter:title" content="Self certified certificates"/>
 <meta name="twitter:description" content="A self-signed certificate is a type of SSL/TLS certificate that is generated and signed by the individual or organization that owns it, rather than being issued by a trusted Certificate Authority (CA). It is used inside development process to use https on your development server or on developer machine.
-Generate self-signed :1# Generate private key 2openssl genrsa -des3 -out myCA.key 2048 3# Generate root certificate 4openssl req -x509 -new -nodes -key myCA."/>
+Generate self-signed :We will see how to generate self-signed certificate using:
+.NET Core tool Powershell OpenSSL tool called mkcert With .NET Core tool:The ."/>
 
   <meta property="og:title" content="Self certified certificates" />
 <meta property="og:description" content="A self-signed certificate is a type of SSL/TLS certificate that is generated and signed by the individual or organization that owns it, rather than being issued by a trusted Certificate Authority (CA). It is used inside development process to use https on your development server or on developer machine.
-Generate self-signed :1# Generate private key 2openssl genrsa -des3 -out myCA.key 2048 3# Generate root certificate 4openssl req -x509 -new -nodes -key myCA." />
+Generate self-signed :We will see how to generate self-signed certificate using:
+.NET Core tool Powershell OpenSSL tool called mkcert With .NET Core tool:The ." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://www.ghassan.page/posts/2024_11_05_self-signed-certificates/" /><meta property="article:section" content="posts" />
 <meta property="article:published_time" content="2024-11-05T18:41:54-06:00" />
@@ -201,7 +204,28 @@ Generate self-signed :1# Generate private key 2openssl genrsa -des3 -out myCA.ke
               col-md-10 col-md-offset-1
               post-container">
         <p>A self-signed certificate is a type of SSL/TLS certificate that is generated and signed by the individual or organization that owns it, rather than being issued by a trusted Certificate Authority (CA). It is used inside development process to use https on your development server or on developer machine.</p>
-<h1 id="generate-self-signed-">Generate self-signed :<a class="anchorjs-link" href="#generate-self-signed-"></a></h1><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="color:#6272a4"># Generate private key</span>
+<h1 id="generate-self-signed-">Generate self-signed :<a class="anchorjs-link" href="#generate-self-signed-"></a></h1><p>We will see how to generate self-signed certificate using:</p>
+<ol>
+<li>.NET Core tool</li>
+<li>Powershell</li>
+<li>OpenSSL</li>
+<li>tool called mkcert</li>
+</ol>
+<h2 id="with-net-core-tool">With .NET Core tool:<a class="anchorjs-link" href="#with-net-core-tool"></a></h2><p>The .NET Core SDK includes an HTTPS development certificate, and it works with <code>Kestrel</code> and <code>IIS express</code>.<br>
+You need first to trust it:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="color:#6272a4">## this will trust the development certificate coming with .NET</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>dotnet dev-certs https --trust
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span><span style="color:#6272a4">## the next command check if you already have a valid certificate and if trusted</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span>dotnet dev-certs https --check --trust
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7</span><span><span style="color:#6272a4">## the following will check if there is a certificate, </span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">8</span><span><span style="color:#6272a4">## if not, it will create one</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">9</span><span>dotnet dev-certs https
+</span></span></code></pre></div><h4 id="where-the-certificate-is-stored">Where the certificate is stored?<a class="anchorjs-link" href="#where-the-certificate-is-stored"></a></h4><p>In Windows the certificate is stored in the current user certificate store (the Windows registry). You can access it by running Microsoft Management Console (MMC) and add <code>certificate</code> snap-in.</p>
+<h2 id="with-powershell">With PowerShell<a class="anchorjs-link" href="#with-powershell"></a></h2><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-powershell" data-lang="powershell"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="color:#6272a4"># the following command create a certificate for localhost address, and store it in local machine store, under personal store</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span><span style="color:#8be9fd;font-style:italic">$cert</span> = <span style="color:#8be9fd;font-style:italic">New-SelfSignedCertificate</span> -DnsName @(<span style="color:#f1fa8c">&#34;localhost&#34;</span>, <span style="color:#f1fa8c">&#34;localhost&#34;</span>) -CertStoreLocation <span style="color:#f1fa8c">&#34;cert:\LocalMachine\My&#34;</span>;
+</span></span></code></pre></div><h2 id="with-openssl">With OpenSSL<a class="anchorjs-link" href="#with-openssl"></a></h2><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="color:#6272a4"># Generate private key</span>
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>openssl genrsa -des3 -out myCA.key <span style="color:#bd93f9">2048</span>
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span><span style="color:#6272a4"># Generate root certificate</span>
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span>openssl req -x509 -new -nodes -key myCA.key -out myCA.pem
@@ -229,14 +253,8 @@ Make sure when it comes to specify the <strong><code>DNS name</code></strong> to
 </ul>
 <p>Now you can use it in NodeJs as follows:</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>npx http-server -S -C server.cert -K server.key -p <span style="color:#bd93f9">8080</span>
-</span></span></code></pre></div><p>using Powershell</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-powershell" data-lang="powershell"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="color:#8be9fd;font-style:italic">New-SelfSignedCertificate</span> -NotBefore (<span style="color:#8be9fd;font-style:italic">Get-Date</span>) -NotAfter (<span style="color:#8be9fd;font-style:italic">Get-Date</span>).AddYears(<span style="color:#bd93f9">5</span>) `
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>-Subject <span style="color:#f1fa8c">&#34;CN=localhost&#34;</span> -KeyAlgorithm <span style="color:#f1fa8c">&#34;RSA&#34;</span> -KeyLength <span style="color:#bd93f9">2048</span> `
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>-HashAlgorithm <span style="color:#f1fa8c">&#34;SHA256&#34;</span> -CertStoreLocation <span style="color:#f1fa8c">&#34;Cert:\CurrentUser\My&#34;</span> `
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span>-FriendlyName <span style="color:#f1fa8c">&#34;HTTPS Development Certificate&#34;</span> `
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span>-TextExtension @(<span style="color:#f1fa8c">&#34;2.5.29.19={text}&#34;</span>,<span style="color:#f1fa8c">&#34;2.5.29.17={text}DNS=localhost&#34;</span>)
-</span></span></code></pre></div><p>mkcert</p>
-<p><a href="https://github.com/FiloSottile/mkcert">https://github.com/FiloSottile/mkcert</a></p>
+</span></span></code></pre></div><h2 id="using-tool-called-mkcert">using tool called mkcert<a class="anchorjs-link" href="#using-tool-called-mkcert"></a></h2><p>mkcert: <a href="https://github.com/FiloSottile/mkcert">https://github.com/FiloSottile/mkcert</a>
+This tool does more to create certificate. It create a local <strong><code>CA</code></strong> (Certificate Authority), and generate a certificate and store it in the system store, and one more benefit, it store the certificate in firefox store, where the above commands will not work with firefox and you have to create a policy file to trust the generated certificate.</p>
 
 
         <hr style="visibility: hidden;" />
