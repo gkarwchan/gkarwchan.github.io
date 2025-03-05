@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  
+    
+  <title>Managing Credentials for Azure Artifacts | Ghassan&#39;s Page</title>
+  <meta name="author" content="Ghassan Karwchan">
+  <meta name="description" content="When storing your private artifacts (NuGet, NPM, Docker, etc.) in Azure Artifacts, authentication is required to access them. Various tools such as dotnet, nuget, msbuild, and Visual Studio may need to retrieve these artifacts during the build process. To simplify credential management across these tools, Microsoft provides the Azure Artifacts Credential Provider.
+Introduction &amp; Underlying TechnologySince accessing NuGet packages requires authentication, Microsoft provides the Credential Provider, a NuGet plugin that automates credential acquisition for NuGet clients, including:">
+  <meta name="keywords" content="blog,developer,personal">
+
+  <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Managing Credentials for Azure Artifacts"/>
+<meta name="twitter:description" content="When storing your private artifacts (NuGet, NPM, Docker, etc.) in Azure Artifacts, authentication is required to access them. Various tools such as dotnet, nuget, msbuild, and Visual Studio may need to retrieve these artifacts during the build process. To simplify credential management across these tools, Microsoft provides the Azure Artifacts Credential Provider.
+Introduction &amp; Underlying TechnologySince accessing NuGet packages requires authentication, Microsoft provides the Credential Provider, a NuGet plugin that automates credential acquisition for NuGet clients, including:"/>
+
+  <meta property="og:title" content="Managing Credentials for Azure Artifacts" />
+<meta property="og:description" content="When storing your private artifacts (NuGet, NPM, Docker, etc.) in Azure Artifacts, authentication is required to access them. Various tools such as dotnet, nuget, msbuild, and Visual Studio may need to retrieve these artifacts during the build process. To simplify credential management across these tools, Microsoft provides the Azure Artifacts Credential Provider.
+Introduction &amp; Underlying TechnologySince accessing NuGet packages requires authentication, Microsoft provides the Credential Provider, a NuGet plugin that automates credential acquisition for NuGet clients, including:" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://www.ghassan.page/posts/2024_12_27_azure_artifact_cerdential_provider/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2024-12-17T18:41:54-06:00" />
+<meta property="article:modified_time" content="2024-12-17T18:41:54-06:00" />
+
+
+
+  <link rel="stylesheet" href="/css/bootstrap.min.css"  crossorigin="anonymous">
+  
+  <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.1/css/all.min.css" rel="stylesheet" type="text/css">
+
+  <link rel="stylesheet" href="/sass/main.css">
+
+  <link rel="stylesheet" href="/zoomjs/zoom.min.css">
+
+  <script src=/js/lazysizes.min.js></script>
+
+  
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="manifest" href="/site.webmanifest">
+  
+
+</head>
+
+
+
+<body ontouchstart="">
+  
+  
+  <nav class="navbar navbar-default navbar-custom navbar-fixed-top invert">
+  <div class="container-fluid">
+    
+    <div class="navbar-header page-scroll">
+      <button type="button" class="navbar-toggle">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="https://www.ghassan.page/">Ghassan&#39;s Page</a>
+    </div>
+    
+    <div id="huxblog_navbar">
+      <div class="navbar-collapse">
+        <ul class="nav navbar-nav navbar-right">
+          
+          <li><a href="/" title="Home">Home</a></li>
+          
+          <li><a href="/archive/" title="Archive">Archive</a></li>
+          
+          <li><a href="/about/" title="About">About</a></li>
+          
+          <li><a href="https://github.com/gkarwchan/hugoblogsource" title="Github">Github</a></li>
+          
+
+          <li class="search-icon">
+            <a href="javascript:void(0)">
+              <i class="fa fa-search"></i>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    
+  </div>
+  
+</nav>
+<script>
+  
+  
+  
+  var $body = document.body;
+  var $toggle = document.querySelector(".navbar-toggle");
+  var $navbar = document.querySelector("#huxblog_navbar");
+  var $collapse = document.querySelector(".navbar-collapse");
+
+  var __HuxNav__ = {
+    close: function () {
+      $navbar.className = " ";
+      
+      setTimeout(function () {
+        
+        if ($navbar.className.indexOf("in") < 0) {
+          $collapse.style.height = "0px";
+        }
+      }, 400);
+    },
+    open: function () {
+      $collapse.style.height = "auto";
+      $navbar.className += " in";
+    },
+  };
+
+  
+  $toggle.addEventListener("click", function (e) {
+    if ($navbar.className.indexOf("in") > 0) {
+      __HuxNav__.close();
+    } else {
+      __HuxNav__.open();
+    }
+  });
+
+  
+
+  document.addEventListener("click", function (e) {
+    if (e.target == $toggle) return;
+    if (e.target.className == "icon-bar") return;
+    __HuxNav__.close();
+  });
+</script>
+  
+<div class="search-page">
+  <div class="search-icon-close-container">
+    <span class="search-icon-close">
+      <i class="fa fa-chevron-down"></i>
+    </span>
+  </div>
+  <div class="search-main container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <form></form>
+        <input type="text" id="search-input" placeholder="$ grep...">
+        </form>
+        <div id="search-results" class="mini-post-list"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+  
+  
+
+
+<style type="text/css">
+  header.intro-header {
+    position: relative;
+    background-image: url('');
+  }
+</style>
+
+<header class="intro-header style-text">
+
+  <div class="header-mask"></div>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div class="post-heading">
+          <div class="tags">
+            
+            <a class="tag" href="/tags/azure/" title="azure">azure</a>
+            
+            <a class="tag" href="/tags/devops/" title="devops">devops</a>
+            
+            <a class="tag" href="/tags/dev-tools/" title="dev tools">dev tools</a>
+            
+          </div>
+          <h1>Managing Credentials for Azure Artifacts</h1>
+          <h2 class="subheading"></h2>
+          <span class="meta">
+            Posted by  Ghassan Karwchan 
+            on Tue, Dec 17, 2024
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+
+  
+
+
+<article>
+  <div class="container">
+    <div class="row">
+
+      
+      <div class="
+              col-lg-8 col-lg-offset-2
+              col-md-10 col-md-offset-1
+              post-container">
+        <p>When storing your private artifacts (NuGet, NPM, Docker, etc.) in Azure Artifacts, authentication is required to access them. Various tools such as dotnet, nuget, msbuild, and Visual Studio may need to retrieve these artifacts during the build process. To simplify credential management across these tools, Microsoft provides the Azure Artifacts Credential Provider.</p>
+<h1 id="introduction--underlying-technology">Introduction &amp; Underlying Technology<a class="anchorjs-link" href="#introduction--underlying-technology"></a></h1><p>Since accessing NuGet packages requires authentication, Microsoft provides the Credential Provider, a NuGet plugin that automates credential acquisition for NuGet clients, including:</p>
+<ul>
+<li>dotnet.exe</li>
+<li>nuget.exe</li>
+<li>msbuild.exe</li>
+<li>Visual Studio</li>
+</ul>
+<p>The Credential Provider is a cross-platform authentication tool built on <a href="https://learn.microsoft.com/en-us/nuget/reference/extensibility/nuget-cross-platform-plugins">the NuGet Cross-Platform Plugins model</a>. It follows the same principles and architecture as the NuGet Authentication Plugin.</p>
+<p>Let&rsquo;s talk about those underlying technologies:</p>
+<h3 id="nuget-cross-platform-plugins-model">NuGet Cross Platform Plugins Model:<a class="anchorjs-link" href="#nuget-cross-platform-plugins-model"></a></h3><p>In NuGet 4.0+ a new plugin extensibility model was designed.<br>
+The plugins are self-contained executables (runnable in .NET core world), that the NuGet client launch in a separate process.</p>
+<blockquote>
+<p>&ldquo;Why .NET Core?<br>
+NET Core enables cross-platform execution, making it an ideal runtime environment for the plugins.&rdquo;</p>
+</blockquote>
+<h3 id="nuget-cross-platform-authentication-plugin">NuGet Cross Platform Authentication Plugin.<a class="anchorjs-link" href="#nuget-cross-platform-authentication-plugin"></a></h3><p>NuGet feeds and providers could be secured storage that require authentication like:</p>
+<ul>
+<li>Pakage Mangement of VS Team Service.</li>
+<li>MyGet</li>
+<li>and others</li>
+</ul>
+<p>This plugin was built to provide authentication service for all the NuGet clients for all types of feeds.</p>
+<h3 id="azure-artifact-cernential-provider">Azure Artifact Cernential provider<a class="anchorjs-link" href="#azure-artifact-cernential-provider"></a></h3><p>The Azure Artifacts Credential Provider builds upon the same principles and technologies as the NuGet Authentication Plugin. By understanding these underlying technologies, we can better grasp how the Azure Artifacts Credential Provider operates.</p>
+<h1 id="how-nuget-plugin-works">How NuGet Plugin works<a class="anchorjs-link" href="#how-nuget-plugin-works"></a></h1><p>The high level workflow can be described as:</p>
+<ol>
+<li>NuGet discovers available plugins.</li>
+<li>when applicable, NuGet iterate over the plugins in priority order.</li>
+<li>NuGet will use the first plugin that can service the request.</li>
+<li>The plugin will be shutdown when it is done.</li>
+</ol>
+<h3 id="plugin-installation-and-discovery">Plugin Installation and discovery<a class="anchorjs-link" href="#plugin-installation-and-discovery"></a></h3><p>A convention based plugin discovery was added in Plguin version 2.0, and it is based on file system, but for backward compatibility with older version the location was determined by environment variable, so that behavior is still supported.<br>
+We are going to list the plugin discovery rules by its priority.</p>
+<ol>
+<li>Environment variables:
+If <code>NUGET_PLUGIN_PATHS</code> is set then it takes precedence. The variable should contains the full path of the executables exe in .NET framework, or the .dll in .NET Core.</li>
+<li>User-Location: the user location is:
+<ol>
+<li>for .NET Core: <code>%UserProfile%/.nuget/plugins/netcore</code></li>
+<li>for .NET Framework: <code>%UserProfile%/.nuget/plugins/netfx</code></li>
+</ol>
+</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span>.nuget
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>    plugins
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>        netfx
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span>            CredentialProvider.Microsoft
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span>                CredentialProvider.Microsoft.exe
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span>                nuget.protocol.dll
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span>        netcore
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span>            CredentialProvider.Microsoft
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span>                CredentialProvider.Microsoft.dll
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span>                nuget.protocol.dll
+</span></span></code></pre></div><ol start="3">
+<li>Predetermined location in VS and dotnet:
+<ol>
+<li>for dotnet it is: \Program files\dotnet\sdk\{sdk-version}\Plugins</li>
+<li>for VS: Program Files\Microsoft Visual Studio\version\Common7\IDE\CommonExtensions\NuGet\Plugins.</li>
+</ol>
+</li>
+</ol>
+<h1 id="usage">Usage<a class="anchorjs-link" href="#usage"></a></h1><p>The usage depends on what tool is using it.<br>
+With all tools, on its first usage the plugin will aquire a token and then store it in a cache location, and all subsequent calls will check if that store has a valid token and use it.<br>
+The credential cache location is:</p>
+<ul>
+<li>windows: <code>$env:UserProfile\AppData\Local\MicrosoftCredentialProvider</code></li>
+<li>Linux\MAC: <code>$HOME/.local/share/MicrosoftCredentialProvider/</code></li>
+</ul>
+<h3 id="dotnet">dotnet<a class="anchorjs-link" href="#dotnet"></a></h3><p>dotnet is not an interactive tool by default, so on the first time usage you need to inforce the interactive using the following command:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>dotnet restore --interactive
+</span></span></code></pre></div><p>Once you aquired a token, you can run authenticated commands without <code>--interactive</code> for the lifespan of the token which is saved in a cache location.</p>
+<h3 id="nuget">nuget<a class="anchorjs-link" href="#nuget"></a></h3><p>the nuget client is an interactive client, so it will prompt for authenticateion and it stores them in the same above location. In Windows, if you are already Azure DevOps, Windows Integrated Authentication maybe used to get automatically authenticated.</p>
+<h3 id="msbuild">msbuild<a class="anchorjs-link" href="#msbuild"></a></h3><p>As dotnet, the first time you use msbuild, you should use the flag <code>/p:nugetInteractive=true</code> switch.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>msbuild /t:restore /p:nugetInteractive<span style="color:#ff79c6">=</span><span style="color:#8be9fd;font-style:italic">true</span>
+</span></span></code></pre></div><h3 id="anattended-build-agents">Anattended build agents<a class="anchorjs-link" href="#anattended-build-agents"></a></h3><p>for CI build agents like Azure Pipelines and Teamcity you can do the following:</p>
+<ol>
+<li>for Azure DevOps pipeline there is a special task <a href="https://learn.microsoft.com/en-us/azure/devops/pipelines/tasks/reference/nuget-authenticate-v1?view=azure-pipelines&amp;viewFallbackFrom=azure-devops">NuGet Authenticate</a></li>
+<li>for others you can supply the token directly using <code>VSS_NUGET_EXTERNAL_FEED_ENDPOINTS</code> environment variable.</li>
+</ol>
+<h3 id="docker-containers">Docker containers<a class="anchorjs-link" href="#docker-containers"></a></h3><p><a href="https://github.com/dotnet/dotnet-docker/blob/main/documentation/scenarios/nuget-credentials.md#using-the-azure-artifact-credential-provider">Managing NuGet Credentials in Docker scenarios</a></p>
+<h3 id="environment-variables">Environment variables:<a class="anchorjs-link" href="#environment-variables"></a></h3><p>The credential provider accepts a set of environment variables, not all of them should be used in production.</p>
+<ul>
+<li>NUGET_CREDENTIALPROVIDER_SESSIONTOKENCACHE_ENABLED: controls whether or not the session token is saved to disk. if false the Provider will prompt for auth every time.</li>
+<li>VSS_NUGET_EXTERNAL_FEED_ENDPOINTS: JSON that contains an array of username, access tokens and endpoints to authenticate endpoints in nuget.config.</li>
+<li>ARTIFACTS_CREDENTIALPROVIDER_FEED_ENDPOINTS: Json that contain config data to authenticate Azure Artifacts feed</li>
+</ul>
+<h1 id="help-and-troubleshoot">Help and troubleshoot<a class="anchorjs-link" href="#help-and-troubleshoot"></a></h1><p>The windows plugin, delivered in <code>netfx</code> folder, ships with a stand-alone executable that will acquire credentials. This program will place the credentials in the same location that the .dll would if it were called by dotnet or nuget.<br>
+The command will provide help context on how to use the tool.</p>
+
+
+        <hr style="visibility: hidden;" />
+        <ul class="pager">
+          
+          <li class="previous">
+            <a href="/posts/2024_11_14_running_apm_for_aspnet/" data-toggle="tooltip" data-placement="top" title="Enable APM for ASP.NET Core application">
+              Previous<br>
+              <span>Enable APM for ASP.NET Core application</span>
+            </a>
+          </li>
+          
+          
+        </ul>
+        <hr style="visibility: hidden;" />
+
+        
+        
+
+
+
+<div class="giscus" id="comments"></div>
+<script src="https://giscus.app/client.js" 
+  data-repo="gkarwchan/gkarwchan.github.io" 
+  data-repo-id="R_kgDOK0QUTA"
+  data-category="General"
+  data-category-id="DIC_kwDOK0QUTM4Ccf8h"
+  data-mapping="pathname"
+  data-strict="0" 
+  data-reactions-enabled="1" 
+  data-emit-metadata="0" 
+  data-input-position="top"
+  data-theme="light_tritanopia"
+  data-lang="en"
+  crossorigin="anonymous"
+  async>
+  </script>
+
+
+
+
+      </div>
+
+      
+      
+      
+      <div class="
+              col-lg-2 col-lg-offset-0
+              visible-lg-block
+              sidebar-container
+              catalog-container">
+        <div class="side-catalog">
+          <hr class="hidden-sm hidden-xs">
+          <h5>
+            <a class="catalog-toggle" href="#">CATALOG</a>
+          </h5>
+          <ul class="catalog-body"></ul>
+        </div>
+      </div>
+      
+      
+      <div class="
+              col-lg-8 col-lg-offset-2
+              col-md-10 col-md-offset-1
+              sidebar-container">
+
+        
+        
+        <section>
+  
+  
+  <hr class="hidden-sm hidden-xs">
+  
+  <h5>FEATURED TAGS</h5>
+  <div class="tags">
+    
+    <a href="/tags/algorithm/">algorithm</a>
+    
+    <a href="/tags/asp.net/">asp.net</a>
+    
+    <a href="/tags/azure/">azure</a>
+    
+    <a href="/tags/container/">container</a>
+    
+    <a href="/tags/css/">css</a>
+    
+    <a href="/tags/dev-tools/">dev tools</a>
+    
+    <a href="/tags/devops/">devops</a>
+    
+    <a href="/tags/javascript/">javascript</a>
+    
+    <a href="/tags/networking/">networking</a>
+    
+    <a href="/tags/performance/">performance</a>
+    
+    <a href="/tags/python/">python</a>
+    
+    <a href="/tags/security/">security</a>
+    
+  </div>
+</section>
+
+        
+        
+
+      </div>
+    </div>
+  </div>
+</article>
+
+
+
+  
+<footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        
+        <ul class="list-inline text-center">
+
+<li>
+  <a href="https://github.com/gkarwchan" target="_blank">
+    <span class="fa-stack fa-lg">
+      <i class="fa fa-circle fa-stack-2x"></i>
+      <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+    </span>
+  </a>
+</li>
+
+<li>
+  <a href="https://linkedin.com/in/ghassankarwchan" target="_blank">
+    <span class="fa-stack fa-lg">
+      <i class="fa fa-circle fa-stack-2x"></i>
+      <i class="fab fa-linkedin fa-stack-1x fa-inverse"></i>
+    </span>
+  </a>
+</li>
+
+
+<li>
+  <a href="/index.xml" target="_blank">
+    <span class="fa-stack fa-lg">
+      <i class="fa fa-circle fa-stack-2x"></i>
+      <i class="fas fa-rss fa-stack-1x fa-inverse"></i>
+    </span>
+  </a>
+</li></ul>
+
+        <p class="copyright text-muted">
+          Copyright &copy; Ghassan&#39;s Page 2025  
+          <br>
+          Powered by <a href="https://gohugo.io">Hugo</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src=/js/jquery.min.js></script>
+<script src=/js/bootstrap.min.js crossorigin="anonymous"></script>
+
+
+
+<script src="/js/hux-blog.min.73a6a8d8df45293e042d15867416f603045bbeb98406731e5022d6c60388cd9d.js"></script>
+
+
+<script src=/js/simple-jekyll-search.min.js></script>
+
+
+<script src="/js/search.min.53bce5da475b4d362500e5ce5dddfa22e20e1b9018777411d2020b4b839c9310.js"></script>
+
+
+
+
+
+
+<script type="text/javascript">
+  function generateCatalog(selector) {
+    _containerSelector = 'div.post-container'
+    
+    var P = $(_containerSelector), a, n, t, l, i, c;
+    a = P.find('h1,h2,h3,h4');
+    
+    $(selector).html('')
+    
+    a.each(function () {
+      n = $(this).prop('tagName').toLowerCase();
+      i = "#" + $(this).prop('id');
+      t = $(this).text();
+      c = $('<a href="' + i + '" rel="nofollow">' + t + '</a>');
+      l = $('<li class="' + n + '_nav"></li>').append(c);
+      $(selector).append(l);
+    });
+    return true;
+  }
+
+  generateCatalog(".catalog-body");
+
+  
+  $(".catalog-toggle").click((function (e) {
+    e.preventDefault();
+    $('.side-catalog').toggleClass("fold")
+  }))
+</script>
+
+
+<script type="text/javascript" src='/js/jquery.nav.min.ade6bde8f9fcc6a4b40852cb892e9f5912340ab8fe1305149d917fdd16fffd8d.js'></script>
+<script>
+   $(document).ready( function () {
+    $('.catalog-body').onePageNav({
+      currentClass: "active",
+      changeHash: !1,
+      easing: "swing",
+      filter: "",
+      scrollSpeed: 700,
+      scrollOffset: 0,
+      scrollThreshold: .2,
+      begin: null,
+      end: null,
+      scrollChange: null,
+      padding: 80
+    });
+  });
+</script>
+
+
+
+
+
+
+
+
+
+<script src="/zoomjs/zoom.min.js"></script>
+
+</body>
+
+</html>

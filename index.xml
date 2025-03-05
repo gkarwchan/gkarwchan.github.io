@@ -6,189 +6,260 @@
     <description>Recent content on Ghassan&#39;s Page</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 05 Nov 2024 18:41:54 -0600</lastBuildDate>
+    <lastBuildDate>Tue, 17 Dec 2024 18:41:54 -0600</lastBuildDate>
     <atom:link href="https://www.ghassan.page/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Managing Credentials for Azure Artifacts</title>
+      <link>https://www.ghassan.page/posts/2024_12_27_azure_artifact_cerdential_provider/</link>
+      <pubDate>Tue, 17 Dec 2024 18:41:54 -0600</pubDate>
+      <guid>https://www.ghassan.page/posts/2024_12_27_azure_artifact_cerdential_provider/</guid>
+      <description>When storing your private artifacts (NuGet, NPM, Docker, etc.) in Azure Artifacts, authentication is required to access them. Various tools such as dotnet, nuget, msbuild, and Visual Studio may need to retrieve these artifacts during the build process. To simplify credential management across these tools, Microsoft provides the Azure Artifacts Credential Provider.
+Introduction &amp;amp; Underlying TechnologySince accessing NuGet packages requires authentication, Microsoft provides the Credential Provider, a NuGet plugin that automates credential acquisition for NuGet clients, including:</description>
+    </item>
+    <item>
+      <title>Enable APM for ASP.NET Core application</title>
+      <link>https://www.ghassan.page/posts/2024_11_14_running_apm_for_aspnet/</link>
+      <pubDate>Thu, 14 Nov 2024 18:41:54 -0600</pubDate>
+      <guid>https://www.ghassan.page/posts/2024_11_14_running_apm_for_aspnet/</guid>
+      <description>There are many tools that provide APM (Application Performance Monitoring) for Asp.NET.
+The all share the same steps and configuration on how to hook their service into Asp.NET running instance.
+How profiling work in .NETProfiling a managed CLR application is different than profiling normal non-managed appication, because CLR is different. CLR prvides these services:
+Application domains Garbage collection Managed exception handling Just In Time (JIT) compilation .NET provides its own profiling API, and all profiling tools are using this API, and they all work in the same way.</description>
+    </item>
     <item>
       <title>Self certified certificates</title>
       <link>https://www.ghassan.page/posts/2024_11_05_self-signed-certificates/</link>
       <pubDate>Tue, 05 Nov 2024 18:41:54 -0600</pubDate>
       <guid>https://www.ghassan.page/posts/2024_11_05_self-signed-certificates/</guid>
-      <description>A self-signed certificate is a type of SSL/TLS certificate that is generated and signed by the individual or organization that owns it, rather than being issued by a trusted Certificate Authority (CA). It is used inside development process to use https on your development server or on developer machine.&#xA;Generate self-signed :We will see how to generate self-signed certificate using:&#xA;.NET Core tool Powershell OpenSSL tool called mkcert With .NET Core tool:The .</description>
+      <description>A self-signed certificate is a type of SSL/TLS certificate that is generated and signed by the individual or organization that owns it, rather than being issued by a trusted Certificate Authority (CA).
+For development process we need a certificate for the host localhost, and be stored in the certificate store which vary depends on the operating system.
+To generate and use the certificate do the following two steps:
+generate the certificate store the certificate in the certificate store which vary depends on the operating system.</description>
     </item>
     <item>
       <title>Upload files using streaming in Asp.NET</title>
       <link>https://www.ghassan.page/posts/2024_10_26_upload_files_using_stream_with_aspnet/</link>
       <pubDate>Sat, 26 Oct 2024 18:41:54 -0600</pubDate>
       <guid>https://www.ghassan.page/posts/2024_10_26_upload_files_using_stream_with_aspnet/</guid>
-      <description>Asp.NET provide a binding technique to upload files IFormFile. But that technique will consume memory as it buffers the content of the file in the memory or in the database.&#xA;To skip buffering and use streaming, we kind of have to code it in own our way.&#xA;Http Protocol and uploading file:The simplest way to upload file is to create an Html file input element, and include it in html form with submit button as follows:</description>
+      <description>Asp.NET provide a binding technique to upload files IFormFile. But that technique will consume memory as it buffers the content of the file in the memory or in the database.
+To skip buffering and use streaming, we kind of have to code it in own our way.
+Http Protocol and uploading file:The simplest way to upload file is to create an Html file input element, and include it in html form with submit button as follows:</description>
     </item>
     <item>
       <title>Git Tools Every DevOps Engineer Should Know</title>
       <link>https://www.ghassan.page/posts/2024_09_25_git_commands_every_devops_should_know/</link>
       <pubDate>Wed, 25 Sep 2024 18:41:54 -0600</pubDate>
       <guid>https://www.ghassan.page/posts/2024_09_25_git_commands_every_devops_should_know/</guid>
-      <description>As a DevOps engineer managing an active Git repository with hundreds of commits daily, you&amp;rsquo;ll inevitably face challenges that require a solid understanding of Git and its ecosystem. This post covers common issues that teams encounter while using Git and the tools used to address them. Each tool mentioned deserves a dedicated post, but here’s a brief overview of the essentials.&#xA;The tools we&amp;rsquo;ll cover:&#xA;Maintaining the health of the repository.</description>
+      <description>As a DevOps engineer managing an active Git repository with hundreds of commits daily, you&amp;rsquo;ll inevitably face challenges that require a solid understanding of Git and its ecosystem. This post covers common issues that teams encounter while using Git and the tools used to address them. Each tool mentioned deserves a dedicated post, but here’s a brief overview of the essentials.
+The tools we&amp;rsquo;ll cover:
+Maintaining the health of the repository.</description>
     </item>
     <item>
       <title>Enhancing Team Collaboration with a Git Forking Strategy</title>
       <link>https://www.ghassan.page/posts/2024_09_24_team_collaboration_using_git_fork/</link>
       <pubDate>Mon, 23 Sep 2024 18:41:54 -0600</pubDate>
       <guid>https://www.ghassan.page/posts/2024_09_24_team_collaboration_using_git_fork/</guid>
-      <description>The fork-based pull request (PR) workflow is widely used in open-source projects because it enables external contributions while keeping the core repository secure and controlled by a designated team.&#xA;Fork-baed workflow and Inner SourceTypically, only contributors with repository access can create pull requests. As a contributor, you can create branches, submit PRs, and request merges. However, what happens if you&amp;rsquo;re not part of the repository&amp;rsquo;s team, as is the case in open-source projects?</description>
+      <description>The fork-based pull request (PR) workflow is widely used in open-source projects because it enables external contributions while keeping the core repository secure and controlled by a designated team.
+Fork-baed workflow and Inner SourceTypically, only contributors with repository access can create pull requests. As a contributor, you can create branches, submit PRs, and request merges. However, what happens if you&amp;rsquo;re not part of the repository&amp;rsquo;s team, as is the case in open-source projects?</description>
     </item>
     <item>
       <title>Design and implement Git branching strategies for CI/CD integration</title>
       <link>https://www.ghassan.page/posts/2024_09_23_design_and_implement_a_branch_strategy_and_workflow/</link>
       <pubDate>Mon, 23 Sep 2024 10:41:54 -0600</pubDate>
       <guid>https://www.ghassan.page/posts/2024_09_23_design_and_implement_a_branch_strategy_and_workflow/</guid>
-      <description>Establishing a standardized development process that integrates a Git workflow with Continuous Integration/Continuous Deployment (CI/CD) is crucial before writing any code. This post will explore a widely-used approach: the Trunk-Based Development Workflow, which is adopted by many leading companies, including Microsoft.&#xA;Choosing a branching strategy:Every team should adopt a consistent code release process to maintain quality and reduce risks. This starts with selecting a Git workflow, continues through integrating CI/CD, and culminates in defining a release strategy.</description>
+      <description>Establishing a standardized development process that integrates a Git workflow with Continuous Integration/Continuous Deployment (CI/CD) is crucial before writing any code. This post will explore a widely-used approach: the Trunk-Based Development Workflow, which is adopted by many leading companies, including Microsoft.
+Choosing a branching strategy:Every team should adopt a consistent code release process to maintain quality and reduce risks. This starts with selecting a Git workflow, continues through integrating CI/CD, and culminates in defining a release strategy.</description>
     </item>
     <item>
       <title>Enhancing Your Git Workflow with Git Credential Manager Core</title>
       <link>https://www.ghassan.page/posts/2024_09_22_make_sense_of_many_git_credential_helper/</link>
       <pubDate>Sun, 22 Sep 2024 10:41:54 -0600</pubDate>
       <guid>https://www.ghassan.page/posts/2024_09_22_make_sense_of_many_git_credential_helper/</guid>
-      <description>Git’s credential helper is a handy tool that saves your credentials, so you won’t need to re-enter your username and password for every git pull or git push. However, depending on the age of the tutorial you&amp;rsquo;re following and the platform you&amp;rsquo;re using, the instructions for setting up credential storage may vary.&#xA;In August 2021, GitHub introduced a new cross-platform tool called the Git Credential Manager Core. Let’s explore how this tool can streamline your team’s workflow.</description>
+      <description>Git’s credential helper is a handy tool that saves your credentials, so you won’t need to re-enter your username and password for every git pull or git push. However, depending on the age of the tutorial you&amp;rsquo;re following and the platform you&amp;rsquo;re using, the instructions for setting up credential storage may vary.
+In August 2021, GitHub introduced a new cross-platform tool called the Git Credential Manager Core. Let’s explore how this tool can streamline your team’s workflow.</description>
     </item>
     <item>
       <title>Are you still using git checkout for everything? It is time to switch to git switch</title>
       <link>https://www.ghassan.page/posts/2024_09_21_git_checkout_splitted_to_many_commands/</link>
       <pubDate>Sat, 21 Sep 2024 10:41:54 -0600</pubDate>
       <guid>https://www.ghassan.page/posts/2024_09_21_git_checkout_splitted_to_many_commands/</guid>
-      <description>If you&amp;rsquo;re like me and still rely on the trusty git checkout for a variety of tasks—like switching branches, restoring files, and checking out commits—then you&amp;rsquo;re in for a treat. The Git community has made things easier by introducing two new commands to split the workload: git switch and git restore.&#xA;These new commands were created to reduce the overload on git checkout and make Git a bit more intuitive, especially for developers who sometimes found it confusing.</description>
+      <description>If you&amp;rsquo;re like me and still rely on the trusty git checkout for a variety of tasks—like switching branches, restoring files, and checking out commits—then you&amp;rsquo;re in for a treat. The Git community has made things easier by introducing two new commands to split the workload: git switch and git restore.
+These new commands were created to reduce the overload on git checkout and make Git a bit more intuitive, especially for developers who sometimes found it confusing.</description>
     </item>
     <item>
       <title>A Journey into Microsoft Identity Platform</title>
       <link>https://www.ghassan.page/posts/2024_08_19_microsoft_identity_platform/</link>
       <pubDate>Mon, 19 Aug 2024 10:41:54 -0600</pubDate>
       <guid>https://www.ghassan.page/posts/2024_08_19_microsoft_identity_platform/</guid>
-      <description>It is not exaggeration if I said, Microsoft Identity Platform is bigger than any SAS authentication provider, and if you are using Azure as your cloud provider, then the authorization benefits that will add to your application off-the-shelf, won&amp;rsquo;t be able to do it with any other platform without writing code.&#xA;Usage with .NET.NET has a library, which is considered part of the platform. It is Microsfot.Identity.Web.&#xA;How to use it?</description>
+      <description>It is not exaggeration if I said, Microsoft Identity Platform is bigger than any SAS authentication provider, and if you are using Azure as your cloud provider, then the authorization benefits that will add to your application off-the-shelf, won&amp;rsquo;t be able to do it with any other platform without writing code.
+Usage with .NET.NET has a library, which is considered part of the platform. It is Microsfot.Identity.Web.
+How to use it?</description>
     </item>
     <item>
       <title>Stream long running webapi with Asp.NET Core and Javascript</title>
       <link>https://www.ghassan.page/posts/2024_06_22_streamline_long_process_with_aspnet_core_and_javascript/</link>
       <pubDate>Sat, 22 Jun 2024 10:41:54 -0600</pubDate>
       <guid>https://www.ghassan.page/posts/2024_06_22_streamline_long_process_with_aspnet_core_and_javascript/</guid>
-      <description>If you have a long running process that return array of data, or a data that you can send back as chunk of data, then you can stream the result.&#xA;Streaming from the serverIn Asp.NET core 6 and later, it is so easy to stream back the result using IAsyncEnumerable.&#xA;Let us jump into the code right away:&#xA;1 [HttpGet(&amp;#34;ProcessLongData&amp;#34;)] 2 [ResponseCache(NoStore = true, Location = ResponseCacheLocation.None)] 3 public async IAsyncEnumerable&amp;lt;string&amp;gt; ProcessLongData(string input) 4 { 5 6 7 for (var i = 0; i &amp;lt; 10; i++) 8 { 9 await Task.</description>
+      <description>If you have a long running process that return array of data, or a data that you can send back as chunk of data, then you can stream the result.
+Streaming from the serverIn Asp.NET core 6 and later, it is so easy to stream back the result using IAsyncEnumerable.
+Let us jump into the code right away:
+1 [HttpGet(&amp;#34;ProcessLongData&amp;#34;)] 2 [ResponseCache(NoStore = true, Location = ResponseCacheLocation.None)] 3 public async IAsyncEnumerable&amp;lt;string&amp;gt; ProcessLongData(string input) 4 { 5 6 7 for (var i = 0; i &amp;lt; 10; i++) 8 { 9 await Task.</description>
     </item>
     <item>
       <title>Auth0 Single Sign On and seamless silent authentication</title>
       <link>https://www.ghassan.page/posts/2024_05_01_auth0_and_spa/</link>
       <pubDate>Wed, 01 May 2024 10:41:54 -0600</pubDate>
       <guid>https://www.ghassan.page/posts/2024_05_01_auth0_and_spa/</guid>
-      <description>Auth0 streamlines lots of complexity for you when it comes to authenticate your SPA application.&#xA;In this article we will talk about how Single Sign ON works.&#xA;Auth0 Single Sign On and sessions:Auth0 provides Single Sign-on through the use of sessions. There are up to three different sessions:&#xA;Local session. Authorication Server session, if SSO is enabled. Identity Provider (IdP) session, if the user login through an IdP like Google, Facebook&amp;hellip;etc.</description>
+      <description>Auth0 streamlines lots of complexity for you when it comes to authenticate your SPA application.
+In this article we will talk about how Single Sign ON works.
+Auth0 Single Sign On and sessions:Auth0 provides Single Sign-on through the use of sessions. There are up to three different sessions:
+Local session. Authorication Server session, if SSO is enabled. Identity Provider (IdP) session, if the user login through an IdP like Google, Facebook&amp;hellip;etc.</description>
     </item>
     <item>
       <title>Using Azure Managed Identity to skip sharing credentials</title>
       <link>https://www.ghassan.page/posts/2024_01_14_managedidentity/</link>
       <pubDate>Sun, 14 Jan 2024 10:41:54 -0600</pubDate>
       <guid>https://www.ghassan.page/posts/2024_01_14_managedidentity/</guid>
-      <description>A common challenge for developers is the management of secrets and credentials used to secure communication between different components making up a solution. Managed identities eliminate the need for developers to manage credentials.&#xA;While developers can securely store the secrets in Azure Key Vault, services need a way to access Azure Key Vault. Managed identities provide an automatically managed identity in Microsoft Entra ID for applications to use when connecting to Azure resources.</description>
+      <description>A common challenge for developers is the management of secrets and credentials used to secure communication between different components making up a solution. Managed identities eliminate the need for developers to manage credentials.
+While developers can securely store the secrets in Azure Key Vault, services need a way to access Azure Key Vault. Managed identities provide an automatically managed identity in Microsoft Entra ID for applications to use when connecting to Azure resources.</description>
     </item>
     <item>
       <title>How Single Page Application call a secure your API with OAuth2</title>
       <link>https://www.ghassan.page/posts/2024_01_05_oauth2_and_spa/</link>
       <pubDate>Fri, 05 Jan 2024 12:41:54 -0600</pubDate>
       <guid>https://www.ghassan.page/posts/2024_01_05_oauth2_and_spa/</guid>
-      <description>When a public SPA needs to authenticate through OAuth 2.0, it faces a big challenge.&#xA;The challenge is you cannot store any type of secrets of credentials in your code. This is why OAuth provided a special flow to be used by SPA: Authorization Code Grant &amp;amp; PKCE. We are going to describe this flow in details here.&#xA;Summary of the process:To describe the flow briefly, when the SPA requires to get a token it will direct the application to an Authorization Server (AS), which will use that server login page and UI, and the user will run the login process on the AS server website, then that server will return back to the original client website using a callback url passing the token to the SPA.</description>
+      <description>When a public SPA needs to authenticate through OAuth 2.0, it faces a big challenge.
+The challenge is you cannot store any type of secrets of credentials in your code. This is why OAuth provided a special flow to be used by SPA: Authorization Code Grant &amp;amp; PKCE. We are going to describe this flow in details here.
+Summary of the process:To describe the flow briefly, when the SPA requires to get a token it will direct the application to an Authorization Server (AS), which will use that server login page and UI, and the user will run the login process on the AS server website, then that server will return back to the original client website using a callback url passing the token to the SPA.</description>
     </item>
     <item>
       <title>Different options to add SSL certificate to you Azure App Service</title>
       <link>https://www.ghassan.page/posts/2023_12_8_azureappservice_ssl_certificate/</link>
       <pubDate>Fri, 08 Dec 2023 12:41:54 -0600</pubDate>
       <guid>https://www.ghassan.page/posts/2023_12_8_azureappservice_ssl_certificate/</guid>
-      <description>To add a SSL certificate to your web app hosted on Azure App Service with a custom domain, there are few options. I am going to list them here.&#xA;Free certificate:Azure provides a free SSL certificate, and it is fully managed by Azure. Azure renew the process for you, and take care of everything for you.&#xA;Although having a free certificate is a wonderful idea, but it has some shortcoming:</description>
+      <description>To add a SSL certificate to your web app hosted on Azure App Service with a custom domain, there are few options. I am going to list them here.
+Free certificate:Azure provides a free SSL certificate, and it is fully managed by Azure. Azure renew the process for you, and take care of everything for you.
+Although having a free certificate is a wonderful idea, but it has some shortcoming:</description>
     </item>
     <item>
       <title>Everything you need to know about configure DNS to provide domain for your blog</title>
       <link>https://www.ghassan.page/posts/2023_12_3_dns_settings_to_map_blog/</link>
       <pubDate>Sun, 03 Dec 2023 12:41:54 -0600</pubDate>
       <guid>https://www.ghassan.page/posts/2023_12_3_dns_settings_to_map_blog/</guid>
-      <description>You host your blog on Github pages, or Azure static website, or Azure blob storage with static website enabled. But you need to use a custom domain.&#xA;Every time I changed my content location, I go back to remember how to do it, so I decided to make a post about it.&#xA;Understand how custom domain mapping works:You host your static web pages on one of the static hosting services, for example these three:</description>
+      <description>You host your blog on Github pages, or Azure static website, or Azure blob storage with static website enabled. But you need to use a custom domain.
+Every time I changed my content location, I go back to remember how to do it, so I decided to make a post about it.
+Understand how custom domain mapping works:You host your static web pages on one of the static hosting services, for example these three:</description>
     </item>
     <item>
       <title>Get the most out of Azure App Service.</title>
       <link>https://www.ghassan.page/posts/2023_11_09_get_most_out_of_app_service/</link>
       <pubDate>Thu, 09 Nov 2023 12:41:54 -0600</pubDate>
       <guid>https://www.ghassan.page/posts/2023_11_09_get_most_out_of_app_service/</guid>
-      <description>Azure App service take care of tons of infrastructure, hosting, scalability, monitoring, deployment, DevOps, security and environment of your shoulders.&#xA;But the question, are you really utilizing the most out of this wonderful service?&#xA;Azure App service has tons of features that make it easy to forget about some of them and missing using them.&#xA;I am going to list this checklist and explain more details on them. There are features that Must be implemented, and there are features that are optional because you might be using other services to achieve their functionalities.</description>
+      <description>Azure App service take care of tons of infrastructure, hosting, scalability, monitoring, deployment, DevOps, security and environment of your shoulders.
+But the question, are you really utilizing the most out of this wonderful service?
+Azure App service has tons of features that make it easy to forget about some of them and missing using them.
+I am going to list this checklist and explain more details on them. There are features that Must be implemented, and there are features that are optional because you might be using other services to achieve their functionalities.</description>
     </item>
     <item>
       <title>OAuth, OpenID Connect, SSO and Authentication Flows in plain English.</title>
       <link>https://www.ghassan.page/posts/2023_10_27_oauth_openid_authenticationflow_in_plain_english/</link>
       <pubDate>Fri, 27 Oct 2023 12:41:54 -0600</pubDate>
       <guid>https://www.ghassan.page/posts/2023_10_27_oauth_openid_authenticationflow_in_plain_english/</guid>
-      <description>Gone are the days when you force your users to register into your application by creating username/password. Everyone wants to skip that process when they can identify themselves using other ways (google, facebook, twitter…), and they want to use their single sign on process to identify them across multiple applications and multiple websites. In this post I am trying to explain the process and its technologies in simple English.&#xA;An explanation by example:So you are a developer who is building an application and want to allow your users to use their Google credentials to authenticate themselves into your account.</description>
+      <description>Gone are the days when you force your users to register into your application by creating username/password. Everyone wants to skip that process when they can identify themselves using other ways (google, facebook, twitter…), and they want to use their single sign on process to identify them across multiple applications and multiple websites. In this post I am trying to explain the process and its technologies in simple English.
+An explanation by example:So you are a developer who is building an application and want to allow your users to use their Google credentials to authenticate themselves into your account.</description>
     </item>
     <item>
       <title>Write Asp.NET webhook handlers for Azure Event Grid events.</title>
       <link>https://www.ghassan.page/posts/2023_10_17_subscribe_to_upload_file_azure_blog_storage/</link>
       <pubDate>Tue, 17 Oct 2023 12:41:54 -0600</pubDate>
       <guid>https://www.ghassan.page/posts/2023_10_17_subscribe_to_upload_file_azure_blog_storage/</guid>
-      <description>Azure Event Grid is a Pub Sub message distribution service that is fully integrated with Azure infrastructure. Almost all Azure services, and PaaS, and many third-party SaaS provides integration with Event Grid, by publishing events. It is supporting Http protocol for publishing events to it, and now with a newer upgrade it supports MQTT protocol for lighter fast IoT communications.&#xA;It is providing Pub/Sub services from Azure services to the subscribers, and adding to that reliability to insure the delivery of the messages.</description>
+      <description>Azure Event Grid is a Pub Sub message distribution service that is fully integrated with Azure infrastructure. Almost all Azure services, and PaaS, and many third-party SaaS provides integration with Event Grid, by publishing events. It is supporting Http protocol for publishing events to it, and now with a newer upgrade it supports MQTT protocol for lighter fast IoT communications.
+It is providing Pub/Sub services from Azure services to the subscribers, and adding to that reliability to insure the delivery of the messages.</description>
     </item>
     <item>
       <title>Best way to run background services in ASP.NET.</title>
       <link>https://www.ghassan.page/posts/2023_07_12_hosting_backgroundservice_aspnet/</link>
       <pubDate>Wed, 12 Jul 2023 12:41:54 -0600</pubDate>
       <guid>https://www.ghassan.page/posts/2023_07_12_hosting_backgroundservice_aspnet/</guid>
-      <description>Asp.Net provides many ways to run background processes. They are:&#xA;IHostedService interface BackgroundService abstract class Worker Service using Microsoft.NET.SDK.Worker Actually they are just layers on top of each others, each layer provides extra functionality on the one below.&#xA;This post is going to describe each layer and what it provides.&#xA;Running background tasks using IHostedServiceAsp.NET provides support for running background tasks in the same process that host Asp.net application.&#xA;By implementing IHostedService interface, your background task will start a little bit after Asp.</description>
+      <description>Asp.Net provides many ways to run background processes. They are:
+IHostedService interface BackgroundService abstract class Worker Service using Microsoft.NET.SDK.Worker Actually they are just layers on top of each others, each layer provides extra functionality on the one below.
+This post is going to describe each layer and what it provides.
+Running background tasks using IHostedServiceAsp.NET provides support for running background tasks in the same process that host Asp.net application.
+By implementing IHostedService interface, your background task will start a little bit after Asp.</description>
     </item>
     <item>
       <title>Build resilient applications accessing Azure services with no code.</title>
       <link>https://www.ghassan.page/posts/2023_03_11_build_resilient_applications_azure/</link>
       <pubDate>Sat, 11 Mar 2023 18:44:55 -0700</pubDate>
       <guid>https://www.ghassan.page/posts/2023_03_11_build_resilient_applications_azure/</guid>
-      <description>When working on distributed system like systems that are running on the cloud, and microservices, then you should anticipate transient faults like temporary loss of network connection, or temporary unavailability of a service, or a service is busy.&#xA;This is why in cloud application, the term Building for resiliency become a pattern in building application, and it means properly handling these transient faults in the code.&#xA;There are two common used patterns that we can use in our code, that can help build resilience application.</description>
+      <description>When working on distributed system like systems that are running on the cloud, and microservices, then you should anticipate transient faults like temporary loss of network connection, or temporary unavailability of a service, or a service is busy.
+This is why in cloud application, the term Building for resiliency become a pattern in building application, and it means properly handling these transient faults in the code.
+There are two common used patterns that we can use in our code, that can help build resilience application.</description>
     </item>
     <item>
       <title>Buy Custom Domain With Azure for your App Service.</title>
       <link>https://www.ghassan.page/posts/2023_03_05_buy_custom_domain_with_azure/</link>
       <pubDate>Sat, 04 Mar 2023 21:44:55 -0700</pubDate>
       <guid>https://www.ghassan.page/posts/2023_03_05_buy_custom_domain_with_azure/</guid>
-      <description>If you googled how to buy a domain name on Azure, you might get answers saying that Azure doesn&amp;rsquo;t provide domain name registrar, like the following answer, or the following discussion.&#xA;Not even those answers, even the book Exam Ref AZ-900 which is a Microsoft book says the following about Azure DNS Zone:&#xA;If you want to purchase your own domain name, you go to a domain registrar, and they register the domain to you.</description>
+      <description>If you googled how to buy a domain name on Azure, you might get answers saying that Azure doesn&amp;rsquo;t provide domain name registrar, like the following answer, or the following discussion.
+Not even those answers, even the book Exam Ref AZ-900 which is a Microsoft book says the following about Azure DNS Zone:
+If you want to purchase your own domain name, you go to a domain registrar, and they register the domain to you.</description>
     </item>
     <item>
       <title>Everything you need to know about telemetry for your Asp.NET application on Azure.</title>
       <link>https://www.ghassan.page/posts/2023_02_24_application_insights_on_azure/</link>
       <pubDate>Fri, 24 Feb 2023 21:44:55 -0700</pubDate>
       <guid>https://www.ghassan.page/posts/2023_02_24_application_insights_on_azure/</guid>
-      <description>All of the services that Azure offers for the instrumentation and observability (monitoring) of applications are grouped under Azure Monitor.&#xA;Three services fall under the banner of Azure Monitor:&#xA;Azure Monitor itself, which offers the observability component to track your apps. Application Insights, or its substitute OpenTelemetry, which offers the instrumentation and telemetry components The analytics component is provided by Log Analytics. We will emphasise the instrumentation component in this post.</description>
+      <description>All of the services that Azure offers for the instrumentation and observability (monitoring) of applications are grouped under Azure Monitor.
+Three services fall under the banner of Azure Monitor:
+Azure Monitor itself, which offers the observability component to track your apps. Application Insights, or its substitute OpenTelemetry, which offers the instrumentation and telemetry components The analytics component is provided by Log Analytics. We will emphasise the instrumentation component in this post.</description>
     </item>
     <item>
       <title>Check performance bottleneck with Azure Application Insights.</title>
       <link>https://www.ghassan.page/posts/2023_02_22_azure_application_insight_performance/</link>
       <pubDate>Wed, 22 Feb 2023 21:44:55 -0700</pubDate>
       <guid>https://www.ghassan.page/posts/2023_02_22_azure_application_insight_performance/</guid>
-      <description>If you have Application Insights enabled for your azure app service, then it is a piece of cake to get the performance bottleneck in your app, and even it check external dependencies like database queries or any other external dependencies.&#xA;I have a Web API application, that is accessing Azure Sql Server, and Azure blob storage.&#xA;By going into the performance blade under Investigate:&#xA;You will see the average time for each API call, sorted descending by time: By clicking on any one, you can drill down to where the time consume even by its external dependencies:</description>
+      <description>If you have Application Insights enabled for your azure app service, then it is a piece of cake to get the performance bottleneck in your app, and even it check external dependencies like database queries or any other external dependencies.
+I have a Web API application, that is accessing Azure Sql Server, and Azure blob storage.
+By going into the performance blade under Investigate:
+You will see the average time for each API call, sorted descending by time: By clicking on any one, you can drill down to where the time consume even by its external dependencies:</description>
     </item>
     <item>
       <title>Use Azure Key Vault to retrieve secured parameters during  Azure deployment.</title>
       <link>https://www.ghassan.page/posts/2023_02_04_azure_keyvault_deployment/</link>
       <pubDate>Sat, 04 Feb 2023 20:42:03 -0700</pubDate>
       <guid>https://www.ghassan.page/posts/2023_02_04_azure_keyvault_deployment/</guid>
-      <description>You have an ARM template to deploy, and you need to pass secure parameters. Instead of storing secure values in the parameter file, you can just retrieve these values from Key Vault.&#xA;To be able to access the key vault by the resource manager you need to change access policy to allow &amp;ldquo;Azure Resource Manager for template deployment&amp;rdquo;, as shown here.&#xA;Or you can do it from Powershell:&#xA;1// to update an existing key vault 2Set-AzKeyVaultAccessPolicy -VaultName MyVaultName -EnabledForTemplateDeployment 3 4// to create a new key vault with this feature enabled 5New-AzKeyVault ` 6 -VaultName MyVaultName ` 7 -resourceGroupName myresourcegroup ` 8 -Location centralus ` 9 -EnabledForTemplateDeployment How to use it?</description>
+      <description>You have an ARM template to deploy, and you need to pass secure parameters. Instead of storing secure values in the parameter file, you can just retrieve these values from Key Vault.
+To be able to access the key vault by the resource manager you need to change access policy to allow &amp;ldquo;Azure Resource Manager for template deployment&amp;rdquo;, as shown here.
+Or you can do it from Powershell:
+1// to update an existing key vault 2Set-AzKeyVaultAccessPolicy -VaultName MyVaultName -EnabledForTemplateDeployment 3 4// to create a new key vault with this feature enabled 5New-AzKeyVault ` 6 -VaultName MyVaultName ` 7 -resourceGroupName myresourcegroup ` 8 -Location centralus ` 9 -EnabledForTemplateDeployment How to use it?</description>
     </item>
     <item>
       <title>Parse Azure SAS token using regular expression</title>
       <link>https://www.ghassan.page/posts/2023_02_03_parse_sas_token_regex/</link>
       <pubDate>Fri, 03 Feb 2023 20:40:37 -0700</pubDate>
       <guid>https://www.ghassan.page/posts/2023_02_03_parse_sas_token_regex/</guid>
-      <description>If you have an Azure SAS token that is not working, it is good idea to parse it and understand what permissions and values it contains.&#xA;This is a JavaScript code that uses Regular Expression to parse he SAS token, and an running example where you can try your own SAS token.&#xA;1var paramNames = { 2 sig: &amp;#39;cryptographic signature&amp;#39;, 3 st: &amp;#39;start time&amp;#39;, 4 se: &amp;#39;end time&amp;#39;, 5 spr: &amp;#39;protocol&amp;#39;, 6 srt: &amp;#39;resource types&amp;#39;, 7 sv: &amp;#39;version&amp;#39;, 8 sp: &amp;#39;permissions&amp;#39;, 9 ss: &amp;#39;services&amp;#39; 10}; 11 12let valueLookups = { 13 sp : { 14 r: &amp;#39;read&amp;#39;, d: &amp;#39;delete&amp;#39;, w: &amp;#39;write&amp;#39;, l: &amp;#39;list&amp;#39;, a: &amp;#39;add&amp;#39;, 15 c: &amp;#39;create&amp;#39;, u: &amp;#39;update&amp;#39;, p: &amp;#39;process&amp;#39;, f: &amp;#39;filter&amp;#39; 16 }, 17 srt: { 18 s: &amp;#39;service&amp;#39;, c: &amp;#39;container&amp;#39;, o: &amp;#39;object&amp;#39; 19 }, 20 ss : { 21 b: &amp;#39;blob&amp;#39;, f: &amp;#39;file&amp;#39;, q: &amp;#39;queue&amp;#39;, t: &amp;#39;table&amp;#39; 22 } 23} 24 25let valueConvertor = (key, inputValue) =&amp;gt; 26 valueLookups[key] ?</description>
+      <description>If you have an Azure SAS token that is not working, it is good idea to parse it and understand what permissions and values it contains.
+This is a JavaScript code that uses Regular Expression to parse he SAS token, and an running example where you can try your own SAS token.
+1var paramNames = { 2 sig: &amp;#39;cryptographic signature&amp;#39;, 3 st: &amp;#39;start time&amp;#39;, 4 se: &amp;#39;end time&amp;#39;, 5 spr: &amp;#39;protocol&amp;#39;, 6 srt: &amp;#39;resource types&amp;#39;, 7 sv: &amp;#39;version&amp;#39;, 8 sp: &amp;#39;permissions&amp;#39;, 9 ss: &amp;#39;services&amp;#39; 10}; 11 12let valueLookups = { 13 sp : { 14 r: &amp;#39;read&amp;#39;, d: &amp;#39;delete&amp;#39;, w: &amp;#39;write&amp;#39;, l: &amp;#39;list&amp;#39;, a: &amp;#39;add&amp;#39;, 15 c: &amp;#39;create&amp;#39;, u: &amp;#39;update&amp;#39;, p: &amp;#39;process&amp;#39;, f: &amp;#39;filter&amp;#39; 16 }, 17 srt: { 18 s: &amp;#39;service&amp;#39;, c: &amp;#39;container&amp;#39;, o: &amp;#39;object&amp;#39; 19 }, 20 ss : { 21 b: &amp;#39;blob&amp;#39;, f: &amp;#39;file&amp;#39;, q: &amp;#39;queue&amp;#39;, t: &amp;#39;table&amp;#39; 22 } 23} 24 25let valueConvertor = (key, inputValue) =&amp;gt; 26 valueLookups[key] ?</description>
     </item>
     <item>
       <title>Implement a watchdog for your microservices using off-the-shelf ASP.Net Healthcheck UI.</title>
       <link>https://www.ghassan.page/posts/2023_02_02_aspnet_watchdog/</link>
       <pubDate>Thu, 02 Feb 2023 20:22:20 -0700</pubDate>
       <guid>https://www.ghassan.page/posts/2023_02_02_aspnet_watchdog/</guid>
-      <description>What is a watchdogA watchdog is a service that monitor other services and take actions when it detect a service is failing.&#xA;ASP.NET starting from Core 5 has a built in UI module to monitor other services, and in few line of code you can build a watchdog for your services.&#xA;How to hook it up with your services:Your microservices should implement health check endpoints to be monitored by the orchestration service (Kubernetes, docker storm, &amp;hellip; etc).</description>
+      <description>What is a watchdogA watchdog is a service that monitor other services and take actions when it detect a service is failing.
+ASP.NET starting from Core 5 has a built in UI module to monitor other services, and in few line of code you can build a watchdog for your services.
+How to hook it up with your services:Your microservices should implement health check endpoints to be monitored by the orchestration service (Kubernetes, docker storm, &amp;hellip; etc).</description>
     </item>
     <item>
       <title>Introducing Kudu, the engine that handle all web application deployment to Azure App Service.</title>
       <link>https://www.ghassan.page/posts/2023_02_01_introducing_kudu/</link>
       <pubDate>Wed, 01 Feb 2023 20:20:40 -0700</pubDate>
       <guid>https://www.ghassan.page/posts/2023_02_01_introducing_kudu/</guid>
-      <description>If you follow any tutorials on Azure App Service, you will find that they use one of five options to deploy a web application to the Azure.&#xA;Using Azure DevOps Using Github actions and webhooks. FTP Zip Deploy. MSDeploy (Microsoft Web Deploy tool). But behind the scenes, all these options are using the same back engine, which is Kudu.&#xA;When we use FTP, Zip, or MSDeploy, we are actually calling Kudu REST API for deployment.</description>
+      <description>If you follow any tutorials on Azure App Service, you will find that they use one of five options to deploy a web application to the Azure.
+Using Azure DevOps Using Github actions and webhooks. FTP Zip Deploy. MSDeploy (Microsoft Web Deploy tool). But behind the scenes, all these options are using the same back engine, which is Kudu.
+When we use FTP, Zip, or MSDeploy, we are actually calling Kudu REST API for deployment.</description>
     </item>
     <item>
       <title>Azure Networking Recipes - Connect Azure Database and an Azure App Service using Virtual Network.</title>
@@ -209,14 +280,16 @@
       <link>https://www.ghassan.page/posts/2023_01_08_azure_static_webapp_routing/</link>
       <pubDate>Sun, 08 Jan 2023 19:58:31 -0700</pubDate>
       <guid>https://www.ghassan.page/posts/2023_01_08_azure_static_webapp_routing/</guid>
-      <description>If you built a SPA application using one of the modern SPA frameworks like React, Vue, Angular&amp;hellip;, then you must be using their router to define your client side routing.&#xA;But you need to make a small adjustment on the server that serve your static application in order to deal with client routing gracefully, and this small adjustment is to tell the server to have a fall back on any route that is not recognized by the server to the root of the application.</description>
+      <description>If you built a SPA application using one of the modern SPA frameworks like React, Vue, Angular&amp;hellip;, then you must be using their router to define your client side routing.
+But you need to make a small adjustment on the server that serve your static application in order to deal with client routing gracefully, and this small adjustment is to tell the server to have a fall back on any route that is not recognized by the server to the root of the application.</description>
     </item>
     <item>
       <title>Calling HTTP API and Socket Exhaustion problem</title>
       <link>https://www.ghassan.page/posts/2023_01_08_http_and_socket_exhaustion/</link>
       <pubDate>Sun, 08 Jan 2023 12:41:54 -0600</pubDate>
       <guid>https://www.ghassan.page/posts/2023_01_08_http_and_socket_exhaustion/</guid>
-      <description>You definitely had to write code to communicate to an API service. Regardless of the language you use, or the framework you use, there is a two major problems when you want to do lots of calls. They are:&#xA;Socket Exhaustion DNS Rotation I am going to use C# and ASP.NET as an example and show you what .NET world has a solution for that, but there are solutions in every language and framework.</description>
+      <description>You definitely had to write code to communicate to an API service. Regardless of the language you use, or the framework you use, there is a two major problems when you want to do lots of calls. They are:
+Socket Exhaustion DNS Rotation I am going to use C# and ASP.NET as an example and show you what .NET world has a solution for that, but there are solutions in every language and framework.</description>
     </item>
     <item>
       <title>Deploy A Single Page Application to Azure Static Webapp using TeamCity, Jenkins or any CI, or command line</title>
@@ -230,70 +303,101 @@
       <link>https://www.ghassan.page/posts/2022_12_29_devcontainer/</link>
       <pubDate>Thu, 29 Dec 2022 19:51:56 -0700</pubDate>
       <guid>https://www.ghassan.page/posts/2022_12_29_devcontainer/</guid>
-      <description>Dev containers provides a fantastic way to onboard a new developer up and running in matter of just clone the git repository.&#xA;Dev containers allow you to create a docker container that will host all the development tools and libraries you use in your projects, and run it inside the container, and if you have an editor compatible then you can make the IDE connect to the containers and you can run or debug your code inside the containers.</description>
+      <description>Dev containers provides a fantastic way to onboard a new developer up and running in matter of just clone the git repository.
+Dev containers allow you to create a docker container that will host all the development tools and libraries you use in your projects, and run it inside the container, and if you have an editor compatible then you can make the IDE connect to the containers and you can run or debug your code inside the containers.</description>
     </item>
     <item>
       <title>Prepare .NET core Microservice to be monitored by Kubernetes</title>
       <link>https://www.ghassan.page/posts/2022-12-28_prepare_aspnet_api_monitored_by_k8s/</link>
       <pubDate>Tue, 27 Dec 2022 19:47:05 -0700</pubDate>
       <guid>https://www.ghassan.page/posts/2022-12-28_prepare_aspnet_api_monitored_by_k8s/</guid>
-      <description>Kubernetes Monitoring:Kubernetes monitors the deployed microservices and check if any failure or a deadlock that makes the service not responding in order to restart the hosting container.&#xA;Kubernetes achieve this by calling three different probes that determine the status of the container/pod. The three probes are:&#xA;liveness: which monitor any deadlock, or the service is down, and Kubernetes will remove the dead container and restart another one. startup: Your service might need time at startup to wait for all its dependencies to be ready.</description>
+      <description>Kubernetes Monitoring:Kubernetes monitors the deployed microservices and check if any failure or a deadlock that makes the service not responding in order to restart the hosting container.
+Kubernetes achieve this by calling three different probes that determine the status of the container/pod. The three probes are:
+liveness: which monitor any deadlock, or the service is down, and Kubernetes will remove the dead container and restart another one. startup: Your service might need time at startup to wait for all its dependencies to be ready.</description>
     </item>
     <item>
       <title>How to fix common error using Azure Kubernetes AKS from WSL2</title>
       <link>https://www.ghassan.page/posts/2022_12_27_fix_common_error_kubernets_wsl2/</link>
       <pubDate>Tue, 27 Dec 2022 19:43:59 -0700</pubDate>
       <guid>https://www.ghassan.page/posts/2022_12_27_fix_common_error_kubernets_wsl2/</guid>
-      <description>When you use Kubernetes CLI tool: kubectl that is installed while you installed Docker Desktop for Windows, there is a small glitch that it will fail the kubectl commands, because of Kubeconfig file.&#xA;Let&amp;rsquo;s supposed you want to create a new cluster on AKS, as follows:&#xA;1az aks create --resource-group MyResourceGropu --name MyMicroserviceCluster --node-count 1 --enable-addons http_application_routing --generate-ssh-keys And then you need to set that new cluster as your default cluster to work on, so you use</description>
+      <description>When you use Kubernetes CLI tool: kubectl that is installed while you installed Docker Desktop for Windows, there is a small glitch that it will fail the kubectl commands, because of Kubeconfig file.
+Let&amp;rsquo;s supposed you want to create a new cluster on AKS, as follows:
+1az aks create --resource-group MyResourceGropu --name MyMicroserviceCluster --node-count 1 --enable-addons http_application_routing --generate-ssh-keys And then you need to set that new cluster as your default cluster to work on, so you use</description>
     </item>
     <item>
       <title>Some thoughts about ASP.NET Minimal API and Minimal Hosting Model</title>
       <link>https://www.ghassan.page/posts/2022_12_19_aspnet_minimal_api/</link>
       <pubDate>Mon, 19 Dec 2022 19:15:28 -0700</pubDate>
       <guid>https://www.ghassan.page/posts/2022_12_19_aspnet_minimal_api/</guid>
-      <description>Why this post?ASP.NET 6&amp;rsquo;s minimal hosting model made me compare it to ASP.NET 2 and wonder if Microsoft is going back to some old concepts. I was curious about the potential benefit of migration, so I intend to explain and compare ASP.NET 6, 5 and 2.&#xA;The new WebApplication builder and some history of ASP.NET:Let us generate a new webapi application in .net 6 using webapi template:&#xA;1dotnet new webapi -n tutorial.</description>
+      <description>Why this post?ASP.NET 6&amp;rsquo;s minimal hosting model made me compare it to ASP.NET 2 and wonder if Microsoft is going back to some old concepts. I was curious about the potential benefit of migration, so I intend to explain and compare ASP.NET 6, 5 and 2.
+The new WebApplication builder and some history of ASP.NET:Let us generate a new webapi application in .net 6 using webapi template:
+1dotnet new webapi -n tutorial.</description>
     </item>
     <item>
       <title>Using Secret Manager for Configuration in .NET</title>
       <link>https://www.ghassan.page/posts/2022_11_28_use_secret_manager_in_dotnet/</link>
       <pubDate>Mon, 28 Nov 2022 19:41:04 -0700</pubDate>
       <guid>https://www.ghassan.page/posts/2022_11_28_use_secret_manager_in_dotnet/</guid>
-      <description>It is critical not to store passwords or API keys in our code.&#xA;For all environments for the development process: (QA, UAT, Pre-Production, and Production), it is easier to place it in a safe place (Azure Key Vault for example), and access it during deployment.&#xA;For developer machines, we can use Secret Manager, or sometimes called User Secrets, which has a built-in support in ASP.NET.&#xA;Enable Secret Storage:In the project you want to add a secret run this command:</description>
+      <description>It is critical not to store passwords or API keys in our code.
+For all environments for the development process: (QA, UAT, Pre-Production, and Production), it is easier to place it in a safe place (Azure Key Vault for example), and access it during deployment.
+For developer machines, we can use Secret Manager, or sometimes called User Secrets, which has a built-in support in ASP.NET.
+Enable Secret Storage:In the project you want to add a secret run this command:</description>
     </item>
     <item>
       <title>No More JavaScript Transpiler</title>
       <link>https://www.ghassan.page/posts/2020_12_23_no_more_js_transpiler/</link>
       <pubDate>Wed, 23 Dec 2020 16:02:54 -0700</pubDate>
       <guid>https://www.ghassan.page/posts/2020_12_23_no_more_js_transpiler/</guid>
-      <description>&lt;p&gt;With modern browsers supporting ES6 modules, and Edge is adopting Chromium which align the major browsers to use latest EcmaScript features, we don&amp;rsquo;t need to use transpilers like Webpack or Gulp.&lt;br&gt;&#xA;This will make it easier on many areas, and enhance the performance of our applications.&lt;/p&gt;</description>
+      <description>&lt;p&gt;With modern browsers supporting ES6 modules, and Edge is adopting Chromium which align the major browsers to use latest EcmaScript features, we don&amp;rsquo;t need to use transpilers like Webpack or Gulp.&lt;br&gt;
+This will make it easier on many areas, and enhance the performance of our applications.&lt;/p&gt;</description>
     </item>
     <item>
       <title>Memoization in Python and JavaScript</title>
       <link>https://www.ghassan.page/posts/2020_09_20_memoization_python_javascript/</link>
       <pubDate>Sun, 20 Sep 2020 09:45:00 +0000</pubDate>
       <guid>https://www.ghassan.page/posts/2020_09_20_memoization_python_javascript/</guid>
-      <description>&lt;p&gt;Memoization is a technique that is used a lot in Dynamic Programming and in general to speed up algorithms.&lt;br&gt;&#xA;Memoization is the same as caching but in functional programming. The Caching mechanism will store the data into a cache store, and that data can be from anywhere (HTTP page, REST call, &amp;hellip; etc) , where memoization is specific to cache the results of a function, and it create and maintain the store inside the function itself (so the function will be pure function) and send the store as a parameter into the function arguments.&lt;/p&gt;</description>
+      <description>&lt;p&gt;Memoization is a technique that is used a lot in Dynamic Programming and in general to speed up algorithms.&lt;br&gt;
+Memoization is the same as caching but in functional programming. The Caching mechanism will store the data into a cache store, and that data can be from anywhere (HTTP page, REST call, &amp;hellip; etc) , where memoization is specific to cache the results of a function, and it create and maintain the store inside the function itself (so the function will be pure function) and send the store as a parameter into the function arguments.&lt;/p&gt;</description>
     </item>
     <item>
       <title>Regular expression: Extract HTML Links</title>
       <link>https://www.ghassan.page/posts/2020_09_11_regular_expression_extract_html_links/</link>
       <pubDate>Fri, 11 Sep 2020 09:45:00 +0000</pubDate>
       <guid>https://www.ghassan.page/posts/2020_09_11_regular_expression_extract_html_links/</guid>
-      <description>&lt;p&gt;Explain advanced concepts of Regular Expressions through practical recipes:&lt;br&gt;&#xA;In this recipe we are going to cover:&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;Negated Character class&lt;/li&gt;&#xA;&lt;li&gt;Non-capturing group&lt;/li&gt;&#xA;&lt;li&gt;Non-Greedy quantifier.&lt;/li&gt;&#xA;&lt;li&gt;Python&amp;rsquo;s &lt;code&gt;findall&lt;/code&gt;, and JavaScript&amp;rsquo;s &lt;code&gt;exec&lt;/code&gt;&lt;/li&gt;&#xA;&lt;/ul&gt;</description>
+      <description>&lt;p&gt;Explain advanced concepts of Regular Expressions through practical recipes:&lt;br&gt;
+In this recipe we are going to cover:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Negated Character class&lt;/li&gt;
+&lt;li&gt;Non-capturing group&lt;/li&gt;
+&lt;li&gt;Non-Greedy quantifier.&lt;/li&gt;
+&lt;li&gt;Python&amp;rsquo;s &lt;code&gt;findall&lt;/code&gt;, and JavaScript&amp;rsquo;s &lt;code&gt;exec&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;</description>
     </item>
     <item>
       <title>Regular expression: Extract Domain Names</title>
       <link>https://www.ghassan.page/posts/2020_05_08_regular_expression_extract_domain_names/</link>
       <pubDate>Fri, 08 May 2020 09:45:00 +0000</pubDate>
       <guid>https://www.ghassan.page/posts/2020_05_08_regular_expression_extract_domain_names/</guid>
-      <description>&lt;p&gt;Explain advanced concepts of Regular Expressions through practical recipes:&lt;br&gt;&#xA;In this recipe we are going to cover:&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;Anchors&lt;/li&gt;&#xA;&lt;li&gt;Non-capturing group&lt;/li&gt;&#xA;&lt;li&gt;Python&amp;rsquo;s &lt;code&gt;findall&lt;/code&gt;, and JavaScript&amp;rsquo;s &lt;code&gt;exec&lt;/code&gt;&lt;/li&gt;&#xA;&lt;/ul&gt;</description>
+      <description>&lt;p&gt;Explain advanced concepts of Regular Expressions through practical recipes:&lt;br&gt;
+In this recipe we are going to cover:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Anchors&lt;/li&gt;
+&lt;li&gt;Non-capturing group&lt;/li&gt;
+&lt;li&gt;Python&amp;rsquo;s &lt;code&gt;findall&lt;/code&gt;, and JavaScript&amp;rsquo;s &lt;code&gt;exec&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;</description>
     </item>
     <item>
       <title>Regular expression: Extract Comments From Code</title>
       <link>https://www.ghassan.page/posts/2020_05_07_regular_expression_extract_comments_from_code/</link>
       <pubDate>Thu, 07 May 2020 09:45:00 +0000</pubDate>
       <guid>https://www.ghassan.page/posts/2020_05_07_regular_expression_extract_comments_from_code/</guid>
-      <description>&lt;p&gt;Explain advanced concepts of Regular Expressions through practical receipes:&lt;br&gt;&#xA;In this recipe we are going to cover:&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;Capturing Group&lt;/li&gt;&#xA;&lt;li&gt;Negated Character Class&lt;/li&gt;&#xA;&lt;li&gt;Greedy / non-greedy quantifier.&lt;/li&gt;&#xA;&lt;/ul&gt;</description>
+      <description>&lt;p&gt;Explain advanced concepts of Regular Expressions through practical receipes:&lt;br&gt;
+In this recipe we are going to cover:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Capturing Group&lt;/li&gt;
+&lt;li&gt;Negated Character Class&lt;/li&gt;
+&lt;li&gt;Greedy / non-greedy quantifier.&lt;/li&gt;
+&lt;/ul&gt;</description>
     </item>
     <item>
       <title>Advanced Regular Expression Recipes - Introduction.</title>
@@ -307,63 +411,87 @@
       <link>https://www.ghassan.page/about/</link>
       <pubDate>Thu, 28 Feb 2019 00:00:00 +0000</pubDate>
       <guid>https://www.ghassan.page/about/</guid>
-      <description>Hi, my name is Ghassan Karwchan.&#xA;I am a full stack software developer living in Calgary, Alberta, Canada.&#xA;I am specialized in web developement, and mostly with .NET platform.&#xA;But sometimes I enjoy developing outside of Microsoft world, with Python, Node.js, or Go.&#xA;Lots of JavaScript experience.</description>
+      <description>Hi, my name is Ghassan Karwchan.
+I am a full stack software developer living in Calgary, Alberta, Canada.
+I am specialized in web developement, and mostly with .NET platform.
+But sometimes I enjoy developing outside of Microsoft world, with Python, Node.js, or Go.
+Lots of JavaScript experience.</description>
     </item>
     <item>
       <title>Advanced HTTP</title>
       <link>https://www.ghassan.page/posts/2017_09_26_advanced_https/</link>
       <pubDate>Tue, 26 Sep 2017 19:51:56 -0700</pubDate>
       <guid>https://www.ghassan.page/posts/2017_09_26_advanced_https/</guid>
-      <description>Adding an SSL Certificate and enabling HTTPS on your web site is not the end of the road for securing your website, and securing the communication to your website.&#xA;It is just the start, and you need to do more steps related to HTTPS to guarantee your site safety, and your visitor safety.&#xA;In this post I am going to describe:&#xA;TLS and its algorithms in more depth. Insecure protocols, and algorithm.</description>
+      <description>Adding an SSL Certificate and enabling HTTPS on your web site is not the end of the road for securing your website, and securing the communication to your website.
+It is just the start, and you need to do more steps related to HTTPS to guarantee your site safety, and your visitor safety.
+In this post I am going to describe:
+TLS and its algorithms in more depth. Insecure protocols, and algorithm.</description>
     </item>
     <item>
       <title>Build emails with attachments using SMTP, MIME standard (AWS SES Case)</title>
       <link>https://www.ghassan.page/posts/2016_12_08_send_email_with_attachments_using_aws_ses/</link>
       <pubDate>Thu, 08 Dec 2016 12:41:54 -0600</pubDate>
       <guid>https://www.ghassan.page/posts/2016_12_08_send_email_with_attachments_using_aws_ses/</guid>
-      <description>To send an email with AWS SES service, there are two options:&#xA;Connecting directly to the AWS SMTP server with SMTP protocols. Or call AWS API over HTTPS. The SMTP is easier, but then you have to open SMTP ports (587 or 25 usually).&#xA;Using AWS SES API:AWS SES API has two options to send emails as described in the documentation:&#xA;Send simple text only formatted email. Send email with attachments as raw formatted email.</description>
+      <description>To send an email with AWS SES service, there are two options:
+Connecting directly to the AWS SMTP server with SMTP protocols. Or call AWS API over HTTPS. The SMTP is easier, but then you have to open SMTP ports (587 or 25 usually).
+Using AWS SES API:AWS SES API has two options to send emails as described in the documentation:
+Send simple text only formatted email. Send email with attachments as raw formatted email.</description>
     </item>
     <item>
       <title>Token Based Authentication and JWT.</title>
       <link>https://www.ghassan.page/posts/2016_04_29_token_based_authentication_jwt/</link>
       <pubDate>Fri, 29 Apr 2016 12:41:54 -0600</pubDate>
       <guid>https://www.ghassan.page/posts/2016_04_29_token_based_authentication_jwt/</guid>
-      <description>&lt;p&gt;HTTP protocol specified only two standard authentication mechanisms, which are implemented in every browser, the [HTTP basic authentication]({% post_url 2016-03-31-web-security-basic-authentication %}), and the Digest authentication which is obsolete now because it is not secure anymore.&lt;br&gt;&#xA;Because they are limited and work only on user name/password idea, the development communities in every web development platform came up with their better customized solutions.&lt;br&gt;&#xA;JWT is one of the most promising and smart authentication ideas that is taking famous recently.&lt;/p&gt;</description>
+      <description>&lt;p&gt;HTTP protocol specified only two standard authentication mechanisms, which are implemented in every browser, the [HTTP basic authentication]({% post_url 2016-03-31-web-security-basic-authentication %}), and the Digest authentication which is obsolete now because it is not secure anymore.&lt;br&gt;
+Because they are limited and work only on user name/password idea, the development communities in every web development platform came up with their better customized solutions.&lt;br&gt;
+JWT is one of the most promising and smart authentication ideas that is taking famous recently.&lt;/p&gt;</description>
     </item>
     <item>
       <title>Making sense of SSL, RSA, X509 and CSR</title>
       <link>https://www.ghassan.page/posts/2016_04_18_making_sense_of_ssl_rsa_x509_and_csr/</link>
       <pubDate>Mon, 18 Apr 2016 23:42:00 -0600</pubDate>
       <guid>https://www.ghassan.page/posts/2016_04_18_making_sense_of_ssl_rsa_x509_and_csr/</guid>
-      <description>This is the second part of learning about SSL/TLS.&#xA;The first part was how to protect the site with SSL.&#xA;This part is about explaining more the terms, technologies, protocols, standards used in SSL.&#xA;What is SSL/TLS:SSL is the standard protocol to secure the communication between a web server and a browser, by creating an encrypted link between the two.&#xA;SSL last version was 3.0, and TLS succeeds SSL, and become the new standard.</description>
+      <description>This is the second part of learning about SSL/TLS.
+The first part was how to protect the site with SSL.
+This part is about explaining more the terms, technologies, protocols, standards used in SSL.
+What is SSL/TLS:SSL is the standard protocol to secure the communication between a web server and a browser, by creating an encrypted link between the two.
+SSL last version was 3.0, and TLS succeeds SSL, and become the new standard.</description>
     </item>
     <item>
       <title>Secure your web site with SSL/TLS</title>
       <link>https://www.ghassan.page/posts/2016_03_11_secure_your_application_with_ssl/</link>
       <pubDate>Fri, 11 Mar 2016 08:59:00 -0700</pubDate>
       <guid>https://www.ghassan.page/posts/2016_03_11_secure_your_application_with_ssl/</guid>
-      <description>SSL (Secure Sockets Layer) and its successor, TLS (Transport Layer Security), are cryptographic protocols that secure internet communication by encrypting data between a client (like a browser) and a server.&#xA;How SSL/TLS works?SSL/TLS secure communication by:&#xA;Encryption: Ensures that data transmitted between the client and server cannot be read by third parties. Authentication: Verifies the identity of the server (and sometimes the client), establishing trust. Data Integrity: Guarantees that data has not been altered during transmission.</description>
+      <description>SSL (Secure Sockets Layer) and its successor, TLS (Transport Layer Security), are cryptographic protocols that secure internet communication by encrypting data between a client (like a browser) and a server.
+How SSL/TLS works?SSL/TLS secure communication by:
+Encryption: Ensures that data transmitted between the client and server cannot be read by third parties. Authentication: Verifies the identity of the server (and sometimes the client), establishing trust. Data Integrity: Guarantees that data has not been altered during transmission.</description>
     </item>
     <item>
       <title>Ajax, CORS, JSONP and the battle with Same-Origin Policy</title>
       <link>https://www.ghassan.page/posts/2015_12_16_ajax_cors/</link>
       <pubDate>Wed, 16 Dec 2015 19:51:56 -0700</pubDate>
       <guid>https://www.ghassan.page/posts/2015_12_16_ajax_cors/</guid>
-      <description>All modern browsers have a built-in security policy called Same-origin policy, which help mitigate many vulnerabilities and security flaws. This policy means the browser can only pull data from the same site.&#xA;Same site means pages that share the scheme (http, ftp, https&amp;hellip;), and the host name and the port.&#xA;The clash between Same-Origin Policy and AjaxThis policy was useful for a while to protect against XSS, but with the advance of ajax, and requesting data and resources from different domains and sites, then this policy become an obstacle.</description>
+      <description>All modern browsers have a built-in security policy called Same-origin policy, which help mitigate many vulnerabilities and security flaws. This policy means the browser can only pull data from the same site.
+Same site means pages that share the scheme (http, ftp, https&amp;hellip;), and the host name and the port.
+The clash between Same-Origin Policy and AjaxThis policy was useful for a while to protect against XSS, but with the advance of ajax, and requesting data and resources from different domains and sites, then this policy become an obstacle.</description>
     </item>
     <item>
       <title>CSS Fonts</title>
       <link>https://www.ghassan.page/posts/2015_11_26_css_fonts/</link>
       <pubDate>Thu, 26 Nov 2015 19:51:56 -0700</pubDate>
       <guid>https://www.ghassan.page/posts/2015_11_26_css_fonts/</guid>
-      <description>The simplist way to use different fonts in your web site is using fonts from the &amp;ldquo;Web-Safe&amp;rdquo; fonts[1] [2].&#xA;But, no impressive design will depend only on these web-safe fonts, and designers add their own preferable fonts to the web site they are building.&#xA;How to add your preferable fonts?Fonts comes as files that you have to upload to the site, and then reference them in the CSS file.&#xA;Usually font vendors provide fonts with different formats in order to be consumable by many different browsers.</description>
+      <description>The simplist way to use different fonts in your web site is using fonts from the &amp;ldquo;Web-Safe&amp;rdquo; fonts[1] [2].
+But, no impressive design will depend only on these web-safe fonts, and designers add their own preferable fonts to the web site they are building.
+How to add your preferable fonts?Fonts comes as files that you have to upload to the site, and then reference them in the CSS file.
+Usually font vendors provide fonts with different formats in order to be consumable by many different browsers.</description>
     </item>
     <item>
       <title>CSS Reset</title>
       <link>https://www.ghassan.page/posts/2015_11_18_css_reset/</link>
       <pubDate>Wed, 18 Nov 2015 19:51:56 -0700</pubDate>
       <guid>https://www.ghassan.page/posts/2015_11_18_css_reset/</guid>
-      <description>Every web developer had an experience where he test his web site on Chrome, IE and FireFox, to find out that the experience is a little bit different, because browsers have their own default implementation and rendering for the HTML elements. Which means if you don&amp;rsquo;t overwrite the default implementation with your own CSS rules, then the browser will use its own implementation.&#xA;If you are very keen on making the exact same user experience between all browsers even with the smallest details, then the community came up with a technique called &amp;ldquo;CSS Reset&amp;rdquo;.</description>
+      <description>Every web developer had an experience where he test his web site on Chrome, IE and FireFox, to find out that the experience is a little bit different, because browsers have their own default implementation and rendering for the HTML elements. Which means if you don&amp;rsquo;t overwrite the default implementation with your own CSS rules, then the browser will use its own implementation.
+If you are very keen on making the exact same user experience between all browsers even with the smallest details, then the community came up with a technique called &amp;ldquo;CSS Reset&amp;rdquo;.</description>
     </item>
   </channel>
 </rss>

@@ -6,56 +6,75 @@
     <description>Recent content in devops on Ghassan&#39;s Page</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 25 Sep 2024 18:41:54 -0600</lastBuildDate>
+    <lastBuildDate>Tue, 17 Dec 2024 18:41:54 -0600</lastBuildDate>
     <atom:link href="https://www.ghassan.page/tags/devops/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Managing Credentials for Azure Artifacts</title>
+      <link>https://www.ghassan.page/posts/2024_12_27_azure_artifact_cerdential_provider/</link>
+      <pubDate>Tue, 17 Dec 2024 18:41:54 -0600</pubDate>
+      <guid>https://www.ghassan.page/posts/2024_12_27_azure_artifact_cerdential_provider/</guid>
+      <description>When storing your private artifacts (NuGet, NPM, Docker, etc.) in Azure Artifacts, authentication is required to access them. Various tools such as dotnet, nuget, msbuild, and Visual Studio may need to retrieve these artifacts during the build process. To simplify credential management across these tools, Microsoft provides the Azure Artifacts Credential Provider.
+Introduction &amp;amp; Underlying TechnologySince accessing NuGet packages requires authentication, Microsoft provides the Credential Provider, a NuGet plugin that automates credential acquisition for NuGet clients, including:</description>
+    </item>
     <item>
       <title>Git Tools Every DevOps Engineer Should Know</title>
       <link>https://www.ghassan.page/posts/2024_09_25_git_commands_every_devops_should_know/</link>
       <pubDate>Wed, 25 Sep 2024 18:41:54 -0600</pubDate>
       <guid>https://www.ghassan.page/posts/2024_09_25_git_commands_every_devops_should_know/</guid>
-      <description>As a DevOps engineer managing an active Git repository with hundreds of commits daily, you&amp;rsquo;ll inevitably face challenges that require a solid understanding of Git and its ecosystem. This post covers common issues that teams encounter while using Git and the tools used to address them. Each tool mentioned deserves a dedicated post, but here’s a brief overview of the essentials.&#xA;The tools we&amp;rsquo;ll cover:&#xA;Maintaining the health of the repository.</description>
+      <description>As a DevOps engineer managing an active Git repository with hundreds of commits daily, you&amp;rsquo;ll inevitably face challenges that require a solid understanding of Git and its ecosystem. This post covers common issues that teams encounter while using Git and the tools used to address them. Each tool mentioned deserves a dedicated post, but here’s a brief overview of the essentials.
+The tools we&amp;rsquo;ll cover:
+Maintaining the health of the repository.</description>
     </item>
     <item>
       <title>Enhancing Team Collaboration with a Git Forking Strategy</title>
       <link>https://www.ghassan.page/posts/2024_09_24_team_collaboration_using_git_fork/</link>
       <pubDate>Mon, 23 Sep 2024 18:41:54 -0600</pubDate>
       <guid>https://www.ghassan.page/posts/2024_09_24_team_collaboration_using_git_fork/</guid>
-      <description>The fork-based pull request (PR) workflow is widely used in open-source projects because it enables external contributions while keeping the core repository secure and controlled by a designated team.&#xA;Fork-baed workflow and Inner SourceTypically, only contributors with repository access can create pull requests. As a contributor, you can create branches, submit PRs, and request merges. However, what happens if you&amp;rsquo;re not part of the repository&amp;rsquo;s team, as is the case in open-source projects?</description>
+      <description>The fork-based pull request (PR) workflow is widely used in open-source projects because it enables external contributions while keeping the core repository secure and controlled by a designated team.
+Fork-baed workflow and Inner SourceTypically, only contributors with repository access can create pull requests. As a contributor, you can create branches, submit PRs, and request merges. However, what happens if you&amp;rsquo;re not part of the repository&amp;rsquo;s team, as is the case in open-source projects?</description>
     </item>
     <item>
       <title>Design and implement Git branching strategies for CI/CD integration</title>
       <link>https://www.ghassan.page/posts/2024_09_23_design_and_implement_a_branch_strategy_and_workflow/</link>
       <pubDate>Mon, 23 Sep 2024 10:41:54 -0600</pubDate>
       <guid>https://www.ghassan.page/posts/2024_09_23_design_and_implement_a_branch_strategy_and_workflow/</guid>
-      <description>Establishing a standardized development process that integrates a Git workflow with Continuous Integration/Continuous Deployment (CI/CD) is crucial before writing any code. This post will explore a widely-used approach: the Trunk-Based Development Workflow, which is adopted by many leading companies, including Microsoft.&#xA;Choosing a branching strategy:Every team should adopt a consistent code release process to maintain quality and reduce risks. This starts with selecting a Git workflow, continues through integrating CI/CD, and culminates in defining a release strategy.</description>
+      <description>Establishing a standardized development process that integrates a Git workflow with Continuous Integration/Continuous Deployment (CI/CD) is crucial before writing any code. This post will explore a widely-used approach: the Trunk-Based Development Workflow, which is adopted by many leading companies, including Microsoft.
+Choosing a branching strategy:Every team should adopt a consistent code release process to maintain quality and reduce risks. This starts with selecting a Git workflow, continues through integrating CI/CD, and culminates in defining a release strategy.</description>
     </item>
     <item>
       <title>Enhancing Your Git Workflow with Git Credential Manager Core</title>
       <link>https://www.ghassan.page/posts/2024_09_22_make_sense_of_many_git_credential_helper/</link>
       <pubDate>Sun, 22 Sep 2024 10:41:54 -0600</pubDate>
       <guid>https://www.ghassan.page/posts/2024_09_22_make_sense_of_many_git_credential_helper/</guid>
-      <description>Git’s credential helper is a handy tool that saves your credentials, so you won’t need to re-enter your username and password for every git pull or git push. However, depending on the age of the tutorial you&amp;rsquo;re following and the platform you&amp;rsquo;re using, the instructions for setting up credential storage may vary.&#xA;In August 2021, GitHub introduced a new cross-platform tool called the Git Credential Manager Core. Let’s explore how this tool can streamline your team’s workflow.</description>
+      <description>Git’s credential helper is a handy tool that saves your credentials, so you won’t need to re-enter your username and password for every git pull or git push. However, depending on the age of the tutorial you&amp;rsquo;re following and the platform you&amp;rsquo;re using, the instructions for setting up credential storage may vary.
+In August 2021, GitHub introduced a new cross-platform tool called the Git Credential Manager Core. Let’s explore how this tool can streamline your team’s workflow.</description>
     </item>
     <item>
       <title>Are you still using git checkout for everything? It is time to switch to git switch</title>
       <link>https://www.ghassan.page/posts/2024_09_21_git_checkout_splitted_to_many_commands/</link>
       <pubDate>Sat, 21 Sep 2024 10:41:54 -0600</pubDate>
       <guid>https://www.ghassan.page/posts/2024_09_21_git_checkout_splitted_to_many_commands/</guid>
-      <description>If you&amp;rsquo;re like me and still rely on the trusty git checkout for a variety of tasks—like switching branches, restoring files, and checking out commits—then you&amp;rsquo;re in for a treat. The Git community has made things easier by introducing two new commands to split the workload: git switch and git restore.&#xA;These new commands were created to reduce the overload on git checkout and make Git a bit more intuitive, especially for developers who sometimes found it confusing.</description>
+      <description>If you&amp;rsquo;re like me and still rely on the trusty git checkout for a variety of tasks—like switching branches, restoring files, and checking out commits—then you&amp;rsquo;re in for a treat. The Git community has made things easier by introducing two new commands to split the workload: git switch and git restore.
+These new commands were created to reduce the overload on git checkout and make Git a bit more intuitive, especially for developers who sometimes found it confusing.</description>
     </item>
     <item>
       <title>Use Azure Key Vault to retrieve secured parameters during  Azure deployment.</title>
       <link>https://www.ghassan.page/posts/2023_02_04_azure_keyvault_deployment/</link>
       <pubDate>Sat, 04 Feb 2023 20:42:03 -0700</pubDate>
       <guid>https://www.ghassan.page/posts/2023_02_04_azure_keyvault_deployment/</guid>
-      <description>You have an ARM template to deploy, and you need to pass secure parameters. Instead of storing secure values in the parameter file, you can just retrieve these values from Key Vault.&#xA;To be able to access the key vault by the resource manager you need to change access policy to allow &amp;ldquo;Azure Resource Manager for template deployment&amp;rdquo;, as shown here.&#xA;Or you can do it from Powershell:&#xA;1// to update an existing key vault 2Set-AzKeyVaultAccessPolicy -VaultName MyVaultName -EnabledForTemplateDeployment 3 4// to create a new key vault with this feature enabled 5New-AzKeyVault ` 6 -VaultName MyVaultName ` 7 -resourceGroupName myresourcegroup ` 8 -Location centralus ` 9 -EnabledForTemplateDeployment How to use it?</description>
+      <description>You have an ARM template to deploy, and you need to pass secure parameters. Instead of storing secure values in the parameter file, you can just retrieve these values from Key Vault.
+To be able to access the key vault by the resource manager you need to change access policy to allow &amp;ldquo;Azure Resource Manager for template deployment&amp;rdquo;, as shown here.
+Or you can do it from Powershell:
+1// to update an existing key vault 2Set-AzKeyVaultAccessPolicy -VaultName MyVaultName -EnabledForTemplateDeployment 3 4// to create a new key vault with this feature enabled 5New-AzKeyVault ` 6 -VaultName MyVaultName ` 7 -resourceGroupName myresourcegroup ` 8 -Location centralus ` 9 -EnabledForTemplateDeployment How to use it?</description>
     </item>
     <item>
       <title>Introducing Kudu, the engine that handle all web application deployment to Azure App Service.</title>
       <link>https://www.ghassan.page/posts/2023_02_01_introducing_kudu/</link>
       <pubDate>Wed, 01 Feb 2023 20:20:40 -0700</pubDate>
       <guid>https://www.ghassan.page/posts/2023_02_01_introducing_kudu/</guid>
-      <description>If you follow any tutorials on Azure App Service, you will find that they use one of five options to deploy a web application to the Azure.&#xA;Using Azure DevOps Using Github actions and webhooks. FTP Zip Deploy. MSDeploy (Microsoft Web Deploy tool). But behind the scenes, all these options are using the same back engine, which is Kudu.&#xA;When we use FTP, Zip, or MSDeploy, we are actually calling Kudu REST API for deployment.</description>
+      <description>If you follow any tutorials on Azure App Service, you will find that they use one of five options to deploy a web application to the Azure.
+Using Azure DevOps Using Github actions and webhooks. FTP Zip Deploy. MSDeploy (Microsoft Web Deploy tool). But behind the scenes, all these options are using the same back engine, which is Kudu.
+When we use FTP, Zip, or MSDeploy, we are actually calling Kudu REST API for deployment.</description>
     </item>
     <item>
       <title>Deploy A Single Page Application to Azure Static Webapp using TeamCity, Jenkins or any CI, or command line</title>

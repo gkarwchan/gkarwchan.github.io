@@ -16,7 +16,8 @@ Let us jump into the code right away:
 1 [HttpGet(&#34;ProcessLongData&#34;)] 2 [ResponseCache(NoStore = true, Location = ResponseCacheLocation.None)] 3 public async IAsyncEnumerable&lt;string&gt; ProcessLongData(string input) 4 { 5 6 7 for (var i = 0; i &lt; 10; i&#43;&#43;) 8 { 9 await Task.">
   <meta name="keywords" content="blog,developer,personal">
 
-  <meta name="twitter:card" content="summary"/><meta name="twitter:title" content="Stream long running webapi with Asp.NET Core and Javascript"/>
+  <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Stream long running webapi with Asp.NET Core and Javascript"/>
 <meta name="twitter:description" content="If you have a long running process that return array of data, or a data that you can send back as chunk of data, then you can stream the result.
 Streaming from the serverIn Asp.NET core 6 and later, it is so easy to stream back the result using IAsyncEnumerable.
 Let us jump into the code right away:
@@ -535,7 +536,7 @@ Let us see code with and without HttpCompletionOption:</p>
 </li></ul>
 
         <p class="copyright text-muted">
-          Copyright &copy; Ghassan&#39;s Page 2024  
+          Copyright &copy; Ghassan&#39;s Page 2025  
           <br>
           Powered by <a href="https://gohugo.io">Hugo</a>
         </p>

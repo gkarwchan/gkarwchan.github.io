@@ -10,20 +10,24 @@
     
   <title>Self certified certificates | Ghassan&#39;s Page</title>
   <meta name="author" content="Ghassan Karwchan">
-  <meta name="description" content="A self-signed certificate is a type of SSL/TLS certificate that is generated and signed by the individual or organization that owns it, rather than being issued by a trusted Certificate Authority (CA). It is used inside development process to use https on your development server or on developer machine.
-Generate self-signed :We will see how to generate self-signed certificate using:
-.NET Core tool Powershell OpenSSL tool called mkcert With .NET Core tool:The .">
+  <meta name="description" content="A self-signed certificate is a type of SSL/TLS certificate that is generated and signed by the individual or organization that owns it, rather than being issued by a trusted Certificate Authority (CA).
+For development process we need a certificate for the host localhost, and be stored in the certificate store which vary depends on the operating system.
+To generate and use the certificate do the following two steps:
+generate the certificate store the certificate in the certificate store which vary depends on the operating system.">
   <meta name="keywords" content="blog,developer,personal">
 
-  <meta name="twitter:card" content="summary"/><meta name="twitter:title" content="Self certified certificates"/>
-<meta name="twitter:description" content="A self-signed certificate is a type of SSL/TLS certificate that is generated and signed by the individual or organization that owns it, rather than being issued by a trusted Certificate Authority (CA). It is used inside development process to use https on your development server or on developer machine.
-Generate self-signed :We will see how to generate self-signed certificate using:
-.NET Core tool Powershell OpenSSL tool called mkcert With .NET Core tool:The ."/>
+  <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Self certified certificates"/>
+<meta name="twitter:description" content="A self-signed certificate is a type of SSL/TLS certificate that is generated and signed by the individual or organization that owns it, rather than being issued by a trusted Certificate Authority (CA).
+For development process we need a certificate for the host localhost, and be stored in the certificate store which vary depends on the operating system.
+To generate and use the certificate do the following two steps:
+generate the certificate store the certificate in the certificate store which vary depends on the operating system."/>
 
   <meta property="og:title" content="Self certified certificates" />
-<meta property="og:description" content="A self-signed certificate is a type of SSL/TLS certificate that is generated and signed by the individual or organization that owns it, rather than being issued by a trusted Certificate Authority (CA). It is used inside development process to use https on your development server or on developer machine.
-Generate self-signed :We will see how to generate self-signed certificate using:
-.NET Core tool Powershell OpenSSL tool called mkcert With .NET Core tool:The ." />
+<meta property="og:description" content="A self-signed certificate is a type of SSL/TLS certificate that is generated and signed by the individual or organization that owns it, rather than being issued by a trusted Certificate Authority (CA).
+For development process we need a certificate for the host localhost, and be stored in the certificate store which vary depends on the operating system.
+To generate and use the certificate do the following two steps:
+generate the certificate store the certificate in the certificate store which vary depends on the operating system." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://www.ghassan.page/posts/2024_11_05_self-signed-certificates/" /><meta property="article:section" content="posts" />
 <meta property="article:published_time" content="2024-11-05T18:41:54-06:00" />
@@ -203,7 +207,13 @@ Generate self-signed :We will see how to generate self-signed certificate using:
               col-lg-8 col-lg-offset-2
               col-md-10 col-md-offset-1
               post-container">
-        <p>A self-signed certificate is a type of SSL/TLS certificate that is generated and signed by the individual or organization that owns it, rather than being issued by a trusted Certificate Authority (CA). It is used inside development process to use https on your development server or on developer machine.</p>
+        <p>A self-signed certificate is a type of SSL/TLS certificate that is generated and signed by the individual or organization that owns it, rather than being issued by a trusted Certificate Authority (CA).<br>
+For development process we need a certificate for the host <code>localhost</code>, and be stored in the certificate store which vary depends on the operating system.<br>
+To generate and use the certificate do the following two steps:</p>
+<ol>
+<li>generate the certificate</li>
+<li>store the certificate in the certificate store which vary depends on the operating system.</li>
+</ol>
 <h1 id="generate-self-signed-">Generate self-signed :<a class="anchorjs-link" href="#generate-self-signed-"></a></h1><p>We will see how to generate self-signed certificate using:</p>
 <ol>
 <li>.NET Core tool</li>
@@ -212,6 +222,7 @@ Generate self-signed :We will see how to generate self-signed certificate using:
 <li>tool called mkcert</li>
 </ol>
 <h2 id="with-net-core-tool">With .NET Core tool:<a class="anchorjs-link" href="#with-net-core-tool"></a></h2><p>The .NET Core SDK includes an HTTPS development certificate, and it works with <code>Kestrel</code> and <code>IIS express</code>.<br>
+You need to just trust the certificate to be stored in the certificate store.<br>
 You need first to trust it:</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="color:#6272a4">## this will trust the development certificate coming with .NET</span>
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>dotnet dev-certs https --trust
@@ -220,7 +231,7 @@ You need first to trust it:</p>
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span>dotnet dev-certs https --check --trust
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6</span><span>
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7</span><span><span style="color:#6272a4">## the following will check if there is a certificate, </span>
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">8</span><span><span style="color:#6272a4">## if not, it will create one</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">8</span><span><span style="color:#6272a4">## if not or expired, it will create one</span>
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">9</span><span>dotnet dev-certs https
 </span></span></code></pre></div><h4 id="where-the-certificate-is-stored">Where the certificate is stored?<a class="anchorjs-link" href="#where-the-certificate-is-stored"></a></h4><p>In Windows the certificate is stored in the current user certificate store (the Windows registry). You can access it by running Microsoft Management Console (MMC) and add <code>certificate</code> snap-in.</p>
 <h2 id="with-powershell">With PowerShell<a class="anchorjs-link" href="#with-powershell"></a></h2><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-powershell" data-lang="powershell"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="color:#6272a4"># the following command create a certificate for localhost address, and store it in local machine store, under personal store</span>
@@ -255,6 +266,12 @@ Make sure when it comes to specify the <strong><code>DNS name</code></strong> to
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>npx http-server -S -C server.cert -K server.key -p <span style="color:#bd93f9">8080</span>
 </span></span></code></pre></div><h2 id="using-tool-called-mkcert">using tool called mkcert<a class="anchorjs-link" href="#using-tool-called-mkcert"></a></h2><p>mkcert: <a href="https://github.com/FiloSottile/mkcert">https://github.com/FiloSottile/mkcert</a>
 This tool does more to create certificate. It create a local <strong><code>CA</code></strong> (Certificate Authority), and generate a certificate and store it in the system store, and one more benefit, it store the certificate in firefox store, where the above commands will not work with firefox and you have to create a policy file to trust the generated certificate.</p>
+<h1 id="certificate-store-and-browsers">Certificate store and browsers<a class="anchorjs-link" href="#certificate-store-and-browsers"></a></h1><p>Certificate store different on different operating system.</p>
+<h2 id="on-windows">On Windows<a class="anchorjs-link" href="#on-windows"></a></h2><p>In Windows the certificate is stored in the current user certificate store (the Windows registry). You can access it by running Microsoft Management Console (MMC) and add <code>certificate</code> snap-in.</p>
+<h2 id="firefox-browser">Firefox browser<a class="anchorjs-link" href="#firefox-browser"></a></h2><p>Firefox browser doesn&rsquo;t rely on the operating system, and it uses its own store.<br>
+To use the Windows store we can either configure Firefox to trust certificates trusted on Windows, or we create policies to import the Windows certificate store into Firefox.<br>
+For both approach <a href="https://support.mozilla.org/en-US/kb/setting-certificate-authorities-firefox">refer to this</a>.</p>
+<h2 id="on-linux">On Linux<a class="anchorjs-link" href="#on-linux"></a></h2><p>When ASP.Net Core development certificate is trused, it is exported to a folder in the current user&rsquo;s home directory, and you need to set the <code>SSL_CERT_DIR</code> environment varialbe to that location.</p>
 
 
         <hr style="visibility: hidden;" />
@@ -267,6 +284,13 @@ This tool does more to create certificate. It create a local <strong><code>CA</c
             </a>
           </li>
           
+          
+          <li class="next">
+            <a href="/posts/2024_11_14_running_apm_for_aspnet/" data-toggle="tooltip" data-placement="top" title="Enable APM for ASP.NET Core application">
+              Next<br>
+              <span>Enable APM for ASP.NET Core application</span>
+            </a>
+          </li>
           
         </ul>
         <hr style="visibility: hidden;" />
@@ -405,7 +429,7 @@ This tool does more to create certificate. It create a local <strong><code>CA</c
 </li></ul>
 
         <p class="copyright text-muted">
-          Copyright &copy; Ghassan&#39;s Page 2024  
+          Copyright &copy; Ghassan&#39;s Page 2025  
           <br>
           Powered by <a href="https://gohugo.io">Hugo</a>
         </p>

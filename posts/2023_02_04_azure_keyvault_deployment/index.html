@@ -16,7 +16,8 @@ Or you can do it from Powershell:
 1// to update an existing key vault 2Set-AzKeyVaultAccessPolicy -VaultName MyVaultName -EnabledForTemplateDeployment 3 4// to create a new key vault with this feature enabled 5New-AzKeyVault ` 6 -VaultName MyVaultName ` 7 -resourceGroupName myresourcegroup ` 8 -Location centralus ` 9 -EnabledForTemplateDeployment How to use it?">
   <meta name="keywords" content="blog,developer,personal">
 
-  <meta name="twitter:card" content="summary"/><meta name="twitter:title" content="Use Azure Key Vault to retrieve secured parameters during  Azure deployment."/>
+  <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Use Azure Key Vault to retrieve secured parameters during  Azure deployment."/>
 <meta name="twitter:description" content="You have an ARM template to deploy, and you need to pass secure parameters. Instead of storing secure values in the parameter file, you can just retrieve these values from Key Vault.
 To be able to access the key vault by the resource manager you need to change access policy to allow &ldquo;Azure Resource Manager for template deployment&rdquo;, as shown here.
 Or you can do it from Powershell:
@@ -418,7 +419,7 @@ This powershell script does this:</p>
 </li></ul>
 
         <p class="copyright text-muted">
-          Copyright &copy; Ghassan&#39;s Page 2024  
+          Copyright &copy; Ghassan&#39;s Page 2025  
           <br>
           Powered by <a href="https://gohugo.io">Hugo</a>
         </p>

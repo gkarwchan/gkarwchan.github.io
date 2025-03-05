@@ -8,27 +8,30 @@
 
   
     
-  <title>Different options to add SSL certificate to you Azure App Service | Ghassan&#39;s Page</title>
+  <title>Enable APM for ASP.NET Core application | Ghassan&#39;s Page</title>
   <meta name="author" content="Ghassan Karwchan">
-  <meta name="description" content="To add a SSL certificate to your web app hosted on Azure App Service with a custom domain, there are few options. I am going to list them here.
-Free certificate:Azure provides a free SSL certificate, and it is fully managed by Azure. Azure renew the process for you, and take care of everything for you.
-Although having a free certificate is a wonderful idea, but it has some shortcoming:">
+  <meta name="description" content="There are many tools that provide APM (Application Performance Monitoring) for Asp.NET.
+The all share the same steps and configuration on how to hook their service into Asp.NET running instance.
+How profiling work in .NETProfiling a managed CLR application is different than profiling normal non-managed appication, because CLR is different. CLR prvides these services:
+Application domains Garbage collection Managed exception handling Just In Time (JIT) compilation .NET provides its own profiling API, and all profiling tools are using this API, and they all work in the same way.">
   <meta name="keywords" content="blog,developer,personal">
 
   <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="Different options to add SSL certificate to you Azure App Service"/>
-<meta name="twitter:description" content="To add a SSL certificate to your web app hosted on Azure App Service with a custom domain, there are few options. I am going to list them here.
-Free certificate:Azure provides a free SSL certificate, and it is fully managed by Azure. Azure renew the process for you, and take care of everything for you.
-Although having a free certificate is a wonderful idea, but it has some shortcoming:"/>
+<meta name="twitter:title" content="Enable APM for ASP.NET Core application"/>
+<meta name="twitter:description" content="There are many tools that provide APM (Application Performance Monitoring) for Asp.NET.
+The all share the same steps and configuration on how to hook their service into Asp.NET running instance.
+How profiling work in .NETProfiling a managed CLR application is different than profiling normal non-managed appication, because CLR is different. CLR prvides these services:
+Application domains Garbage collection Managed exception handling Just In Time (JIT) compilation .NET provides its own profiling API, and all profiling tools are using this API, and they all work in the same way."/>
 
-  <meta property="og:title" content="Different options to add SSL certificate to you Azure App Service" />
-<meta property="og:description" content="To add a SSL certificate to your web app hosted on Azure App Service with a custom domain, there are few options. I am going to list them here.
-Free certificate:Azure provides a free SSL certificate, and it is fully managed by Azure. Azure renew the process for you, and take care of everything for you.
-Although having a free certificate is a wonderful idea, but it has some shortcoming:" />
+  <meta property="og:title" content="Enable APM for ASP.NET Core application" />
+<meta property="og:description" content="There are many tools that provide APM (Application Performance Monitoring) for Asp.NET.
+The all share the same steps and configuration on how to hook their service into Asp.NET running instance.
+How profiling work in .NETProfiling a managed CLR application is different than profiling normal non-managed appication, because CLR is different. CLR prvides these services:
+Application domains Garbage collection Managed exception handling Just In Time (JIT) compilation .NET provides its own profiling API, and all profiling tools are using this API, and they all work in the same way." />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://www.ghassan.page/posts/2023_12_8_azureappservice_ssl_certificate/" /><meta property="article:section" content="posts" />
-<meta property="article:published_time" content="2023-12-08T12:41:54-06:00" />
-<meta property="article:modified_time" content="2023-12-08T12:41:54-06:00" />
+<meta property="og:url" content="https://www.ghassan.page/posts/2024_11_14_running_apm_for_aspnet/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2024-11-14T18:41:54-06:00" />
+<meta property="article:modified_time" content="2024-11-14T18:41:54-06:00" />
 
 
 
@@ -176,16 +179,14 @@ Although having a free certificate is a wonderful idea, but it has some shortcom
         <div class="post-heading">
           <div class="tags">
             
-            <a class="tag" href="/tags/azure/" title="azure">azure</a>
-            
             <a class="tag" href="/tags/security/" title="security">security</a>
             
           </div>
-          <h1>Different options to add SSL certificate to you Azure App Service</h1>
+          <h1>Enable APM for ASP.NET Core application</h1>
           <h2 class="subheading"></h2>
           <span class="meta">
             Posted by  Ghassan Karwchan 
-            on Fri, Dec 8, 2023
+            on Thu, Nov 14, 2024
           </span>
         </div>
       </div>
@@ -206,38 +207,102 @@ Although having a free certificate is a wonderful idea, but it has some shortcom
               col-lg-8 col-lg-offset-2
               col-md-10 col-md-offset-1
               post-container">
-        <p>To add a SSL certificate to your web app hosted on Azure App Service with a custom domain, there are few options. I am going to list them here.</p>
-<h2 id="free-certificate">Free certificate:<a class="anchorjs-link" href="#free-certificate"></a></h2><p>Azure provides a free SSL certificate, and it is fully managed by Azure.  Azure renew the process for you, and take care of everything for you.<br>
-Although having a free certificate is a wonderful idea, but it has some shortcoming:</p>
-<ol>
-<li>you have no control over it, and you cannot export it to use it somewhere else.</li>
-<li>This certificate can only be used by the associated App Service and nowhere else even inside Azure.</li>
-<li>As well it works only for a single subdomain, and cannot be a wildcard for all subdomain.</li>
-<li>Another issue with this certificate that upon writing this post, this certificate doesn&rsquo;t support <code>Extended Validation</code> which provides another layer of trust.</li>
-</ol>
-<p>For all these previous issues you might consider buying your own certificate.</p>
-<h2 id="azure-app-service-certificate">Azure App Service Certificate:<a class="anchorjs-link" href="#azure-app-service-certificate"></a></h2><p>Azure provides you with a way to buy the certificate from a <code>Certificate Authority</code> (CA) provider, but through Azure itself.<br>
-Azure uses (upon writing this post) GoDaddy CA provider, and Azure communicate with GoDaddy to issue the certificate and retrieve it into Azure.<br>
-The benefits of that is Azure is going to be responsible of configure the certificate and use it in the App Service, and at the same time take care of renewing the certificate.<br>
-It is exactly like you buy it yourself from GoDaddy, but it is managed through Azure.<br>
-You can as well export it and use it somewhere else because it is exactly like you buy it yourself.</p>
+        <p>There are many tools that provide APM (Application Performance Monitoring) for Asp.NET.<br>
+The all share the same steps and configuration on how to hook their service into Asp.NET running instance.</p>
+<h1 id="how-profiling-work-in-net">How profiling work in .NET<a class="anchorjs-link" href="#how-profiling-work-in-net"></a></h1><p>Profiling a managed CLR application is different than profiling normal non-managed appication, because CLR is different. CLR prvides these services:</p>
+<ul>
+<li>Application domains</li>
+<li>Garbage collection</li>
+<li>Managed exception handling</li>
+<li>Just In Time (JIT) compilation</li>
+</ul>
+<p>.NET provides its own profiling API, and all profiling tools are using this API, and they all work in the same way.<br>
+When a managed application starts, it loads the CLR, and when the CLR initialized, it looks for these two environment variables:</p>
+<ul>
+<li>CORECLR_ENABLE_PROFILING</li>
+<li>CORECLR_PROFILER
+The <code>CORECLR_ENABLE_PROFILING</code> should be 1, and the <code>CORECLR_PROFILER</code> is a GUID that unique for a specific APM provider.<br>
+If profiling is enabled, CLR will look for the profiling library and load it. The profiling library will be provided by another environment variable, or variables:</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Env. Variable Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>CORECLR_PROFILER_PATH</td>
+<td>the path to the dll file</td>
+</tr>
+<tr>
+<td>CORECLR_PROFILER_PATH_32</td>
+<td>the path to the dll file 32 bit</td>
+</tr>
+<tr>
+<td>CORECLR_PROFILER_PATH_64</td>
+<td>the path to the dll file 64 bit</td>
+</tr>
+</tbody>
+</table>
+<h1 id="hosting-your-application-on-azure">Hosting your application on Azure<a class="anchorjs-link" href="#hosting-your-application-on-azure"></a></h1><p>If you are hosting your application on Azure, then we will list the above environment variable values:</p>
+<h2 id="using-azure-application-insight">Using Azure Application Insight:<a class="anchorjs-link" href="#using-azure-application-insight"></a></h2><p>You can use Azure Application Insight which will provide an easy way to configure the application.<br>
+From Azure or from Bicep, you can attach Application Insight to your app, and everything will be configured automatically.</p>
+<table>
+<thead>
+<tr>
+<th>Env. Variable Name</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>CORECLR_PROFILER_PATH</td>
+<td>D:\Home\site\wwwroot&lt;the path for the dll&gt;</td>
+</tr>
+</tbody>
+</table>
+<p>Example <strong><code>NewRelic</code></strong>:</p>
+<table>
+<thead>
+<tr>
+<th>Env. Variable Name</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>CORECLR_PROFILER_PATH_32</td>
+<td>D:\Home\site\wwwroot\newrelic\x86\NewRelic.Profiler.dll</td>
+</tr>
+<tr>
+<td>CORECLR_PROFILER_PATH_64</td>
+<td>D:\Home\site\wwwroot\newrelic\NewRelic.Profiler.dll</td>
+</tr>
+<tr>
+<td>CORECLR_NEWRELIC_HOME</td>
+<td>D:\Home\site\wwwroot\newrelic</td>
+</tr>
+</tbody>
+</table>
 
 
         <hr style="visibility: hidden;" />
         <ul class="pager">
           
           <li class="previous">
-            <a href="/posts/2023_12_3_dns_settings_to_map_blog/" data-toggle="tooltip" data-placement="top" title="Everything you need to know about configure DNS to provide domain for your blog">
+            <a href="/posts/2024_11_05_self-signed-certificates/" data-toggle="tooltip" data-placement="top" title="Self certified certificates">
               Previous<br>
-              <span>Everything you need to know about configure DNS to provide domain for your blog</span>
+              <span>Self certified certificates</span>
             </a>
           </li>
           
           
           <li class="next">
-            <a href="/posts/2024_01_05_oauth2_and_spa/" data-toggle="tooltip" data-placement="top" title="How Single Page Application call a secure your API with OAuth2">
+            <a href="/posts/2024_12_27_azure_artifact_cerdential_provider/" data-toggle="tooltip" data-placement="top" title="Managing Credentials for Azure Artifacts">
               Next<br>
-              <span>How Single Page Application call a secure your API with OAuth2</span>
+              <span>Managing Credentials for Azure Artifacts</span>
             </a>
           </li>
           

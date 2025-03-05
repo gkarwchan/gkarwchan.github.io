@@ -13,14 +13,18 @@
       <link>https://www.ghassan.page/posts/2023_02_22_azure_application_insight_performance/</link>
       <pubDate>Wed, 22 Feb 2023 21:44:55 -0700</pubDate>
       <guid>https://www.ghassan.page/posts/2023_02_22_azure_application_insight_performance/</guid>
-      <description>If you have Application Insights enabled for your azure app service, then it is a piece of cake to get the performance bottleneck in your app, and even it check external dependencies like database queries or any other external dependencies.&#xA;I have a Web API application, that is accessing Azure Sql Server, and Azure blob storage.&#xA;By going into the performance blade under Investigate:&#xA;You will see the average time for each API call, sorted descending by time: By clicking on any one, you can drill down to where the time consume even by its external dependencies:</description>
+      <description>If you have Application Insights enabled for your azure app service, then it is a piece of cake to get the performance bottleneck in your app, and even it check external dependencies like database queries or any other external dependencies.
+I have a Web API application, that is accessing Azure Sql Server, and Azure blob storage.
+By going into the performance blade under Investigate:
+You will see the average time for each API call, sorted descending by time: By clicking on any one, you can drill down to where the time consume even by its external dependencies:</description>
     </item>
     <item>
       <title>Memoization in Python and JavaScript</title>
       <link>https://www.ghassan.page/posts/2020_09_20_memoization_python_javascript/</link>
       <pubDate>Sun, 20 Sep 2020 09:45:00 +0000</pubDate>
       <guid>https://www.ghassan.page/posts/2020_09_20_memoization_python_javascript/</guid>
-      <description>&lt;p&gt;Memoization is a technique that is used a lot in Dynamic Programming and in general to speed up algorithms.&lt;br&gt;&#xA;Memoization is the same as caching but in functional programming. The Caching mechanism will store the data into a cache store, and that data can be from anywhere (HTTP page, REST call, &amp;hellip; etc) , where memoization is specific to cache the results of a function, and it create and maintain the store inside the function itself (so the function will be pure function) and send the store as a parameter into the function arguments.&lt;/p&gt;</description>
+      <description>&lt;p&gt;Memoization is a technique that is used a lot in Dynamic Programming and in general to speed up algorithms.&lt;br&gt;
+Memoization is the same as caching but in functional programming. The Caching mechanism will store the data into a cache store, and that data can be from anywhere (HTTP page, REST call, &amp;hellip; etc) , where memoization is specific to cache the results of a function, and it create and maintain the store inside the function itself (so the function will be pure function) and send the store as a parameter into the function arguments.&lt;/p&gt;</description>
     </item>
   </channel>
 </rss>
