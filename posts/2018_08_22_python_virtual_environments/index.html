@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  
+    
+  <title>Python Virtual Environments &amp; Package Management | Ghassan&#39;s Page</title>
+  <meta name="author" content="Ghassan Karwchan">
+  <meta name="description" content="Python virtual environments, and as well package management, has a shaky history, and it has been changing a lot for last few years. Even currently, (early 2018), it is confusing because there are many tools for virtual environments (venv, virtualenv, pyvenv, pyenv). I couldn’t find one tutorial that describe everything in just one place, so I thought, I will write it down. This post is a combination of many official documentation, answers of StackOverflow, and different blog posts that I think will give you comprehensive picture, not only for the virtual environment, but for the package management as well.">
+  <meta name="keywords" content="blog,developer,personal">
+
+  <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Python Virtual Environments &amp; Package Management"/>
+<meta name="twitter:description" content="Python virtual environments, and as well package management, has a shaky history, and it has been changing a lot for last few years. Even currently, (early 2018), it is confusing because there are many tools for virtual environments (venv, virtualenv, pyvenv, pyenv). I couldn’t find one tutorial that describe everything in just one place, so I thought, I will write it down. This post is a combination of many official documentation, answers of StackOverflow, and different blog posts that I think will give you comprehensive picture, not only for the virtual environment, but for the package management as well."/>
+
+  <meta property="og:title" content="Python Virtual Environments &amp; Package Management" />
+<meta property="og:description" content="Python virtual environments, and as well package management, has a shaky history, and it has been changing a lot for last few years. Even currently, (early 2018), it is confusing because there are many tools for virtual environments (venv, virtualenv, pyvenv, pyenv). I couldn’t find one tutorial that describe everything in just one place, so I thought, I will write it down. This post is a combination of many official documentation, answers of StackOverflow, and different blog posts that I think will give you comprehensive picture, not only for the virtual environment, but for the package management as well." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://www.ghassan.page/posts/2018_08_22_python_virtual_environments/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2018-08-22T18:41:54-06:00" />
+<meta property="article:modified_time" content="2018-08-22T18:41:54-06:00" />
+
+
+
+  <link rel="stylesheet" href="/css/bootstrap.min.css"  crossorigin="anonymous">
+  
+  <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.1/css/all.min.css" rel="stylesheet" type="text/css">
+
+  <link rel="stylesheet" href="/sass/main.css">
+
+  <link rel="stylesheet" href="/zoomjs/zoom.min.css">
+
+  <script src=/js/lazysizes.min.js></script>
+
+  
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="manifest" href="/site.webmanifest">
+  
+
+</head>
+
+
+
+<body ontouchstart="">
+  
+  
+  <nav class="navbar navbar-default navbar-custom navbar-fixed-top invert">
+  <div class="container-fluid">
+    
+    <div class="navbar-header page-scroll">
+      <button type="button" class="navbar-toggle">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="https://www.ghassan.page/">Ghassan&#39;s Page</a>
+    </div>
+    
+    <div id="huxblog_navbar">
+      <div class="navbar-collapse">
+        <ul class="nav navbar-nav navbar-right">
+          
+          <li><a href="/" title="Home">Home</a></li>
+          
+          <li><a href="/archive/" title="Archive">Archive</a></li>
+          
+          <li><a href="/about/" title="About">About</a></li>
+          
+          <li><a href="https://github.com/gkarwchan/hugoblogsource" title="Github">Github</a></li>
+          
+
+          <li class="search-icon">
+            <a href="javascript:void(0)">
+              <i class="fa fa-search"></i>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    
+  </div>
+  
+</nav>
+<script>
+  
+  
+  
+  var $body = document.body;
+  var $toggle = document.querySelector(".navbar-toggle");
+  var $navbar = document.querySelector("#huxblog_navbar");
+  var $collapse = document.querySelector(".navbar-collapse");
+
+  var __HuxNav__ = {
+    close: function () {
+      $navbar.className = " ";
+      
+      setTimeout(function () {
+        
+        if ($navbar.className.indexOf("in") < 0) {
+          $collapse.style.height = "0px";
+        }
+      }, 400);
+    },
+    open: function () {
+      $collapse.style.height = "auto";
+      $navbar.className += " in";
+    },
+  };
+
+  
+  $toggle.addEventListener("click", function (e) {
+    if ($navbar.className.indexOf("in") > 0) {
+      __HuxNav__.close();
+    } else {
+      __HuxNav__.open();
+    }
+  });
+
+  
+
+  document.addEventListener("click", function (e) {
+    if (e.target == $toggle) return;
+    if (e.target.className == "icon-bar") return;
+    __HuxNav__.close();
+  });
+</script>
+  
+<div class="search-page">
+  <div class="search-icon-close-container">
+    <span class="search-icon-close">
+      <i class="fa fa-chevron-down"></i>
+    </span>
+  </div>
+  <div class="search-main container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <form></form>
+        <input type="text" id="search-input" placeholder="$ grep...">
+        </form>
+        <div id="search-results" class="mini-post-list"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+  
+  
+
+
+<style type="text/css">
+  header.intro-header {
+    position: relative;
+    background-image: url('');
+  }
+</style>
+
+<header class="intro-header style-text">
+
+  <div class="header-mask"></div>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div class="post-heading">
+          <div class="tags">
+            
+            <a class="tag" href="/tags/python/" title="python">python</a>
+            
+          </div>
+          <h1>Python Virtual Environments &amp; Package Management</h1>
+          <h2 class="subheading"></h2>
+          <span class="meta">
+            Posted by  Ghassan Karwchan 
+            on Wed, Aug 22, 2018
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+
+  
+
+
+<article>
+  <div class="container">
+    <div class="row">
+
+      
+      <div class="
+              col-lg-8 col-lg-offset-2
+              col-md-10 col-md-offset-1
+              post-container">
+        <p>Python virtual environments, and as well package management, has a shaky history, and it has been changing a lot for last few years.
+Even currently, (early 2018), it is confusing because there are many tools for virtual environments (venv, virtualenv, pyvenv, pyenv).
+I couldn’t find one tutorial that describe everything in just one place, so I thought, I will write it down.
+This post is a combination of many official documentation, answers of StackOverflow, and different blog posts that I think will give you comprehensive picture, not only for the virtual environment, but for the package management as well.</p>
+<h1 id="introduction">Introduction<a class="anchorjs-link" href="#introduction"></a></h1><p>I’ve been doing Python on and off, and every time I came back to Python after a long time off, I had to learn again, what is the best virtual environment tool, and as well their package management.
+So, I thought I will put this tutorial, that gives a comprehensive description of the Python working environment.
+I will start the post with the practical side, by describing the virtual environment tools, and differences between them, and then I will go to deeper description of pip and pip ancestor, and the background of virtual environments.</p>
+<h3 id="pip-installation-folder">Pip Installation Folder:<a class="anchorjs-link" href="#pip-installation-folder"></a></h3><p>To compare Pip, we can think of Node&rsquo;s <code>NPM</code> which store the packages in folder called <code>node_modules</code> and has only two possible locations:</p>
+<ul>
+<li>project-level node_modules folder, which is the default option.</li>
+<li>user-level (global) node_modules folder.</li>
+</ul>
+<p>Python’s pip will install the packages in a <code>site-packages</code> folder, which can be one of two levels:</p>
+<ul>
+<li>Machine level shared folder.</li>
+<li>User level shared folder, which is the default.</li>
+</ul>
+<p>But to create isolatoin for each project, Python introduce tools and protocols to install in <code>virtual environments</code>.</p>
+<p>Python’s packaging tools provided two other pip-based tools that will do installation in two other levels:</p>
+<ul>
+<li>Virtual environment level shared folder.</li>
+<li>Project level installation folder.</li>
+</ul>
+<h1 id="installation-type-and-scenarios">Installation type and scenarios:<a class="anchorjs-link" href="#installation-type-and-scenarios"></a></h1><p>We will list here the different case of these folders and their scenarios:</p>
+<h3 id="user-level-shared-folder">User Level Shared Folder:<a class="anchorjs-link" href="#user-level-shared-folder"></a></h3><p>Without activating a virtual environment, Pip by default will install the downloaded packages either on a folder that belong to the user folder.
+Installation on a user folder became the default, and you can control it by this command line:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>python setup.py install --user
+</span></span></code></pre></div><p>This is called user scheme installation mode.
+The folder is located:</p>
+<table>
+<thead>
+<tr>
+<th>OS</th>
+<th>Folder</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Linux</td>
+<td>~/.local/lib/python{version: x.y}/site-packages</td>
+</tr>
+<tr>
+<td>Mac</td>
+<td>~/Library/Python/{version: x.y}/lib/python/site-packages</td>
+</tr>
+<tr>
+<td>Windows</td>
+<td>%APPDATA%\Python{version: x.y}\site-packages</td>
+</tr>
+</tbody>
+</table>
+<p>You can check if this mode is enabled by this command line</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>python -m site 
+</span></span></code></pre></div><p>The command will display the environment variable <code>ENABLE_USER_SITE</code> value, which by default is true.</p>
+<h3 id="machine-level-shared-folder">Machine Level Shared Folder<a class="anchorjs-link" href="#machine-level-shared-folder"></a></h3><p>f the environment variable <code>ENABLE_USER_SITE</code> is false, then the installation will be stored on the machine folder:</p>
+<table>
+<thead>
+<tr>
+<th>OS</th>
+<th>Folder</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Linux</td>
+<td>/usr/local/lib/python{version: x.y}/site-packages</td>
+</tr>
+<tr>
+<td>Mac</td>
+<td>/usr/local/lib/python{version: x.y}/site-packages</td>
+</tr>
+<tr>
+<td>Windows</td>
+<td>c:\Python{version: x.y}\Lib\site-packages</td>
+</tr>
+</tbody>
+</table>
+<h3 id="virtual-environment-shared-folder">Virtual Environment Shared Folder<a class="anchorjs-link" href="#virtual-environment-shared-folder"></a></h3><p>We can create an isolated virtual environment that can be shared between many users, where running pip install, will install inside that virtual environment without polluting the user level or machine level. To create a virtual environment, we use another tool called <code>virtualenv</code>, which can be installed with pip itself.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>pip3 install virtualenv
+</span></span></code></pre></div><p>Then on a directory where you want to create the virtual environment, run the following command:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>virtualenv my_virtualenv
+</span></span></code></pre></div><p>The above command will create a folder in the current directory which contain the Python executable files, and a copy of pip library, which will be used to install other packages.
+To begin using the virtual environment, you need to activated using</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="color:#8be9fd;font-style:italic">source</span> my_virtualenv/bin/activate
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span><span style="color:#6272a4"># Or alternative </span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span>. my_virtualenv/bin/activate
+</span></span></code></pre></div><p>The left prompt will be changed to add the name of the virtual environment.
+Now, any pip install, will install the packages inside the virtual environment folder.</p>
+<p>To deactivate the virtual environment run this command:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>deactivate
+</span></span></code></pre></div><h3 id="project-level-installation-folder">Project level installation folder<a class="anchorjs-link" href="#project-level-installation-folder"></a></h3><p>Similar to NPM, Python packaging tools has a tool called <code>Pipenv</code>.
+As virtualenv, you need to install pipenv separately.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>pip install --user pipenv
+</span></span></code></pre></div><p>Then you can start using pipenv instead of pip</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>pipenv install requests
+</span></span></code></pre></div><p>Pipenv will install the package inside site_packages folder inside the current folder, and will create a Pipfile in the current folder (similar to package.json).</p>
+<p>To run the application that is using the current installation folder, you need to run python through pipenv itself.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>pipenv run python your-program.py
+</span></span></code></pre></div>
+
+        <hr style="visibility: hidden;" />
+        <ul class="pager">
+          
+          <li class="previous">
+            <a href="/posts/2017_09_26_advanced_https/" data-toggle="tooltip" data-placement="top" title="Advanced HTTP">
+              Previous<br>
+              <span>Advanced HTTP</span>
+            </a>
+          </li>
+          
+          
+          <li class="next">
+            <a href="/about/" data-toggle="tooltip" data-placement="top" title="About">
+              Next<br>
+              <span>About</span>
+            </a>
+          </li>
+          
+        </ul>
+        <hr style="visibility: hidden;" />
+
+        
+        
+
+
+
+<div class="giscus" id="comments"></div>
+<script src="https://giscus.app/client.js" 
+  data-repo="gkarwchan/gkarwchan.github.io" 
+  data-repo-id="R_kgDOK0QUTA"
+  data-category="General"
+  data-category-id="DIC_kwDOK0QUTM4Ccf8h"
+  data-mapping="pathname"
+  data-strict="0" 
+  data-reactions-enabled="1" 
+  data-emit-metadata="0" 
+  data-input-position="top"
+  data-theme="light_tritanopia"
+  data-lang="en"
+  crossorigin="anonymous"
+  async>
+  </script>
+
+
+
+
+      </div>
+
+      
+      
+      
+      <div class="
+              col-lg-2 col-lg-offset-0
+              visible-lg-block
+              sidebar-container
+              catalog-container">
+        <div class="side-catalog">
+          <hr class="hidden-sm hidden-xs">
+          <h5>
+            <a class="catalog-toggle" href="#">CATALOG</a>
+          </h5>
+          <ul class="catalog-body"></ul>
+        </div>
+      </div>
+      
+      
+      <div class="
+              col-lg-8 col-lg-offset-2
+              col-md-10 col-md-offset-1
+              sidebar-container">
+
+        
+        
+        <section>
+  
+  
+  <hr class="hidden-sm hidden-xs">
+  
+  <h5>FEATURED TAGS</h5>
+  <div class="tags">
+    
+    <a href="/tags/algorithm/">algorithm</a>
+    
+    <a href="/tags/asp.net/">asp.net</a>
+    
+    <a href="/tags/azure/">azure</a>
+    
+    <a href="/tags/container/">container</a>
+    
+    <a href="/tags/css/">css</a>
+    
+    <a href="/tags/dev-tools/">dev tools</a>
+    
+    <a href="/tags/devops/">devops</a>
+    
+    <a href="/tags/javascript/">javascript</a>
+    
+    <a href="/tags/networking/">networking</a>
+    
+    <a href="/tags/performance/">performance</a>
+    
+    <a href="/tags/python/">python</a>
+    
+    <a href="/tags/security/">security</a>
+    
+  </div>
+</section>
+
+        
+        
+
+      </div>
+    </div>
+  </div>
+</article>
+
+
+
+  
+<footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        
+        <ul class="list-inline text-center">
+
+<li>
+  <a href="https://github.com/gkarwchan" target="_blank">
+    <span class="fa-stack fa-lg">
+      <i class="fa fa-circle fa-stack-2x"></i>
+      <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+    </span>
+  </a>
+</li>
+
+<li>
+  <a href="https://linkedin.com/in/ghassankarwchan" target="_blank">
+    <span class="fa-stack fa-lg">
+      <i class="fa fa-circle fa-stack-2x"></i>
+      <i class="fab fa-linkedin fa-stack-1x fa-inverse"></i>
+    </span>
+  </a>
+</li>
+
+
+<li>
+  <a href="/index.xml" target="_blank">
+    <span class="fa-stack fa-lg">
+      <i class="fa fa-circle fa-stack-2x"></i>
+      <i class="fas fa-rss fa-stack-1x fa-inverse"></i>
+    </span>
+  </a>
+</li></ul>
+
+        <p class="copyright text-muted">
+          Copyright &copy; Ghassan&#39;s Page 2025  
+          <br>
+          Powered by <a href="https://gohugo.io">Hugo</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src=/js/jquery.min.js></script>
+<script src=/js/bootstrap.min.js crossorigin="anonymous"></script>
+
+
+
+<script src="/js/hux-blog.min.73a6a8d8df45293e042d15867416f603045bbeb98406731e5022d6c60388cd9d.js"></script>
+
+
+<script src=/js/simple-jekyll-search.min.js></script>
+
+
+<script src="/js/search.min.53bce5da475b4d362500e5ce5dddfa22e20e1b9018777411d2020b4b839c9310.js"></script>
+
+
+
+
+
+
+<script type="text/javascript">
+  function generateCatalog(selector) {
+    _containerSelector = 'div.post-container'
+    
+    var P = $(_containerSelector), a, n, t, l, i, c;
+    a = P.find('h1,h2,h3,h4');
+    
+    $(selector).html('')
+    
+    a.each(function () {
+      n = $(this).prop('tagName').toLowerCase();
+      i = "#" + $(this).prop('id');
+      t = $(this).text();
+      c = $('<a href="' + i + '" rel="nofollow">' + t + '</a>');
+      l = $('<li class="' + n + '_nav"></li>').append(c);
+      $(selector).append(l);
+    });
+    return true;
+  }
+
+  generateCatalog(".catalog-body");
+
+  
+  $(".catalog-toggle").click((function (e) {
+    e.preventDefault();
+    $('.side-catalog').toggleClass("fold")
+  }))
+</script>
+
+
+<script type="text/javascript" src='/js/jquery.nav.min.ade6bde8f9fcc6a4b40852cb892e9f5912340ab8fe1305149d917fdd16fffd8d.js'></script>
+<script>
+   $(document).ready( function () {
+    $('.catalog-body').onePageNav({
+      currentClass: "active",
+      changeHash: !1,
+      easing: "swing",
+      filter: "",
+      scrollSpeed: 700,
+      scrollOffset: 0,
+      scrollThreshold: .2,
+      begin: null,
+      end: null,
+      scrollChange: null,
+      padding: 80
+    });
+  });
+</script>
+
+
+
+
+
+
+
+
+
+<script src="/zoomjs/zoom.min.js"></script>
+
+</body>
+
+</html>
