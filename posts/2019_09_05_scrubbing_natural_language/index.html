@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  
+    
+  <title>Scrubbing Natural Language | Ghassan&#39;s Page</title>
+  <meta name="author" content="Ghassan Karwchan">
+  <meta name="description" content="Scrubbing a natural language text data is a widely used process that has well defined steps which you will find it in many places. From Lucene which is the Full text search engine that is used in Elastic Search and Azure Search, to any data science project that is processing Natural Language, including different ML projects, and general search projects.
+IntroductionA brief introduction to the Data Scrubbing:I am going to cover data scrubbing in more details in comming posts, but just to briefly explain why it is an important step.">
+  <meta name="keywords" content="blog,developer,personal">
+
+  <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Scrubbing Natural Language"/>
+<meta name="twitter:description" content="Scrubbing a natural language text data is a widely used process that has well defined steps which you will find it in many places. From Lucene which is the Full text search engine that is used in Elastic Search and Azure Search, to any data science project that is processing Natural Language, including different ML projects, and general search projects.
+IntroductionA brief introduction to the Data Scrubbing:I am going to cover data scrubbing in more details in comming posts, but just to briefly explain why it is an important step."/>
+
+  <meta property="og:title" content="Scrubbing Natural Language" />
+<meta property="og:description" content="Scrubbing a natural language text data is a widely used process that has well defined steps which you will find it in many places. From Lucene which is the Full text search engine that is used in Elastic Search and Azure Search, to any data science project that is processing Natural Language, including different ML projects, and general search projects.
+IntroductionA brief introduction to the Data Scrubbing:I am going to cover data scrubbing in more details in comming posts, but just to briefly explain why it is an important step." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://www.ghassan.page/posts/2019_09_05_scrubbing_natural_language/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2019-09-05T18:41:54-06:00" />
+<meta property="article:modified_time" content="2019-09-05T18:41:54-06:00" />
+
+
+
+  <link rel="stylesheet" href="/css/bootstrap.min.css"  crossorigin="anonymous">
+  
+  <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.1/css/all.min.css" rel="stylesheet" type="text/css">
+
+  <link rel="stylesheet" href="/sass/main.css">
+
+  <link rel="stylesheet" href="/zoomjs/zoom.min.css">
+
+  <script src=/js/lazysizes.min.js></script>
+
+  
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="manifest" href="/site.webmanifest">
+  
+
+</head>
+
+
+
+<body ontouchstart="">
+  
+  
+  <nav class="navbar navbar-default navbar-custom navbar-fixed-top invert">
+  <div class="container-fluid">
+    
+    <div class="navbar-header page-scroll">
+      <button type="button" class="navbar-toggle">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="https://www.ghassan.page/">Ghassan&#39;s Page</a>
+    </div>
+    
+    <div id="huxblog_navbar">
+      <div class="navbar-collapse">
+        <ul class="nav navbar-nav navbar-right">
+          
+          <li><a href="/" title="Home">Home</a></li>
+          
+          <li><a href="/archive/" title="Archive">Archive</a></li>
+          
+          <li><a href="/about/" title="About">About</a></li>
+          
+          <li><a href="https://github.com/gkarwchan/hugoblogsource" title="Github">Github</a></li>
+          
+
+          <li class="search-icon">
+            <a href="javascript:void(0)">
+              <i class="fa fa-search"></i>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    
+  </div>
+  
+</nav>
+<script>
+  
+  
+  
+  var $body = document.body;
+  var $toggle = document.querySelector(".navbar-toggle");
+  var $navbar = document.querySelector("#huxblog_navbar");
+  var $collapse = document.querySelector(".navbar-collapse");
+
+  var __HuxNav__ = {
+    close: function () {
+      $navbar.className = " ";
+      
+      setTimeout(function () {
+        
+        if ($navbar.className.indexOf("in") < 0) {
+          $collapse.style.height = "0px";
+        }
+      }, 400);
+    },
+    open: function () {
+      $collapse.style.height = "auto";
+      $navbar.className += " in";
+    },
+  };
+
+  
+  $toggle.addEventListener("click", function (e) {
+    if ($navbar.className.indexOf("in") > 0) {
+      __HuxNav__.close();
+    } else {
+      __HuxNav__.open();
+    }
+  });
+
+  
+
+  document.addEventListener("click", function (e) {
+    if (e.target == $toggle) return;
+    if (e.target.className == "icon-bar") return;
+    __HuxNav__.close();
+  });
+</script>
+  
+<div class="search-page">
+  <div class="search-icon-close-container">
+    <span class="search-icon-close">
+      <i class="fa fa-chevron-down"></i>
+    </span>
+  </div>
+  <div class="search-main container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <form></form>
+        <input type="text" id="search-input" placeholder="$ grep...">
+        </form>
+        <div id="search-results" class="mini-post-list"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+  
+  
+
+
+<style type="text/css">
+  header.intro-header {
+    position: relative;
+    background-image: url('');
+  }
+</style>
+
+<header class="intro-header style-text">
+
+  <div class="header-mask"></div>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div class="post-heading">
+          <div class="tags">
+            
+            <a class="tag" href="/tags/python/" title="python">python</a>
+            
+            <a class="tag" href="/tags/machine-learning/" title="machine learning">machine learning</a>
+            
+          </div>
+          <h1>Scrubbing Natural Language</h1>
+          <h2 class="subheading"></h2>
+          <span class="meta">
+            Posted by  Ghassan Karwchan 
+            on Thu, Sep 5, 2019
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+
+  
+
+
+<article>
+  <div class="container">
+    <div class="row">
+
+      
+      <div class="
+              col-lg-8 col-lg-offset-2
+              col-md-10 col-md-offset-1
+              post-container">
+        <p>Scrubbing a natural language text data is a widely used process that has well defined steps which you will find it in many places. From Lucene which is the Full text search engine that is used in Elastic Search and Azure Search, to any data science project that is processing Natural Language, including different ML projects, and general search projects.</p>
+<h1 id="introduction">Introduction<a class="anchorjs-link" href="#introduction"></a></h1><h3 id="a-brief-introduction-to-the-data-scrubbing">A brief introduction to the Data Scrubbing:<a class="anchorjs-link" href="#a-brief-introduction-to-the-data-scrubbing"></a></h3><p>I am going to cover data scrubbing in more details in comming posts, but just to briefly explain why it is an important step.<br>
+Any data science project, or machine learning project, should start from clean data, which means data that is vallid and doesn’t corrupt the model, or the training process.<br>
+It is the second step to do in any data science project after the first step which is Gathering the data.
+This step is called <code>Data Scrubbing</code> or <code>Data Cleansing</code>.</p>
+<h3 id="cleaning-natural-language-text">Cleaning Natural Language Text<a class="anchorjs-link" href="#cleaning-natural-language-text"></a></h3><p>Scrubbing Natural Language text data has common and well defined steps that are the same and repeated in different kind of projects, either being Full Text Search like Lucene engine, or any machine learning that is using Natural language Processing (NLP).<br>
+In this post we are going to describe these steps, and see how we can do them using Python’s nltk library.</p>
+<h1 id="scrubbing-natural-language-text">Scrubbing Natural Language Text<a class="anchorjs-link" href="#scrubbing-natural-language-text"></a></h1><p>In order to process and get useful data from a natural language text, you need to do the following:</p>
+<ol>
+<li>Remove numbers and punctuations.</li>
+<li>Remove <code>Stop Words</code>.</li>
+<li>Remove human names if neccessary.</li>
+<li>Stemming and Lemmatization.</li>
+</ol>
+<h3 id="1-remove-numbers-and-punctuations">1. Remove numbers and punctuations<a class="anchorjs-link" href="#1-remove-numbers-and-punctuations"></a></h3><p>We don’t need nltk to do this step, because python already provides for us with a constant <strong><code>string punctuation</code></strong> which contains all punctuations, and we can remove numbers using a regular expression.<br>
+To remove numbers we can as well use python’s isalpha which is a method on a string instance, which check if the word is only alphabetic.</p>
+<h4 id="code">Code<a class="anchorjs-link" href="#code"></a></h4><p>You can remove punctuations using this code:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>simple_text <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#39;this. is. a test, for removing: punctuation words, and to show! the result? something.&#39;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>clean_text <span style="color:#ff79c6">=</span> simple_text<span style="color:#ff79c6">.</span>translate(<span style="color:#8be9fd;font-style:italic">str</span><span style="color:#ff79c6">.</span>maketrans(<span style="color:#f1fa8c">&#39;&#39;</span>, <span style="color:#f1fa8c">&#39;&#39;</span>, string<span style="color:#ff79c6">.</span>punctuation))
+</span></span></code></pre></div><p>and to remove the numbers we can use:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>simple_text <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#39;this string has 2 numbers to 1: detect the numbers and 2 to remove them something.&#39;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>clean_text <span style="color:#ff79c6">=</span> [word <span style="color:#ff79c6">for</span> word <span style="color:#ff79c6">in</span> simple_text<span style="color:#ff79c6">.</span>split() <span style="color:#ff79c6">if</span> word<span style="color:#ff79c6">.</span>isalpha()]
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span><span style="color:#8be9fd;font-style:italic">print</span>(clean_text)
+</span></span></code></pre></div><h3 id="2-remove-stop-words">2. Remove Stop Words<a class="anchorjs-link" href="#2-remove-stop-words"></a></h3><p>Stop Words are the most common used words in any language and they don’t give any value to the text context or the text specific subject. Like for example: the, a, who, what, at, which&hellip;.</p>
+<h4 id="code-1">Code<a class="anchorjs-link" href="#code-1"></a></h4><p><strong><code>ntlk library</code></strong> has the stop words in different languages. In order to see those words in English as an exmple, try this code:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="color:#ff79c6">import</span> nltk
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span><span style="color:#ff79c6">from</span> nltk.corpus <span style="color:#ff79c6">import</span> stopwords
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span><span style="color:#8be9fd;font-style:italic">set</span>(stopwords<span style="color:#ff79c6">.</span>words(<span style="color:#f1fa8c">&#39;english&#39;</span>))
+</span></span></code></pre></div><p>Let us now remove the stop words from the text:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="color:#ff79c6">from</span> nltk.corpus <span style="color:#ff79c6">import</span> stopwords
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span><span style="color:#ff79c6">from</span> nltk.tokenize <span style="color:#ff79c6">import</span> word_tokenize
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span><span style="color:#ff79c6">def</span> <span style="color:#50fa7b">remove_stop_words</span>(sampleText):
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span>  stop_words <span style="color:#ff79c6">=</span> <span style="color:#8be9fd;font-style:italic">set</span>(stopwords<span style="color:#ff79c6">.</span>words(<span style="color:#f1fa8c">&#39;english&#39;</span>))
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span>  word_tokens <span style="color:#ff79c6">=</span> word_tokenize(sample_text)
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span>  filtered_words <span style="color:#ff79c6">=</span> [w <span style="color:#ff79c6">for</span> w <span style="color:#ff79c6">in</span> word_tokens <span style="color:#ff79c6">if</span> <span style="color:#ff79c6">not</span> w <span style="color:#ff79c6">in</span> stop_words]
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span>  <span style="color:#ff79c6">return</span> filtered_words
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span>sample_text <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#39;this is an example text, in order to show the stop word removal&#39;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span><span style="color:#8be9fd;font-style:italic">print</span>(remove_stop_words(sample_text))
+</span></span></code></pre></div><h3 id="3-remove-human-names">3. Remove human names<a class="anchorjs-link" href="#3-remove-human-names"></a></h3><p>Unless you are doing search on human names, these human names could be a problem when trying to classify a text, or search text.</p>
+<h4 id="code-2">Code<a class="anchorjs-link" href="#code-2"></a></h4><p>Same as stop words, nltk has all names, which you can see using the following:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="color:#ff79c6">from</span> nltk.corpus <span style="color:#ff79c6">import</span> names
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span><span style="color:#8be9fd;font-style:italic">set</span>(names<span style="color:#ff79c6">.</span>words())
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>In order to clean the text <span style="color:#ff79c6">from</span> the names, use the following code:
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span><span style="color:#ff79c6">from</span> nltk.corpus <span style="color:#ff79c6">import</span> names
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span><span style="color:#ff79c6">def</span> <span style="color:#50fa7b">remove_human_names</span>(sampleText):
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span>  all_names <span style="color:#ff79c6">=</span> <span style="color:#8be9fd;font-style:italic">set</span>(names<span style="color:#ff79c6">.</span>words())
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span>  word_tokens <span style="color:#ff79c6">=</span> word_tokenize(sample_text)
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span>  filtered_words <span style="color:#ff79c6">=</span> [w <span style="color:#ff79c6">for</span> w <span style="color:#ff79c6">in</span> word_tokens <span style="color:#ff79c6">if</span> <span style="color:#ff79c6">not</span> w <span style="color:#ff79c6">in</span> all_names]
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span>  <span style="color:#ff79c6">return</span> filtered_words
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span><span>sample_text <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#39;this is an example text, in order to remove names like: Michael, George, Dexter from the text&#39;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span><span><span style="color:#8be9fd;font-style:italic">print</span>(remove_human_names(sample_text))
+</span></span></code></pre></div><h3 id="4-stemming-and-lemmatization">4. Stemming and Lemmatization<a class="anchorjs-link" href="#4-stemming-and-lemmatization"></a></h3><p>Stemming and Lemmatization are Text Normalization or Word Normalization techniques, to relate words with similar meanings.<br>
+Python’s nltk has the Wordnet which is a large lexical database for English language. It offers lemmatization capabilities as well.</p>
+<h4 id="code-3">Code<a class="anchorjs-link" href="#code-3"></a></h4><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="color:#ff79c6">import</span> nltk
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>nltk<span style="color:#ff79c6">.</span>download(<span style="color:#f1fa8c">&#39;wordnet&#39;</span>)
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span><span style="color:#ff79c6">from</span> nltk.stem <span style="color:#ff79c6">import</span> WordNetLemmatizer 
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span>lemmatizer <span style="color:#ff79c6">=</span> WordNetLemmatizer()
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span>sample_text <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#39;this is some text string include strings variables where each variable has different word and have something in common&#39;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6</span><span>result <span style="color:#ff79c6">=</span> [lemmatizer<span style="color:#ff79c6">.</span>lemmatize(word<span style="color:#ff79c6">.</span>lower()) <span style="color:#ff79c6">for</span> word <span style="color:#ff79c6">in</span> sample_text<span style="color:#ff79c6">.</span>split()]
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7</span><span><span style="color:#8be9fd;font-style:italic">print</span>(result)
+</span></span></code></pre></div>
+
+        <hr style="visibility: hidden;" />
+        <ul class="pager">
+          
+          <li class="previous">
+            <a href="/about/" data-toggle="tooltip" data-placement="top" title="About">
+              Previous<br>
+              <span>About</span>
+            </a>
+          </li>
+          
+          
+          <li class="next">
+            <a href="/posts/2020_05_06_advanced_regular_expression_by_examples/" data-toggle="tooltip" data-placement="top" title="Advanced Regular Expression Recipes - Introduction.">
+              Next<br>
+              <span>Advanced Regular Expression Recipes - Introduction.</span>
+            </a>
+          </li>
+          
+        </ul>
+        <hr style="visibility: hidden;" />
+
+        
+        
+
+
+
+<div class="giscus" id="comments"></div>
+<script src="https://giscus.app/client.js" 
+  data-repo="gkarwchan/gkarwchan.github.io" 
+  data-repo-id="R_kgDOK0QUTA"
+  data-category="General"
+  data-category-id="DIC_kwDOK0QUTM4Ccf8h"
+  data-mapping="pathname"
+  data-strict="0" 
+  data-reactions-enabled="1" 
+  data-emit-metadata="0" 
+  data-input-position="top"
+  data-theme="light_tritanopia"
+  data-lang="en"
+  crossorigin="anonymous"
+  async>
+  </script>
+
+
+
+
+      </div>
+
+      
+      
+      
+      <div class="
+              col-lg-2 col-lg-offset-0
+              visible-lg-block
+              sidebar-container
+              catalog-container">
+        <div class="side-catalog">
+          <hr class="hidden-sm hidden-xs">
+          <h5>
+            <a class="catalog-toggle" href="#">CATALOG</a>
+          </h5>
+          <ul class="catalog-body"></ul>
+        </div>
+      </div>
+      
+      
+      <div class="
+              col-lg-8 col-lg-offset-2
+              col-md-10 col-md-offset-1
+              sidebar-container">
+
+        
+        
+        <section>
+  
+  
+  <hr class="hidden-sm hidden-xs">
+  
+  <h5>FEATURED TAGS</h5>
+  <div class="tags">
+    
+    <a href="/tags/algorithm/">algorithm</a>
+    
+    <a href="/tags/asp.net/">asp.net</a>
+    
+    <a href="/tags/azure/">azure</a>
+    
+    <a href="/tags/container/">container</a>
+    
+    <a href="/tags/css/">css</a>
+    
+    <a href="/tags/dev-tools/">dev tools</a>
+    
+    <a href="/tags/devops/">devops</a>
+    
+    <a href="/tags/javascript/">javascript</a>
+    
+    <a href="/tags/machine-learning/">machine learning</a>
+    
+    <a href="/tags/networking/">networking</a>
+    
+    <a href="/tags/performance/">performance</a>
+    
+    <a href="/tags/python/">python</a>
+    
+    <a href="/tags/security/">security</a>
+    
+  </div>
+</section>
+
+        
+        
+
+      </div>
+    </div>
+  </div>
+</article>
+
+
+
+  
+<footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        
+        <ul class="list-inline text-center">
+
+<li>
+  <a href="https://github.com/gkarwchan" target="_blank">
+    <span class="fa-stack fa-lg">
+      <i class="fa fa-circle fa-stack-2x"></i>
+      <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+    </span>
+  </a>
+</li>
+
+<li>
+  <a href="https://linkedin.com/in/ghassankarwchan" target="_blank">
+    <span class="fa-stack fa-lg">
+      <i class="fa fa-circle fa-stack-2x"></i>
+      <i class="fab fa-linkedin fa-stack-1x fa-inverse"></i>
+    </span>
+  </a>
+</li>
+
+
+<li>
+  <a href="/index.xml" target="_blank">
+    <span class="fa-stack fa-lg">
+      <i class="fa fa-circle fa-stack-2x"></i>
+      <i class="fas fa-rss fa-stack-1x fa-inverse"></i>
+    </span>
+  </a>
+</li></ul>
+
+        <p class="copyright text-muted">
+          Copyright &copy; Ghassan&#39;s Page 2025  
+          <br>
+          Powered by <a href="https://gohugo.io">Hugo</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src=/js/jquery.min.js></script>
+<script src=/js/bootstrap.min.js crossorigin="anonymous"></script>
+
+
+
+<script src="/js/hux-blog.min.73a6a8d8df45293e042d15867416f603045bbeb98406731e5022d6c60388cd9d.js"></script>
+
+
+<script src=/js/simple-jekyll-search.min.js></script>
+
+
+<script src="/js/search.min.53bce5da475b4d362500e5ce5dddfa22e20e1b9018777411d2020b4b839c9310.js"></script>
+
+
+
+
+
+
+<script type="text/javascript">
+  function generateCatalog(selector) {
+    _containerSelector = 'div.post-container'
+    
+    var P = $(_containerSelector), a, n, t, l, i, c;
+    a = P.find('h1,h2,h3,h4');
+    
+    $(selector).html('')
+    
+    a.each(function () {
+      n = $(this).prop('tagName').toLowerCase();
+      i = "#" + $(this).prop('id');
+      t = $(this).text();
+      c = $('<a href="' + i + '" rel="nofollow">' + t + '</a>');
+      l = $('<li class="' + n + '_nav"></li>').append(c);
+      $(selector).append(l);
+    });
+    return true;
+  }
+
+  generateCatalog(".catalog-body");
+
+  
+  $(".catalog-toggle").click((function (e) {
+    e.preventDefault();
+    $('.side-catalog').toggleClass("fold")
+  }))
+</script>
+
+
+<script type="text/javascript" src='/js/jquery.nav.min.ade6bde8f9fcc6a4b40852cb892e9f5912340ab8fe1305149d917fdd16fffd8d.js'></script>
+<script>
+   $(document).ready( function () {
+    $('.catalog-body').onePageNav({
+      currentClass: "active",
+      changeHash: !1,
+      easing: "swing",
+      filter: "",
+      scrollSpeed: 700,
+      scrollOffset: 0,
+      scrollThreshold: .2,
+      begin: null,
+      end: null,
+      scrollChange: null,
+      padding: 80
+    });
+  });
+</script>
+
+
+
+
+
+
+
+
+
+<script src="/zoomjs/zoom.min.js"></script>
+
+</body>
+
+</html>

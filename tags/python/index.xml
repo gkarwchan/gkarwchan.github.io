@@ -17,6 +17,14 @@
 Memoization is the same as caching but in functional programming. The Caching mechanism will store the data into a cache store, and that data can be from anywhere (HTTP page, REST call, &amp;hellip; etc) , where memoization is specific to cache the results of a function, and it create and maintain the store inside the function itself (so the function will be pure function) and send the store as a parameter into the function arguments.&lt;/p&gt;</description>
     </item>
     <item>
+      <title>Scrubbing Natural Language</title>
+      <link>https://www.ghassan.page/posts/2019_09_05_scrubbing_natural_language/</link>
+      <pubDate>Thu, 05 Sep 2019 18:41:54 -0600</pubDate>
+      <guid>https://www.ghassan.page/posts/2019_09_05_scrubbing_natural_language/</guid>
+      <description>Scrubbing a natural language text data is a widely used process that has well defined steps which you will find it in many places. From Lucene which is the Full text search engine that is used in Elastic Search and Azure Search, to any data science project that is processing Natural Language, including different ML projects, and general search projects.
+IntroductionA brief introduction to the Data Scrubbing:I am going to cover data scrubbing in more details in comming posts, but just to briefly explain why it is an important step.</description>
+    </item>
+    <item>
       <title>Python Virtual Environments &amp; Package Management</title>
       <link>https://www.ghassan.page/posts/2018_08_22_python_virtual_environments/</link>
       <pubDate>Wed, 22 Aug 2018 18:41:54 -0600</pubDate>

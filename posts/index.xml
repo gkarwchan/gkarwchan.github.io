@@ -407,6 +407,14 @@ In this recipe we are going to cover:&lt;/p&gt;
       <description>&lt;p&gt;Regular expressions are implemented by many languages, and they can be used for different purposes. Mainly they are used for text processing, as well they are important tools to write an efficient algorithms, and as well they can be used by data science specially in cleaning and scrapping the data to prepare it for modeling.&lt;/p&gt;</description>
     </item>
     <item>
+      <title>Scrubbing Natural Language</title>
+      <link>https://www.ghassan.page/posts/2019_09_05_scrubbing_natural_language/</link>
+      <pubDate>Thu, 05 Sep 2019 18:41:54 -0600</pubDate>
+      <guid>https://www.ghassan.page/posts/2019_09_05_scrubbing_natural_language/</guid>
+      <description>Scrubbing a natural language text data is a widely used process that has well defined steps which you will find it in many places. From Lucene which is the Full text search engine that is used in Elastic Search and Azure Search, to any data science project that is processing Natural Language, including different ML projects, and general search projects.
+IntroductionA brief introduction to the Data Scrubbing:I am going to cover data scrubbing in more details in comming posts, but just to briefly explain why it is an important step.</description>
+    </item>
+    <item>
       <title>Python Virtual Environments &amp; Package Management</title>
       <link>https://www.ghassan.page/posts/2018_08_22_python_virtual_environments/</link>
       <pubDate>Wed, 22 Aug 2018 18:41:54 -0600</pubDate>
