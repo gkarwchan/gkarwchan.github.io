@@ -6,8 +6,17 @@
     <description>Recent content in Posts on Ghassan&#39;s Page</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 17 Dec 2024 18:41:54 -0600</lastBuildDate>
+    <lastBuildDate>Sun, 18 May 2025 18:41:54 -0600</lastBuildDate>
     <atom:link href="https://www.ghassan.page/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Simplify Jupyter Projects with Docker</title>
+      <link>https://www.ghassan.page/posts/2025_05_18_jupyter_notebook_startup/</link>
+      <pubDate>Sun, 18 May 2025 18:41:54 -0600</pubDate>
+      <guid>https://www.ghassan.page/posts/2025_05_18_jupyter_notebook_startup/</guid>
+      <description>Managing multiple Jupyter Notebook projects often means juggling different Python libraries and dependencies. Instead of setting up a separate virtual environment and installing Jupyter for each project, I use Docker to streamline the process.
+Why Use Docker for Jupyter Notebooks?Docker offers the same level of environment isolation as virtual environments, but with several added benefits:
+Pre-packaged with all required dependencies. Clean, reproducible environments. No need to install Jupyter separately for every project.</description>
+    </item>
     <item>
       <title>Managing Credentials for Azure Artifacts</title>
       <link>https://www.ghassan.page/posts/2024_12_27_azure_artifact_cerdential_provider/</link>
