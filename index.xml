@@ -9,13 +9,13 @@
     <lastBuildDate>Sun, 18 May 2025 18:41:54 -0600</lastBuildDate>
     <atom:link href="https://www.ghassan.page/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>Simplify Jupyter Projects with Docker</title>
+      <title>Simplify Jupyter Projects with Docker or Conda</title>
       <link>https://www.ghassan.page/posts/2025_05_18_jupyter_notebook_startup/</link>
       <pubDate>Sun, 18 May 2025 18:41:54 -0600</pubDate>
       <guid>https://www.ghassan.page/posts/2025_05_18_jupyter_notebook_startup/</guid>
       <description>Managing multiple Jupyter Notebook projects often means juggling different Python libraries and dependencies. Instead of setting up a separate virtual environment and installing Jupyter for each project, I use Docker to streamline the process.
-Why Use Docker for Jupyter Notebooks?Docker offers the same level of environment isolation as virtual environments, but with several added benefits:
-Pre-packaged with all required dependencies. Clean, reproducible environments. No need to install Jupyter separately for every project.</description>
+We can use Conda as well, and I will show how, but presonally I prefer Docker.
+Create an isolated evivronment for each projectConda offers managing virtual environments, and if you want a tool just to create virtual environments, and install packages, then in my opinion, Conda is the best between others uv, venv, virtualenv, pipenv &amp;hellip;etc.</description>
     </item>
     <item>
       <title>Managing Credentials for Azure Artifacts</title>

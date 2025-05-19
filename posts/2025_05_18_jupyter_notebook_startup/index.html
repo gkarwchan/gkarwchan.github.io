@@ -8,23 +8,23 @@
 
   
     
-  <title>Simplify Jupyter Projects with Docker | Ghassan&#39;s Page</title>
+  <title>Simplify Jupyter Projects with Docker or Conda | Ghassan&#39;s Page</title>
   <meta name="author" content="Ghassan Karwchan">
   <meta name="description" content="Managing multiple Jupyter Notebook projects often means juggling different Python libraries and dependencies. Instead of setting up a separate virtual environment and installing Jupyter for each project, I use Docker to streamline the process.
-Why Use Docker for Jupyter Notebooks?Docker offers the same level of environment isolation as virtual environments, but with several added benefits:
-Pre-packaged with all required dependencies. Clean, reproducible environments. No need to install Jupyter separately for every project.">
+We can use Conda as well, and I will show how, but presonally I prefer Docker.
+Create an isolated evivronment for each projectConda offers managing virtual environments, and if you want a tool just to create virtual environments, and install packages, then in my opinion, Conda is the best between others uv, venv, virtualenv, pipenv &hellip;etc.">
   <meta name="keywords" content="blog,developer,personal">
 
   <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="Simplify Jupyter Projects with Docker"/>
+<meta name="twitter:title" content="Simplify Jupyter Projects with Docker or Conda"/>
 <meta name="twitter:description" content="Managing multiple Jupyter Notebook projects often means juggling different Python libraries and dependencies. Instead of setting up a separate virtual environment and installing Jupyter for each project, I use Docker to streamline the process.
-Why Use Docker for Jupyter Notebooks?Docker offers the same level of environment isolation as virtual environments, but with several added benefits:
-Pre-packaged with all required dependencies. Clean, reproducible environments. No need to install Jupyter separately for every project."/>
+We can use Conda as well, and I will show how, but presonally I prefer Docker.
+Create an isolated evivronment for each projectConda offers managing virtual environments, and if you want a tool just to create virtual environments, and install packages, then in my opinion, Conda is the best between others uv, venv, virtualenv, pipenv &hellip;etc."/>
 
-  <meta property="og:title" content="Simplify Jupyter Projects with Docker" />
+  <meta property="og:title" content="Simplify Jupyter Projects with Docker or Conda" />
 <meta property="og:description" content="Managing multiple Jupyter Notebook projects often means juggling different Python libraries and dependencies. Instead of setting up a separate virtual environment and installing Jupyter for each project, I use Docker to streamline the process.
-Why Use Docker for Jupyter Notebooks?Docker offers the same level of environment isolation as virtual environments, but with several added benefits:
-Pre-packaged with all required dependencies. Clean, reproducible environments. No need to install Jupyter separately for every project." />
+We can use Conda as well, and I will show how, but presonally I prefer Docker.
+Create an isolated evivronment for each projectConda offers managing virtual environments, and if you want a tool just to create virtual environments, and install packages, then in my opinion, Conda is the best between others uv, venv, virtualenv, pipenv &hellip;etc." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://www.ghassan.page/posts/2025_05_18_jupyter_notebook_startup/" /><meta property="article:section" content="posts" />
 <meta property="article:published_time" content="2025-05-18T18:41:54-06:00" />
@@ -179,7 +179,7 @@ Pre-packaged with all required dependencies. Clean, reproducible environments. N
             <a class="tag" href="/tags/python/" title="python">python</a>
             
           </div>
-          <h1>Simplify Jupyter Projects with Docker</h1>
+          <h1>Simplify Jupyter Projects with Docker or Conda</h1>
           <h2 class="subheading"></h2>
           <span class="meta">
             Posted by  Ghassan Karwchan 
@@ -204,14 +204,15 @@ Pre-packaged with all required dependencies. Clean, reproducible environments. N
               col-lg-8 col-lg-offset-2
               col-md-10 col-md-offset-1
               post-container">
-        <p>Managing multiple Jupyter Notebook projects often means juggling different Python libraries and dependencies. Instead of setting up a separate virtual environment and installing Jupyter for each project, I use <strong>Docker</strong> to streamline the process.</p>
-<h2 id="why-use-docker-for-jupyter-notebooks">Why Use Docker for Jupyter Notebooks?<a class="anchorjs-link" href="#why-use-docker-for-jupyter-notebooks"></a></h2><p>Docker offers the same level of environment isolation as virtual environments, but with several added benefits:</p>
+        <p>Managing multiple Jupyter Notebook projects often means juggling different Python libraries and dependencies. Instead of setting up a separate virtual environment and installing Jupyter for each project, I use <strong>Docker</strong> to streamline the process.<br>
+We can use <strong>Conda</strong> as well, and I will show how, but presonally I prefer Docker.</p>
+<h2 id="create-an-isolated-evivronment-for-each-project">Create an isolated evivronment for each project<a class="anchorjs-link" href="#create-an-isolated-evivronment-for-each-project"></a></h2><p>Conda offers managing virtual environments, and if you want a tool just to create virtual environments, and install packages, then in my opinion, Conda is the best between others uv, venv, virtualenv, pipenv &hellip;etc.<br>
+Docker offers the same level of environment isolation as virtual environments, but with several added benefits:</p>
 <ul>
 <li>Pre-packaged with all required dependencies.</li>
 <li>Clean, reproducible environments.</li>
 <li>No need to install Jupyter separately for every project.</li>
 </ul>
-<p>While tools like <code>conda</code> can also handle environment management, I personally find Docker more reliable and easier to work with.</p>
 <h2 id="docker-compose-setup">Docker Compose Setup<a class="anchorjs-link" href="#docker-compose-setup"></a></h2><p>Here’s a minimal <code>docker-compose.yml</code> file I use. It pulls a base Jupyter image and sets up shared volumes for your notebooks and environment variables.</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="color:#ff79c6">version</span>: <span style="color:#f1fa8c">&#34;3.8&#34;</span>
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>
@@ -227,13 +228,29 @@ Pre-packaged with all required dependencies. Clean, reproducible environments. N
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span>    <span style="color:#ff79c6">environment</span>:
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span><span>      - DOTENV=/home/jovyan/.env
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span><span>    <span style="color:#ff79c6">command</span>: start-notebook.sh --NotebookApp.token=&#39;&#39;
-</span></span></code></pre></div><h2 id="what-about-env-file">What about .env file:<a class="anchorjs-link" href="#what-about-env-file"></a></h2><p>I include a .env file in the root directory to securely store my API keys for services like GPT, Claude, and others.</p>
-<h3 id="project-structure">Project Structure<a class="anchorjs-link" href="#project-structure"></a></h3><p>Your project directory might look something like this:</p>
+</span></span></code></pre></div><h4 id="what-about-env-file">What about .env file:<a class="anchorjs-link" href="#what-about-env-file"></a></h4><p>I include a .env file in the root directory to securely store my API keys for services like GPT, Claude, and others.</p>
+<h4 id="project-structure">Project Structure<a class="anchorjs-link" href="#project-structure"></a></h4><p>Your project directory might look something like this:</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>my-jupyter-project/
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>├── docker-compose.yml
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>├── .env
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span>└── notebooks/
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span>    └── your_project.ipynb
+</span></span></code></pre></div><h2 id="conda-template-environment">Conda Template Environment<a class="anchorjs-link" href="#conda-template-environment"></a></h2><p>Conda provide different ways to create an environment with base packages. You can create a base environment and then clone it, or you can create a <strong>Template Environment</strong>, as follows:</p>
+<h4 id="1-create-the-template-environment">1. Create the template environment<a class="anchorjs-link" href="#1-create-the-template-environment"></a></h4><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>conda create -n jupyter-template <span style="color:#8be9fd;font-style:italic">python</span><span style="color:#ff79c6">=</span>3.11 jupyterlab notebook ipykernel
+</span></span></code></pre></div><h4 id="2-export-the-environment-to-yaml-file">2. export the environment to yaml file<a class="anchorjs-link" href="#2-export-the-environment-to-yaml-file"></a></h4><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>conda activate jupyter-template
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>conda env <span style="color:#8be9fd;font-style:italic">export</span> --no-builds &gt; jupyter-template.yaml
+</span></span></code></pre></div><h4 id="3-use-the-template-to-create-a-new-environment">3. Use the template to create a new environment<a class="anchorjs-link" href="#3-use-the-template-to-create-a-new-environment"></a></h4><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>conda create -n my-new-project --file jupyter-template.yaml
+</span></span></code></pre></div><h4 id="or-create-the-template-yaml-manually">Or Create the template YAML manually<a class="anchorjs-link" href="#or-create-the-template-yaml-manually"></a></h4><p>If you want to create the file manually, there it is:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="color:#ff79c6">name</span>: jupyter-base
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span><span style="color:#ff79c6">channels</span>:
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>  - defaults
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span><span style="color:#ff79c6">dependencies</span>:
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span>  - python=3.11
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6</span><span>  - notebook
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7</span><span>  - jupyterlab
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">8</span><span>  - ipykernel
+</span></span></code></pre></div><p>and then you can use it as follows:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>conda env create -f jupyter-template.yaml -n my-new-env
 </span></span></code></pre></div><h2 id="conclusion">Conclusion<a class="anchorjs-link" href="#conclusion"></a></h2><p>With this setup, you can quickly spin up isolated environments for your Jupyter projects without redundant installs or configurations.</p>
 
 
