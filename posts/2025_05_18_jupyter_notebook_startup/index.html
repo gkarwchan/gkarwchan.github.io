@@ -12,19 +12,19 @@
   <meta name="author" content="Ghassan Karwchan">
   <meta name="description" content="Managing multiple Jupyter Notebook projects often means juggling different Python libraries and dependencies. Instead of setting up a separate virtual environment and installing Jupyter for each project, I use Docker to streamline the process.
 We can use Conda as well, and I will show how, but presonally I prefer Docker.
-Create an isolated evivronment for each projectConda offers managing virtual environments, and if you want a tool just to create virtual environments, and install packages, then in my opinion, Conda is the best between others uv, venv, virtualenv, pipenv &hellip;etc.">
+Create an isolated evivronment for each projectI had a previous post on how to setup virtual environments using pipevn, and virtualenv.">
   <meta name="keywords" content="blog,developer,personal">
 
   <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Simplify Jupyter Projects with Docker or Conda"/>
 <meta name="twitter:description" content="Managing multiple Jupyter Notebook projects often means juggling different Python libraries and dependencies. Instead of setting up a separate virtual environment and installing Jupyter for each project, I use Docker to streamline the process.
 We can use Conda as well, and I will show how, but presonally I prefer Docker.
-Create an isolated evivronment for each projectConda offers managing virtual environments, and if you want a tool just to create virtual environments, and install packages, then in my opinion, Conda is the best between others uv, venv, virtualenv, pipenv &hellip;etc."/>
+Create an isolated evivronment for each projectI had a previous post on how to setup virtual environments using pipevn, and virtualenv."/>
 
   <meta property="og:title" content="Simplify Jupyter Projects with Docker or Conda" />
 <meta property="og:description" content="Managing multiple Jupyter Notebook projects often means juggling different Python libraries and dependencies. Instead of setting up a separate virtual environment and installing Jupyter for each project, I use Docker to streamline the process.
 We can use Conda as well, and I will show how, but presonally I prefer Docker.
-Create an isolated evivronment for each projectConda offers managing virtual environments, and if you want a tool just to create virtual environments, and install packages, then in my opinion, Conda is the best between others uv, venv, virtualenv, pipenv &hellip;etc." />
+Create an isolated evivronment for each projectI had a previous post on how to setup virtual environments using pipevn, and virtualenv." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://www.ghassan.page/posts/2025_05_18_jupyter_notebook_startup/" /><meta property="article:section" content="posts" />
 <meta property="article:published_time" content="2025-05-18T18:41:54-06:00" />
@@ -206,7 +206,9 @@ Create an isolated evivronment for each projectConda offers managing virtual env
               post-container">
         <p>Managing multiple Jupyter Notebook projects often means juggling different Python libraries and dependencies. Instead of setting up a separate virtual environment and installing Jupyter for each project, I use <strong>Docker</strong> to streamline the process.<br>
 We can use <strong>Conda</strong> as well, and I will show how, but presonally I prefer Docker.</p>
-<h2 id="create-an-isolated-evivronment-for-each-project">Create an isolated evivronment for each project<a class="anchorjs-link" href="#create-an-isolated-evivronment-for-each-project"></a></h2><p>Conda offers managing virtual environments, and if you want a tool just to create virtual environments, and install packages, then in my opinion, Conda is the best between others uv, venv, virtualenv, pipenv &hellip;etc.<br>
+<h2 id="create-an-isolated-evivronment-for-each-project">Create an isolated evivronment for each project<a class="anchorjs-link" href="#create-an-isolated-evivronment-for-each-project"></a></h2><p>I had a <a href="/posts/2018_08_22_python_virtual_environments/">previous post</a> on how to setup virtual environments using <strong>pipevn</strong>, and <strong>virtualenv</strong>.<br>
+But since that time, I switched to use mostly <strong>conda</strong> or <strong>docker</strong> specially for Jupyter notebooks.</p>
+<p>Conda offers managing virtual environments, and if you want a tool just to create virtual environments, and install packages, then in my opinion, Conda is the best between others uv, venv, virtualenv, pipenv &hellip;etc.<br>
 Docker offers the same level of environment isolation as virtual environments, but with several added benefits:</p>
 <ul>
 <li>Pre-packaged with all required dependencies.</li>
@@ -251,7 +253,13 @@ Docker offers the same level of environment isolation as virtual environments, b
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">8</span><span>  - ipykernel
 </span></span></code></pre></div><p>and then you can use it as follows:</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>conda env create -f jupyter-template.yaml -n my-new-env
-</span></span></code></pre></div><h2 id="conclusion">Conclusion<a class="anchorjs-link" href="#conclusion"></a></h2><p>With this setup, you can quickly spin up isolated environments for your Jupyter projects without redundant installs or configurations.</p>
+</span></span></code></pre></div><h2 id="another-alternative-python-docker">Another alternative: Python docker:<a class="anchorjs-link" href="#another-alternative-python-docker"></a></h2><p>Another alternative, is just using python docker image/container, and create a new container for each project:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>docker run -it --rm python:3.11 bash
+</span></span></code></pre></div><h2 id="other-virtual-environment-tools">Other virtual environment tools:<a class="anchorjs-link" href="#other-virtual-environment-tools"></a></h2><p>Although there are other virtual environment tools, like uv, venv, virtualenv, poetry.<br>
+Some of them are more for packaging production code, like <strong>poetry</strong>, and some are mimicking npm like
+<strong>pipenv</strong>, and some of them are fast like <strong>uv</strong>. But personally I think Conda (specially miniconda) is the easiest to use.<br>
+You can get more <a href="/posts/2018_08_22_python_virtual_environments/">here</a>.</p>
+<h2 id="conclusion">Conclusion<a class="anchorjs-link" href="#conclusion"></a></h2><p>With this setup, you can quickly spin up isolated environments for your Jupyter projects without redundant installs or configurations.</p>
 
 
         <hr style="visibility: hidden;" />
