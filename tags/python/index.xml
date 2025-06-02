@@ -18,6 +18,17 @@ We can use Conda as well, and I will show how, but presonally I prefer Docker.
 Create an isolated evivronment for each projectI had a previous post on how to setup virtual environments using pipevn, and virtualenv.</description>
     </item>
     <item>
+      <title>Survive commands with Conda</title>
+      <link>https://www.ghassan.page/posts/2023_12_20_conda_most_importants_commands/</link>
+      <pubDate>Wed, 20 Dec 2023 12:41:54 -0600</pubDate>
+      <guid>https://www.ghassan.page/posts/2023_12_20_conda_most_importants_commands/</guid>
+      <description>I had a previous post on how to setup virtual environments using pipevn, and virtualenv.
+But Conda is more robust and useful, and now I am using it for all my projects.
+Conda and the ShellWhile you install Conda, it will ask you at the end if you want initialize conda from the shell environment.
+The question is something like this:
+1Do you wish the installer to initialize Anaconda3 by running conda init?</description>
+    </item>
+    <item>
       <title>Memoization in Python and JavaScript</title>
       <link>https://www.ghassan.page/posts/2020_09_20_memoization_python_javascript/</link>
       <pubDate>Sun, 20 Sep 2020 09:45:00 +0000</pubDate>

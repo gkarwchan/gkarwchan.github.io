@@ -142,6 +142,17 @@ The challenge is you cannot store any type of secrets of credentials in your cod
 Summary of the process:To describe the flow briefly, when the SPA requires to get a token it will direct the application to an Authorization Server (AS), which will use that server login page and UI, and the user will run the login process on the AS server website, then that server will return back to the original client website using a callback url passing the token to the SPA.</description>
     </item>
     <item>
+      <title>Survive commands with Conda</title>
+      <link>https://www.ghassan.page/posts/2023_12_20_conda_most_importants_commands/</link>
+      <pubDate>Wed, 20 Dec 2023 12:41:54 -0600</pubDate>
+      <guid>https://www.ghassan.page/posts/2023_12_20_conda_most_importants_commands/</guid>
+      <description>I had a previous post on how to setup virtual environments using pipevn, and virtualenv.
+But Conda is more robust and useful, and now I am using it for all my projects.
+Conda and the ShellWhile you install Conda, it will ask you at the end if you want initialize conda from the shell environment.
+The question is something like this:
+1Do you wish the installer to initialize Anaconda3 by running conda init?</description>
+    </item>
+    <item>
       <title>Different options to add SSL certificate to you Azure App Service</title>
       <link>https://www.ghassan.page/posts/2023_12_8_azureappservice_ssl_certificate/</link>
       <pubDate>Fri, 08 Dec 2023 12:41:54 -0600</pubDate>
