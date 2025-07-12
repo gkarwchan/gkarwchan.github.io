@@ -10,9 +10,9 @@
     <atom:link href="https://www.ghassan.page/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Azure PowerShell Scripts Collection</title>
-      <link>https://www.ghassan.page/azurepowershell/</link>
+      <link>https://www.ghassan.page/azurescripts/</link>
       <pubDate>Fri, 11 Jul 2025 00:00:00 +0000</pubDate>
-      <guid>https://www.ghassan.page/azurepowershell/</guid>
+      <guid>https://www.ghassan.page/azurescripts/</guid>
       <description>PowerShell Scripts CollectionHere&amp;rsquo;s a collection of useful PowerShell scripts for various automation tasks.
 Scripts Modules - Find duplicate and delete older version
 Modules - Find outdated modules
