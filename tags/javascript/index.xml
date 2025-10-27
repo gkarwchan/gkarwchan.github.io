@@ -6,8 +6,16 @@
     <description>Recent content in javascript on Ghassan&#39;s Page</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 22 Jun 2024 10:41:54 -0600</lastBuildDate>
+    <lastBuildDate>Sat, 25 Oct 2025 18:41:54 -0600</lastBuildDate>
     <atom:link href="https://www.ghassan.page/tags/javascript/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>SPA vs. SSR: The Rise of Server-Side Rendering</title>
+      <link>https://www.ghassan.page/posts/2025_10_25_ssr_vs_spa_andtheriseofssr/</link>
+      <pubDate>Sat, 25 Oct 2025 18:41:54 -0600</pubDate>
+      <guid>https://www.ghassan.page/posts/2025_10_25_ssr_vs_spa_andtheriseofssr/</guid>
+      <description>IntroductionThe landscape of web development has undergone a dramatic shift over the past decade. Single Page Applications (SPAs) dominated the 2010s, promising rich, app-like experiences in the browser. But today, we&amp;rsquo;re witnessing a renaissance of Server-Side Rendering (SSR). This isn&amp;rsquo;t a step backward—it&amp;rsquo;s an evolution that combines the best of both worlds.
+The SPA benefitsWhen SPAs emerged, they solved real problems. Traditional multi-page applications required full page reloads for every navigation, creating jarring user experiences.</description>
+    </item>
     <item>
       <title>Stream long running webapi with Asp.NET Core and Javascript</title>
       <link>https://www.ghassan.page/posts/2024_06_22_streamline_long_process_with_aspnet_core_and_javascript/</link>

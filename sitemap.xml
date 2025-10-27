@@ -2,6 +2,21 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
+    <loc>https://www.ghassan.page/</loc>
+    <lastmod>2025-10-25T18:41:54-06:00</lastmod>
+  </url><url>
+    <loc>https://www.ghassan.page/tags/javascript/</loc>
+    <lastmod>2025-10-25T18:41:54-06:00</lastmod>
+  </url><url>
+    <loc>https://www.ghassan.page/posts/</loc>
+    <lastmod>2025-10-25T18:41:54-06:00</lastmod>
+  </url><url>
+    <loc>https://www.ghassan.page/posts/2025_10_25_ssr_vs_spa_andtheriseofssr/</loc>
+    <lastmod>2025-10-25T18:41:54-06:00</lastmod>
+  </url><url>
+    <loc>https://www.ghassan.page/tags/</loc>
+    <lastmod>2025-10-25T18:41:54-06:00</lastmod>
+  </url><url>
     <loc>https://www.ghassan.page/tags/azure/</loc>
     <lastmod>2025-07-11T00:00:00+00:00</lastmod>
   </url><url>
@@ -13,15 +28,6 @@
   </url><url>
     <loc>https://www.ghassan.page/tags/devops/</loc>
     <lastmod>2025-07-11T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://www.ghassan.page/</loc>
-    <lastmod>2025-07-11T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://www.ghassan.page/tags/</loc>
-    <lastmod>2025-07-11T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://www.ghassan.page/posts/</loc>
-    <lastmod>2025-05-18T18:41:54-06:00</lastmod>
   </url><url>
     <loc>https://www.ghassan.page/tags/python/</loc>
     <lastmod>2025-05-18T18:41:54-06:00</lastmod>
@@ -64,9 +70,6 @@
   </url><url>
     <loc>https://www.ghassan.page/posts/2024_08_19_microsoft_identity_platform/</loc>
     <lastmod>2024-08-19T10:41:54-06:00</lastmod>
-  </url><url>
-    <loc>https://www.ghassan.page/tags/javascript/</loc>
-    <lastmod>2024-06-22T10:41:54-06:00</lastmod>
   </url><url>
     <loc>https://www.ghassan.page/posts/2024_06_22_streamline_long_process_with_aspnet_core_and_javascript/</loc>
     <lastmod>2024-06-22T10:41:54-06:00</lastmod>
