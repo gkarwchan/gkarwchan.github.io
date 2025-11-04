@@ -6,8 +6,16 @@
     <description>Recent content in asp.net on Ghassan&#39;s Page</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 26 Oct 2024 18:41:54 -0600</lastBuildDate>
+    <lastBuildDate>Fri, 31 Oct 2025 18:41:54 -0600</lastBuildDate>
     <atom:link href="https://www.ghassan.page/tags/asp.net/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Understanding HTTP Request Smuggling and latest ASP.NET vulnerability</title>
+      <link>https://www.ghassan.page/posts/2025_10_31_http_request_smuggling/</link>
+      <pubDate>Fri, 31 Oct 2025 18:41:54 -0600</pubDate>
+      <guid>https://www.ghassan.page/posts/2025_10_31_http_request_smuggling/</guid>
+      <description>IntroductionIf you&amp;rsquo;ve been following cybersecurity news lately, you&amp;rsquo;ve probably heard about Microsoft HTTP request smuggling vulnerability CVE-2025-55315 making headlines. But what exactly is HTTP request smuggling, and why should you care? Let&amp;rsquo;s break it down in plain English.
+What Is HTTP Request Smuggling?HTTP request smuggling is a technique where an attacker crafts a single HTTP request that gets interpreted as two different requests by different systems in the processing chain. Think of it like someone is passing through a guarded gate, but he hides another person under his coat.</description>
+    </item>
     <item>
       <title>Upload files using streaming in Asp.NET</title>
       <link>https://www.ghassan.page/posts/2024_10_26_upload_files_using_stream_with_aspnet/</link>
