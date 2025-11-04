@@ -206,8 +206,10 @@ What Is HTTP Request Smuggling?HTTP request smuggling is a technique where an at
         <h1 id="introduction">Introduction<a class="anchorjs-link" href="#introduction"></a></h1><p>If you&rsquo;ve been following cybersecurity news lately, you&rsquo;ve probably heard about <a href="https://www.microsoft.com/en-us/msrc/blog/2025/10/understanding-cve-2025-55315">Microsoft HTTP request smuggling vulnerability CVE-2025-55315</a> making headlines. But what exactly is HTTP request smuggling, and why should you care? Let&rsquo;s break it down in plain English.</p>
 <h1 id="what-is-http-request-smuggling">What Is HTTP Request Smuggling?<a class="anchorjs-link" href="#what-is-http-request-smuggling"></a></h1><p>HTTP request smuggling is a technique where an attacker crafts a single HTTP request that gets interpreted as two different requests by different systems in the processing chain. Think of it like someone is passing through a guarded gate, but he hides another person under his coat.</p>
 <h3 id="why-does-this-happen">Why Does This Happen?<a class="anchorjs-link" href="#why-does-this-happen"></a></h3><p>Modern web applications aren&rsquo;t just a single server sitting in a closet somewhere. They typically have multiple layers working together:</p>
-<p>Front-end systems: Reverse proxies, load balancers, firewalls, Content Delivery Networks (CDNs), Web Application Firewalls (WAFs)
-Back-end systems: The actual web application servers running your code</p>
+<ul>
+<li>Front-end systems: Reverse proxies, load balancers, firewalls, Content Delivery Networks (CDNs), Web Application Firewalls (WAFs).</li>
+<li>Back-end systems: The actual web application servers running your code.</li>
+</ul>
 <p>These systems need to communicate efficiently, and they do so by reusing HTTP connections. But to reuse a connection, each system needs to know exactly where one request ends and the next one begins.
 HTTP provides two main ways to specify request boundaries:</p>
 <p><strong>Content-Length</strong>: Specifies exactly how many bytes the request body contains.<br>
