@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  
+    
+  <title>Monorepos, Workspaces &amp; Turborepo: A Modern JavaScript Development Architecture | Ghassan&#39;s Page</title>
+  <meta name="author" content="Ghassan Karwchan">
+  <meta name="description" content="IntroductionThe JavaScript ecosystem has undergone a significant architectural shift in recent years. As applications grow more complex. Shifting away from two opposite architecure patterns:
+Massive monolithic application or chaos of dozen separate repos. A new rising pattern is gaining more ground in modern JavaScript applications.
+Monorepo pattern, where a single repo for all the code base, but at the same time separate and independent modules, which combine the best of two worlds: Independent development &amp; testing for each module.">
+  <meta name="keywords" content="blog,developer,personal">
+
+  <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Monorepos, Workspaces &amp; Turborepo: A Modern JavaScript Development Architecture"/>
+<meta name="twitter:description" content="IntroductionThe JavaScript ecosystem has undergone a significant architectural shift in recent years. As applications grow more complex. Shifting away from two opposite architecure patterns:
+Massive monolithic application or chaos of dozen separate repos. A new rising pattern is gaining more ground in modern JavaScript applications.
+Monorepo pattern, where a single repo for all the code base, but at the same time separate and independent modules, which combine the best of two worlds: Independent development &amp; testing for each module."/>
+
+  <meta property="og:title" content="Monorepos, Workspaces &amp; Turborepo: A Modern JavaScript Development Architecture" />
+<meta property="og:description" content="IntroductionThe JavaScript ecosystem has undergone a significant architectural shift in recent years. As applications grow more complex. Shifting away from two opposite architecure patterns:
+Massive monolithic application or chaos of dozen separate repos. A new rising pattern is gaining more ground in modern JavaScript applications.
+Monorepo pattern, where a single repo for all the code base, but at the same time separate and independent modules, which combine the best of two worlds: Independent development &amp; testing for each module." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://www.ghassan.page/posts/2025_11_05_monorepo_turborepo_workspaces/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2025-11-05T18:41:54-06:00" />
+<meta property="article:modified_time" content="2025-11-05T18:41:54-06:00" />
+
+
+
+  <link rel="stylesheet" href="/css/bootstrap.min.css"  crossorigin="anonymous">
+  
+  <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.1/css/all.min.css" rel="stylesheet" type="text/css">
+
+  <link rel="stylesheet" href="/sass/main.css">
+
+  <link rel="stylesheet" href="/zoomjs/zoom.min.css">
+
+  <script src=/js/lazysizes.min.js></script>
+
+  
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="manifest" href="/site.webmanifest">
+  
+
+</head>
+
+
+
+<body ontouchstart="">
+  
+  
+  <nav class="navbar navbar-default navbar-custom navbar-fixed-top invert">
+  <div class="container-fluid">
+    
+    <div class="navbar-header page-scroll">
+      <button type="button" class="navbar-toggle">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="https://www.ghassan.page/">Ghassan&#39;s Page</a>
+    </div>
+    
+    <div id="huxblog_navbar">
+      <div class="navbar-collapse">
+        <ul class="nav navbar-nav navbar-right">
+          
+          <li><a href="/" title="Home">Home</a></li>
+          
+          <li><a href="/azurescripts/" title="Azure Scripts">Azure Scripts</a></li>
+          
+          <li><a href="/about/" title="About">About</a></li>
+          
+          <li><a href="https://github.com/gkarwchan/hugoblogsource" title="Github">Github</a></li>
+          
+
+          <li class="search-icon">
+            <a href="javascript:void(0)">
+              <i class="fa fa-search"></i>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    
+  </div>
+  
+</nav>
+<script>
+  
+  
+  
+  var $body = document.body;
+  var $toggle = document.querySelector(".navbar-toggle");
+  var $navbar = document.querySelector("#huxblog_navbar");
+  var $collapse = document.querySelector(".navbar-collapse");
+
+  var __HuxNav__ = {
+    close: function () {
+      $navbar.className = " ";
+      
+      setTimeout(function () {
+        
+        if ($navbar.className.indexOf("in") < 0) {
+          $collapse.style.height = "0px";
+        }
+      }, 400);
+    },
+    open: function () {
+      $collapse.style.height = "auto";
+      $navbar.className += " in";
+    },
+  };
+
+  
+  $toggle.addEventListener("click", function (e) {
+    if ($navbar.className.indexOf("in") > 0) {
+      __HuxNav__.close();
+    } else {
+      __HuxNav__.open();
+    }
+  });
+
+  
+
+  document.addEventListener("click", function (e) {
+    if (e.target == $toggle) return;
+    if (e.target.className == "icon-bar") return;
+    __HuxNav__.close();
+  });
+</script>
+  
+<div class="search-page">
+  <div class="search-icon-close-container">
+    <span class="search-icon-close">
+      <i class="fa fa-chevron-down"></i>
+    </span>
+  </div>
+  <div class="search-main container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <form></form>
+        <input type="text" id="search-input" placeholder="$ grep...">
+        </form>
+        <div id="search-results" class="mini-post-list"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+  
+  
+
+
+<style type="text/css">
+  header.intro-header {
+    position: relative;
+    background-image: url('');
+  }
+</style>
+
+<header class="intro-header style-text">
+
+  <div class="header-mask"></div>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div class="post-heading">
+          <div class="tags">
+            
+            <a class="tag" href="/tags/javascript/" title="javascript">javascript</a>
+            
+          </div>
+          <h1>Monorepos, Workspaces &amp; Turborepo: A Modern JavaScript Development Architecture</h1>
+          <h2 class="subheading"></h2>
+          <span class="meta">
+            Posted by  Ghassan Karwchan 
+            on Wed, Nov 5, 2025
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+
+  
+
+
+<article>
+  <div class="container">
+    <div class="row">
+
+      
+      <div class="
+              col-lg-8 col-lg-offset-2
+              col-md-10 col-md-offset-1
+              post-container">
+        <h1 id="introduction">Introduction<a class="anchorjs-link" href="#introduction"></a></h1><p>The JavaScript ecosystem has undergone a significant architectural shift in recent years. As applications grow more complex. Shifting away from two opposite architecure patterns:</p>
+<ul>
+<li>Massive monolithic application</li>
+<li>or chaos of dozen separate repos.
+A new rising pattern is gaining more ground in modern JavaScript applications.<br>
+Monorepo pattern, where a single repo for all the code base, but at the same time separate and independent modules, which combine the best of two worlds:</li>
+</ul>
+<ol>
+<li>Independent development &amp; testing for each module.</li>
+<li>Having all code together, making solving dependencies, and reducing the size, time and effor of solving dependencies between these independant modules.</li>
+</ol>
+<h2 id="the-monorepo-pattern-best-of-both-worlds">The Monorepo Pattern: Best of Both Worlds<a class="anchorjs-link" href="#the-monorepo-pattern-best-of-both-worlds"></a></h2><p>A <strong>monorepo</strong> (monolithic repository) is a single repository that contains multiple projects, applications, or packages. Unlike a monolithic application where everything is tightly coupled, a monorepo encourages indepandent modular design while keeping code centrally managed.</p>
+<h3 id="why-monorepos">Why Monorepos?<a class="anchorjs-link" href="#why-monorepos"></a></h3><p><strong>Unified Versioning &amp; Dependencies</strong><br>
+All projects share the same dependency versions, eliminating the &ldquo;works on my machine&rdquo; problem and dependency hell across services.</p>
+<p><strong>Atomic Changes Across Projects</strong><br>
+Need to update an API and all the frontends that consume it? Make one commit, one pull request. No orchestrating changes across multiple repositories.</p>
+<p><strong>Code Reusability</strong><br>
+Shared utilities, UI components, types, and configurations can be easily consumed across projects without publishing to npm or dealing with version management.</p>
+<p><strong>Simplified Developer Experience</strong><br>
+One clone, one install, one place to search for code. New developers can understand the entire system architecture by exploring a single repository.</p>
+<p><strong>Refactoring with Confidence</strong><br>
+Modern IDEs can find all usages across the entire codebase. Refactor a shared function and immediately see every place it&rsquo;s used.</p>
+<h3 id="the-challenge">The Challenge<a class="anchorjs-link" href="#the-challenge"></a></h3><p>While monorepos solve many problems, they introduce new challenges:</p>
+<ul>
+<li>Build times grow as the codebase expands</li>
+<li>Running tests for everything on every change is inefficient</li>
+<li>CI/CD pipelines become slower</li>
+<li>Task orchestration becomes complex (what needs to build before what?)</li>
+</ul>
+<p>This is where workspaces and Turborepo enter the picture.</p>
+<h2 id="workspaces-the-glue">Workspaces: The Glue<a class="anchorjs-link" href="#workspaces-the-glue"></a></h2><p><strong>Workspaces</strong> are a feature provided by package managers (npm, yarn, pnpm) that make monorepos practical. They are the glue that link all packages together. They solve the fundamental problem of managing multiple packages within a single repository.</p>
+<h3 id="how-workspaces-work">How Workspaces Work<a class="anchorjs-link" href="#how-workspaces-work"></a></h3><p>In your root <code>package.json</code>, you define workspace patterns:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>{
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>  <span style="color:#ff79c6">&#34;name&#34;</span>: <span style="color:#f1fa8c">&#34;my-monorepo&#34;</span>,
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>  <span style="color:#ff79c6">&#34;private&#34;</span>: <span style="color:#ff79c6">true</span>,
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span>  <span style="color:#ff79c6">&#34;workspaces&#34;</span>: [
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span>    <span style="color:#f1fa8c">&#34;apps/*&#34;</span>,
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6</span><span>    <span style="color:#f1fa8c">&#34;packages/*&#34;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7</span><span>  ],
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">8</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">9</span><span>}
+</span></span></code></pre></div><p>This tells your package manager that <code>apps/web</code>, <code>apps/api</code>, <code>packages/ui</code>, etc., are all separate packages that should be managed together.</p>
+<h3 id="what-workspaces-provide">What Workspaces Provide<a class="anchorjs-link" href="#what-workspaces-provide"></a></h3><p><strong>Hoisted Dependencies</strong><br>
+Common dependencies are installed once at the root, saving disk space and installation time. Packages share <code>node_modules</code> when possible.</p>
+<p><strong>Local Package Linking</strong><br>
+Packages can depend on each other without publishing to npm. Changes are immediately reflected across the monorepo.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="color:#6272a4">// apps/web/package.json
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span><span style="color:#6272a4"></span>{
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>  <span style="color:#ff79c6">&#34;dependencies&#34;</span>: {
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span>    <span style="color:#ff79c6">&#34;@myapp/ui&#34;</span>: <span style="color:#f1fa8c">&#34;*&#34;</span>,
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span>    <span style="color:#ff79c6">&#34;@myapp/utils&#34;</span>: <span style="color:#f1fa8c">&#34;*&#34;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6</span><span>  }
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7</span><span>}
+</span></span></code></pre></div><p><strong>Simplified Scripts</strong><br>
+Package managers provide commands to run scripts across workspaces:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="color:#6272a4">// apps/web/package.json
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span><span style="color:#6272a4"></span>{
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>  <span style="color:#ff79c6">&#34;scripts&#34;</span>: {
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span>    <span style="color:#ff79c6">&#34;buildAll&#34;</span>: <span style="color:#f1fa8c">&#34;npm run build --workspaces&#34;</span>,
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span>    <span style="color:#ff79c6">&#34;testOnePackage&#34;</span>: <span style="color:#f1fa8c">&#34;pnpm run test --filter&#34;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6</span><span>  }
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7</span><span>}
+</span></span></code></pre></div><p>And then you can test one package only by running</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>pnpm run testOnePackage -- <span style="color:#f1fa8c">&#34;./packages/*&#34;</span>
+</span></span></code></pre></div><h3 id="the-gap-workspaces-dont-fill">The Gap Workspaces Don&rsquo;t Fill<a class="anchorjs-link" href="#the-gap-workspaces-dont-fill"></a></h3><p>While workspaces solve dependency management and linking, they don&rsquo;t address:</p>
+<ul>
+<li><strong>Task orchestration</strong> - Understanding which packages need to build in what order</li>
+<li><strong>Incremental execution</strong> - Skipping tasks when nothing changed</li>
+<li><strong>Caching</strong> - Reusing previous build artifacts</li>
+<li><strong>Parallelization</strong> - Intelligently running tasks concurrently</li>
+<li><strong>Remote caching</strong> - Sharing build results across team members and CI</li>
+</ul>
+<p>This is exactly what Turborepo was designed to solve.</p>
+<h2 id="turborepo-the-orchestration-layer">Turborepo: The Orchestration Layer<a class="anchorjs-link" href="#turborepo-the-orchestration-layer"></a></h2><p><strong>Turborepo</strong> sits on top of your workspace setup and acts as an intelligent task runner. It doesn&rsquo;t replace workspaces—it enhances them.</p>
+<h3 id="the-turborepo-philosophy">The Turborepo Philosophy<a class="anchorjs-link" href="#the-turborepo-philosophy"></a></h3><p>Turborepo operates on a simple but powerful principle: <strong>never do the same work twice</strong>. It achieves this through:</p>
+<ol>
+<li><strong>Content-aware hashing</strong> - Understanding what inputs affect each task</li>
+<li><strong>Local caching</strong> - Storing task outputs on your machine</li>
+<li><strong>Remote caching</strong> - Sharing cached results across your team</li>
+<li><strong>Dependency graph analysis</strong> - Understanding package relationships</li>
+<li><strong>Parallel execution</strong> - Running independent tasks simultaneously</li>
+</ol>
+<h3 id="setting-up-turborepo">Setting Up Turborepo<a class="anchorjs-link" href="#setting-up-turborepo"></a></h3><p>Installation is straightforward:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>npm install turbo --save-dev
+</span></span></code></pre></div><p>Create a <code>turbo.json</code> at your repository root:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span>{
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>  <span style="color:#ff79c6">&#34;$schema&#34;</span>: <span style="color:#f1fa8c">&#34;https://turbo.build/schema.json&#34;</span>,
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>  <span style="color:#ff79c6">&#34;pipeline&#34;</span>: {
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span>    <span style="color:#ff79c6">&#34;build&#34;</span>: {
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span>      <span style="color:#ff79c6">&#34;dependsOn&#34;</span>: [<span style="color:#f1fa8c">&#34;^build&#34;</span>],
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span>      <span style="color:#ff79c6">&#34;outputs&#34;</span>: [<span style="color:#f1fa8c">&#34;dist/**&#34;</span>, <span style="color:#f1fa8c">&#34;.next/**&#34;</span>]
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span>    },
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span>    <span style="color:#ff79c6">&#34;test&#34;</span>: {
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span>      <span style="color:#ff79c6">&#34;dependsOn&#34;</span>: [<span style="color:#f1fa8c">&#34;build&#34;</span>],
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span>      <span style="color:#ff79c6">&#34;inputs&#34;</span>: [<span style="color:#f1fa8c">&#34;src/**&#34;</span>, <span style="color:#f1fa8c">&#34;test/**&#34;</span>]
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span>    },
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span>    <span style="color:#ff79c6">&#34;lint&#34;</span>: {
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span><span>      <span style="color:#ff79c6">&#34;outputs&#34;</span>: []
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span><span>    },
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15</span><span>    <span style="color:#ff79c6">&#34;dev&#34;</span>: {
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16</span><span>      <span style="color:#ff79c6">&#34;cache&#34;</span>: <span style="color:#ff79c6">false</span>,
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17</span><span>      <span style="color:#ff79c6">&#34;persistent&#34;</span>: <span style="color:#ff79c6">true</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18</span><span>    }
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19</span><span>  }
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20</span><span>}
+</span></span></code></pre></div><h3 id="understanding-the-pipeline">Understanding the Pipeline<a class="anchorjs-link" href="#understanding-the-pipeline"></a></h3><p>The <code>pipeline</code> configuration is where Turborepo&rsquo;s magic happens:</p>
+<p><strong><code>dependsOn: [&quot;^build&quot;]</code></strong><br>
+The <code>^</code> means &ldquo;wait for dependencies to build first.&rdquo; If <code>@myapp/web</code> depends on <code>@myapp/ui</code>, Turborepo ensures <code>@myapp/ui</code> builds before <code>@myapp/web</code>.</p>
+<p><strong><code>outputs: [&quot;dist/**&quot;]</code></strong><br>
+Tells Turborepo what files to cache. When these outputs are cached and inputs haven&rsquo;t changed, the task is skipped entirely.</p>
+<p><strong><code>inputs</code></strong><br>
+Explicitly define what files affect a task. By default, Turborepo uses all files in the package.</p>
+<h3 id="running-tasks">Running Tasks<a class="anchorjs-link" href="#running-tasks"></a></h3><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="color:#6272a4"># Rebuild all, but only rebuild changed package</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>turbo run build
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span><span style="color:#6272a4"># Run tests, leveraging cache</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span>turbo run <span style="color:#8be9fd;font-style:italic">test</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span><span style="color:#6272a4"># Build only a specific app and its dependencies</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span>turbo run build --filter<span style="color:#ff79c6">=</span>@myapp/web
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span><span style="color:#6272a4"># Build everything that changed since main branch</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span>turbo run build --filter<span style="color:#ff79c6">=</span>...<span style="color:#ff79c6">[</span>main<span style="color:#ff79c6">]</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span><span><span style="color:#6272a4"># Cache hits across machines = instant builds</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span><span>turbo build --remote-cache
+</span></span></code></pre></div><h3 id="the-speed-advantage">The Speed Advantage<a class="anchorjs-link" href="#the-speed-advantage"></a></h3><p>On the first run, Turborepo executes all tasks normally. But on subsequent runs:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>Tasks:    8 successful, 8 total
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>Cached:   7 successful, 7 total
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>Time:     0.523s &gt;&gt;&gt; FULL TURBO ⚡
+</span></span></code></pre></div><p>Seven out of eight tasks were skipped because nothing changed. Your 5-minute build just became half a second.</p>
+<h2 id="how-it-all-works-together">How It All Works Together<a class="anchorjs-link" href="#how-it-all-works-together"></a></h2><p>Let&rsquo;s walk through a real-world example of how monorepos, workspaces, and Turborepo create a seamless development experience.</p>
+<p>I am going to show a structure that you might see it in many projects, because it is the initial structure created by <code>create-turbo</code> starter application, and adopted by <code>Vercel</code> community and <code>Next.js</code>.</p>
+<h3 id="repository-structure">Repository Structure<a class="anchorjs-link" href="#repository-structure"></a></h3><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span>my-monorepo/
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>├── apps/
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>│   ├── web/              # Next.js frontend
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span>│   ├── admin/            # Admin dashboard
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span>│   └── api/              # Express backend
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span>├── packages/
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span>│   ├── ui/               # Shared React components
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span>│   ├── utils/            # Common utilities
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span>│   ├── types/            # TypeScript types
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span>│   └── config/           # Shared configs (ESLint, TS, etc.)
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span>├── package.json          # Root package.json with workspaces
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span>├── turbo.json            # Turborepo configuration
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span><span>└── pnpm-workspace.yaml   # pnpm workspace config
+</span></span></code></pre></div><h3 id="the-root-packagejson">The root package.json:<a class="anchorjs-link" href="#the-root-packagejson"></a></h3><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span>{
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>  <span style="color:#ff79c6">&#34;name&#34;</span>: <span style="color:#f1fa8c">&#34;my-turborepo&#34;</span>,
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>  <span style="color:#ff79c6">&#34;private&#34;</span>: <span style="color:#ff79c6">true</span>,
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span>  <span style="color:#ff79c6">&#34;workspaces&#34;</span>: [<span style="color:#f1fa8c">&#34;apps/*&#34;</span>, <span style="color:#f1fa8c">&#34;packages/*&#34;</span>],
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span>  <span style="color:#ff79c6">&#34;scripts&#34;</span>: {
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span>    <span style="color:#ff79c6">&#34;build&#34;</span>: <span style="color:#f1fa8c">&#34;turbo build&#34;</span>,
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span>    <span style="color:#ff79c6">&#34;dev&#34;</span>: <span style="color:#f1fa8c">&#34;turbo dev&#34;</span>,
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span>    <span style="color:#ff79c6">&#34;test&#34;</span>: <span style="color:#f1fa8c">&#34;turbo test&#34;</span>,
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span>    <span style="color:#ff79c6">&#34;clean&#34;</span>: <span style="color:#f1fa8c">&#34;turbo clean&#34;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span>  },
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span>  <span style="color:#ff79c6">&#34;devDependencies&#34;</span>: {
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span>    <span style="color:#ff79c6">&#34;turbo&#34;</span>: <span style="color:#f1fa8c">&#34;latest&#34;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span><span>  }
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span><span>}
+</span></span></code></pre></div><h3 id="dependency-in-dependent-pakcagejson">Dependency in dependent pakcage.json<a class="anchorjs-link" href="#dependency-in-dependent-pakcagejson"></a></h3><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="color:#6272a4">// packages/ui/package.json
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span><span style="color:#6272a4"></span>{
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>  <span style="color:#ff79c6">&#34;name&#34;</span>: <span style="color:#f1fa8c">&#34;@my-company/ui&#34;</span>,
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span>  <span style="color:#ff79c6">&#34;dependencies&#34;</span>: {
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span>    <span style="color:#ff79c6">&#34;@my-company/utils&#34;</span>: <span style="color:#f1fa8c">&#34;workspace:*&#34;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6</span><span>  }
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7</span><span>}
+</span></span></code></pre></div><h3 id="turbojson">turbo.json<a class="anchorjs-link" href="#turbojson"></a></h3><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span>{
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>  <span style="color:#ff79c6">&#34;pipeline&#34;</span>: {
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>    <span style="color:#ff79c6">&#34;build&#34;</span>: {
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span>      <span style="color:#ff79c6">&#34;dependsOn&#34;</span>: [<span style="color:#f1fa8c">&#34;^build&#34;</span>],
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span>      <span style="color:#ff79c6">&#34;outputs&#34;</span>: [<span style="color:#f1fa8c">&#34;.next/**&#34;</span>, <span style="color:#f1fa8c">&#34;dist/**&#34;</span>]
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span>    },
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span>    <span style="color:#ff79c6">&#34;dev&#34;</span>: {
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span>      <span style="color:#ff79c6">&#34;cache&#34;</span>: <span style="color:#ff79c6">false</span>,
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span>      <span style="color:#ff79c6">&#34;persistent&#34;</span>: <span style="color:#ff79c6">true</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span>    },
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span>    <span style="color:#ff79c6">&#34;test&#34;</span>: {
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span>      <span style="color:#ff79c6">&#34;dependsOn&#34;</span>: [<span style="color:#f1fa8c">&#34;build&#34;</span>]
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span><span>    },
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span><span>    <span style="color:#ff79c6">&#34;lint&#34;</span>: {
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15</span><span>      <span style="color:#ff79c6">&#34;outputs&#34;</span>: []
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16</span><span>    }
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17</span><span>  }
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18</span><span>}
+</span></span></code></pre></div><p><strong>Developer Makes a Change</strong></p>
+<p>A developer updates a Button component in <code>packages/ui</code>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="color:#6272a4"># Make changes to packages/ui/src/Button.tsx</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>turbo run build --filter<span style="color:#ff79c6">=</span>...@myapp/ui
+</span></span></code></pre></div><p>Turborepo:</p>
+<ol>
+<li>Detects that <code>@myapp/ui</code> changed</li>
+<li>Automatically includes <code>@myapp/web</code> and <code>@myapp/admin</code> (dependents)</li>
+<li>Skips <code>@myapp/api</code> (unaffected)</li>
+<li>Builds in optimal order</li>
+<li>Caches all outputs</li>
+</ol>
+<p><strong>CI/CD Pipeline</strong></p>
+<p>In your GitHub Actions workflow:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>- <span style="color:#ff79c6">name</span>: Build
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>  <span style="color:#ff79c6">run</span>: turbo run build --filter=[HEAD^1]
+</span></span></code></pre></div><p>Turborepo:</p>
+<ol>
+<li>Analyzes what changed in the commit</li>
+<li>Only builds affected packages</li>
+<li>Pulls cached artifacts from remote cache for unchanged packages</li>
+<li>Dramatically reduces CI time</li>
+</ol>
+<p><strong>Team Collaboration</strong></p>
+<p>When a teammate pulls the latest code:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>turbo run build
+</span></span></code></pre></div><p>Turborepo:</p>
+<ol>
+<li>Checks remote cache for matching build artifacts</li>
+<li>Downloads cached results for packages they didn&rsquo;t change</li>
+<li>Only builds packages that differ from cached versions</li>
+<li>The entire team benefits from each other&rsquo;s work</li>
+</ol>
+<h2 id="real-world-benefits">Real-World Benefits<a class="anchorjs-link" href="#real-world-benefits"></a></h2><h3 id="performance-gains">Performance Gains<a class="anchorjs-link" href="#performance-gains"></a></h3><p>Teams report:</p>
+<ul>
+<li><strong>70-90% reduction</strong> in CI/CD times</li>
+<li><strong>Local builds</strong> completing in seconds instead of minutes</li>
+<li><strong>Remote cache hit rates</strong> of 80%+ for typical development</li>
+</ul>
+<h3 id="developer-experience">Developer Experience<a class="anchorjs-link" href="#developer-experience"></a></h3><ul>
+<li><strong>Instant feedback</strong> on changes</li>
+<li><strong>Confidence in refactoring</strong> across package boundaries</li>
+<li><strong>Simplified onboarding</strong> for new developers</li>
+<li><strong>Consistent tooling</strong> across all projects</li>
+</ul>
+<h3 id="scalability">Scalability<a class="anchorjs-link" href="#scalability"></a></h3><ul>
+<li>Monorepos scaling to <strong>hundreds of packages</strong></li>
+<li><strong>Large teams</strong> collaborating without stepping on each other</li>
+<li><strong>Microservices-style benefits</strong> without microservices complexity</li>
+</ul>
+<h2 id="best-practices">Best Practices<a class="anchorjs-link" href="#best-practices"></a></h2><h3 id="structure-for-success">Structure for Success<a class="anchorjs-link" href="#structure-for-success"></a></h3><p><strong>Keep packages focused</strong> - Each package should have a single, clear responsibility</p>
+<p><strong>Define clear boundaries</strong> - Use TypeScript and explicit exports to enforce module boundaries</p>
+<p><strong>Shared configuration</strong> - Create <code>@myapp/config</code> packages for ESLint, TypeScript, etc.</p>
+<p><strong>Progressive enhancement</strong> - Start with a few packages, split further as needed</p>
+<h3 id="optimize-turborepo">Optimize Turborepo<a class="anchorjs-link" href="#optimize-turborepo"></a></h3><p><strong>Be specific with outputs</strong> - Only cache what&rsquo;s necessary</p>
+<p><strong>Use filters effectively</strong> - Don&rsquo;t rebuild everything in CI</p>
+<p><strong>Configure remote caching</strong> - Use Vercel&rsquo;s free tier or set up your own</p>
+<p><strong>Monitor cache effectiveness</strong> - Pay attention to cache hit rates</p>
+<h3 id="avoid-common-pitfalls">Avoid Common Pitfalls<a class="anchorjs-link" href="#avoid-common-pitfalls"></a></h3><p><strong>Don&rsquo;t over-modularize</strong> - Too many packages creates unnecessary complexity</p>
+<p><strong>Watch for circular dependencies</strong> - Turborepo will error, but prevent them at design time</p>
+<p><strong>Be mindful of bundle sizes</strong> - Shared packages can bloat if not tree-shakeable</p>
+<p><strong>Keep build times reasonable</strong> - If individual package builds are slow, no amount of caching will help</p>
+<h2 id="conclusion">Conclusion<a class="anchorjs-link" href="#conclusion"></a></h2><p>The combination of monorepos, workspaces, and Turborepo represents a mature approach to managing complex JavaScript applications. It&rsquo;s not about choosing between monoliths and microservices—it&rsquo;s about getting the benefits of both.</p>
+<p><strong>Workspaces</strong> provide the foundation for managing multiple packages in a single repository. <strong>Turborepo</strong> adds the intelligence to make that monorepo fast, efficient, and scalable. Together, they enable teams to build modular applications with the simplicity of a monolith and the architectural clarity of distributed services.</p>
+<p>Whether you&rsquo;re building a startup&rsquo;s first product or managing a large enterprise application, this architectural pattern is worth serious consideration. The initial setup investment pays dividends in developer productivity, code quality, and deployment confidence.</p>
+<p>The future of JavaScript development isn&rsquo;t about picking the &ldquo;right&rdquo; architecture—it&rsquo;s about having the tools to adapt as your needs evolve. Monorepos with Turborepo give you exactly that flexibility.</p>
+<hr>
+<p><em>Ready to try it yourself? Start with a simple two-package setup and experience the difference. You might never go back to managing multiple repositories again.</em></p>
+
+
+        <hr style="visibility: hidden;" />
+        <ul class="pager">
+          
+          <li class="previous">
+            <a href="/posts/2025_10_31_http_request_smuggling/" data-toggle="tooltip" data-placement="top" title="Understanding HTTP Request Smuggling and latest ASP.NET vulnerability">
+              Previous<br>
+              <span>Understanding HTTP Request Smuggling and latest ASP.NET vulnerability</span>
+            </a>
+          </li>
+          
+          
+        </ul>
+        <hr style="visibility: hidden;" />
+
+        
+        
+
+
+
+<div class="giscus" id="comments"></div>
+<script src="https://giscus.app/client.js" 
+  data-repo="gkarwchan/gkarwchan.github.io" 
+  data-repo-id="R_kgDOK0QUTA"
+  data-category="General"
+  data-category-id="DIC_kwDOK0QUTM4Ccf8h"
+  data-mapping="pathname"
+  data-strict="0" 
+  data-reactions-enabled="1" 
+  data-emit-metadata="0" 
+  data-input-position="top"
+  data-theme="light_tritanopia"
+  data-lang="en"
+  crossorigin="anonymous"
+  async>
+  </script>
+
+
+
+
+      </div>
+
+      
+      
+      
+      <div class="
+              col-lg-2 col-lg-offset-0
+              visible-lg-block
+              sidebar-container
+              catalog-container">
+        <div class="side-catalog">
+          <hr class="hidden-sm hidden-xs">
+          <h5>
+            <a class="catalog-toggle" href="#">CATALOG</a>
+          </h5>
+          <ul class="catalog-body"></ul>
+        </div>
+      </div>
+      
+      
+      <div class="
+              col-lg-8 col-lg-offset-2
+              col-md-10 col-md-offset-1
+              sidebar-container">
+
+        
+        
+        <section>
+  
+  
+  <hr class="hidden-sm hidden-xs">
+  
+  <h5>FEATURED TAGS</h5>
+  <div class="tags">
+    
+    <a href="/tags/algorithm/">algorithm</a>
+    
+    <a href="/tags/asp.net/">asp.net</a>
+    
+    <a href="/tags/azure/">azure</a>
+    
+    <a href="/tags/container/">container</a>
+    
+    <a href="/tags/css/">css</a>
+    
+    <a href="/tags/dev-tools/">dev tools</a>
+    
+    <a href="/tags/devops/">devops</a>
+    
+    <a href="/tags/javascript/">javascript</a>
+    
+    <a href="/tags/machine-learning/">machine learning</a>
+    
+    <a href="/tags/networking/">networking</a>
+    
+    <a href="/tags/performance/">performance</a>
+    
+    <a href="/tags/python/">python</a>
+    
+    <a href="/tags/security/">security</a>
+    
+  </div>
+</section>
+
+        
+        
+
+      </div>
+    </div>
+  </div>
+</article>
+
+
+
+  
+<footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        
+        <ul class="list-inline text-center">
+
+<li>
+  <a href="https://github.com/gkarwchan" target="_blank">
+    <span class="fa-stack fa-lg">
+      <i class="fa fa-circle fa-stack-2x"></i>
+      <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+    </span>
+  </a>
+</li>
+
+<li>
+  <a href="https://linkedin.com/in/ghassankarwchan" target="_blank">
+    <span class="fa-stack fa-lg">
+      <i class="fa fa-circle fa-stack-2x"></i>
+      <i class="fab fa-linkedin fa-stack-1x fa-inverse"></i>
+    </span>
+  </a>
+</li>
+
+
+<li>
+  <a href="/index.xml" target="_blank">
+    <span class="fa-stack fa-lg">
+      <i class="fa fa-circle fa-stack-2x"></i>
+      <i class="fas fa-rss fa-stack-1x fa-inverse"></i>
+    </span>
+  </a>
+</li></ul>
+
+        <p class="copyright text-muted">
+          Copyright &copy; Ghassan&#39;s Page 2025  
+          <br>
+          Powered by <a href="https://gohugo.io">Hugo</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src=/js/jquery.min.js></script>
+<script src=/js/bootstrap.min.js crossorigin="anonymous"></script>
+
+
+
+<script src="/js/hux-blog.min.73a6a8d8df45293e042d15867416f603045bbeb98406731e5022d6c60388cd9d.js"></script>
+
+
+<script src=/js/simple-jekyll-search.min.js></script>
+
+
+<script src="/js/search.min.53bce5da475b4d362500e5ce5dddfa22e20e1b9018777411d2020b4b839c9310.js"></script>
+
+
+
+
+
+
+<script type="text/javascript">
+  function generateCatalog(selector) {
+    _containerSelector = 'div.post-container'
+    
+    var P = $(_containerSelector), a, n, t, l, i, c;
+    a = P.find('h1,h2,h3,h4');
+    
+    $(selector).html('')
+    
+    a.each(function () {
+      n = $(this).prop('tagName').toLowerCase();
+      i = "#" + $(this).prop('id');
+      t = $(this).text();
+      c = $('<a href="' + i + '" rel="nofollow">' + t + '</a>');
+      l = $('<li class="' + n + '_nav"></li>').append(c);
+      $(selector).append(l);
+    });
+    return true;
+  }
+
+  generateCatalog(".catalog-body");
+
+  
+  $(".catalog-toggle").click((function (e) {
+    e.preventDefault();
+    $('.side-catalog').toggleClass("fold")
+  }))
+</script>
+
+
+<script type="text/javascript" src='/js/jquery.nav.min.ade6bde8f9fcc6a4b40852cb892e9f5912340ab8fe1305149d917fdd16fffd8d.js'></script>
+<script>
+   $(document).ready( function () {
+    $('.catalog-body').onePageNav({
+      currentClass: "active",
+      changeHash: !1,
+      easing: "swing",
+      filter: "",
+      scrollSpeed: 700,
+      scrollOffset: 0,
+      scrollThreshold: .2,
+      begin: null,
+      end: null,
+      scrollChange: null,
+      padding: 80
+    });
+  });
+</script>
+
+
+
+
+
+
+
+
+
+<script src="/zoomjs/zoom.min.js"></script>
+
+</body>
+
+</html>
