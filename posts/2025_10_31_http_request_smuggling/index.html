@@ -10,17 +10,17 @@
     
   <title>Understanding HTTP Request Smuggling and latest ASP.NET vulnerability | Ghassan&#39;s Page</title>
   <meta name="author" content="Ghassan Karwchan">
-  <meta name="description" content="IntroductionIf you&rsquo;ve been following cybersecurity news lately, you&rsquo;ve probably heard about Microsoft HTTP request smuggling vulnerability CVE-2025-55315 making headlines. But what exactly is HTTP request smuggling, and why should you care? Let&rsquo;s break it down in plain English.
+  <meta name="description" content="If you&rsquo;ve been following cybersecurity news lately, you&rsquo;ve probably heard about Microsoft HTTP request smuggling vulnerability CVE-2025-55315 making headlines. But what exactly is HTTP request smuggling, and why should you care? Let&rsquo;s break it down in plain English.
 What Is HTTP Request Smuggling?HTTP request smuggling is a technique where an attacker crafts a single HTTP request that gets interpreted as two different requests by different systems in the processing chain. Think of it like someone is passing through a guarded gate, but he hides another person under his coat.">
   <meta name="keywords" content="blog,developer,personal">
 
   <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Understanding HTTP Request Smuggling and latest ASP.NET vulnerability"/>
-<meta name="twitter:description" content="IntroductionIf you&rsquo;ve been following cybersecurity news lately, you&rsquo;ve probably heard about Microsoft HTTP request smuggling vulnerability CVE-2025-55315 making headlines. But what exactly is HTTP request smuggling, and why should you care? Let&rsquo;s break it down in plain English.
+<meta name="twitter:description" content="If you&rsquo;ve been following cybersecurity news lately, you&rsquo;ve probably heard about Microsoft HTTP request smuggling vulnerability CVE-2025-55315 making headlines. But what exactly is HTTP request smuggling, and why should you care? Let&rsquo;s break it down in plain English.
 What Is HTTP Request Smuggling?HTTP request smuggling is a technique where an attacker crafts a single HTTP request that gets interpreted as two different requests by different systems in the processing chain. Think of it like someone is passing through a guarded gate, but he hides another person under his coat."/>
 
   <meta property="og:title" content="Understanding HTTP Request Smuggling and latest ASP.NET vulnerability" />
-<meta property="og:description" content="IntroductionIf you&rsquo;ve been following cybersecurity news lately, you&rsquo;ve probably heard about Microsoft HTTP request smuggling vulnerability CVE-2025-55315 making headlines. But what exactly is HTTP request smuggling, and why should you care? Let&rsquo;s break it down in plain English.
+<meta property="og:description" content="If you&rsquo;ve been following cybersecurity news lately, you&rsquo;ve probably heard about Microsoft HTTP request smuggling vulnerability CVE-2025-55315 making headlines. But what exactly is HTTP request smuggling, and why should you care? Let&rsquo;s break it down in plain English.
 What Is HTTP Request Smuggling?HTTP request smuggling is a technique where an attacker crafts a single HTTP request that gets interpreted as two different requests by different systems in the processing chain. Think of it like someone is passing through a guarded gate, but he hides another person under his coat." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://www.ghassan.page/posts/2025_10_31_http_request_smuggling/" /><meta property="article:section" content="posts" />
@@ -203,7 +203,7 @@ What Is HTTP Request Smuggling?HTTP request smuggling is a technique where an at
               col-lg-8 col-lg-offset-2
               col-md-10 col-md-offset-1
               post-container">
-        <h1 id="introduction">Introduction<a class="anchorjs-link" href="#introduction"></a></h1><p>If you&rsquo;ve been following cybersecurity news lately, you&rsquo;ve probably heard about <a href="https://www.microsoft.com/en-us/msrc/blog/2025/10/understanding-cve-2025-55315">Microsoft HTTP request smuggling vulnerability CVE-2025-55315</a> making headlines. But what exactly is HTTP request smuggling, and why should you care? Let&rsquo;s break it down in plain English.</p>
+        <p>If you&rsquo;ve been following cybersecurity news lately, you&rsquo;ve probably heard about <a href="https://www.microsoft.com/en-us/msrc/blog/2025/10/understanding-cve-2025-55315">Microsoft HTTP request smuggling vulnerability CVE-2025-55315</a> making headlines. But what exactly is HTTP request smuggling, and why should you care? Let&rsquo;s break it down in plain English.</p>
 <h1 id="what-is-http-request-smuggling">What Is HTTP Request Smuggling?<a class="anchorjs-link" href="#what-is-http-request-smuggling"></a></h1><p>HTTP request smuggling is a technique where an attacker crafts a single HTTP request that gets interpreted as two different requests by different systems in the processing chain. Think of it like someone is passing through a guarded gate, but he hides another person under his coat.</p>
 <h3 id="why-does-this-happen">Why Does This Happen?<a class="anchorjs-link" href="#why-does-this-happen"></a></h3><p>Modern web applications aren&rsquo;t just a single server sitting in a closet somewhere. They typically have multiple layers working together:</p>
 <ul>
